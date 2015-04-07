@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-
+#import <Parse/Parse.h>
 @interface ViewController ()
 
 @end
@@ -16,6 +16,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+  //  PFObject *testObject = [PFObject objectWithClassName:@"User"];
+  ///  testObject[@"foo"] = @"Akshay Tested";
+  //  [testObject saveInBackground];
+  //  NSLog(@"SuccessFull");
     // Do any additional setup after loading the view, typically from a nib.
 }
 

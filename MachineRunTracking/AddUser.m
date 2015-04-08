@@ -62,7 +62,7 @@
                 [alertView show];
             }
             else {
-                [self.navigationController popToRootViewControllerAnimated:YES];
+               [self.navigationController popViewControllerAnimated:YES];
             }
         }];
     }
@@ -70,7 +70,8 @@
 }
 
 -(IBAction)cancel:(id)sender{
-    [self.navigationController popToRootViewControllerAnimated:YES];
+  //  [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Textfield delegate

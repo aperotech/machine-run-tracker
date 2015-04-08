@@ -8,44 +8,162 @@
 
 #import "UserList.h"
 #import "UserListCell.h"
+#import "UserDetails.h"
+#import <Parse/Parse.h>
+#import "User.h"
 @implementation UserList
 //MainMenuToUserListSegue
 //userListTouserDetailsSegue
 //userListToAddUserSegue
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithClassName:@"user"];
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        // The className to query on
+        self.parseClassName = @"user";
+        
+        // Whether the built-in pull-to-refresh is enabled
+        self.pullToRefreshEnabled = YES;
+        
+        // Whether the built-in pagination is enabled
+        self.paginationEnabled = YES;
+        
+        // The number of objects to show per page
+     //   self.objectsPerPage = 15;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+  
+    PFUser *currentUser = [PFUser currentUser];
+    
+    
+    if (currentUser) {
+        NSLog(@"Current user: %@", currentUser.username);
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshTable:)
+                                                     name:@"refreshTable"
+                                                   object:nil];
+    }
+    else {
+        [self performSegueWithIdentifier:@"userListToAddUserSegue" sender:self];
+    }
+}
+
+- (void)refreshTable:(NSNotification *) notification
+{
+    // Reload the recipes
    
-    PFQuery *query = [PFQuery queryWithClassName:@"User"];
-    [query getObjectInBackgroundWithId:@"LwuCtb71E9" block:^(PFObject *User, NSError *error) {
-        // Do something with the returned PFObject in the gameScore variable.
-     //   NSString *Name = User[@"Name"];
-     //    NSString *password = User[@"Password"];
-      //   NSString *UserType = User[@"User_type"];
-      //   NSString *email = User[@"User_Email"];
-       
-       
+    [self loadObjects];
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
+}
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
+
+
+// Override to customize what kind of query to perform on the class. The default is to query for
+// all objects ordered by createdAt descending.
+- (PFQuery *)queryForTable {
+    // Create a query
+    PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+   /* if ([PFUser currentUser]) {
+        [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    }
+    else {
+        // I added this so that when there is no currentUser, the query will not return any data
+        // Without this, when a user signs up and is logged in automatically, they briefly see a table with data
+        // before loadObjects is called and the table is refreshed.
+        // There are other ways to get an empty query, of course. With the below, I know that there
+        // is no such column with the value in the database.
+        [query whereKey:@"nonexistent" equalTo:@"doesn't exist"];
+    }*/
+
+    
+    return query;
+}
+
+
+
+
+
+#pragma mark - PFQueryTableViewController
+
+// Override to customize the look of a cell representing an object. The default is to display
+// a UITableViewCellStyleDefault style cell with the label being the textKey in the object,
+// and the imageView being the imageKey in the object.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
+    static NSString *CellIdentifier = @"UserListCellIdentifier";
+    
+     UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    
+    cell.userNameLabel.text=[object objectForKey:@"username"];
+    cell.userEmailLabel.text=[object objectForKey:@"email"];
+    cell.userTypeLabel.text=[object objectForKey:@"password"];
+    
+      NSLog(@"the User name %@ n Email %@",[object objectForKey:@"username"] ,cell.detailTextLabel.text );
+    return cell;
+}
+
+
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Remove the row from data model
+    PFObject *object = [self.objects objectAtIndex:indexPath.row];
+    [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        [self refreshTable:nil];
+    }];
+}
+
+- (void) objectsDidLoad:(NSError *)error
+{
+    [super objectsDidLoad:error];
+    
+    NSLog(@"error: %@", [error localizedDescription]);
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"userListTouserDetailsSegue"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        PFObject *object = [self.objects objectAtIndex:indexPath.row];
         
-           }];
-  }
-   /* PFQuery *query = [PFQuery queryWithClassName:@"User"];
-    [query whereKey:@"Name" equalTo:@"Akshay"];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            // The find succeeded.
-            NSLog(@"Successfully retrieved %d scores.", objects.count);
-            // Do something with the found objects
-            for (PFObject *object in objects) {
-                NSLog(@"%@", object.objectId);
-            }
-        } else {
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-        }
-    }];*/
-//}
+        UserDetails *userdetailsObj = (UserDetails *)segue.destinationViewController;
+        userdetailsObj.UpdateObjPF = object;
+    }
+}
+- (IBAction)logout:(id)sender {
+    [PFUser logOut];
+ //   PFUser *currentUser = [PFUser currentUser];
+   [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

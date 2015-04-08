@@ -18,11 +18,11 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithClassName:@"user"];
+    self = [super initWithClassName:@"User"];
     self = [super initWithCoder:aDecoder];
     if (self) {
         // The className to query on
-        self.parseClassName = @"user";
+        self.parseClassName = @"User";
         
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
@@ -81,9 +81,14 @@
 // all objects ordered by createdAt descending.
 - (PFQuery *)queryForTable {
     // Create a query
+    
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-   /* if ([PFUser currentUser]) {
-        [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    NSLog(@"The self.parseClassName Are %@ ",self.parseClassName);
+     if ([PFUser currentUser]) {
+        [query whereKey:@"username" equalTo:[PFUser currentUser]];
+         NSArray *objectstofind = [query findObjects];
+         NSLog(@"The objectstofind Are %@ ",objectstofind);
+
     }
     else {
         // I added this so that when there is no currentUser, the query will not return any data
@@ -92,7 +97,7 @@
         // There are other ways to get an empty query, of course. With the below, I know that there
         // is no such column with the value in the database.
         [query whereKey:@"nonexistent" equalTo:@"doesn't exist"];
-    }*/
+    }
 
     
     return query;
@@ -109,16 +114,23 @@
 // and the imageView being the imageKey in the object.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     static NSString *CellIdentifier = @"UserListCellIdentifier";
-    
+    NSLog(@"The PFObjects Are %@ ",object);
      UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+  /*  UILabel *userNameLabel = (UILabel*) [cell viewWithTag:101];
+    userNameLabel.text = [object objectForKey:@"username"];
     
+    UILabel *userEmailLabel = (UILabel*) [cell viewWithTag:102];
+    userEmailLabel.text = [object objectForKey:@"email"];
+    
+    UILabel *userTypeLabel = (UILabel*) [cell viewWithTag:103];
+    userTypeLabel.text = [object objectForKey:@"password"];*/
     
     cell.userNameLabel.text=[object objectForKey:@"username"];
-    cell.userEmailLabel.text=[object objectForKey:@"email"];
-    cell.userTypeLabel.text=[object objectForKey:@"password"];
+   cell.userEmailLabel.text=[object objectForKey:@"email"];
+   cell.userTypeLabel.text=[object objectForKey:@"password"];
     
       NSLog(@"the User name %@ n Email %@",[object objectForKey:@"username"] ,cell.detailTextLabel.text );
     return cell;
@@ -135,12 +147,12 @@
     }];
 }
 
-- (void) objectsDidLoad:(NSError *)error
+/*- (void) objectsDidLoad:(NSError *)error
 {
     [super objectsDidLoad:error];
     
     NSLog(@"error: %@", [error localizedDescription]);
-}
+}*/
 
 #pragma mark - UITableViewDelegate
 

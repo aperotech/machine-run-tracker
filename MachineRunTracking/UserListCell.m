@@ -9,5 +9,5 @@
 #import "UserListCell.h"
 
 @implementation UserListCell
-
+@synthesize userEmailLabel,userNameLabel,userTypeLabel;
 @end

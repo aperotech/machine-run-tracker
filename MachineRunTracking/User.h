@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Parse/Parse.h>
+
 
 @interface User : NSObject
 @property (nonatomic,strong) NSString *Name;

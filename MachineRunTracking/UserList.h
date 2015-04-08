@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface UserList :UIViewController
+#import <ParseUI/ParseUI.h>
+@interface UserList :PFQueryTableViewController
+- (IBAction)logout:(id)sender;
 
 
 @end
+//MainMenuToUserListSegue
+//userListToAddUserSegue
+//userListTouserDetailsSegue

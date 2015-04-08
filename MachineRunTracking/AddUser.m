@@ -30,23 +30,47 @@
 
 -(IBAction)save:(id)sender
 {
-    PFObject *newUser = [PFObject objectWithClassName:@"User"];
+   /* PFObject *newUser = [PFObject objectWithClassName:@"user"];
     [newUser setObject:userNameText.text forKey:@"Name"];
     [newUser setObject:passwordText.text forKey:@"Password"];
     [newUser setObject:userTypeText.text forKey:@"User_type"];
     [newUser setObject:userEmailText.text forKey:@"User_Email"];
-    [newUser saveInBackground];
+    [newUser saveInBackground];*/
+    NSString *username = [userNameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *password = [passwordText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *email = [userEmailText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *type = [userTypeText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    //PFObject *gameScore = [PFObject objectWithClassName:@"GameScore"];
-   // newUser[@"Name"] = userNameText.text;
-    //newUser[@"Password"] = passwordText.text;
-    //newUser[@"User_type"] = userTypeText.text;
-   // newUser[@"User_Email"]= userEmailText.text;
-  //  [newUser pinInBackground];
+    if ([username length] == 0 || [password length] == 0 || [email length] == 0 ||[type length] == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                            message:@"You have to enter a username, password, and email"
+                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    }
+    else {
+        PFUser *newUser = [PFUser user];
+        newUser.username = username;
+        newUser.password = password;
+        newUser.email = email;
+      //  newUser.usertype = type;
+        
+        [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (error) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                                    message:[error.userInfo objectForKey:@"error"]
+                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
+            }
+            else {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }
+        }];
+    }
+
 }
 
 -(IBAction)cancel:(id)sender{
-    [self popoverPresentationController];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - Textfield delegate

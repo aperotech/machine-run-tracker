@@ -20,6 +20,7 @@
     userTypeText.delegate = self;
     userEmailText.delegate = self;
     passwordText.delegate=self;
+    self.myArray = [NSArray arrayWithObjects:@"Admin",@"Standard",nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -52,6 +53,7 @@
         newUser.username = username;
         newUser.password = password;
         newUser.email = email;
+        newUser[@"usertype"]=type;
       //  newUser.usertype = type;
         
         [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -74,11 +76,225 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark - Textfield delegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+#pragma mark- UIPicker View
+- (void)attachPickerToTextField: (UITextField*) textField :(UIPickerView*) picker{
+    picker.delegate = self;
+    picker.dataSource = self;
+    textField.delegate = self;
+    textField.inputView = picker;
+}
+
+-(void)loadItemData {
+        self.pickerArray  = [[NSArray alloc] initWithArray:self.myArray];
+    
+   
+    self.picker = [[UIPickerView alloc] initWithFrame:CGRectZero];
+    
+    [self attachPickerToTextField:self.userTypeText :self.picker];
+    
+    
+}
+
+
+
+#pragma mark - Keyboard delegate stuff
+
+// let tapping on the background (off the input field) close the thing
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.userTypeText resignFirstResponder];
+  
+}
+
+#pragma mark - Picker delegate stuff
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
+    return 1;
+}
+
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (pickerView == self.picker){
+        return self.pickerArray.count;
+    }
+       return 0;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (pickerView == self.picker){
+        return [self.pickerArray objectAtIndex:row];
+    }
+   
+    
+    return @"???";
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (pickerView == self.picker){
+        self.userTypeText.text = [self.pickerArray objectAtIndex:row];
+        
+    }
+    
+    [[self view] endEditing:YES];
+}
+
+
+
+
+
+
+
+
+
+#pragma mark - UITextFieldDelegate method implementation
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
     return YES;
 }
+
+#pragma mark- Keyboard text field move up
+- (void)registerForKeyboardNotifications {
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+     
+                                             selector:@selector(keyboardWasShown:)
+     
+                                                 name:UIKeyboardDidShowNotification
+     
+                                               object:nil];
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+     
+                                             selector:@selector(keyboardWillBeHidden:)
+     
+                                                 name:UIKeyboardWillHideNotification
+     
+                                               object:nil];
+    
+    
+    
+}
+
+
+
+- (void)deregisterFromKeyboardNotifications {
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+     
+                                                    name:UIKeyboardDidHideNotification
+     
+                                                  object:nil];
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+     
+                                                    name:UIKeyboardWillHideNotification
+     
+                                                  object:nil];
+    
+    
+    
+}
+
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    
+    
+    
+    [super viewWillAppear:animated];
+    
+    
+    
+    [self registerForKeyboardNotifications];
+    
+    
+    
+}
+
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    
+    
+    [self deregisterFromKeyboardNotifications];
+    
+    
+    
+    [super viewWillDisappear:animated];
+    
+    
+    
+}
+- (void)keyboardWasShown:(NSNotification *)notification {
+    
+    
+    
+    NSDictionary* info = [notification userInfo];
+    
+    
+    
+    CGSize keyboardSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    
+    
+    CGPoint buttonOrigin = passwordText.frame.origin;
+    
+    
+    
+    CGFloat buttonHeight = passwordText.frame.size.height;
+    
+    
+    
+    CGRect visibleRect = self.view.frame;
+    
+    
+    
+    visibleRect.size.height -= keyboardSize.height;
+    
+    
+    
+    if (!CGRectContainsPoint(visibleRect, buttonOrigin)){
+        
+        
+        
+        CGPoint scrollPoint = CGPointMake(0.0, buttonOrigin.y - visibleRect.size.height + buttonHeight);
+        
+        
+        
+        [self.scrollView setContentOffset:scrollPoint animated:YES];
+        
+        
+        
+    }
+    
+    
+    
+}
+
+
+
+- (void)keyboardWillBeHidden:(NSNotification *)notification {
+    
+    
+    
+    [self.scrollView setContentOffset:CGPointZero animated:YES];
+    
+    
+    
+}
+
 @end

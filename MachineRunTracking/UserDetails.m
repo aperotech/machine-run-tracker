@@ -49,7 +49,7 @@
 - (void)saveNote
 {
     
-    PFObject *NewUser = [PFObject objectWithClassName:@"User"];
+    PFObject *NewUser = [PFObject objectWithClassName:@"_User"];
     NewUser[@"username"] = self.userNameUpdateText.text;
     NewUser[@"email"] = self.userEmailUpdateText.text;
     NewUser[@"password"] = self.OldPassText.text;
@@ -71,7 +71,7 @@
 - (void)updateNote
 {
     
-    PFQuery *query = [PFQuery queryWithClassName:@"User"];
+    PFQuery *query = [PFQuery queryWithClassName:@"_User"];
     
     // Retrieve the object by id
     [query getObjectInBackgroundWithId:[self.UpdateObjPF objectId] block:^(PFObject *UpdateUser, NSError *error) {

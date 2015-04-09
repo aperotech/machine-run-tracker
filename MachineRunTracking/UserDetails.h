@@ -8,7 +8,10 @@
 
 #import "ViewController.h"
 #import <Parse/Parse.h>
-@interface UserDetails : ViewController
+@interface UserDetails : ViewController<UITextFieldDelegate,UIScrollViewDelegate>
+
+@property (nonatomic,strong)IBOutlet UIScrollView *scrollView;
+
 @property (nonatomic, strong) PFObject *UpdateObjPF;
 @property (weak, nonatomic) IBOutlet UITextField *userNameUpdateText;
 @property (weak, nonatomic) IBOutlet UITextField *userTypeUpdateText;

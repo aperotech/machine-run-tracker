@@ -42,20 +42,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   //[[PFUser currentUser] fetchInBackgroundWithBlock:nil];
-   // PFUser *currentUser = [PFUser currentUser];
+   [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
+    PFUser *currentUser = [PFUser currentUser];
    
     
-    //if (currentUser) {
+    if (currentUser) {
     //    NSLog(@"Current user: %@", currentUser.username);
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(refreshTable:)
                                                      name:@"refreshTable"
                                                    object:nil];
-   // }
-   // else {
-     //   [self performSegueWithIdentifier:@"userListToAddUserSegue" sender:self];
-   // }
+   }
+   else {
+        [self performSegueWithIdentifier:@"userListToAddUserSegue" sender:self];
+    }
 }
 
 - (void)refreshTable:(NSNotification *) notification
@@ -86,30 +86,8 @@
     // Create a query
     
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-   
-  //  [query whereKey:@"username" equalTo:[PFUser currentUser]];
-   //  NSLog(@"The self.parseClassName Are %@ ",query);
-  //  NSArray *objectstofind = [query findObjects];
-  //   NSLog(@"The objectstofind Are %@ ",objectstofind);
-    //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    //[query orderByDescending:@"createdAt"];
-    //
-  /*  if ([PFUser currentUser]) {
-    [query whereKey:@"username" equalTo:[PFUser currentUser]];
-        // NSArray *objectstofind = [query findObjects];
-        // NSLog(@"The objectstofind Are %@ ",objectstofind);
-
-    }
-    else {
-        // I added this so that when there is no currentUser, the query will not return any data
-        // Without this, when a user signs up and is logged in automatically, they briefly see a table with data
-        // before loadObjects is called and the table is refreshed.
-        // There are other ways to get an empty query, of course. With the below, I know that there
-        // is no such column with the value in the database.
-        [query whereKey:@"nonexistent" equalTo:@"doesn't exist"];
-    }
-*/
-        return query;
+    
+    return query;
 }
 
 
@@ -123,26 +101,17 @@
 // and the imageView being the imageKey in the object.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     static NSString *CellIdentifier = @"UserListCellIdentifier";
-    NSLog(@"The PFObjects Are %@ ",object);
+ 
      UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-  /*  UILabel *userNameLabel = (UILabel*) [cell viewWithTag:100];
-    userNameLabel.text = [object objectForKey:@"username"];
-    
-    UILabel *userEmailLabel = (UILabel*) [cell viewWithTag:102];
-    userEmailLabel.text = [object objectForKey:@"email"];
-    
-    UILabel *userTypeLabel = (UILabel*) [cell viewWithTag:101];
-    userTypeLabel.text = [object objectForKey:@"password"];*/
     
     cell.userNameLabel.text=[object objectForKey:@"username"];
    cell.userEmailLabel.text=[object objectForKey:@"email"];
-   cell.userTypeLabel.text=[object objectForKey:@"password"];
+   cell.userTypeLabel.text=[object objectForKey:@"usertype"];
     
-      NSLog(@"the User name %@ n Email %@",cell.userNameLabel.text ,cell.userEmailLabel.text );
-    return cell;
+         return cell;
 }
 
 

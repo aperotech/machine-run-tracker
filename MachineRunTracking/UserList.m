@@ -10,7 +10,7 @@
 #import "UserListCell.h"
 #import "UserDetails.h"
 #import <Parse/Parse.h>
-#import "User.h"
+
 @implementation UserList
 //MainMenuToUserListSegue
 //userListTouserDetailsSegue
@@ -18,11 +18,14 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithClassName:@"User"];
+    //self = [super initWithClassName:@"User"];
     self = [super initWithCoder:aDecoder];
     if (self) {
         // The className to query on
-        self.parseClassName = @"User";
+        self.parseClassName = @"_User";
+        
+        // The key of the PFObject to display in the label of the default cell style
+        self.textKey = @"User Name";
         
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
@@ -39,20 +42,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  
-    PFUser *currentUser = [PFUser currentUser];
+   //[[PFUser currentUser] fetchInBackgroundWithBlock:nil];
+   // PFUser *currentUser = [PFUser currentUser];
+   
     
-    
-    if (currentUser) {
-        NSLog(@"Current user: %@", currentUser.username);
+    //if (currentUser) {
+    //    NSLog(@"Current user: %@", currentUser.username);
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(refreshTable:)
                                                      name:@"refreshTable"
                                                    object:nil];
-    }
-    else {
-        [self performSegueWithIdentifier:@"userListToAddUserSegue" sender:self];
-    }
+   // }
+   // else {
+     //   [self performSegueWithIdentifier:@"userListToAddUserSegue" sender:self];
+   // }
 }
 
 - (void)refreshTable:(NSNotification *) notification
@@ -83,11 +86,18 @@
     // Create a query
     
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    NSLog(@"The self.parseClassName Are %@ ",self.parseClassName);
-     if ([PFUser currentUser]) {
-        [query whereKey:@"username" equalTo:[PFUser currentUser]];
-         NSArray *objectstofind = [query findObjects];
-         NSLog(@"The objectstofind Are %@ ",objectstofind);
+   
+  //  [query whereKey:@"username" equalTo:[PFUser currentUser]];
+   //  NSLog(@"The self.parseClassName Are %@ ",query);
+  //  NSArray *objectstofind = [query findObjects];
+  //   NSLog(@"The objectstofind Are %@ ",objectstofind);
+    //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    //[query orderByDescending:@"createdAt"];
+    //
+  /*  if ([PFUser currentUser]) {
+    [query whereKey:@"username" equalTo:[PFUser currentUser]];
+        // NSArray *objectstofind = [query findObjects];
+        // NSLog(@"The objectstofind Are %@ ",objectstofind);
 
     }
     else {
@@ -98,9 +108,8 @@
         // is no such column with the value in the database.
         [query whereKey:@"nonexistent" equalTo:@"doesn't exist"];
     }
-
-    
-    return query;
+*/
+        return query;
 }
 
 
@@ -119,20 +128,20 @@
     if (cell == nil) {
         cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-  /*  UILabel *userNameLabel = (UILabel*) [cell viewWithTag:101];
+  /*  UILabel *userNameLabel = (UILabel*) [cell viewWithTag:100];
     userNameLabel.text = [object objectForKey:@"username"];
     
     UILabel *userEmailLabel = (UILabel*) [cell viewWithTag:102];
     userEmailLabel.text = [object objectForKey:@"email"];
     
-    UILabel *userTypeLabel = (UILabel*) [cell viewWithTag:103];
+    UILabel *userTypeLabel = (UILabel*) [cell viewWithTag:101];
     userTypeLabel.text = [object objectForKey:@"password"];*/
     
     cell.userNameLabel.text=[object objectForKey:@"username"];
    cell.userEmailLabel.text=[object objectForKey:@"email"];
    cell.userTypeLabel.text=[object objectForKey:@"password"];
     
-      NSLog(@"the User name %@ n Email %@",[object objectForKey:@"username"] ,cell.detailTextLabel.text );
+      NSLog(@"the User name %@ n Email %@",cell.userNameLabel.text ,cell.userEmailLabel.text );
     return cell;
 }
 
@@ -142,17 +151,18 @@
 {
     // Remove the row from data model
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
+    NSLog(@"The Object to delete is %@",object);
     [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         [self refreshTable:nil];
     }];
 }
 
-/*- (void) objectsDidLoad:(NSError *)error
+- (void) objectsDidLoad:(NSError *)error
 {
     [super objectsDidLoad:error];
     
     NSLog(@"error: %@", [error localizedDescription]);
-}*/
+}
 
 #pragma mark - UITableViewDelegate
 

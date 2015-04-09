@@ -30,27 +30,50 @@
 }
 
 -(IBAction)Login:(id)sender{
-    NSString *username = [userEmailText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *email = [userEmailText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = [passwordText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    if ([username length] == 0 || [password length] == 0) {
+    if ([email length] == 0 || [password length] == 0) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                             message:@"You have to enter a Email and password"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     }
     else {
-        
-        [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser *User, NSError *error) {
-            if (error) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-                                                                    message:[error.userInfo objectForKey:@"error"]
-                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alertView show];
+        PFQuery *query = [PFUser query];
+        [query whereKey:@"email" equalTo:email];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+            if (objects.count > 0) {
+                
+                PFObject *object = [objects objectAtIndex:0];
+                NSString *username = [object objectForKey:@"username"];
+                [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser* user, NSError* error){
+                    if (error) {
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                                            message:[error.userInfo objectForKey:@"error"]
+                                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        [alertView show];
+                    }
+                    else {
+                        [self performSegueWithIdentifier:@"LoginToMainMenuSegue" sender:self];
+                    }
+                }];
+            }else{
+                [PFUser logInWithUsernameInBackground: email password:password block:^(PFUser* user, NSError* error){
+                    if (error) {
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                                            message:[error.userInfo objectForKey:@"error"]
+                                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        [alertView show];
+                    }
+                    else {
+                        [self performSegueWithIdentifier:@"LoginToMainMenuSegue" sender:self];
+                    }
+                }];
+                
             }
-            else {
-                [self performSegueWithIdentifier:@"LoginToMainMenuSegue" sender:self];
-            }
+            
+            
         }];
     }
    }

@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface AddUser : ViewController<UINavigationControllerDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
+@interface AddUser : ViewController<UINavigationControllerDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIPopoverControllerDelegate>
 @property (nonatomic,strong)IBOutlet UIScrollView *scrollView;
 @property (strong,nonatomic) IBOutlet UITextField *userNameText;
 @property (strong,nonatomic) IBOutlet UITextField *userTypeText;

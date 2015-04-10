@@ -9,7 +9,7 @@
 #import "AddUser.h"
 #import <Parse/Parse.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-
+#define k_KEYBOARD_OFFSET 80.0
 @implementation AddUser
 @synthesize userEmailText,userNameText,userTypeText,passwordText;
 - (void)viewDidLoad
@@ -17,10 +17,13 @@
     [super viewDidLoad];
     
     userNameText.delegate = self;
-    userTypeText.delegate = self;
+    //userTypeText.delegate = self;
     userEmailText.delegate = self;
     passwordText.delegate=self;
     self.myArray = [NSArray arrayWithObjects:@"Admin",@"Standard",nil];
+    self.picker.dataSource=self;
+    self.picker.delegate=self;
+    [self loadItemData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,6 +67,10 @@
                 [alertView show];
             }
             else {
+             //   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                
+                // Dismiss the controller
+               // [self dismissViewControllerAnimated:YES completion:nil];
                [self.navigationController popViewControllerAnimated:YES];
             }
         }];
@@ -102,7 +109,7 @@
 
 // let tapping on the background (off the input field) close the thing
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [self.userTypeText resignFirstResponder];
+    [userTypeText resignFirstResponder];
   
 }
 
@@ -135,12 +142,13 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     if (pickerView == self.picker){
-        self.userTypeText.text = [self.pickerArray objectAtIndex:row];
+        userTypeText.text = [self.pickerArray objectAtIndex:row];
         
     }
     
     [[self view] endEditing:YES];
 }
+
 
 
 
@@ -157,144 +165,28 @@
     return YES;
 }
 
-#pragma mark- Keyboard text field move up
-- (void)registerForKeyboardNotifications {
-    
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-     
-                                             selector:@selector(keyboardWasShown:)
-     
-                                                 name:UIKeyboardDidShowNotification
-     
-                                               object:nil];
-    
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-     
-                                             selector:@selector(keyboardWillBeHidden:)
-     
-                                                 name:UIKeyboardWillHideNotification
-     
-                                               object:nil];
-    
-    
-    
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self animateTextField:textField up:YES];
 }
 
-
-
-- (void)deregisterFromKeyboardNotifications {
-    
-    
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-     
-                                                    name:UIKeyboardDidHideNotification
-     
-                                                  object:nil];
-    
-    
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-     
-                                                    name:UIKeyboardWillHideNotification
-     
-                                                  object:nil];
-    
-    
-    
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self animateTextField:textField up:NO];
 }
 
-
-
-- (void)viewWillAppear:(BOOL)animated {
+-(void)animateTextField:(UITextField*)textField up:(BOOL)up
+{
+    const int movementDistance = -30; // tweak as needed
+    const float movementDuration = 0.3f; // tweak as needed
     
+    int movement = (up ? movementDistance : -movementDistance);
     
-    
-    [super viewWillAppear:animated];
-    
-    
-    
-    [self registerForKeyboardNotifications];
-    
-    
-    
-}
-
-
-
-- (void)viewWillDisappear:(BOOL)animated {
-    
-    
-    
-    [self deregisterFromKeyboardNotifications];
-    
-    
-    
-    [super viewWillDisappear:animated];
-    
-    
-    
-}
-- (void)keyboardWasShown:(NSNotification *)notification {
-    
-    
-    
-    NSDictionary* info = [notification userInfo];
-    
-    
-    
-    CGSize keyboardSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-    
-    
-    CGPoint buttonOrigin = passwordText.frame.origin;
-    
-    
-    
-    CGFloat buttonHeight = passwordText.frame.size.height;
-    
-    
-    
-    CGRect visibleRect = self.view.frame;
-    
-    
-    
-    visibleRect.size.height -= keyboardSize.height;
-    
-    
-    
-    if (!CGRectContainsPoint(visibleRect, buttonOrigin)){
-        
-        
-        
-        CGPoint scrollPoint = CGPointMake(0.0, buttonOrigin.y - visibleRect.size.height + buttonHeight);
-        
-        
-        
-        [self.scrollView setContentOffset:scrollPoint animated:YES];
-        
-        
-        
-    }
-    
-    
-    
-}
-
-
-
-- (void)keyboardWillBeHidden:(NSNotification *)notification {
-    
-    
-    
-    [self.scrollView setContentOffset:CGPointZero animated:YES];
-    
-    
-    
+    [UIView beginAnimations: @"animateTextField" context: nil];
+    [UIView setAnimationBeginsFromCurrentState: YES];
+    [UIView setAnimationDuration: movementDuration];
+    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+    [UIView commitAnimations];
 }
 
 @end

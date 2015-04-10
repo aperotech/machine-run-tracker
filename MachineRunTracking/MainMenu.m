@@ -20,6 +20,7 @@
 - (IBAction)logout:(id)sender {
     [PFUser logOut];
     PFUser *currentUser = [PFUser currentUser]; // this will now be nil
+    [self.navigationController popViewControllerAnimated:YES];
     NSLog(@"Suuccessfully Logout %@",currentUser);
     }
 @end

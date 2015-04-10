@@ -22,7 +22,21 @@
     
     [Parse setApplicationId:@"43wSxnz4xNJGXMK315P7KuJVaMliO5PxYW9qjCiy"
                 clientKey:@"X3RMRsDfqZQ5GL13sfRzUY5OzSo8cYf5vpp7J6Az"];
-    
+     isLoggedIn=0;
+    PFUser *currentUser = [PFUser currentUser];
+       // [self loadObjects];
+   
+
+    if (currentUser) {
+        NSLog(@"Current user: %@", currentUser.username);
+      //  [self performSegueWithIdentifier:@"NavigationToMainMenuSegue" sender:self];
+    }
+    else {
+        isLoggedIn = 1;
+      //  [self performSegueWithIdentifier:@"UserLoginView" sender:self];
+    }
+      NSString *storyboardId = isLoggedIn ? @"UserLoginView" : @"NevigateMainMenu";
+     self.window.rootViewController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:storyboardId];
      //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     return YES;
 }

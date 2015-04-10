@@ -129,9 +129,55 @@
 - (void) objectsDidLoad:(NSError *)error
 {
     [super objectsDidLoad:error];
-    
-    NSLog(@"error: %@", [error localizedDescription]);
+    [error localizedDescription];
+   
 }
+/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 40.0f;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    UIView *sectionHeaderView = [[UIView alloc] initWithFrame:
+                                 CGRectMake(0, 0, self.tableView.frame.size.width, 40.0)];
+    sectionHeaderView.backgroundColor = [UIColor grayColor];
+    
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:
+                            CGRectMake(19, 11, sectionHeaderView.frame.size.width, 25.0)];
+    
+    headerLabel.backgroundColor = [UIColor clearColor];
+    headerLabel.textAlignment = NSTextAlignmentLeft;
+    [headerLabel setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
+    headerLabel.text = @"Name";
+    [sectionHeaderView addSubview:headerLabel];
+    
+    UILabel *headerLabel1 = [[UILabel alloc] initWithFrame:
+                             CGRectMake(122,11, sectionHeaderView.frame.size.width, 25.0)];
+    
+    headerLabel1.backgroundColor = [UIColor clearColor];
+    headerLabel1.textAlignment = NSTextAlignmentLeft;
+    [headerLabel1 setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
+    headerLabel1.text = @"Type";
+    [sectionHeaderView addSubview:headerLabel1];
+    
+    UILabel *headerLabel3 = [[UILabel alloc] initWithFrame:
+                             CGRectMake(193,11, sectionHeaderView.frame.size.width, 25.0)];
+    
+    headerLabel3.backgroundColor = [UIColor clearColor];
+    headerLabel3.textAlignment = NSTextAlignmentLeft;
+    [headerLabel3 setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
+    headerLabel3.text = @"Email Address";
+    [sectionHeaderView addSubview:headerLabel3];
+    
+    
+    
+    
+    
+    
+    return sectionHeaderView;
+    
+}
+*/
 
 #pragma mark - UITableViewDelegate
 

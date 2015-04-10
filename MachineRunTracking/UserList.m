@@ -120,10 +120,11 @@
 {
     // Remove the row from data model
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
-    NSLog(@"The Object to delete is %@",object);
-    [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        [self refreshTable:nil];
-    }];
+    
+        [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [self refreshTable:nil];
+        }];
+      
 }
 
 - (void) objectsDidLoad:(NSError *)error

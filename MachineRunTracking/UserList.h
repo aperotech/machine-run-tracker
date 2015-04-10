@@ -10,7 +10,7 @@
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 @interface UserList :PFQueryTableViewController
-- (IBAction)logout:(id)sender;
+
 
 
 @end

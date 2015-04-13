@@ -67,10 +67,10 @@
                 [alertView show];
             }
             else {
-             //   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                 
                 // Dismiss the controller
-               // [self dismissViewControllerAnimated:YES completion:nil];
+                //[self dismissViewControllerAnimated:YES completion:nil];
                [self.navigationController popViewControllerAnimated:YES];
             }
         }];

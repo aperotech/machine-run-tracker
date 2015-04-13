@@ -287,10 +287,10 @@
     int movement = (up ? movementDistance : -movementDistance);
     
     [UIView beginAnimations: @"animateTextField" context: nil];
-    [UIView setAnimationBeginsFromCurrentState: YES];
-    [UIView setAnimationDuration: movementDuration];
+    [UIScrollView setAnimationBeginsFromCurrentState: YES];
+    [UIScrollView setAnimationDuration: movementDuration];
     self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    [UIView commitAnimations];
+    [UIScrollView commitAnimations];
 }
 
 

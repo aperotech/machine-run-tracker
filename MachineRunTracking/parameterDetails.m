@@ -77,6 +77,7 @@
     
     [NewParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
             [self.navigationController popViewControllerAnimated:YES];
         } else {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -112,6 +113,7 @@
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
+                     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"

@@ -17,14 +17,7 @@
 @synthesize MachineDetailsPF;
 - (void)viewDidLoad {
     [super viewDidLoad];
-   // codeText.delegate = self;
-  //  nameText.delegate = self;
-  //  descriptionText.delegate = self;
-  //  trackingFrequencyText.delegate = self;
-  //  locationText.delegate = self;
-  //  capacityText.delegate = self;
-  //  maintanceFrequencyText.delegate = self;
-  //  lastMaintanceDate.delegate = self;
+  
     
     if (MachineDetailsPF != nil) {
     codeText.text=[MachineDetailsPF objectForKey:@"Code"];
@@ -146,6 +139,30 @@
     [textField resignFirstResponder];
     return YES;
 }
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self animateTextField:textField up:YES];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self animateTextField:textField up:NO];
+}
+
+-(void)animateTextField:(UITextField*)textField up:(BOOL)up
+{
+    const int movementDistance = -60; // tweak as needed
+    const float movementDuration = 0.3f; // tweak as needed
+    
+    int movement = (up ? movementDistance : -movementDistance);
+    
+    [UIView beginAnimations: @"animateTextField" context: nil];
+    [UIScrollView setAnimationBeginsFromCurrentState: YES];
+    [UIScrollView setAnimationDuration: movementDuration];
+    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+    [UIScrollView commitAnimations];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -86,6 +86,61 @@
 }
 
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+ {
+ return 40.0f;
+ }
+ - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+ 
+ UIView *sectionHeaderView = [[UIView alloc] initWithFrame:
+ CGRectMake(0, 0, self.tableView.frame.size.width, 40.0)];
+ sectionHeaderView.backgroundColor = [UIColor grayColor];
+ 
+ UILabel *headerLabel = [[UILabel alloc] initWithFrame:
+ CGRectMake(28, 11, sectionHeaderView.frame.size.width, 25.0)];
+ 
+ headerLabel.backgroundColor = [UIColor clearColor];
+ headerLabel.textAlignment = NSTextAlignmentLeft;
+ [headerLabel setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
+ headerLabel.text = @"Code";
+ [sectionHeaderView addSubview:headerLabel];
+ 
+ UILabel *headerLabel1 = [[UILabel alloc] initWithFrame:
+ CGRectMake(100,11, sectionHeaderView.frame.size.width, 25.0)];
+ 
+ headerLabel1.backgroundColor = [UIColor clearColor];
+ headerLabel1.textAlignment = NSTextAlignmentLeft;
+ [headerLabel1 setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
+ headerLabel1.text = @"Name";
+ [sectionHeaderView addSubview:headerLabel1];
+ 
+ UILabel *headerLabel3 = [[UILabel alloc] initWithFrame:
+ CGRectMake(177,11, sectionHeaderView.frame.size.width, 25.0)];
+ 
+ headerLabel3.backgroundColor = [UIColor clearColor];
+ headerLabel3.textAlignment = NSTextAlignmentLeft;
+ [headerLabel3 setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
+ headerLabel3.text = @"Location";
+ [sectionHeaderView addSubview:headerLabel3];
+     
+UILabel *headerLabel4 = [[UILabel alloc] initWithFrame:
+    CGRectMake(271,11, sectionHeaderView.frame.size.width, 25.0)];
+     
+     headerLabel4.backgroundColor = [UIColor clearColor];
+     headerLabel4.textAlignment = NSTextAlignmentLeft;
+     [headerLabel4 setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
+     headerLabel4.text = @"Capacity";
+     [sectionHeaderView addSubview:headerLabel4];
+ 
+ 
+ 
+ 
+ 
+ 
+ return sectionHeaderView;
+ 
+ }
+ 
 
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.

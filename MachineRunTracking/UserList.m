@@ -133,7 +133,7 @@
     [error localizedDescription];
    
 }
-/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 40.0f;
 }
@@ -178,7 +178,7 @@
     return sectionHeaderView;
     
 }
-*/
+
 
 #pragma mark - UITableViewDelegate
 

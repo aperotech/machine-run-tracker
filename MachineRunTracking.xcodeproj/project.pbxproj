@@ -47,6 +47,15 @@
 		044DC18A1ADB8276002578C2 /* ParameterListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1891ADB8276002578C2 /* ParameterListCell.m */; };
 		044DC18E1ADB82A6002578C2 /* addNewParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC18D1ADB82A6002578C2 /* addNewParameter.m */; };
 		044DC1921ADB82CF002578C2 /* parameterDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1911ADB82CF002578C2 /* parameterDetails.m */; };
+		044DC1991ADBCD35002578C2 /* TransactionList.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1981ADBCD35002578C2 /* TransactionList.m */; };
+		044DC19C1ADBCD57002578C2 /* TransactionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC19B1ADBCD57002578C2 /* TransactionListCell.m */; };
+		044DC19F1ADBCD92002578C2 /* AddTransaction_Basic.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC19E1ADBCD92002578C2 /* AddTransaction_Basic.m */; };
+		044DC1A51ADBCE10002578C2 /* AddTransaction_Pre.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1A41ADBCE10002578C2 /* AddTransaction_Pre.m */; };
+		044DC1A81ADBCE31002578C2 /* AddTransaction_Run.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1A71ADBCE31002578C2 /* AddTransaction_Run.m */; };
+		044DC1AB1ADBCE49002578C2 /* AddTransaction_Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1AA1ADBCE49002578C2 /* AddTransaction_Post.m */; };
+		044DC1AE1ADBCE7B002578C2 /* DetailsTransaction_Pre.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1AD1ADBCE7B002578C2 /* DetailsTransaction_Pre.m */; };
+		044DC1B11ADBCE93002578C2 /* DetailsTransaction_Run.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */; };
+		044DC1B41ADBCEAF002578C2 /* DetailsTransaction_Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +129,24 @@
 		044DC18D1ADB82A6002578C2 /* addNewParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = addNewParameter.m; sourceTree = "<group>"; };
 		044DC1901ADB82CF002578C2 /* parameterDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parameterDetails.h; sourceTree = "<group>"; };
 		044DC1911ADB82CF002578C2 /* parameterDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = parameterDetails.m; sourceTree = "<group>"; };
+		044DC1971ADBCD35002578C2 /* TransactionList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionList.h; sourceTree = "<group>"; };
+		044DC1981ADBCD35002578C2 /* TransactionList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionList.m; sourceTree = "<group>"; };
+		044DC19A1ADBCD57002578C2 /* TransactionListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionListCell.h; sourceTree = "<group>"; };
+		044DC19B1ADBCD57002578C2 /* TransactionListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionListCell.m; sourceTree = "<group>"; };
+		044DC19D1ADBCD92002578C2 /* AddTransaction_Basic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_Basic.h; sourceTree = "<group>"; };
+		044DC19E1ADBCD92002578C2 /* AddTransaction_Basic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_Basic.m; sourceTree = "<group>"; };
+		044DC1A31ADBCE10002578C2 /* AddTransaction_Pre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_Pre.h; sourceTree = "<group>"; };
+		044DC1A41ADBCE10002578C2 /* AddTransaction_Pre.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_Pre.m; sourceTree = "<group>"; };
+		044DC1A61ADBCE31002578C2 /* AddTransaction_Run.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_Run.h; sourceTree = "<group>"; };
+		044DC1A71ADBCE31002578C2 /* AddTransaction_Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_Run.m; sourceTree = "<group>"; };
+		044DC1A91ADBCE49002578C2 /* AddTransaction_Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_Post.h; sourceTree = "<group>"; };
+		044DC1AA1ADBCE49002578C2 /* AddTransaction_Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_Post.m; sourceTree = "<group>"; };
+		044DC1AC1ADBCE7B002578C2 /* DetailsTransaction_Pre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsTransaction_Pre.h; sourceTree = "<group>"; };
+		044DC1AD1ADBCE7B002578C2 /* DetailsTransaction_Pre.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTransaction_Pre.m; sourceTree = "<group>"; };
+		044DC1AF1ADBCE93002578C2 /* DetailsTransaction_Run.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsTransaction_Run.h; sourceTree = "<group>"; };
+		044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTransaction_Run.m; sourceTree = "<group>"; };
+		044DC1B21ADBCEAF002578C2 /* DetailsTransaction_Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsTransaction_Post.h; sourceTree = "<group>"; };
+		044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTransaction_Post.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +277,7 @@
 		04461CA61AD3913700CBC80A /* MachineRunTracking */ = {
 			isa = PBXGroup;
 			children = (
+				044DC1931ADBCC9E002578C2 /* Manage Transactions */,
 				044DC1831ADB81C0002578C2 /* Parameter */,
 				042A8ADB1AD7D54E0065816D /* Manage Machine */,
 				04461D191AD3AEBA00CBC80A /* Main Menu */,
@@ -409,6 +437,55 @@
 			name = "Parameter Details";
 			sourceTree = "<group>";
 		};
+		044DC1931ADBCC9E002578C2 /* Manage Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				044DC1961ADBCCE1002578C2 /* Transaction Details */,
+				044DC1951ADBCCCB002578C2 /* Add Transactions */,
+				044DC1941ADBCCB7002578C2 /* Transaction List */,
+			);
+			name = "Manage Transactions";
+			sourceTree = "<group>";
+		};
+		044DC1941ADBCCB7002578C2 /* Transaction List */ = {
+			isa = PBXGroup;
+			children = (
+				044DC1971ADBCD35002578C2 /* TransactionList.h */,
+				044DC1981ADBCD35002578C2 /* TransactionList.m */,
+				044DC19A1ADBCD57002578C2 /* TransactionListCell.h */,
+				044DC19B1ADBCD57002578C2 /* TransactionListCell.m */,
+			);
+			name = "Transaction List";
+			sourceTree = "<group>";
+		};
+		044DC1951ADBCCCB002578C2 /* Add Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				044DC19D1ADBCD92002578C2 /* AddTransaction_Basic.h */,
+				044DC19E1ADBCD92002578C2 /* AddTransaction_Basic.m */,
+				044DC1A31ADBCE10002578C2 /* AddTransaction_Pre.h */,
+				044DC1A41ADBCE10002578C2 /* AddTransaction_Pre.m */,
+				044DC1A61ADBCE31002578C2 /* AddTransaction_Run.h */,
+				044DC1A71ADBCE31002578C2 /* AddTransaction_Run.m */,
+				044DC1A91ADBCE49002578C2 /* AddTransaction_Post.h */,
+				044DC1AA1ADBCE49002578C2 /* AddTransaction_Post.m */,
+			);
+			name = "Add Transactions";
+			sourceTree = "<group>";
+		};
+		044DC1961ADBCCE1002578C2 /* Transaction Details */ = {
+			isa = PBXGroup;
+			children = (
+				044DC1AC1ADBCE7B002578C2 /* DetailsTransaction_Pre.h */,
+				044DC1AD1ADBCE7B002578C2 /* DetailsTransaction_Pre.m */,
+				044DC1AF1ADBCE93002578C2 /* DetailsTransaction_Run.h */,
+				044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */,
+				044DC1B21ADBCEAF002578C2 /* DetailsTransaction_Post.h */,
+				044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */,
+			);
+			name = "Transaction Details";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -517,14 +594,23 @@
 				042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */,
 				0415DEB81AD3ECD9001EF623 /* User.m in Sources */,
 				04461CB01AD3913700CBC80A /* ViewController.m in Sources */,
+				044DC1991ADBCD35002578C2 /* TransactionList.m in Sources */,
+				044DC19F1ADBCD92002578C2 /* AddTransaction_Basic.m in Sources */,
 				04461CF21AD3A9C500CBC80A /* UserList.m in Sources */,
+				044DC1B41ADBCEAF002578C2 /* DetailsTransaction_Post.m in Sources */,
 				042A8AE41AD7D6E60065816D /* MachineLIst.m in Sources */,
+				044DC19C1ADBCD57002578C2 /* TransactionListCell.m in Sources */,
+				044DC1AE1ADBCE7B002578C2 /* DetailsTransaction_Pre.m in Sources */,
 				04461D1C1AD3B1EF00CBC80A /* UserListCell.m in Sources */,
 				04461CE91AD3A8F100CBC80A /* UserDetails.m in Sources */,
 				044DC1921ADB82CF002578C2 /* parameterDetails.m in Sources */,
 				042A8AE71AD7D70F0065816D /* AddNewMachine.m in Sources */,
+				044DC1AB1ADBCE49002578C2 /* AddTransaction_Post.m in Sources */,
+				044DC1A51ADBCE10002578C2 /* AddTransaction_Pre.m in Sources */,
 				044DC18A1ADB8276002578C2 /* ParameterListCell.m in Sources */,
+				044DC1B11ADBCE93002578C2 /* DetailsTransaction_Run.m in Sources */,
 				04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */,
+				044DC1A81ADBCE31002578C2 /* AddTransaction_Run.m in Sources */,
 				04461CAA1AD3913700CBC80A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

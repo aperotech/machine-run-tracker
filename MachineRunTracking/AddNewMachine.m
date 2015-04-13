@@ -25,8 +25,43 @@
     maintanceFrequencyText.delegate=self;
     lastMaintanceDate.delegate=self;
     // Do any additional setup after loading the view.
+    
+  //  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+ //   self.datePicker=[[UIDatePicker alloc] init];//frames are just for demo
+ //   [lastMaintanceDate setInputView:self.datePicker];
 }
+/*- (void)keyboardWillShow:(NSNotification *)notification
+{
+    if(self.datePickerToolbar == nil) {
+        self.datePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 400, 320, 44)] ;
+        [self.datePickerToolbar setBarStyle:UIBarStyleBlackTranslucent];
+        [self.datePickerToolbar sizeToFit];
+        
+        [UIScrollView beginAnimations:nil context:NULL];
+        [UIScrollView setAnimationDuration:0.4];
+        
+        UIBarButtonItem *flexButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        
+        UIBarButtonItem *doneButton1 =[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(resignKeyboard)];               NSArray *itemsArray = [NSArray arrayWithObjects:flexButton,doneButton1, nil];
+        
+        [self.datePickerToolbar setItems:itemsArray];
+        
+        
+        [lastMaintanceDate setInputAccessoryView:self.datePickerToolbar];
+        [self.scrollView addSubview:self.datePickerToolbar];
+        [UIScrollView commitAnimations];
+    }
+}
+*/
 
+
+/*-(void)resignKeyboard {
+    
+    [self.datePickerToolbar removeFromSuperview];
+    [lastMaintanceDate resignFirstResponder];
+    ///do nescessary date calculation here
+    
+}*/
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -111,10 +146,10 @@
     int movement = (up ? movementDistance : -movementDistance);
     
     [UIView beginAnimations: @"animateTextField" context: nil];
-    [UIView setAnimationBeginsFromCurrentState: YES];
-    [UIView setAnimationDuration: movementDuration];
+    [UIScrollView setAnimationBeginsFromCurrentState: YES];
+    [UIScrollView setAnimationDuration: movementDuration];
     self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    [UIView commitAnimations];
+    [UIScrollView commitAnimations];
 }
 
 

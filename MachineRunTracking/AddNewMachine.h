@@ -12,6 +12,10 @@
 - (IBAction)save:(id)sender;
 - (IBAction)cancel:(id)sender;
 
+@property (strong,nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (nonatomic, retain) UIToolbar *datePickerToolbar;
+
+
 @property (strong,nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *codeText;
 @property (weak, nonatomic) IBOutlet UITextField *nameText;

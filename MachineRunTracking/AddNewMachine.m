@@ -86,11 +86,11 @@
         
         if (!error) {
             // Show success message
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Complete" message:@"Successfully saved the Machine" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+          //  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Complete" message:@"Successfully saved the Machine" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+           // [alert show];
             
             // Notify table view to reload the Machine from Parse cloud
-           // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
             
             // Dismiss the controller
              [self.navigationController popViewControllerAnimated:YES];

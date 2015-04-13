@@ -461,14 +461,10 @@
 		044DC1951ADBCCCB002578C2 /* Add Transactions */ = {
 			isa = PBXGroup;
 			children = (
-				044DC19D1ADBCD92002578C2 /* AddTransaction_Basic.h */,
-				044DC19E1ADBCD92002578C2 /* AddTransaction_Basic.m */,
-				044DC1A31ADBCE10002578C2 /* AddTransaction_Pre.h */,
-				044DC1A41ADBCE10002578C2 /* AddTransaction_Pre.m */,
-				044DC1A61ADBCE31002578C2 /* AddTransaction_Run.h */,
-				044DC1A71ADBCE31002578C2 /* AddTransaction_Run.m */,
-				044DC1A91ADBCE49002578C2 /* AddTransaction_Post.h */,
-				044DC1AA1ADBCE49002578C2 /* AddTransaction_Post.m */,
+				044DC1BB1ADBF7BD002578C2 /* Basic */,
+				044DC1BA1ADBF792002578C2 /* Pre */,
+				044DC1B91ADBF786002578C2 /* Run */,
+				044DC1B81ADBF77A002578C2 /* Post */,
 			);
 			name = "Add Transactions";
 			sourceTree = "<group>";
@@ -476,14 +472,74 @@
 		044DC1961ADBCCE1002578C2 /* Transaction Details */ = {
 			isa = PBXGroup;
 			children = (
+				044DC1B51ADBF734002578C2 /* Pre */,
+				044DC1B71ADBF75A002578C2 /* Post */,
+				044DC1B61ADBF752002578C2 /* Run */,
+			);
+			name = "Transaction Details";
+			sourceTree = "<group>";
+		};
+		044DC1B51ADBF734002578C2 /* Pre */ = {
+			isa = PBXGroup;
+			children = (
 				044DC1AC1ADBCE7B002578C2 /* DetailsTransaction_Pre.h */,
 				044DC1AD1ADBCE7B002578C2 /* DetailsTransaction_Pre.m */,
+			);
+			name = Pre;
+			sourceTree = "<group>";
+		};
+		044DC1B61ADBF752002578C2 /* Run */ = {
+			isa = PBXGroup;
+			children = (
 				044DC1AF1ADBCE93002578C2 /* DetailsTransaction_Run.h */,
 				044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */,
+			);
+			name = Run;
+			sourceTree = "<group>";
+		};
+		044DC1B71ADBF75A002578C2 /* Post */ = {
+			isa = PBXGroup;
+			children = (
 				044DC1B21ADBCEAF002578C2 /* DetailsTransaction_Post.h */,
 				044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */,
 			);
-			name = "Transaction Details";
+			name = Post;
+			sourceTree = "<group>";
+		};
+		044DC1B81ADBF77A002578C2 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				044DC1A91ADBCE49002578C2 /* AddTransaction_Post.h */,
+				044DC1AA1ADBCE49002578C2 /* AddTransaction_Post.m */,
+			);
+			name = Post;
+			sourceTree = "<group>";
+		};
+		044DC1B91ADBF786002578C2 /* Run */ = {
+			isa = PBXGroup;
+			children = (
+				044DC1A61ADBCE31002578C2 /* AddTransaction_Run.h */,
+				044DC1A71ADBCE31002578C2 /* AddTransaction_Run.m */,
+			);
+			name = Run;
+			sourceTree = "<group>";
+		};
+		044DC1BA1ADBF792002578C2 /* Pre */ = {
+			isa = PBXGroup;
+			children = (
+				044DC1A31ADBCE10002578C2 /* AddTransaction_Pre.h */,
+				044DC1A41ADBCE10002578C2 /* AddTransaction_Pre.m */,
+			);
+			name = Pre;
+			sourceTree = "<group>";
+		};
+		044DC1BB1ADBF7BD002578C2 /* Basic */ = {
+			isa = PBXGroup;
+			children = (
+				044DC19D1ADBCD92002578C2 /* AddTransaction_Basic.h */,
+				044DC19E1ADBCD92002578C2 /* AddTransaction_Basic.m */,
+			);
+			name = Basic;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

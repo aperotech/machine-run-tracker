@@ -31,6 +31,7 @@
 		042A8AE71AD7D70F0065816D /* AddNewMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE61AD7D70F0065816D /* AddNewMachine.m */; };
 		042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE91AD7D72A0065816D /* MachineDetails.m */; };
 		042A8AED1AD7D88F0065816D /* MachineListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AEC1AD7D88F0065816D /* MachineListCell.m */; };
+		0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */; };
 		04461CAA1AD3913700CBC80A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CA91AD3913700CBC80A /* main.m */; };
 		04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAC1AD3913700CBC80A /* AppDelegate.m */; };
 		04461CB01AD3913700CBC80A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAF1AD3913700CBC80A /* ViewController.m */; };
@@ -98,6 +99,8 @@
 		042A8AE91AD7D72A0065816D /* MachineDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineDetails.m; sourceTree = "<group>"; };
 		042A8AEB1AD7D88F0065816D /* MachineListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineListCell.h; sourceTree = "<group>"; };
 		042A8AEC1AD7D88F0065816D /* MachineListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineListCell.m; sourceTree = "<group>"; };
+		0445C60F1ADD2FEA001434B3 /* AddTransaction_PreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_PreCell.h; sourceTree = "<group>"; };
+		0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_PreCell.m; sourceTree = "<group>"; };
 		04461CA41AD3913700CBC80A /* MachineRunTracking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MachineRunTracking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04461CA81AD3913700CBC80A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04461CA91AD3913700CBC80A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -529,6 +532,8 @@
 			children = (
 				044DC1A31ADBCE10002578C2 /* AddTransaction_Pre.h */,
 				044DC1A41ADBCE10002578C2 /* AddTransaction_Pre.m */,
+				0445C60F1ADD2FEA001434B3 /* AddTransaction_PreCell.h */,
+				0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */,
 			);
 			name = Pre;
 			sourceTree = "<group>";
@@ -645,6 +650,7 @@
 				044DC18E1ADB82A6002578C2 /* addNewParameter.m in Sources */,
 				04461D181AD3AEB100CBC80A /* MainMenu.m in Sources */,
 				042A8AED1AD7D88F0065816D /* MachineListCell.m in Sources */,
+				0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */,
 				04461CEF1AD3A97B00CBC80A /* AddUser.m in Sources */,
 				044DC1861ADB822A002578C2 /* ParameterList.m in Sources */,
 				042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */,

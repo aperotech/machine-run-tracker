@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
+@interface AddTransaction_Basic : UIViewController<UITextFieldDelegate>
+@property(strong,nonatomic)PFObject *BasicTransactionPF;
 
-@interface AddTransaction_Basic : UIViewController
-
+@property(strong,nonatomic)IBOutlet UITextField *Run_NoText;
+@property(strong,nonatomic)IBOutlet UITextField *Machine_NameText;
+@property(strong,nonatomic)IBOutlet UITextField *Run_DateText;
+@property (strong,nonatomic)IBOutlet UITextField *Run_DurationText;
+-(IBAction)SaveAndForword:(id)sender;
+-(IBAction)Cancel:(id)sender;
 @end

@@ -13,7 +13,7 @@
 @end
 
 @implementation DetailsTransaction_Pre
-
+@synthesize DetialsTransaction_PrePF;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.

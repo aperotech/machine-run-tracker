@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <Parse/Parse.h>
 @interface DetailsTransaction_Pre : UIViewController
-
+@property(strong,nonatomic)PFObject *DetialsTransaction_PrePF;
 @end

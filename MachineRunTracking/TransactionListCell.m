@@ -9,7 +9,7 @@
 #import "TransactionListCell.h"
 
 @implementation TransactionListCell
-
+@synthesize Run_Date,Run_No,Machine_Name;
 - (void)awakeFromNib {
     // Initialization code
 }

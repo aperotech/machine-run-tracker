@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface TransactionListCell : UITableViewCell
-
+@property(strong,nonatomic) IBOutlet UILabel *Run_No;
+@property(strong,nonatomic) IBOutlet UILabel *Machine_Name;
+@property(strong,nonatomic) IBOutlet UILabel *Run_Date;
 @end

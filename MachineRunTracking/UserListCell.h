@@ -16,5 +16,7 @@
 @property (strong,nonatomic)IBOutlet UILabel *userTypeLabel;
 @property (strong,nonatomic)IBOutlet UILabel *userEmailLabel;
 
+//@property (strong, nonatomic) UIView *divider1;
+//@property (strong, nonatomic) UIView *divider2;
 
 @end

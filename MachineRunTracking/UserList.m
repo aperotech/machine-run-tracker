@@ -103,6 +103,7 @@
     static NSString *CellIdentifier = @"UserListCellIdentifier";
  
      UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    self.tableView.separatorColor = [UIColor lightGrayColor];
     if (cell == nil) {
         cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
@@ -188,6 +189,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    
     if ([segue.identifier isEqualToString:@"userListTouserDetailsSegue"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         PFObject *object = [self.objects objectAtIndex:indexPath.row];

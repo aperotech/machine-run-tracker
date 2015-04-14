@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface AddTransaction_Post : UIViewController
+@property (strong,nonatomic)IBOutlet UISegmentedControl *segmentControl;
 
+- (IBAction)segmentedControlIndexChanged;
 @end

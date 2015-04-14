@@ -18,7 +18,29 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
-
+- (IBAction)Cancel:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+#pragma Segemented controll
+-(IBAction) segmentedControlIndexChanged
+{
+    switch (self.segmentControl.selectedSegmentIndex)
+    {
+        case 0:
+            
+            NSLog(@"Segment Pre selected.");
+            break;
+        case 1:
+            NSLog(@"Segment Run selected.");
+            break;
+            
+        case 2:
+              [self performSegueWithIdentifier:@"PreToPostExtractionSegue" sender:self];
+            NSLog(@"Segment Post selected.");
+        default:
+            break;
+    }
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

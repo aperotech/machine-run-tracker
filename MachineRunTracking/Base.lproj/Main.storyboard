@@ -240,7 +240,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="TransactionListCellIdentifier" id="lPH-E9-euK">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="TransactionListCellIdentifier" id="lPH-E9-euK" customClass="TransactionListCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lPH-E9-euK" id="LSR-ru-vLY">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -274,6 +274,9 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="Machine_Name" destination="iPz-qY-ONX" id="roR-ZC-NC1"/>
+                                    <outlet property="Run_Date" destination="5yG-0t-VAg" id="rd1-n0-cz3"/>
+                                    <outlet property="Run_No" destination="bpZ-07-dZv" id="Frd-oS-QmH"/>
                                     <segue destination="LMG-fb-Gqe" kind="show" identifier="TransactionListToDetailsPreSegue" id="imj-h8-t5C"/>
                                 </connections>
                             </tableViewCell>
@@ -286,7 +289,7 @@
                     <navigationItem key="navigationItem" title="Transaction List" id="0CH-il-c2M">
                         <barButtonItem key="rightBarButtonItem" title="Item" systemItem="add" id="uaG-en-MaT">
                             <connections>
-                                <segue destination="lMg-ym-jsS" kind="show" id="bLr-ZS-mVP"/>
+                                <segue destination="lMg-ym-jsS" kind="show" identifier="TransactionListToBasicTransactionDetailsSegue" id="bLr-ZS-mVP"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -881,12 +884,8 @@
                                     </textField>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="c1N-dY-ucZ" secondAttribute="centerY" constant="185" id="08p-b6-wUr"/>
                                     <constraint firstItem="LFk-o4-bgk" firstAttribute="top" secondItem="YBN-mb-4Di" secondAttribute="top" constant="19" id="Bq3-US-sLk"/>
-                                    <constraint firstAttribute="centerY" secondItem="vBo-TB-Sjy" secondAttribute="centerY" constant="98" id="LZ5-wg-zGf"/>
                                     <constraint firstAttribute="centerX" secondItem="c1N-dY-ucZ" secondAttribute="centerX" id="M2Y-vw-EmP"/>
-                                    <constraint firstAttribute="centerY" secondItem="LFk-o4-bgk" secondAttribute="centerY" constant="230" id="MjM-TY-SnH"/>
-                                    <constraint firstAttribute="centerY" secondItem="H4H-w7-b3Y" secondAttribute="centerY" constant="142" id="Oos-Jz-9B5"/>
                                     <constraint firstAttribute="centerX" secondItem="LFk-o4-bgk" secondAttribute="centerX" id="YNr-s5-X2q"/>
                                     <constraint firstAttribute="height" constant="528" id="ZBZ-tl-G7I"/>
                                     <constraint firstAttribute="centerX" secondItem="vBo-TB-Sjy" secondAttribute="centerX" id="bQf-Qt-UcQ"/>
@@ -907,13 +906,24 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Basic Transaction Details" id="FQf-KO-McE">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fOh-yr-5pm"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fOh-yr-5pm">
+                            <connections>
+                                <action selector="Cancel:" destination="lMg-ym-jsS" id="405-RM-fyJ"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Forward" id="VQc-m2-lYO">
                             <connections>
-                                <segue destination="fwB-hf-z9B" kind="show" identifier="BasicTransactionToPreExtrationSegue" id="8b2-Dv-6mW"/>
+                                <action selector="SaveAndForword:" destination="lMg-ym-jsS" id="7B7-hA-8na"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="Machine_NameText" destination="c1N-dY-ucZ" id="Sjy-VU-hK3"/>
+                        <outlet property="Run_DateText" destination="H4H-w7-b3Y" id="eph-GZ-LSw"/>
+                        <outlet property="Run_DurationText" destination="vBo-TB-Sjy" id="bjj-Tp-nbB"/>
+                        <outlet property="Run_NoText" destination="LFk-o4-bgk" id="Hgu-P3-WYz"/>
+                        <segue destination="fwB-hf-z9B" kind="show" identifier="BasicTransactionToPreExtrationSegue" id="1mT-dU-6gB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IYr-Vz-oZB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -978,6 +988,9 @@
                                     <segment title="Run"/>
                                     <segment title="Post"/>
                                 </segments>
+                                <connections>
+                                    <action selector="segmentedControlIndexChanged" destination="n7M-xh-KKU" eventType="touchUpInside" id="w7p-7K-YTY"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -992,9 +1005,16 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Process Run" id="YSN-r4-yRh">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="dOp-fc-beo"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="dOp-fc-beo">
+                            <connections>
+                                <action selector="Cancel:" destination="n7M-xh-KKU" id="g0F-65-n7P"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="5hY-B5-bwV"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="segmentControl" destination="R2C-iV-vFJ" id="099-mA-bKC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NtZ-Dg-fEV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1025,7 +1045,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kgh-j5-K94" id="EU4-9m-l92">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Parameter 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UJv-ex-Iij">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Parameter 2" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UJv-ex-Iij">
                                                     <rect key="frame" x="150" y="12" width="300" height="26"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="300" id="y3s-Sw-sh4"/>
@@ -1059,6 +1079,9 @@
                                     <segment title="Run"/>
                                     <segment title="Post"/>
                                 </segments>
+                                <connections>
+                                    <action selector="segmentedControlIndexChanged" destination="0DX-Le-gpT" eventType="touchUpInside" id="emm-ag-cwI"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1073,13 +1096,20 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Post-Extraction" id="eHg-Js-ebs">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OPk-Yi-sgg"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OPk-Yi-sgg">
+                            <connections>
+                                <action selector="Cancel:" destination="0DX-Le-gpT" id="wjb-F3-scm"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="oyw-7c-KUj"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="segmentControl" destination="1Gl-1F-VOB" id="jiM-LR-mRe"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xkg-TQ-gG2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1042" y="3842"/>
+            <point key="canvasLocation" x="-1050" y="3783"/>
         </scene>
         <!--Pre-Extraction-->
         <scene sceneID="QNM-qD-3iZ">
@@ -1100,13 +1130,13 @@
                                     <constraint firstAttribute="height" constant="450" id="ZeD-UW-WbI"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Ok1-yy-XQA">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Pre_ExtractionCellIdentifier" id="Ok1-yy-XQA">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ok1-yy-XQA" id="AWl-IH-H5c">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Parameter 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NZL-Lc-pJM">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Parameter 1 Pre" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NZL-Lc-pJM">
                                                     <rect key="frame" x="150" y="10" width="300" height="26"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="300" id="Yuv-8m-IF3"/>
@@ -1128,6 +1158,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="fwB-hf-z9B" id="iam-mb-h4x"/>
+                                    <outlet property="delegate" destination="fwB-hf-z9B" id="3b2-Pt-y00"/>
+                                </connections>
                             </tableView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="yNQ-YH-Rz3">
                                 <rect key="frame" x="155" y="531" width="300" height="29"/>
@@ -1141,6 +1175,7 @@
                                     <segment title="Post"/>
                                 </segments>
                                 <connections>
+                                    <action selector="segmentedControlIndexChanged" destination="fwB-hf-z9B" eventType="touchUpInside" id="Jhe-MG-dT7"/>
                                     <segue destination="n7M-xh-KKU" kind="show" identifier="PreToRunExtractionSegue" id="lfz-cb-fMZ"/>
                                 </connections>
                             </segmentedControl>
@@ -1160,6 +1195,7 @@
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fL5-3G-SyQ"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="segmentControl" destination="yNQ-YH-Rz3" id="haM-zY-QDv"/>
                         <segue destination="0DX-Le-gpT" kind="show" identifier="PreToPostExtractionSegue" id="JT7-pN-bEf"/>
                     </connections>
                 </viewController>
@@ -1179,7 +1215,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AUs-Sm-6TO">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUs-Sm-6TO">
                                 <rect key="frame" x="0.0" y="64" width="600" height="522"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Enter User Type " minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z2A-t6-2jz">
@@ -1319,7 +1355,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AYT-Ql-C5a">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYT-Ql-C5a">
                                 <rect key="frame" x="0.0" y="64" width="600" height="528"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="User Type" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="adq-E0-giC">
@@ -2072,7 +2108,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8VF-Yw-9gg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="164" y="-194"/>
+            <point key="canvasLocation" x="153" y="-137"/>
         </scene>
         <!--Machine Details-->
         <scene sceneID="dvx-g6-8RB">
@@ -2086,7 +2122,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vHP-Ui-9TI">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vHP-Ui-9TI">
                                 <rect key="frame" x="0.0" y="64" width="600" height="526"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Code" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vvc-tP-R9L">

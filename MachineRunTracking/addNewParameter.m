@@ -22,7 +22,7 @@
     typeText.delegate=self;
     unitsText.delegate=self;
     // Do any additional setup after loading the view.
-    self.myArray = [NSArray arrayWithObjects:@"Pre-Extraction",@"Process run",@"Post-Extraction",nil];
+    self.myArray = [NSArray arrayWithObjects:@"Pre_Extraction",@"Process_run",@"Post_Extraction",nil];
     self.picker.dataSource=self;
     self.picker.delegate=self;
     [self loadItemData];
@@ -102,7 +102,7 @@
     [parameterObj setObject:descriptionText.text forKey:@"Description"];
     [parameterObj setObject:typeText.text forKey:@"Type"];
     [parameterObj setObject:unitsText.text forKey:@"Units"];
-   
+  //  parameterObj[@"New Parameter"]=@"The New String";
     
     
     // Upload Machine to Parse

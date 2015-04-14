@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface AddTransaction_Pre : UIViewController
-
+//@property(strong,nonatomic)IBOutlet UITableView *tableView;
+@property (strong,nonatomic)IBOutlet UISegmentedControl *segmentControl;
+@property(nonatomic)NSInteger ObjectCount;
+- (IBAction)segmentedControlIndexChanged;
 @end

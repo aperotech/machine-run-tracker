@@ -9,7 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface AddTransaction_Post : UIViewController
-@property (strong,nonatomic)IBOutlet UISegmentedControl *segmentControl;
+{
+    BOOL Pre_ExtractionPostFlag;
+    BOOL Post_ExtractionFlag;
+}
+@property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
+@property (strong,nonatomic) NSArray *ViewControllers;
 
-- (IBAction)segmentedControlIndexChanged;
+
+
 @end

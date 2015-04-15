@@ -31,6 +31,9 @@
 		042A8AE71AD7D70F0065816D /* AddNewMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE61AD7D70F0065816D /* AddNewMachine.m */; };
 		042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE91AD7D72A0065816D /* MachineDetails.m */; };
 		042A8AED1AD7D88F0065816D /* MachineListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AEC1AD7D88F0065816D /* MachineListCell.m */; };
+		044068F71ADE380800F2FF6F /* SegmentedLocationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 044068F61ADE380800F2FF6F /* SegmentedLocationVC.m */; };
+		044068FE1ADE7DC200F2FF6F /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044068FD1ADE7DC200F2FF6F /* ContainerViewController.m */; };
+		044069011ADE83C400F2FF6F /* EmptySegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 044069001ADE83C400F2FF6F /* EmptySegue.m */; };
 		0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */; };
 		04461CAA1AD3913700CBC80A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CA91AD3913700CBC80A /* main.m */; };
 		04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAC1AD3913700CBC80A /* AppDelegate.m */; };
@@ -99,6 +102,12 @@
 		042A8AE91AD7D72A0065816D /* MachineDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineDetails.m; sourceTree = "<group>"; };
 		042A8AEB1AD7D88F0065816D /* MachineListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineListCell.h; sourceTree = "<group>"; };
 		042A8AEC1AD7D88F0065816D /* MachineListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineListCell.m; sourceTree = "<group>"; };
+		044068F51ADE380800F2FF6F /* SegmentedLocationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedLocationVC.h; sourceTree = "<group>"; };
+		044068F61ADE380800F2FF6F /* SegmentedLocationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedLocationVC.m; sourceTree = "<group>"; };
+		044068FC1ADE7DC200F2FF6F /* ContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerViewController.h; sourceTree = "<group>"; };
+		044068FD1ADE7DC200F2FF6F /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerViewController.m; sourceTree = "<group>"; };
+		044068FF1ADE83C400F2FF6F /* EmptySegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptySegue.h; sourceTree = "<group>"; };
+		044069001ADE83C400F2FF6F /* EmptySegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptySegue.m; sourceTree = "<group>"; };
 		0445C60F1ADD2FEA001434B3 /* AddTransaction_PreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_PreCell.h; sourceTree = "<group>"; };
 		0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_PreCell.m; sourceTree = "<group>"; };
 		04461CA41AD3913700CBC80A /* MachineRunTracking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MachineRunTracking.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -257,6 +266,19 @@
 				042A8AE91AD7D72A0065816D /* MachineDetails.m */,
 			);
 			name = "Machine Details";
+			sourceTree = "<group>";
+		};
+		044069021ADE89A100F2FF6F /* Segment Control */ = {
+			isa = PBXGroup;
+			children = (
+				044068F51ADE380800F2FF6F /* SegmentedLocationVC.h */,
+				044068F61ADE380800F2FF6F /* SegmentedLocationVC.m */,
+				044068FC1ADE7DC200F2FF6F /* ContainerViewController.h */,
+				044068FD1ADE7DC200F2FF6F /* ContainerViewController.m */,
+				044068FF1ADE83C400F2FF6F /* EmptySegue.h */,
+				044069001ADE83C400F2FF6F /* EmptySegue.m */,
+			);
+			name = "Segment Control";
 			sourceTree = "<group>";
 		};
 		04461C9B1AD3913700CBC80A = {
@@ -468,6 +490,7 @@
 				044DC1BA1ADBF792002578C2 /* Pre */,
 				044DC1B91ADBF786002578C2 /* Run */,
 				044DC1B81ADBF77A002578C2 /* Post */,
+				044069021ADE89A100F2FF6F /* Segment Control */,
 			);
 			name = "Add Transactions";
 			sourceTree = "<group>";
@@ -648,6 +671,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				044DC18E1ADB82A6002578C2 /* addNewParameter.m in Sources */,
+				044068FE1ADE7DC200F2FF6F /* ContainerViewController.m in Sources */,
 				04461D181AD3AEB100CBC80A /* MainMenu.m in Sources */,
 				042A8AED1AD7D88F0065816D /* MachineListCell.m in Sources */,
 				0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */,
@@ -661,11 +685,13 @@
 				04461CF21AD3A9C500CBC80A /* UserList.m in Sources */,
 				044DC1B41ADBCEAF002578C2 /* DetailsTransaction_Post.m in Sources */,
 				042A8AE41AD7D6E60065816D /* MachineLIst.m in Sources */,
+				044068F71ADE380800F2FF6F /* SegmentedLocationVC.m in Sources */,
 				044DC19C1ADBCD57002578C2 /* TransactionListCell.m in Sources */,
 				044DC1AE1ADBCE7B002578C2 /* DetailsTransaction_Pre.m in Sources */,
 				04461D1C1AD3B1EF00CBC80A /* UserListCell.m in Sources */,
 				04461CE91AD3A8F100CBC80A /* UserDetails.m in Sources */,
 				044DC1921ADB82CF002578C2 /* parameterDetails.m in Sources */,
+				044069011ADE83C400F2FF6F /* EmptySegue.m in Sources */,
 				042A8AE71AD7D70F0065816D /* AddNewMachine.m in Sources */,
 				044DC1AB1ADBCE49002578C2 /* AddTransaction_Post.m in Sources */,
 				044DC1A51ADBCE10002578C2 /* AddTransaction_Pre.m in Sources */,

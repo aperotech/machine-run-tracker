@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface AddTransaction_Run : UIViewController
-@property (strong,nonatomic)IBOutlet UISegmentedControl *segmentControl;
+@property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
+@property (strong,nonatomic) NSArray *ViewControllers;
 
-- (IBAction)segmentedControlIndexChanged;
+
+
 
 @end

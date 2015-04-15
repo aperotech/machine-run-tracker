@@ -41,7 +41,7 @@
                 NSLog(@"None found");
             }
             else {
-                NSLog(@"objectArray %@",objects);
+             //   NSLog(@"objectArray %@",objects);
             }
             
         }
@@ -84,7 +84,7 @@
 
 - (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl
 {
-    UIViewController *vc;
+   // UIViewController *vc;
     //NSLog(@"index: %ld", self.segmentedControl.selectedSegmentIndex);
     switch (self.segmentedControl.selectedSegmentIndex)
     {

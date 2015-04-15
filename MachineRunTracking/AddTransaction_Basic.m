@@ -7,7 +7,7 @@
 //
 
 #import "AddTransaction_Basic.h"
-#import "AddTransaction_Pre.h"
+#import "SegmentedLocationVC.h"
 @interface AddTransaction_Basic ()
 
 @end
@@ -25,7 +25,8 @@
 }
 
 - (IBAction)SaveAndForword:(id)sender {
-    NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    [self performSegueWithIdentifier:@"BasicTRansactionDetailsToSegmentedLocationSegue" sender:sender];
+   /* NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *Run_Date = [Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -70,7 +71,7 @@
         }
         
     }];
-    }
+    }*/
 }
 
 - (IBAction)Cancel:(id)sender {
@@ -129,13 +130,13 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"BasicTransactionToPreExtrationSegue"]) {
+  //  if ([segue.identifier isEqualToString:@"BasicTRansactionDetailsToSegmentedLocationSegue"]) {
        // NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
        // PFObject *object = [self.objects objectAtIndex:indexPath.row];
         
-        AddTransaction_Pre *AddTransaction_PreObj = (AddTransaction_Pre *)segue.destinationViewController;
+      //  SegmentedLocationVC *SegmentedLocationVCObj = (SegmentedLocationVC *)segue.destinationViewController;
         //AddTransaction_PreObj.BasicTransactionPF = object;
-    }
+  //  }
 
     
     // Get the new view controller using [segue destinationViewController].

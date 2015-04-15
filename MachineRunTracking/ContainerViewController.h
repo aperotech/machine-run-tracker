@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ContainerViewController : UIViewController
--(void)indexDidChangeForSegmentedControl;
+
 - (void)swapViewControllers;
 @end

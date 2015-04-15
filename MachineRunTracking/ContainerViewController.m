@@ -74,7 +74,7 @@
     }
     else if ([segue.identifier isEqualToString:SegueIdentifierPost])
         {
-            [self swapFromViewController:[self.childViewControllers objectAtIndex:2] toViewController:self.AddTransaction_Post];
+            [self swapFromViewController:[self.childViewControllers objectAtIndex:0] toViewController:self.AddTransaction_Post];
         }
     
 }
@@ -112,12 +112,12 @@
     }
     
     if (([self.currentSegueIdentifier isEqualToString:SegueIdentifierRun]) && self.AddTransaction_Run) {
-        [self swapFromViewController:self.AddTransaction_Pre toViewController:self.AddTransaction_Run];
+        [self swapFromViewController:self.AddTransaction_Post toViewController:self.AddTransaction_Run];
         return;
     }
     
     if (([self.currentSegueIdentifier isEqualToString:SegueIdentifierPost]) && self.AddTransaction_Post) {
-        [self swapFromViewController:self.AddTransaction_Run toViewController:self.AddTransaction_Post];
+        [self swapFromViewController:self.AddTransaction_Post toViewController:self.AddTransaction_Post];
         return;
     }
     

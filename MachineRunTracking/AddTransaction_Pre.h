@@ -9,8 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface AddTransaction_Pre : UIViewController
+{
+    BOOL Pre_extractionFlag;
+}
 //@property(strong,nonatomic)IBOutlet UITableView *tableView;
-@property (strong,nonatomic)IBOutlet UISegmentedControl *segmentControl;
+@property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
+@property (strong,nonatomic) NSArray *ViewControllers;
+
 @property(nonatomic)NSInteger ObjectCount;
-- (IBAction)segmentedControlIndexChanged;
+
 @end

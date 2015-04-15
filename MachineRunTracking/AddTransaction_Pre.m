@@ -8,6 +8,8 @@
 
 #import "AddTransaction_Pre.h"
 //#import "AddTransaction_PreCell.h"
+#import "AddTransaction_Run.h"
+#import "AddTransaction_Post.h"
 #import <Parse/Parse.h>
 @interface AddTransaction_Pre ()
 
@@ -17,6 +19,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+   // [self setupViewControllers];
+  [self setupUI];
+    self.navigationController.navigationBar.hidden=NO;
+    self.navigationController.navigationItem.title=@"Pre";
+    Pre_extractionFlag=0;
+     NSLog(@"AddTransaction_Pre Loaded!");
     // Do any additional setup after loading the view.
    // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
     
@@ -39,6 +47,9 @@
         }
     }];
 
+}
+- (IBAction)Cancel:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -64,25 +75,58 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 #pragma Segemented controll
--(IBAction) segmentedControlIndexChanged
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    switch (self.segmentControl.selectedSegmentIndex)
+    return YES;
+}
+
+- (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl
+{
+    UIViewController *vc;
+    //NSLog(@"index: %ld", self.segmentedControl.selectedSegmentIndex);
+    switch (self.segmentedControl.selectedSegmentIndex)
     {
         case 0:
-            
+          //   vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Pre_ID"];
+          //  [self presentViewController:vc animated:NO completion:nil];
             NSLog(@"Segment Pre selected.");
+            //[self performSegueWithIdentifier:@"segmentedLocationToPreExtractionSegue" sender:segmentedControl];
+            // BasicTransactionToPreExtrationSegue
+            //segmentedLocationToPreExtractionSegue
             break;
         case 1:
+            // vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Run_ID"];
+            //[self presentViewController:vc animated:NO completion:nil];
             NSLog(@"Segment Run selected.");
+           [self performSegueWithIdentifier:@"PreToRunExtractionSegue"  sender:segmentedControl ];
+            // PreToRunExtractionSegue
+            //segmentedLocationToRunExtractionSegue
             break;
             
-            case 2:
+        case 2:
+            // vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Post_ID"];
+            //[self presentViewController:vc animated:NO completion:nil];
             NSLog(@"Segment Post selected.");
-        default: 
-            break; 
-    } 
+            Pre_extractionFlag=1;
+            //AddTransaction_Post addTransaction_PostObj=[[AddTransaction_Post alloc]init];
+           // addTransaction_PostObj.Pre_
+            [self performSegueWithIdentifier:@"PreToPostExtractionSegue" sender:segmentedControl];
+            
+            //PreToPostExtractionSegue
+            //segmentedLocationToPostExtractionSegue
+        default:
+            break;
+    }
+    
 }
+- (void)setupUI
+{
+    [self.segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
+}
+
+
 /*
 #pragma mark - Navigation
 

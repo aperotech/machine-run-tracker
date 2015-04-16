@@ -946,7 +946,10 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="WGR-vO-e81">
                                 <rect key="frame" x="150" y="81" width="300" height="29"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="4sO-Wi-nRw"/>
+                                    <constraint firstAttribute="height" constant="28" id="4sO-Wi-nRw">
+                                        <variation key="widthClass=compact" constant="21"/>
+                                        <variation key="heightClass=regular-widthClass=compact" constant="21"/>
+                                    </constraint>
                                     <constraint firstAttribute="width" constant="300" id="hII-6K-T47"/>
                                 </constraints>
                                 <segments>
@@ -954,8 +957,10 @@
                                     <segment title="Run"/>
                                     <segment title="Post"/>
                                 </segments>
+                                <variation key="widthClass=compact"/>
+                                <variation key="heightClass=regular-widthClass=compact"/>
                                 <connections>
-                                    <action selector="indexDidChangeForSegmentedControl:" destination="xB1-kT-plu" eventType="touchUpInside" id="nhh-gT-sHC"/>
+                                    <action selector="indexDidChangeForSegmentedControl:" destination="xB1-kT-plu" eventType="valueChanged" id="PM1-je-4UC"/>
                                 </connections>
                             </segmentedControl>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htP-nU-qQk">
@@ -963,9 +968,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="487" id="1Mf-rW-HaB"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="VAZ-AM-43Z" kind="embed" identifier="SegementedToViewControllerSegue" id="URC-Fa-Gks"/>
-                                </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1076,7 +1078,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NtZ-Dg-fEV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-584" y="4412"/>
+            <point key="canvasLocation" x="-1230" y="3600"/>
         </scene>
         <!--Post-Extraction-->
         <scene sceneID="EgY-9o-wZz">
@@ -1090,7 +1092,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="xGE-ek-t2H">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="xGE-ek-t2H">
                                 <rect key="frame" x="0.0" y="113" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -1098,34 +1100,18 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="487" id="Ceu-32-YhK"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="kgh-j5-K94">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Post_ExtractionCellIdentifier" id="kgh-j5-K94">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kgh-j5-K94" id="EU4-9m-l92">
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Parameter 2" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UJv-ex-Iij">
-                                                    <rect key="frame" x="150" y="12" width="300" height="26"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="300" id="8Vk-Tg-Esk"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                    <variation key="widthClass=compact">
-                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
-                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    </variation>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="centerX" secondItem="UJv-ex-Iij" secondAttribute="centerX" id="LEt-WE-DJM"/>
-                                                <constraint firstAttribute="centerY" secondItem="UJv-ex-Iij" secondAttribute="centerY" constant="-3" id="xur-uI-F9o"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="0DX-Le-gpT" id="5Cb-uz-kaB"/>
+                                    <outlet property="delegate" destination="0DX-Le-gpT" id="A2T-21-dwB"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1146,7 +1132,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xkg-TQ-gG2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1241" y="4412"/>
+            <point key="canvasLocation" x="-549" y="3600"/>
         </scene>
         <!--Pre-Extraction-->
         <scene sceneID="QNM-qD-3iZ">
@@ -1172,26 +1158,6 @@
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ok1-yy-XQA" id="AWl-IH-H5c">
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Parameter 1 Pre" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NZL-Lc-pJM">
-                                                    <rect key="frame" x="150" y="10" width="300" height="26"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="300" id="A1E-Q4-5IT"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                    <variation key="widthClass=compact">
-                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
-                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    </variation>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="centerX" secondItem="NZL-Lc-pJM" secondAttribute="centerX" id="IDy-jU-hTe"/>
-                                                <constraint firstAttribute="centerY" secondItem="NZL-Lc-pJM" secondAttribute="centerY" constant="-1" id="oNP-gS-B04"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
@@ -1218,7 +1184,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BTU-s6-Re3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1887" y="4412"/>
+            <point key="canvasLocation" x="-1872" y="3600"/>
         </scene>
         <!--Add User-->
         <scene sceneID="QQr-qo-y8q">
@@ -2457,20 +2423,15 @@
                         <viewControllerLayoutGuide type="bottom" id="tvN-kB-KHP"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="aWn-FK-fWf">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
-                    <connections>
-                        <segue destination="fwB-hf-z9B" kind="custom" identifier="SegmentedControllToPreSegue" customClass="EmptySegue" id="LNQ-dh-5jl"/>
-                        <segue destination="n7M-xh-KKU" kind="custom" identifier="SegementedControllToPostSegue" customClass="EmptySegue" id="wqJ-KO-Q57"/>
-                        <segue destination="0DX-Le-gpT" kind="custom" identifier="SegementedControllToRunSegue" customClass="EmptySegue" id="2DP-Vf-M9f"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BMd-t3-E5V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1241" y="3637.5"/>
+            <point key="canvasLocation" x="-605" y="2887"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

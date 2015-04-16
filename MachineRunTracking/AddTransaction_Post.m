@@ -7,77 +7,102 @@
 //
 
 #import "AddTransaction_Post.h"
-
+#import <Parse/Parse.h>
 @interface AddTransaction_Post ()
 
 @end
 
 @implementation AddTransaction_Post
-
+@synthesize Post_ExtractionLabel;
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.navigationController.navigationBar.hidden=NO;
-    self.navigationController.navigationItem.title=@"Post";
-    [self setupUI];
-     NSLog(@"AddTransaction_POst Loaded!");
+    // [self setupViewControllers];
+    
+    self.navigationController.navigationBar.hidden=NO;
+    self.navigationController.navigationItem.title=@"Pre";
+   
+    NSLog(@"AddTransaction_post Loaded!");
     // Do any additional setup after loading the view.
+    // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Parameters"];
+    [query whereKey:@"Type" equalTo:@"Post_Extraction"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        NSLog(@"all types: %ld",objects.count);
+        self.ObjectCount=objects.count;
+        if(error){
+            NSLog(@"Error!");
+        }
+        else {
+            if (objects.count == 0) {
+                NSLog(@"None found");
+            }
+            else {
+                   NSLog(@"objectArray %@",objects);
+            }
+            
+        }
+    }];
+    
 }
 - (IBAction)Cancel:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-#pragma Segemented controll
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return YES;
+    return 1;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.ObjectCount;
 }
 
-- (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl
-{
-  //  UIViewController *vc;
-    //NSLog(@"index: %ld", self.segmentedControl.selectedSegmentIndex);
-    switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 0:
-            if (Pre_ExtractionPostFlag==0) {
-                 [self.navigationController popViewControllerAnimated:YES];
-               // vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Pre_ID"];
-                 // [self presentViewController:vc animated:NO completion:nil];
-            } else {
-               //  [self.navigationController popViewControllerAnimated:YES];
-            }
-            NSLog(@"Segment Pre selected.");
-          // vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Pre_ID"];
-          //  [self presentViewController:vc animated:NO completion:nil];
-            //  [self performSegueWithIdentifier:@"segmentedLocationToPreExtractionSegue" sender:segmentedControl];
-            // BasicTransactionToPreExtrationSegue
-            //segmentedLocationToPreExtractionSegue
-            break;
-        case 1:
-           //  vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Run_ID"];
-           // [self presentViewController:vc animated:NO completion:nil];
-             [self.navigationController popViewControllerAnimated:YES];
-            NSLog(@"Segment Run selected.");
-           // [self performSegueWithIdentifier:@"segmentedLocationToRunExtractionSegue" sender:segmentedControl];
-            // PreToRunExtractionSegue
-            //segmentedLocationToRunExtractionSegue
-            break;
-            
-        case 2:
-           //  vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Post_ID"];
-          //  [self presentViewController:vc animated:NO completion:nil];
-            NSLog(@"Segment Post selected.");
-           // [self performSegueWithIdentifier:@"segmentedLocationToPostExtractionSegue" sender:segmentedControl];
-            //PreToPostExtractionSegue
-            //segmentedLocationToPostExtractionSegue
-        default:
-            break;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *simpleTableIdentifier = @"Post_ExtractionCellIdentifier";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    if (cell != nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        // cell.p_1Text.text = @"New Parameter";
+        UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(150,12,300,26)];
+        valueTextField.tag = indexPath.row;
+        [valueTextField borderStyle];
+        valueTextField.backgroundColor =[UIColor grayColor];
+        valueTextField.delegate = self;
+        valueTextField.placeholder=@"Parameters";
+        [cell.contentView addSubview:valueTextField];
+        // [valueTextField release];
+        // cell.
     }
+    // cell.p_1Text.text = @"New Parameter";
+    /* for (int i=0; i<self.ObjectCount;i++) {
+     if (indexPath.row == i) {
+     
+     UITextField *parameterTextField = (UITextField *)[cell viewWithTag:i];
+     parameterTextField.placeholder = @"Parameter";
+     }
+     
+     }*/
+    return cell;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    // NSLog(@"text Field index path %ld ,%@ ",indexPath.row,cell);
+}
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
+    UITableView *table = (UITableView *)[[cell superview] superview];
+    NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
+    
+    
+    NSLog(@"Row %ld just finished editing with the value %@  tag is %ld",textFieldIndexPath.row,textField.text ,textField.tag);
     
 }
-- (void)setupUI
-{
-    [self.segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
-}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

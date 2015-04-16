@@ -13,7 +13,7 @@
 @end
 
 @implementation AddTransaction_Run
-
+@synthesize Run_PreocessLabel;
 - (void)viewDidLoad {
     [super viewDidLoad];
      self.navigationController.navigationBar.hidden=NO;

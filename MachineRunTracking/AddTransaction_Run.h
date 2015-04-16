@@ -12,7 +12,7 @@
 @property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
 @property (strong,nonatomic) NSArray *ViewControllers;
 
-
+@property (strong,nonatomic) IBOutlet UILabel *Run_PreocessLabel;
 
 
 @end

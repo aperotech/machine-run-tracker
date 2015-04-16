@@ -8,19 +8,19 @@
 
 #import "AddTransaction_Pre.h"
 //#import "AddTransaction_PreCell.h"
-#import "AddTransaction_Run.h"
-#import "AddTransaction_Post.h"
+//#import "AddTransaction_Run.h"
+//#import "AddTransaction_Post.h"
 #import <Parse/Parse.h>
 @interface AddTransaction_Pre ()
 
 @end
 
 @implementation AddTransaction_Pre
-
+@synthesize Pre_ExtractionLabel;
 - (void)viewDidLoad {
     [super viewDidLoad];
    // [self setupViewControllers];
-  [self setupUI];
+  
     self.navigationController.navigationBar.hidden=NO;
     self.navigationController.navigationItem.title=@"Pre";
     Pre_extractionFlag=0;
@@ -29,7 +29,7 @@
    // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
     
     PFQuery *query = [PFQuery queryWithClassName:@"Parameters"];
-    [query whereKey:@"Type" equalTo:@"Post_Extraction"];
+    [query whereKey:@"Type" equalTo:@"Pre_Extraction"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSLog(@"all types: %ld",objects.count);
         self.ObjectCount=objects.count;
@@ -64,66 +64,49 @@
     static NSString *simpleTableIdentifier = @"Pre_ExtractionCellIdentifier";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    if (cell == nil) {
+    if (cell != nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+       // cell.p_1Text.text = @"New Parameter";
+        UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(150,7,300,26)];
+        valueTextField.tag = indexPath.row;
+        [valueTextField borderStyle];
+        valueTextField.backgroundColor =[UIColor grayColor];
+        valueTextField.delegate = self;
+        valueTextField.placeholder=@"Parameters";
+        [cell.contentView addSubview:valueTextField];
+       // [valueTextField release];
+       // cell.
     }
+   // cell.p_1Text.text = @"New Parameter";
+  /*  for (int i=0; i<self.ObjectCount;i++) {
+        if (indexPath.row == i) {   
+            
+            UITextField *parameterTextField = (UITextField *)[cell viewWithTag:1];
+            parameterTextField.placeholder = @"Parameter";
+        }
+        
+    }*/
+        return cell;
+}
 
 
-    return cell;
+/*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+  // NSLog(@"text Field index path %ld ,%@ ",indexPath.row,cell);
+}*/
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
+    UITableView *table = (UITableView *)[[cell superview] superview];
+    NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
+    
+    
+    NSLog(@"Row %ld just finished editing with the value %@  tag is %ld",textFieldIndexPath.row,textField.text ,textField.tag);
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma Segemented controll
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return YES;
-}
-
-- (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl
-{
-   // UIViewController *vc;
-    //NSLog(@"index: %ld", self.segmentedControl.selectedSegmentIndex);
-    switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 0:
-          //   vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Pre_ID"];
-          //  [self presentViewController:vc animated:NO completion:nil];
-            NSLog(@"Segment Pre selected.");
-            //[self performSegueWithIdentifier:@"segmentedLocationToPreExtractionSegue" sender:segmentedControl];
-            // BasicTransactionToPreExtrationSegue
-            //segmentedLocationToPreExtractionSegue
-            break;
-        case 1:
-            // vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Run_ID"];
-            //[self presentViewController:vc animated:NO completion:nil];
-            NSLog(@"Segment Run selected.");
-           [self performSegueWithIdentifier:@"PreToRunExtractionSegue"  sender:segmentedControl ];
-            // PreToRunExtractionSegue
-            //segmentedLocationToRunExtractionSegue
-            break;
-            
-        case 2:
-            // vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Post_ID"];
-            //[self presentViewController:vc animated:NO completion:nil];
-            NSLog(@"Segment Post selected.");
-            Pre_extractionFlag=1;
-            //AddTransaction_Post addTransaction_PostObj=[[AddTransaction_Post alloc]init];
-           // addTransaction_PostObj.Pre_
-            [self performSegueWithIdentifier:@"PreToPostExtractionSegue" sender:segmentedControl];
-            
-            //PreToPostExtractionSegue
-            //segmentedLocationToPostExtractionSegue
-        default:
-            break;
-    }
-    
-}
-- (void)setupUI
-{
-    [self.segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
 }
 
 

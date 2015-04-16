@@ -9,7 +9,7 @@
 #import "AddTransaction_PreCell.h"
 
 @implementation AddTransaction_PreCell
-//@synthesize p_1Text;
+@synthesize p_1Text;
 - (void)awakeFromNib {
     // Initialization code
 }

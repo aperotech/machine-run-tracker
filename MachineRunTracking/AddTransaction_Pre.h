@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddTransaction_Pre : UIViewController
+@interface AddTransaction_Pre : UIViewController<UITextFieldDelegate>
 {
     BOOL Pre_extractionFlag;
 }
 //@property(strong,nonatomic)IBOutlet UITableView *tableView;
 @property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
 @property (strong,nonatomic) NSArray *ViewControllers;
+@property (nonatomic,strong)NSDictionary *myDictionary;
+//@property (weak, nonatomic) IBOutlet UITextField *parameterText;
+@property (strong,nonatomic) IBOutlet UILabel *Pre_ExtractionLabel;
 
 @property(nonatomic)NSInteger ObjectCount;
 

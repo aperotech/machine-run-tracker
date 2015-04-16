@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface AddTransaction_PreCell : UITableViewCell
-//@property(strong,nonatomic)IBOutlet UITextField *p_1Text;
+@property(strong,nonatomic)IBOutlet UITextField *p_1Text;
 @end

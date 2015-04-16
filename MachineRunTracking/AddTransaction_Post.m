@@ -28,7 +28,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Parameters"];
     [query whereKey:@"Type" equalTo:@"Post_Extraction"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        NSLog(@"all types: %ld",objects.count);
+        NSLog(@"all types: %ld",(unsigned long)objects.count);
         self.ObjectCount=objects.count;
         if(error){
             NSLog(@"Error!");
@@ -87,18 +87,18 @@
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+/*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     // NSLog(@"text Field index path %ld ,%@ ",indexPath.row,cell);
-}
+}*/
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
     UITableView *table = (UITableView *)[[cell superview] superview];
     NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
     
     
-    NSLog(@"Row %ld just finished editing with the value %@  tag is %ld",textFieldIndexPath.row,textField.text ,textField.tag);
+    NSLog(@"Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
     
 }
 

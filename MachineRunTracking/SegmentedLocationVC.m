@@ -26,94 +26,101 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-      [self setupUI];
+     // [self setupUI];
     
+    self.AddTransaction_Pre = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Pre_ID"];
     
+    // Create the penalty view controller
+    self.AddTransaction_Run = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Run_ID"];
+    self.AddTransaction_Post = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Post_ID"];
     
+    // Add A and B view controllers to the array
+    self.allViewControllers = [[NSArray alloc] initWithObjects:self.AddTransaction_Pre,self.AddTransaction_Run,self.AddTransaction_Post , nil];
     
+    // Ensure a view controller is loaded
+    //self.switchViewControllers.selectedSegmentIndex = 0;
     
-}
+    [self cycleFromViewController:self.currentViewController toViewController:[self.allViewControllers objectAtIndex:self.segmentedControl.selectedSegmentIndex]];
+    
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-#pragma Segemented controll
-- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    return YES;
+    
+    
 }
+#pragma mark - View controller switching and saving
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+- (void)cycleFromViewController:(UIViewController*)oldVC toViewController:(UIViewController*)newVC {
     
-    if ([segue.identifier isEqualToString:@"SegementedToViewControllerSegue"]) {
-        self.containerViewController = segue.destinationViewController;
+    // Do nothing if we are attempting to swap to the same view controller
+    if (newVC == oldVC) return;
+    
+    // Check the newVC is non-nil otherwise expect a crash: NSInvalidArgumentException
+    if (newVC) {
+        
+        // Set the new view controller frame (in this case to be the size of the available screen bounds)
+        // Calulate any other frame animations here (e.g. for the oldVC)
+        //  newVC.view.frame = CGRectMake(CGRectGetMinX(self.view.bounds), CGRectGetMinY(self.view.bounds), CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));
+        newVC.view.frame =  CGRectMake(0, 113, 600, 487);
+        // Check the oldVC is non-nil otherwise expect a crash: NSInvalidArgumentException
+        if (oldVC) {
+            
+            // Start both the view controller transitions
+            [oldVC willMoveToParentViewController:nil];
+            [self addChildViewController:newVC];
+            
+            // Swap the view controllers
+            // No frame animations in this code but these would go in the animations block
+            [self transitionFromViewController:oldVC
+                              toViewController:newVC
+                                      duration:0.25
+                                       options:UIViewAnimationOptionLayoutSubviews
+                                    animations:^{}
+                                    completion:^(BOOL finished) {
+                                        // Finish both the view controller transitions
+                                        [oldVC removeFromParentViewController];
+                                        [newVC didMoveToParentViewController:self];
+                                        // Store a reference to the current controller
+                                        self.currentViewController = newVC;
+                                    }];
+            
+        } else {
+            
+            // Otherwise we are adding a view controller for the first time
+            // Start the view controller transition
+            [self addChildViewController:newVC];
+            
+            // Add the new view controller view to the ciew hierarchy
+            [self.view addSubview:newVC.view];
+            
+            // End the view controller transition
+            [newVC didMoveToParentViewController:self];
+            
+            // Store a reference to the current controller
+            self.currentViewController = newVC;
+        }
     }
 }
 
-
+- (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl *)sender {
+    
+    NSUInteger index = sender.selectedSegmentIndex;
+    
+    if (UISegmentedControlNoSegment != index) {
+        UIViewController *incomingViewController = [self.allViewControllers objectAtIndex:index];
+        [self cycleFromViewController:self.currentViewController toViewController:incomingViewController];
+        NSLog(@"The Current VC IS %@",self.currentViewController);
+    }
+    
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
 }
-
-- (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl
-{
-    
-    //NSLog(@"index: %ld", self.segmentedControl.selectedSegmentIndex);
-    switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 0:
-            [self.containerViewController swapViewControllers];
-            NSLog(@"Segment Pre selected.");
-         //   vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Pre_ID"];
-           //  [self presentViewController:vc animated:NO completion:nil];
-          //  [self.containerViewController swapViewControllers];
-          //  [self performSegueWithIdentifier:@"segmentedLocationToPreExtractionSegue" sender:segmentedControl];
-            // BasicTransactionToPreExtrationSegue
-            //segmentedLocationToPreExtractionSegue
-            break;
-        case 1:
-             [self.containerViewController swapViewControllers];
-            //vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Run_ID"];
-             // [self presentViewController:vc animated:NO completion:nil];
-            NSLog(@"Segment Run selected.");
-           // [self performSegueWithIdentifier:@"SegementedToViewControllerSegue" sender:segmentedControl];
-            // PreToRunExtractionSegue
-            //segmentedLocationToRunExtractionSegue
-            break;
-            
-        case 2:
-            NSLog(@"Segment Post selected.");
-            [self.containerViewController swapViewControllers];
-           // vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Post_ID"];
-          //   [self presentViewController:vc animated:NO completion:nil];
-           //  [self.containerViewController swapViewControllers];
-           // [self performSegueWithIdentifier:@"segmentedLocationToPostExtractionSegue" sender:segmentedControl];
-            //PreToPostExtractionSegue
-            //segmentedLocationToPostExtractionSegue
-        default:
-            break;
-    }
-    
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
-/*- (void)setupViewControllers
- {
- AddTransaction_Run *AddTransaction_RunVC = [[AddTransaction_Run alloc] init];
- AddTransaction_Post *AddTransaction_PostVC = [[AddTransaction_Post alloc] init];
- AddTransaction_Pre *AddTransaction_PreVC=[AddTransaction_Pre self];
- self.viewControllers = [NSArray arrayWithObjects:AddTransaction_PreVC,AddTransaction_RunVC,AddTransaction_PostVC, nil];
- }*/
-
-- (void)setupUI
-{
-    [self.segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
-}
 
 
 /*

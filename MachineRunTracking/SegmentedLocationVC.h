@@ -10,6 +10,6 @@
 
 @interface SegmentedLocationVC : UIViewController
 @property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
-@property (strong,nonatomic) NSArray *ViewControllers;
-
+@property (strong,nonatomic) NSArray *allViewControllers;
+@property (nonatomic, strong) UIViewController *currentViewController;
 @end

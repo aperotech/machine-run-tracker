@@ -7,30 +7,35 @@
 //
 
 #import "ContainerViewController.h"
-#import "AddTransaction_Pre.h"
-#import "AddTransaction_Run.h"
-#import "AddTransaction_Post.h"
-#define SegueIdentifierPre @"SegmentedControllToPreSegue"
-#define SegueIdentifierRun @"SegementedControllToRunSegue"
-#define SegueIdentifierPost @"SegementedControllToPostSegue"
+//#import "AddTransaction_Pre.h"
+//#import "AddTransaction_Run.h"
+//#import "AddTransaction_Post.h"
+
+//#define SegueIdentifierPre @"SegmentedControllToPreSegue"
+//#define SegueIdentifierRun @"SegementedControllToRunSegue"
+//#define SegueIdentifierPost @"SegementedControllToPostSegue"
+
+
 @interface ContainerViewController ()
-@property (strong, nonatomic) NSString *currentSegueIdentifier;
-@property (assign, nonatomic) BOOL transitionInProgress;
-@property(nonatomic,strong)AddTransaction_Pre *AddTransaction_Pre;
-@property (nonatomic,strong)AddTransaction_Run *AddTransaction_Run;
-@property (nonatomic,strong)AddTransaction_Post *AddTransaction_Post;
+
+//@property (strong, nonatomic) NSString *currentSegueIdentifier;
+//@property (assign, nonatomic) BOOL transitionInProgress;
+//@property(nonatomic,strong)AddTransaction_Pre *AddTransaction_Pre;
+//@property (nonatomic,strong)AddTransaction_Run *AddTransaction_Run;
+//@property (nonatomic,strong)AddTransaction_Post *AddTransaction_Post;
+
 @end
 
 @implementation ContainerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.transitionInProgress = NO;
-    self.currentSegueIdentifier = SegueIdentifierPre;
-    [self performSegueWithIdentifier:self.currentSegueIdentifier sender:nil];
+//    self.transitionInProgress = NO;
+ //   self.currentSegueIdentifier = SegueIdentifierPre;
+ //   [self performSegueWithIdentifier:self.currentSegueIdentifier sender:nil];
     // Do any additional setup after loading the view.
 }
-
+/*
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
@@ -104,7 +109,23 @@
     }
     
     self.transitionInProgress = YES;
-    self.currentSegueIdentifier = ([self.currentSegueIdentifier isEqualToString:SegueIdentifierPre]) ? SegueIdentifierRun : SegueIdentifierPost;
+   // self.currentSegueIdentifier = ([self.currentSegueIdentifier isEqualToString:SegueIdentifierPre] || [self.currentSegueIdentifier isEqualToString:SegueIdentifierRun] || [self.currentSegueIdentifier isEqualToString:SegueIdentifierPost]) ? SegueIdentifierPost : SegueIdentifierRun;
+    if ([self.currentSegueIdentifier isEqualToString:SegueIdentifierPre]) {
+        self.currentSegueIdentifier=SegueIdentifierRun;
+    } else {
+        self.currentSegueIdentifier=SegueIdentifierPost;
+    }
+    if ([self.currentSegueIdentifier isEqualToString:SegueIdentifierRun]) {
+        self.currentSegueIdentifier=SegueIdentifierPost;
+    } else {
+        self.currentSegueIdentifier=SegueIdentifierPre;
+    }
+    
+    if ([self.currentSegueIdentifier isEqualToString:SegueIdentifierPost]) {
+        self.currentSegueIdentifier=SegueIdentifierRun;
+    } else {
+        self.currentSegueIdentifier=SegueIdentifierPre;
+    }
     
     if (([self.currentSegueIdentifier isEqualToString:SegueIdentifierPre]) && self.AddTransaction_Pre) {
         [self swapFromViewController:self.AddTransaction_Run toViewController:self.AddTransaction_Pre];
@@ -117,7 +138,7 @@
     }
     
     if (([self.currentSegueIdentifier isEqualToString:SegueIdentifierPost]) && self.AddTransaction_Post) {
-        [self swapFromViewController:self.AddTransaction_Post toViewController:self.AddTransaction_Post];
+        [self swapFromViewController:self.AddTransaction_Run toViewController:self.AddTransaction_Post];
         return;
     }
     
@@ -139,7 +160,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+*/
 /*
 #pragma mark - Navigation
 

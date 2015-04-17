@@ -8,9 +8,10 @@
 
 #import "SegmentedLocationVC.h"
 #import "ContainerViewController.h"
-#import "AddTransaction_Pre.h"
+//#import "AddTransaction_Pre.h"
 #import "AddTransaction_Post.h"
 #import "AddTransaction_Run.h"
+#import <Parse/Parse.h>
 @interface SegmentedLocationVC ()
 
 @property (nonatomic, weak) ContainerViewController *containerViewController;
@@ -22,12 +23,16 @@
 @end
 
 @implementation SegmentedLocationVC
-
+@synthesize preExtractionArraySegment;
+@synthesize Parameter0,Parameter1,Parameter2;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
      // [self setupUI];
-    
+    //self.AddTransaction_Pre = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Pre_ID"];
+    //self.AddTransaction_Pre.delegate  = self;
+   // [[self navigationController ] pushViewController: self.AddTransaction_Pre animated:YES];
+    NSLog(@"AddTransaction_Pre Loaded!");
     self.AddTransaction_Pre = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Pre_ID"];
     
     // Create the penalty view controller
@@ -60,7 +65,7 @@
         // Set the new view controller frame (in this case to be the size of the available screen bounds)
         // Calulate any other frame animations here (e.g. for the oldVC)
         //  newVC.view.frame = CGRectMake(CGRectGetMinX(self.view.bounds), CGRectGetMinY(self.view.bounds), CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));
-        newVC.view.frame =  CGRectMake(0, 113, 600, 487);
+        newVC.view.frame =  CGRectMake(0, 113, 600, 500);
         // Check the oldVC is non-nil otherwise expect a crash: NSInvalidArgumentException
         if (oldVC) {
             
@@ -108,16 +113,23 @@
     if (UISegmentedControlNoSegment != index) {
         UIViewController *incomingViewController = [self.allViewControllers objectAtIndex:index];
         [self cycleFromViewController:self.currentViewController toViewController:incomingViewController];
-        NSLog(@"The Current VC IS %@ incomimng VC %@",self.currentViewController,incomingViewController);
+        
         if ([incomingViewController isEqual:self.AddTransaction_Pre]) {
             self.navigationItem.title=@"Pre-Extraction";
+           
             self.navigationItem.rightBarButtonItem.enabled =FALSE;
+            [self ADDORUpdatePreTransaction];
+        NSLog(@"The Strings Are Pre %@ --- %@ ---- %@",Parameter0,Parameter1,Parameter2);
         }else if ([incomingViewController isEqual:self.AddTransaction_Run]){
         self.navigationItem.title=@"Run-Process";
+           
             self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(Add:)];
+        NSLog(@"The Strings Are Run %@ --- %@ ---- %@",Parameter0,Parameter1,Parameter2);
         }else if ([incomingViewController isEqual:self.AddTransaction_Post]){
         self.navigationItem.title=@"Post-Extraction";
+            
             self.navigationItem.rightBarButtonItem=[ [UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(Save:)];
+        NSLog(@"The Strings Are  Post %@ --- %@ ---- %@",Parameter0,Parameter1,Parameter2);
         }
     }
     
@@ -126,12 +138,26 @@
 {
     return YES;
 }
+
+/*- (void)addPrameterViewController:(AddTransaction_Pre *)controller didFinishEnteringItem:(NSString *)Pre_String;
+{
+    [preExtractionArraySegment addObject:Pre_String];
+ NSLog(@"This was returned from Pre_Array %@",Pre_String);
+    NSLog(@"This was returned from preExtractionArraySegment %@",preExtractionArraySegment);
+   
+
+}*/
+
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+-(void)ADDORUpdatePreTransaction{
 
+}
 
 /*
 #pragma mark - Navigation

@@ -14,5 +14,7 @@
 
 @property (strong,nonatomic) IBOutlet UILabel *Run_PreocessLabel;
 
-
+@property(nonatomic,strong)NSString *Parameter0;
+@property(nonatomic,strong)NSString *Parameter1;
+@property(nonatomic,strong)NSString *Parameter2;
 @end

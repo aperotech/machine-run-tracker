@@ -14,12 +14,14 @@
 
 @implementation AddTransaction_Run
 @synthesize Run_PreocessLabel;
+@synthesize Parameter0,Parameter1,Parameter2;
 - (void)viewDidLoad {
     [super viewDidLoad];
      self.navigationController.navigationBar.hidden=NO;
     self.navigationController.navigationItem.title=@"Run";
     [self setupUI];
      NSLog(@"AddTransaction_Run Loaded!");
+     NSLog(@"The Strings Are Run %@ --- %@ ---- %@",Parameter0,Parameter1,Parameter2);
     // Do any additional setup after loading the view.
 }
 - (IBAction)Cancel:(id)sender {

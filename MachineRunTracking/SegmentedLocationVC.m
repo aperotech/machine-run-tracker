@@ -108,7 +108,17 @@
     if (UISegmentedControlNoSegment != index) {
         UIViewController *incomingViewController = [self.allViewControllers objectAtIndex:index];
         [self cycleFromViewController:self.currentViewController toViewController:incomingViewController];
-        NSLog(@"The Current VC IS %@",self.currentViewController);
+        NSLog(@"The Current VC IS %@ incomimng VC %@",self.currentViewController,incomingViewController);
+        if ([incomingViewController isEqual:self.AddTransaction_Pre]) {
+            self.navigationItem.title=@"Pre-Extraction";
+            self.navigationItem.rightBarButtonItem.enabled =FALSE;
+        }else if ([incomingViewController isEqual:self.AddTransaction_Run]){
+        self.navigationItem.title=@"Run-Process";
+            self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(Add:)];
+        }else if ([incomingViewController isEqual:self.AddTransaction_Post]){
+        self.navigationItem.title=@"Post-Extraction";
+            self.navigationItem.rightBarButtonItem=[ [UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(Save:)];
+        }
     }
     
 }

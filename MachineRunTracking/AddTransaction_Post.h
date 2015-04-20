@@ -7,16 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <Parse/Parse.h>
 @interface AddTransaction_Post : UIViewController<UITextFieldDelegate>
-{
-    BOOL Pre_ExtractionPostFlag;
-    BOOL Post_ExtractionFlag;
-}
-@property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
-@property (strong,nonatomic) NSArray *ViewControllers;
-@property(nonatomic)NSInteger ObjectCount;
-@property (strong,nonatomic) IBOutlet UILabel *Post_ExtractionLabel;
 
+
+
+@property(strong,nonatomic)PFObject *parameterAdd_PostPF;
+@property(nonatomic)NSInteger ObjectCount;
+@property(nonatomic,strong)NSString *Parameter0;
+@property(nonatomic,strong)NSString *Parameter1;
+@property(nonatomic,strong)NSString *Parameter2;
 
 @end

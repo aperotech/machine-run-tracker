@@ -799,7 +799,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/MachineRunTracking",
-					"$(PROJECT_DIR)/MachineRunTracking/parse-library-1.7.1",
 				);
 				INFOPLIST_FILE = MachineRunTracking/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -816,7 +815,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/MachineRunTracking",
-					"$(PROJECT_DIR)/MachineRunTracking/parse-library-1.7.1",
 				);
 				INFOPLIST_FILE = MachineRunTracking/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;

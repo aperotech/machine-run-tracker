@@ -949,7 +949,7 @@
                                     <constraint firstAttribute="height" constant="532" id="yMR-9j-sHQ"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="DJh-J1-1wf">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ProcessRunCellIdentifier" id="DJh-J1-1wf">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DJh-J1-1wf" id="bFJ-h9-8oZ">
@@ -998,6 +998,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="n7M-xh-KKU" id="jWi-M0-8ok"/>
+                                    <outlet property="delegate" destination="n7M-xh-KKU" id="CaK-7w-AsH"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1020,6 +1024,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="aTableView" destination="UaO-ZV-Dve" id="1F1-AT-JPi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NtZ-Dg-fEV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

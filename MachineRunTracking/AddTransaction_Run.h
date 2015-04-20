@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddTransaction_Run : UIViewController
+@interface AddTransaction_Run : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
 
-
+@property (nonatomic, strong) IBOutlet UITableView *aTableView;
+@property (nonatomic, strong) NSMutableArray *dataArray;
+- (void)addORDeleteRows;
+@property (weak, nonatomic) IBOutlet UILabel *TextLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;
 @property(nonatomic,strong)NSString *Parameter0;

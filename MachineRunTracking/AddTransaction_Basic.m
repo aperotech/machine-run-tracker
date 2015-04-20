@@ -25,7 +25,7 @@
 }
 
 - (IBAction)SaveAndForword:(id)sender {
-    [self performSegueWithIdentifier:@"BasicTRansactionDetailsToSegmentedLocationSegue" sender:sender];
+    [self performSegueWithIdentifier:@"BasicTRansactionDetailsToPre_extractionSegue" sender:sender];
    /* NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

@@ -13,67 +13,22 @@
 @end
 
 @implementation AddTransaction_Run
-@synthesize Run_PreocessLabel;
+
 @synthesize Parameter0,Parameter1,Parameter2;
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.navigationController.navigationBar.hidden=NO;
-    self.navigationController.navigationItem.title=@"Run";
-    [self setupUI];
+    
      NSLog(@"AddTransaction_Run Loaded!");
-     NSLog(@"The Strings Are Run %@ --- %@ ---- %@",Parameter0,Parameter1,Parameter2);
+    
     // Do any additional setup after loading the view.
 }
 - (IBAction)Cancel:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-#pragma Segemented controll
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return YES;
-}
 
-- (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl
-{//UIViewController *vc;
-    //NSLog(@"index: %ld", self.segmentedControl.selectedSegmentIndex);
-    switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 0:
-            
-            NSLog(@"Segment Pre selected.");
-             [self.navigationController popViewControllerAnimated:YES];
-           //  vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Pre_ID"];
-            //[self presentViewController:vc animated:NO completion:nil];
-            //[self performSegueWithIdentifier:@"segmentedLocationToPreExtractionSegue" sender:segmentedControl];
-            // BasicTransactionToPreExtrationSegue
-            //segmentedLocationToPreExtractionSegue
-            break;
-        case 1:
-         //    vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Run_ID"];
-            //[self presentViewController:vc animated:NO completion:nil];
-            NSLog(@"Segment Run selected.");
-          //  [self performSegueWithIdentifier:@"segmentedLocationToRunExtractionSegue" sender:segmentedControl];
-            // PreToRunExtractionSegue
-            //segmentedLocationToRunExtractionSegue
-            break;
-            
-        case 2:
-           //  vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Post_ID"];
-            //[self presentViewController:vc animated:NO completion:nil];
-            NSLog(@"Segment Post selected.");
-            [self performSegueWithIdentifier:@"RunToPostExtractionSegue" sender:segmentedControl];
-            //PreToPostExtractionSegue
-            //segmentedLocationToPostExtractionSegue
-        default:
-            break;
-    }
-    
+-(IBAction)SaveAndForward:(id)sender {
+    [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
 }
-- (void)setupUI
-{
-    [self.segmentedControl addTarget:self action:@selector(indexDidChangeForSegmentedControl:) forControlEvents:UIControlEventValueChanged];
-}
-
 /*
 #pragma mark - Navigation
 

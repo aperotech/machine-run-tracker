@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface AddTransaction_Run : UIViewController
-@property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
-@property (strong,nonatomic) NSArray *ViewControllers;
 
-@property (strong,nonatomic) IBOutlet UILabel *Run_PreocessLabel;
 
+
+
+@property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;
 @property(nonatomic,strong)NSString *Parameter0;
 @property(nonatomic,strong)NSString *Parameter1;
 @property(nonatomic,strong)NSString *Parameter2;

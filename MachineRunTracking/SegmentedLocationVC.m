@@ -119,15 +119,16 @@
            
             self.navigationItem.rightBarButtonItem.enabled =FALSE;
             [self ADDORUpdatePreTransaction];
+            NSLog(@"********In Pre Segment View Controller********");
         NSLog(@"The Strings Are Pre %@ --- %@ ---- %@",Parameter0,Parameter1,Parameter2);
         }else if ([incomingViewController isEqual:self.AddTransaction_Run]){
         self.navigationItem.title=@"Run-Process";
-           
+            NSLog(@"********In Run Segment View Controller********");
             self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(Add:)];
         NSLog(@"The Strings Are Run %@ --- %@ ---- %@",Parameter0,Parameter1,Parameter2);
         }else if ([incomingViewController isEqual:self.AddTransaction_Post]){
         self.navigationItem.title=@"Post-Extraction";
-            
+             NSLog(@"********In Post Segment View Controller********");
             self.navigationItem.rightBarButtonItem=[ [UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(Save:)];
         NSLog(@"The Strings Are  Post %@ --- %@ ---- %@",Parameter0,Parameter1,Parameter2);
         }

@@ -7,15 +7,12 @@
 //
 
 #import "AddTransaction_Pre.h"
-//#import "AddTransaction_PreCell.h"
-#import "AddTransaction_Run.h"
-//#import "AddTransaction_Post.h"
-//#import "SegmentedLocationVC.h"
-#import "SegmentedLocationVC.h"
+
+#import "AddTransaction_PreCell.h"
 #import <Parse/Parse.h>
 @interface AddTransaction_Pre ()
-@property(strong,nonatomic)SegmentedLocationVC *SegmentedLocationVCObj;
-@property(strong,nonatomic)AddTransaction_Run *AddTransaction_RunObj;
+
+
 @end
 
 @implementation AddTransaction_Pre
@@ -25,18 +22,15 @@
     [super viewDidLoad];
    // [self setupViewControllers];
   
-    self.navigationController.navigationBar.hidden=NO;
-    self.navigationController.navigationItem.title=@"Pre";
-    Pre_extractionFlag=0;
-   // self.AddTransaction_Pre = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTransaction_Pre_ID"];
-    //self.AddTransaction_Pre.delegate  = self;
+    
     // Do any additional setup after loading the view.
    // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
-   self.SegmentedLocationVCObj=[[SegmentedLocationVC alloc]init];
-    self.AddTransaction_RunObj=[[AddTransaction_Run alloc]init];
+   
     PFQuery *query = [PFQuery queryWithClassName:@"Parameters"];
     [query whereKey:@"Type" equalTo:@"Pre_Extraction"];
+    NSLog(@"The Query For Pre_Extraction %@",query);
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+      // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
         NSLog(@"all types: %ld",(long)objects.count);
         self.ObjectCount=objects.count;
         if(error){
@@ -47,10 +41,10 @@
                 NSLog(@"None found");
             }
             else {
-                
+               
              //   NSLog(@"objectArray %@",objects);
             }
-            
+            //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
         }
     }];
    }
@@ -62,16 +56,37 @@
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{ NSLog(@"The No Of ROws %d",self.ObjectCount);
+// [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+    return 3 ;
+   }
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.ObjectCount;
+     static NSString *simpleTableIdentifier = @"Pre_ExtractionCellIdentifier";
+    
+    AddTransaction_PreCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+
+    if (cell == nil) {
+        cell = [[AddTransaction_PreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        
+    }
+    
+    cell.p_1Text.tag=indexPath.row;
+    // Configure the cell...
+   
+    
+    return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+/*- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *simpleTableIdentifier = @"Pre_ExtractionCellIdentifier";
     
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    if (cell != nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    AddTransaction_PreCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    if (cell == nil) {
+        cell = [[AddTransaction_PreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        
        // cell.p_1Text.text = @"New Parameter";
         UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(150,7,300,26)];
         valueTextField.tag = indexPath.row;
@@ -87,13 +102,12 @@
         if (indexPath.row == i) {   
             
             UITextField *parameterTextField = (UITextField *)[cell viewWithTag:i];
-            [self.pre_extractionArray addObject: parameterTextField.text];
         }
-         NSLog(@"PreExtraction Array Is %@",self.pre_extractionArray);
+        
     }
         return cell;
 }
-
+*/
 
 /*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -104,76 +118,35 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
     UITableView *table = (UITableView *)[[cell superview] superview];
     NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
-     self.pre_extractionArray = [[NSMutableArray alloc] init];
+    
     if (textField.tag==0) {
         self.Parameter0=textField.text;
         NSLog(@"Parameter0 %@",self.Parameter0);
-  self.AddTransaction_RunObj.Parameter0=self.Parameter0;
-     //   [self.delegate addPrameterViewController:self didFinishEnteringItem:self.Parameter0];
-       //  [self.pre_extractionArray addObject:self.Parameter0];
+ 
+    
     }
     if (textField.tag==1) {
        self.Parameter1=textField.text;
          NSLog(@"Parameter1 %@",self.Parameter1);
       
-      self.AddTransaction_RunObj.Parameter1=self.Parameter1;
-       //  [self.pre_extractionArray addObject:self.Parameter1];
-   //     [self.delegate addPrameterViewController:self didFinishEnteringItem:self.Parameter1];
+        
     }
     if (textField.tag==2) {
         self.Parameter2=textField.text;
          NSLog(@"Parameter2 %@",self.Parameter2);
-      self.AddTransaction_RunObj.Parameter2=self.Parameter2;
-     //    [self.pre_extractionArray addObject: self.Parameter2];
-    //    [self.delegate addPrameterViewController:self didFinishEnteringItem:self.Parameter2];
+      
+    
     }
     
   
     
-       NSLog(@"Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
+       NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
    }
 
 
-/*-(void) textFieldDidEndEditing:(UITextField *)textField
-{
-    // assuming your text field is embedded directly into the table view
-    // cell and not into any other subview of the table cell
-    UITableViewCell * parentView = (UITableViewCell *)[textField superview];
-    
-    if(parentView)
-    {
-        self.pre_extractionArray = [[NSMutableArray alloc] init];
-        NSString *cellOneTexfieldOneTxt;
-        
-        NSArray * allSubviews = [parentView subviews];
-        for(UIView * oneSubview in allSubviews)
-        {
-            // get only the text fields
-            if([oneSubview isKindOfClass: [UITextField class]])
-            {
-                UITextField * oneTextField = (UITextField *) oneSubview;
-                
-                if(oneTextField.text)
-                {
-                    [self.pre_extractionArray addObject: oneTextField.text];
-                } else {
-                    // if nothing is in the text field, should
-                    // we simply add the empty string to the array?
-                    [self.pre_extractionArray addObject: @""];
-                }
-            }
-            NSLog(@"End Editing---------- %@",self.pre_extractionArray);
-        }
-        
-    }
-    
-    // don't forget to actually *DO* something with your mutable array
-    // (and release it, in case you're not using ARC), before this method
-    // returns.
-}*/
 
 
--(IBAction)AddBtnClck:(id)sender {
+-(IBAction)SaveAndForward:(id)sender {
     
    /* NSString *name = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
@@ -207,7 +180,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
       PFObject *NewParameter=[PFObject  objectWithClassName:@"Pre_Extraction" ];
      
      if([NewParameter save]) {
-     NSLog(@"Successfully Created");
+   //  NSLog(@"Successfully Created");
      PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
      ParameterValue[@"Parameter_1"] = self.Parameter0;
      ParameterValue[@"Parameter_2"] = self.Parameter1;
@@ -218,6 +191,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
      if (succeeded) {
      [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
     // [self.navigationController popViewControllerAnimated:YES];
+         [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
      NSLog(@"The object has been saved");
      // The object has been saved.
      } else {
@@ -286,7 +260,8 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+                  //  [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                         message:[error.userInfo objectForKey:@"error"]
@@ -332,7 +307,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 }
 
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -340,6 +315,6 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-*/
+
 
 @end

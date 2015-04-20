@@ -23,10 +23,9 @@
     BOOL Pre_extractionFlag;
 }
 @property(strong,nonatomic)PFObject *parameterAdd_PrePF;
-//@property (nonatomic, weak) id <AddTransaction_PreDelegates> delegate;
-//@property (weak,nonatomic) SegmentedLocationVC *SegmentedLocationVCObj;
-@property (weak, nonatomic) IBOutlet UIButton *Add;
-@property (strong,nonatomic) NSMutableArray *pre_extractionArray;
+@property (weak,nonatomic) IBOutlet UITextField *ParameterText;
+@property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;
+
 @property(nonatomic)NSInteger ObjectCount;
 @property(nonatomic,strong)IBOutlet UITableView *tableView;
 @property(nonatomic,strong)NSString *Parameter0;

@@ -41,24 +41,45 @@
                 NSLog(@"None found");
             }
             else {
-               
+               self.refreshControl = [[UIRefreshControl alloc]init];
+                [self.tableView addSubview:self.refreshControl];
+                [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+            
              //   NSLog(@"objectArray %@",objects);
             }
             //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
         }
     }];
    }
+
+- (void)refreshTable {
+    //TODO: refresh your data
+    [self.refreshControl endRefreshing];
+    [self.tableView reloadData];
+}
+
 - (IBAction)Cancel:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    
+    messageLabel.text = @"No data is currently available. Please pull down to refresh.";
+    messageLabel.textColor = [UIColor blackColor];
+    messageLabel.numberOfLines = 0;
+    messageLabel.textAlignment = NSTextAlignmentCenter;
+    messageLabel.font = [UIFont fontWithName:@"Palatino-Italic" size:20];
+    [messageLabel sizeToFit];
+    
+    self.tableView.backgroundView = messageLabel;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{ NSLog(@"The No Of ROws %d",self.ObjectCount);
+{ NSLog(@"The No Of ROws %ld",self.ObjectCount);
 // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-    return 3 ;
+    return self.ObjectCount ;
    }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -137,7 +158,12 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
       
     
     }
-    
+    if (textField.tag==3) {
+        self.Parameter3=textField.text;
+        NSLog(@"Parameter3 %@",self.Parameter3);
+        
+        
+    }
   
     
        NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
@@ -166,10 +192,10 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
         if (parameterAdd_PrePF != nil) {
-          //  [self updateParameters];
+         //  [self updateParameters];
         }
         else {
-           // [self saveParameters];
+          //  [self saveParameters];
         }
     //}
     
@@ -185,7 +211,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
      ParameterValue[@"Parameter_1"] = self.Parameter0;
      ParameterValue[@"Parameter_2"] = self.Parameter1;
      ParameterValue[@"Parameter_3"] = self.Parameter2;
-     ParameterValue[@"Parameter_4"] = @"Akshay";
+     ParameterValue[@"Parameter_4"] = self.Parameter3;
      
      [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
      if (succeeded) {

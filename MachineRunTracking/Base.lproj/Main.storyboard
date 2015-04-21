@@ -1129,6 +1129,64 @@
             </objects>
             <point key="canvasLocation" x="-2815" y="1953"/>
         </scene>
+        <!--Segmented Cotrol-->
+        <scene sceneID="3gK-Zl-JKM">
+            <objects>
+                <viewController id="xB1-kT-plu" customClass="SegmentedLocationVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="g17-L1-K4B"/>
+                        <viewControllerLayoutGuide type="bottom" id="nF4-yJ-VKT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rvE-Cd-S3O">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="WGR-vO-e81">
+                                <rect key="frame" x="150" y="81" width="300" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="4sO-Wi-nRw">
+                                        <variation key="widthClass=compact" constant="21"/>
+                                        <variation key="heightClass=regular-widthClass=compact" constant="21"/>
+                                    </constraint>
+                                    <constraint firstAttribute="width" constant="300" id="hII-6K-T47"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Pre"/>
+                                    <segment title="Run"/>
+                                    <segment title="Post"/>
+                                </segments>
+                                <connections>
+                                    <action selector="indexDidChangeForSegmentedControl:" destination="xB1-kT-plu" eventType="valueChanged" id="PM1-je-4UC"/>
+                                </connections>
+                            </segmentedControl>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htP-nU-qQk">
+                                <rect key="frame" x="0.0" y="113" width="600" height="487"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="487" id="1Mf-rW-HaB"/>
+                                </constraints>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nF4-yJ-VKT" firstAttribute="top" secondItem="htP-nU-qQk" secondAttribute="bottom" id="0JZ-ac-7bh"/>
+                            <constraint firstItem="htP-nU-qQk" firstAttribute="top" secondItem="WGR-vO-e81" secondAttribute="bottom" constant="4" id="Iek-Lj-Oyy"/>
+                            <constraint firstAttribute="centerX" secondItem="WGR-vO-e81" secondAttribute="centerX" id="LQm-IR-nd8"/>
+                            <constraint firstAttribute="centerY" secondItem="WGR-vO-e81" secondAttribute="centerY" constant="205" id="O0I-yc-IEv"/>
+                            <constraint firstItem="htP-nU-qQk" firstAttribute="top" secondItem="WGR-vO-e81" secondAttribute="bottom" constant="4" id="T59-Gb-0bG"/>
+                            <constraint firstItem="htP-nU-qQk" firstAttribute="leading" secondItem="rvE-Cd-S3O" secondAttribute="leading" id="i0f-pU-u0v"/>
+                            <constraint firstItem="WGR-vO-e81" firstAttribute="top" secondItem="g17-L1-K4B" secondAttribute="bottom" constant="17" id="omq-VQ-G19"/>
+                            <constraint firstAttribute="trailing" secondItem="htP-nU-qQk" secondAttribute="trailing" id="sVh-LH-Xpl"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Segmented Cotrol" id="Jys-57-nF7"/>
+                    <connections>
+                        <outlet property="segmentedControl" destination="WGR-vO-e81" id="UBa-H9-Pot"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sCb-S3-db3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2096" y="2721"/>
+        </scene>
         <!--Process Run-->
         <scene sceneID="kzv-XV-G71">
             <objects>
@@ -2635,6 +2693,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XEO-cl-kV3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3517" y="458"/>
+        </scene>
+        <!--Container View Controller-->
+        <scene sceneID="nRy-Tj-MMS">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="VAZ-AM-43Z" customClass="ContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="z0A-7e-46d"/>
+                        <viewControllerLayoutGuide type="bottom" id="tvN-kB-KHP"/>
+                    </layoutGuides>
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="aWn-FK-fWf">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BMd-t3-E5V" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3517" y="3443"/>
         </scene>
     </scenes>
 </document>

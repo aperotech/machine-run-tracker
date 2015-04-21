@@ -8,14 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddTransaction_Run : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface AddTransaction_Run : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate >
 
 
 @property (nonatomic, strong) IBOutlet UITableView *aTableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
-- (void)addORDeleteRows;
-@property (weak, nonatomic) IBOutlet UILabel *TextLabel;
+@property (nonatomic, strong) NSMutableArray *PostExtractionArray;
 
+- (void)addORDeleteRows;
+@property(strong,nonatomic) UIRefreshControl *refreshControl;
+@property (weak,nonatomic)IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;
 @property(nonatomic,strong)NSString *Parameter0;
 @property(nonatomic,strong)NSString *Parameter1;

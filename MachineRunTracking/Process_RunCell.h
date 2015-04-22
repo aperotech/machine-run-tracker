@@ -8,12 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Process_RunCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel * IntervalLabel ;
-@property (weak, nonatomic) IBOutlet UILabel *ParametersLabel;
-@property (weak, nonatomic) IBOutlet UILabel *Parameters1Label;
-@property (weak, nonatomic) IBOutlet UILabel *Parameters2Label;
-@property (weak, nonatomic) IBOutlet UILabel *Parameters3Label;
+@interface Process_RunCell : UITableViewCell<UITableViewDataSource,UITableViewDelegate>
+
+{
+    UITableView *horizontalTableView;
+    
+    NSArray *contentArray;
+}
+
+
+
+
+@property (weak, nonatomic) IBOutlet UITextField * IntervalText ;
+@property (weak, nonatomic) IBOutlet UITextField *ParametersText;
+@property (weak, nonatomic) IBOutlet UITextField *Parameters1Text;
+@property (weak, nonatomic) IBOutlet UITextField *Parameters2Text;
+@property (weak, nonatomic) IBOutlet UITextField *Parameters3Text;
 @property (weak,nonatomic)IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UILabel *ValueLabel;
+@property (weak, nonatomic) IBOutlet UITextField *ValueText;
 @end

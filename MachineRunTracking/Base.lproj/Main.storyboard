@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="n7M-xh-KKU">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -833,14 +833,14 @@
                                 <exclude reference="D3q-XV-wc1"/>
                                 <exclude reference="Nfv-9Z-xgQ"/>
                                 <exclude reference="z4n-Ql-tnQ"/>
+                                <exclude reference="f1y-nD-O4x"/>
+                                <exclude reference="k7z-bo-wZk"/>
                                 <exclude reference="bRW-uI-U4B"/>
                                 <exclude reference="dKo-OT-DMg"/>
                                 <exclude reference="m3e-Xb-UCK"/>
                                 <exclude reference="sCk-yU-5zo"/>
-                                <exclude reference="k7z-bo-wZk"/>
                                 <exclude reference="8qy-SL-rAD"/>
                                 <exclude reference="H9V-DG-hoW"/>
-                                <exclude reference="f1y-nD-O4x"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -851,19 +851,19 @@
                                 <include reference="Nfv-9Z-xgQ"/>
                                 <exclude reference="uTf-AT-Y6i"/>
                                 <include reference="z4n-Ql-tnQ"/>
+                                <exclude reference="bJW-cC-U4W"/>
+                                <include reference="f1y-nD-O4x"/>
+                                <exclude reference="bf5-7R-21d"/>
+                                <include reference="k7z-bo-wZk"/>
                                 <exclude reference="MSz-Co-ijo"/>
                                 <exclude reference="ZhZ-CM-Vle"/>
                                 <include reference="bRW-uI-U4B"/>
                                 <include reference="dKo-OT-DMg"/>
                                 <include reference="m3e-Xb-UCK"/>
                                 <include reference="sCk-yU-5zo"/>
-                                <exclude reference="bf5-7R-21d"/>
-                                <include reference="k7z-bo-wZk"/>
                                 <include reference="8qy-SL-rAD"/>
                                 <exclude reference="vYy-Xw-xyb"/>
                                 <exclude reference="WjL-ot-Ber"/>
-                                <exclude reference="bJW-cC-U4W"/>
-                                <include reference="f1y-nD-O4x"/>
                             </mask>
                         </variation>
                     </view>

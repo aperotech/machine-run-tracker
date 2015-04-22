@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "MainMenu.h"
 #import <Parse/Parse.h>
 //#import "User.h"
 @interface ViewController ()
@@ -77,5 +78,16 @@
         }];
     }
    }
+
+- (IBAction)unwindToMainMenu:(UIStoryboardSegue *)unwindSegue
+{
+    
+    if ([unwindSegue.identifier isEqualToString:@"unwindToLoginSegue"]) {
+        MainMenu *MainMenuVC = (MainMenu *)unwindSegue.sourceViewController;
+        NSLog(@"The came from main menu are ");
+    }
+
+    
+}
 
 @end

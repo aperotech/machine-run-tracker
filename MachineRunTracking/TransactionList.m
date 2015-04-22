@@ -10,6 +10,7 @@
 #import "TransactionListCell.h"
 #import "AddTransaction_Basic.h"
 #import "DetailsTransaction_Pre.h"
+#import "AddTransaction_Post.h"
 
 #import <Parse/Parse.h>
 @interface TransactionList ()
@@ -50,7 +51,6 @@
                                                  name:@"refreshTable"
                                                object:nil];
 }
-
 - (void)refreshTable:(NSNotification *) notification
 {
     // Reload the recipes
@@ -188,14 +188,35 @@
 - (void) objectsDidLoad:(NSError *)error
 {
     [super objectsDidLoad:error];
-    
-    NSLog(@"error: %@", [error localizedDescription]);
+    [error localizedDescription];
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+- (IBAction)unwindToTransactionListViewController:(UIStoryboardSegue *)unwindSegue
+{
+    
+    if ([unwindSegue.identifier isEqualToString:@"PostUnwindToTransactionListSegue"]) {
+        AddTransaction_Post *AddPostVC = (AddTransaction_Post *)unwindSegue.sourceViewController;
+        NSLog(@"The Parameter 0 are %@",AddPostVC.Parameter0);
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshTable:)
+                                                     name:@"refreshTable"
+                                                   object:nil];
+        [self.tableView reloadData];
+    }
+    
+}
+
+
+
+
+
 
 /*
 #pragma mark - Navigation

@@ -9,7 +9,7 @@
 #import "Process_RunCell.h"
 
 @implementation Process_RunCell
-@synthesize ParametersLabel,ValueLabel,IntervalLabel,Parameters1Label,Parameters2Label,Parameters3Label;
+@synthesize ParametersText,ValueText,IntervalText,Parameters1Text,Parameters2Text,Parameters3Text;
 - (void)awakeFromNib {
     // Initialization code
 }

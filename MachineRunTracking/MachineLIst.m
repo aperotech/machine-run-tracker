@@ -190,8 +190,8 @@ UILabel *headerLabel4 = [[UILabel alloc] initWithFrame:
 - (void) objectsDidLoad:(NSError *)error
 {
     [super objectsDidLoad:error];
+     [error localizedDescription];
     
-    NSLog(@"error: %@", [error localizedDescription]);
 }
 
 

@@ -35,7 +35,7 @@
         self.paginationEnabled = NO;
         
         // The number of objects to show per page
-        //self.objectsPerPage = 10;
+       // self.objectsPerPage = 5;
     }
     return self;
 }
@@ -181,8 +181,8 @@
 - (void) objectsDidLoad:(NSError *)error
 {
     [super objectsDidLoad:error];
-    
-    NSLog(@"error: %@", [error localizedDescription]);
+     [error localizedDescription];
+   
 }
 
 

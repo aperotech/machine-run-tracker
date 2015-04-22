@@ -25,8 +25,8 @@
 }
 
 - (IBAction)SaveAndForword:(id)sender {
-    [self performSegueWithIdentifier:@"BasicTRansactionDetailsToPre_extractionSegue" sender:sender];
-   /* NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+   // [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+    NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *Run_Date = [Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -71,7 +71,7 @@
         }
         
     }];
-    }*/
+    }
 }
 
 - (IBAction)Cancel:(id)sender {
@@ -126,7 +126,7 @@
 }
 
 
-#pragma mark - Navigation
+/*#pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -141,7 +141,7 @@
     
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-}
+}*/
 
 
 @end

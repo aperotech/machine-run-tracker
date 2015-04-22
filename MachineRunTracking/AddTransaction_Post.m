@@ -39,6 +39,7 @@
                 NSLog(@"None found");
             }
             else {
+                 [self.tableView reloadData];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                    NSLog(@"objectArray %@",objects);
             }
@@ -57,13 +58,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     //return self.ObjectCount;
-    return 3;
+    return self.ObjectCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *simpleTableIdentifier = @"Post_ExtractionCellIdentifier";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     if (cell != nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
         // cell.p_1Text.text = @"New Parameter";
@@ -175,6 +176,9 @@
               ////  [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
                // [self performSegueWithIdentifier:@"UnwindToTransactionListSegue" sender:self];
                 NSLog(@"The object has been saved");
+                [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
+
+                
                 // The object has been saved.
             } else {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -242,6 +246,8 @@
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                    [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
+                    
                    // [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
                     //  [self.navigationController popViewControllerAnimated:YES];
                 } else {
@@ -270,21 +276,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (IBAction)unwindToTransactionListViewController:(UIStoryboardSegue *)unwindSegue
-{
-    
-    UIViewController* sourceViewController = unwindSegue.sourceViewController;
-    
-    if ([sourceViewController isKindOfClass:[TransactionList class]])
-    {
-        [self performSegueWithIdentifier:@"UnwindToTransactionListSegue" sender:self];
-        NSLog(@"Coming from Post_Extraction!");
-        
-    }
-    
-    
-}
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -292,6 +284,6 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-*/
+
 
 @end

@@ -17,5 +17,6 @@
 @property(nonatomic,strong)NSString *Parameter0;
 @property(nonatomic,strong)NSString *Parameter1;
 @property(nonatomic,strong)NSString *Parameter2;
-
+@property(nonatomic,strong)IBOutlet UITableView *tableView;
+-(IBAction)SaveAndExit:(id)sender;
 @end

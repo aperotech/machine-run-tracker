@@ -15,6 +15,7 @@
 @end    
 
 @implementation AddTransaction_Run
+
 @synthesize aTableView;
 @synthesize Parameter0,Parameter1,Parameter2;
 - (void)viewDidLoad {

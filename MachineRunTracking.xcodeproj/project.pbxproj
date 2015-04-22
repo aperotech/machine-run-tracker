@@ -57,6 +57,7 @@
 		A1956CF81AE0E83D00FE58ED /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1956CDE1AE0E77E00FE58ED /* Security.framework */; };
 		A1956CF91AE0E83D00FE58ED /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1956CDF1AE0E77E00FE58ED /* StoreKit.framework */; };
 		A1956CFA1AE0E83D00FE58ED /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1956CEA1AE0E7A400FE58ED /* SystemConfiguration.framework */; };
+		A1D01A081AE7CAD300DFD00D /* Process_RunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D01A071AE7CAD300DFD00D /* Process_RunCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +154,8 @@
 		A1956CEA1AE0E7A400FE58ED /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A1956CEC1AE0E7C700FE58ED /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		A1956CEE1AE0E7CF00FE58ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		A1D01A061AE7CAD300DFD00D /* Process_RunCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Process_RunCell.h; sourceTree = "<group>"; };
+		A1D01A071AE7CAD300DFD00D /* Process_RunCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Process_RunCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -516,10 +519,10 @@
 		044DC1B91ADBF786002578C2 /* Run */ = {
 			isa = PBXGroup;
 			children = (
+				A1D01A061AE7CAD300DFD00D /* Process_RunCell.h */,
+				A1D01A071AE7CAD300DFD00D /* Process_RunCell.m */,
 				044DC1A61ADBCE31002578C2 /* AddTransaction_Run.h */,
 				044DC1A71ADBCE31002578C2 /* AddTransaction_Run.m */,
-				04C7AA2D1AE51FDE00BDE789 /* Process_RunCell.h */,
-				04C7AA2E1AE51FDE00BDE789 /* Process_RunCell.m */,
 			);
 			name = Run;
 			sourceTree = "<group>";
@@ -650,7 +653,7 @@
 				042A8AED1AD7D88F0065816D /* MachineListCell.m in Sources */,
 				0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */,
 				04461CEF1AD3A97B00CBC80A /* AddUser.m in Sources */,
-				04C7AA2F1AE51FDE00BDE789 /* Process_RunCell.m in Sources */,
+				A1D01A081AE7CAD300DFD00D /* Process_RunCell.m in Sources */,
 				044DC1861ADB822A002578C2 /* ParameterList.m in Sources */,
 				042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */,
 				0415DEB81AD3ECD9001EF623 /* User.m in Sources */,

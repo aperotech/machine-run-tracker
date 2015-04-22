@@ -41,9 +41,10 @@
                 NSLog(@"None found");
             }
             else {
-               self.refreshControl = [[UIRefreshControl alloc]init];
-                [self.tableView addSubview:self.refreshControl];
-                [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+                [self.tableView reloadData];
+              // self.refreshControl = [[UIRefreshControl alloc]init];
+              //  [self.tableView addSubview:self.refreshControl];
+               // [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
             
              //   NSLog(@"objectArray %@",objects);
             }
@@ -63,17 +64,6 @@
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    
-    messageLabel.text = @"No data is currently available. Please pull down to refresh.";
-    messageLabel.textColor = [UIColor blackColor];
-    messageLabel.numberOfLines = 0;
-    messageLabel.textAlignment = NSTextAlignmentCenter;
-    messageLabel.font = [UIFont fontWithName:@"Palatino-Italic" size:20];
-    [messageLabel sizeToFit];
-    
-    self.tableView.backgroundView = messageLabel;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -189,13 +179,13 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     }
     else {*/
         
-        [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+        //[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
         if (parameterAdd_PrePF != nil) {
-         //  [self updateParameters];
+           [self updateParameters];
         }
         else {
-          //  [self saveParameters];
+           [self saveParameters];
         }
     //}
     
@@ -312,21 +302,6 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 
 
 
-/*-(IBAction)AddBtnClck:(id)sender{
-    NSLog(@"The Strings Are %@ --- %@ ---- %@",self.Parameter0,self.Parameter1,self.Parameter2);
-    self.pre_extractionArray = [[NSMutableArray alloc] init];
-    [self.pre_extractionArray addObject: self.Parameter0];
-    [self.pre_extractionArray addObject: self.Parameter1];
-    [self.pre_extractionArray addObject: self.Parameter2];
- NSLog(@"self.pre_extractionArray!!!!!! ---> %@",self.pre_extractionArray);
-}*/
-/*-(NSMutableArray *)newItem{
-    NSMutableArray *newItem=[[NSMutableArray alloc ]init];
-    for (int i=0;i<self.ObjectCount; i++) {
-        <#statements#>
-    }
-
-}*/
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

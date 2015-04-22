@@ -43,8 +43,10 @@
 }
 - (IBAction)logout:(id)sender {
     [PFUser logOut];
-    PFUser *currentUser = [PFUser currentUser]; // this will now be nil
-    [self.navigationController popViewControllerAnimated:YES];
-    NSLog(@"Suuccessfully Logout %@",currentUser);
+   // PFUser *currentUser = [PFUser currentUser]; // this will now be nil
+     //[self performSegueWithIdentifier:@"unwindToLoginSegue" sender:self];
+    [self dismissViewControllerAnimated:YES completion:nil];
+   // [self.navigationController popViewControllerAnimated:YES];
+    NSLog(@"Successfully Logout ");
     }
 @end

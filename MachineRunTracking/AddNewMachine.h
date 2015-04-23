@@ -8,14 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddNewMachine : UIViewController<UITextFieldDelegate>
+@interface AddNewMachine : UIViewController<UITextFieldDelegate,UIScrollViewDelegate>
+{
+   
+
+}
+
+
 - (IBAction)save:(id)sender;
 - (IBAction)cancel:(id)sender;
 
 @property (strong,nonatomic) IBOutlet UIDatePicker *datePicker;
 @property (nonatomic, retain) UIToolbar *datePickerToolbar;
 
-
+@property (weak, nonatomic) IBOutlet UITextField * activeField;
 @property (strong,nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *codeText;
 @property (weak, nonatomic) IBOutlet UITextField *nameText;

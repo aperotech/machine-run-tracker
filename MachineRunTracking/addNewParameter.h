@@ -17,6 +17,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *descriptionText;
 @property (weak, nonatomic) IBOutlet UITextField *typeText;
 @property (weak, nonatomic) IBOutlet UITextField *unitsText;
+@property (weak,nonatomic) UITextField *activeField;
+
 
 @property(nonatomic,weak) NSArray *myArray;
 @property (strong, nonatomic) IBOutlet UIPickerView *picker;

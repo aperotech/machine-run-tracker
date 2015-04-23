@@ -12,8 +12,13 @@
 @interface UserList :PFQueryTableViewController
 
 
+@property (nonatomic,strong)NSMutableArray *HeaderArray;
+
+
+
 
 @end
+
 //MainMenuToUserListSegue
 //userListToAddUserSegue
 //userListTouserDetailsSegue

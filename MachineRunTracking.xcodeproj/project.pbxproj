@@ -519,10 +519,10 @@
 		044DC1B91ADBF786002578C2 /* Run */ = {
 			isa = PBXGroup;
 			children = (
-				A1D01A061AE7CAD300DFD00D /* Process_RunCell.h */,
-				A1D01A071AE7CAD300DFD00D /* Process_RunCell.m */,
 				044DC1A61ADBCE31002578C2 /* AddTransaction_Run.h */,
 				044DC1A71ADBCE31002578C2 /* AddTransaction_Run.m */,
+				A1D01A061AE7CAD300DFD00D /* Process_RunCell.h */,
+				A1D01A071AE7CAD300DFD00D /* Process_RunCell.m */,
 			);
 			name = Run;
 			sourceTree = "<group>";

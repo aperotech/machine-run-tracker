@@ -24,6 +24,10 @@
     // Do any additional setup after loading the view.
 }
 
+-(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+    return UIBarPositionTopAttached;
+}
+
 - (IBAction)SaveAndForword:(id)sender {
    // [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
     NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -75,7 +79,8 @@
 }
 
 - (IBAction)Cancel:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    //[self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)viewDidUnload {
     [self setRun_NoText:nil];

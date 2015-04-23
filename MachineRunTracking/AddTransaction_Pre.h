@@ -18,7 +18,7 @@
 
 
 
-@interface AddTransaction_Pre : UIViewController<UITextFieldDelegate>
+@interface AddTransaction_Pre : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate>
 {
     BOOL Pre_extractionFlag;
 }

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface AddTransaction_Post : UIViewController<UITextFieldDelegate>
+@interface AddTransaction_Post : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate>
 
 
 

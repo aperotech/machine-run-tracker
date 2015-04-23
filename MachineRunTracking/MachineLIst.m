@@ -44,6 +44,34 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   
+   /* [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
+    PFUser *currentUser = [PFUser currentUser];
+    PFQuery *query = [PFQuery queryWithClassName:@"_User"];
+    [query whereKey:@"username" equalTo:currentUser];
+    [query whereKey:@"usertype" hasPrefix:@"Standard"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        
+        if (objects!=NULL) {
+                     //The find succeeded.
+                      NSLog(@"Successfully retrieved %ld locations.", objects.count);
+                    //Do something with the found objects
+            
+            NSString *theusers = [objects valueForKey:@"usertype"];
+            
+                        NSLog(@"The Users %@", theusers);
+            NSLog(@"The Objects %@", objects);
+                    for (PFObject *object in objects) {
+                          NSLog(@"The Type %@", object);
+                  }
+                 } else {
+                     self.navigationItem.rightBarButtonItem.enabled=FALSE;
+
+                       // Log details of the failure
+                       NSLog(@"Error: %@ %@", error, [error userInfo]);
+                   }
+    }];*/
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshTable:)
@@ -86,7 +114,7 @@
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
  {
  return 40.0f;
  }
@@ -139,29 +167,49 @@ UILabel *headerLabel4 = [[UILabel alloc] initWithFrame:
  
  return sectionHeaderView;
  
- }
+ }*/
  
 
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object
 {
-    static NSString *simpleTableIdentifier = @"MachineListCellIdentifier";
+    if (indexPath.row ==0) {
     
-    MachineListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    if (cell == nil) {
-        cell = [[MachineListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        static NSString *simpleTableIdentifier = @"MachineListHeaderCellIdentifier";
+        
+        MachineListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+        if (cell == nil) {
+            cell = [[MachineListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        }
+        
+        // Configure the cell
+        cell.backgroundColor=[UIColor grayColor];
+        cell.codeLabel.text=@"Code";
+        cell.nameLabel.text=@"Machine_Name";
+        cell.locationLabel.text=@"Location";
+        cell.capacityLabel.text=@"Capacity";
+        
+        return cell;
+        
+        
+    } else {
+        static NSString *simpleTableIdentifier1 = @"MachineListCellIdentifier";
+        
+        MachineListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier1];
+        if (cell == nil) {
+            cell = [[MachineListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier1];
+        }
+        
+        // Configure the cell
+        cell.codeLabel.text=[object objectForKey:@"Code"];
+        cell.nameLabel.text=[object objectForKey:@"Machine_Name"];
+        cell.locationLabel.text=[object objectForKey:@"Location"];
+        cell.capacityLabel.text=[object objectForKey:@"Capacity"];
+        return cell;
+    
     }
     
-    // Configure the cell
-    cell.codeLabel.text=[object objectForKey:@"Code"];
-    cell.nameLabel.text=[object objectForKey:@"Machine_Name"];
-    cell.locationLabel.text=[object objectForKey:@"Location"];
-    cell.capacityLabel.text=[object objectForKey:@"Capacity"];
-   
-   
-    
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

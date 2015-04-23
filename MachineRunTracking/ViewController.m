@@ -83,7 +83,7 @@
 {
     
     if ([unwindSegue.identifier isEqualToString:@"unwindToLoginSegue"]) {
-        MainMenu *MainMenuVC = (MainMenu *)unwindSegue.sourceViewController;
+        //MainMenu *MainMenuVC = (MainMenu *)unwindSegue.sourceViewController;
         NSLog(@"The came from main menu are ");
     }
 

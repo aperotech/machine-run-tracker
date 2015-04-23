@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="n7M-xh-KKU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
@@ -590,7 +590,7 @@
                     <navigationItem key="navigationItem" title="Transaction List" id="0CH-il-c2M">
                         <barButtonItem key="rightBarButtonItem" title="Item" systemItem="add" id="uaG-en-MaT">
                             <connections>
-                                <segue destination="lMg-ym-jsS" kind="show" identifier="TransactionListToBasicTransactionDetailsSegue" id="bLr-ZS-mVP"/>
+                                <segue destination="lMg-ym-jsS" kind="presentation" identifier="TransactionListToBasicTransactionDetailsSegue" id="bLr-ZS-mVP"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1236,7 +1236,7 @@
             </objects>
             <point key="canvasLocation" x="-3517" y="2623"/>
         </scene>
-        <!--Add Transaction - Basic-->
+        <!--Add Transaction Basic-->
         <scene sceneID="n1q-xH-FNh">
             <objects>
                 <viewController storyboardIdentifier="AddTransaction_Basic_ID" id="lMg-ym-jsS" customClass="AddTransaction_Basic" sceneMemberID="viewController">
@@ -1248,7 +1248,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBN-mb-4Di">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YBN-mb-4Di">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Transaction Machine" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c1N-dY-ucZ">
@@ -1353,8 +1353,8 @@
                                     <constraint firstAttribute="centerX" secondItem="vBo-TB-Sjy" secondAttribute="centerX" id="bQf-Qt-UcQ"/>
                                     <constraint firstItem="c1N-dY-ucZ" firstAttribute="top" secondItem="LFk-o4-bgk" secondAttribute="bottom" constant="20" id="dRw-ex-5kN"/>
                                     <constraint firstItem="vBo-TB-Sjy" firstAttribute="top" secondItem="H4H-w7-b3Y" secondAttribute="bottom" constant="20" id="gBV-jl-d1w"/>
+                                    <constraint firstItem="LFk-o4-bgk" firstAttribute="top" secondItem="YBN-mb-4Di" secondAttribute="top" constant="20" id="gJb-pT-uVW"/>
                                     <constraint firstAttribute="centerX" secondItem="H4H-w7-b3Y" secondAttribute="centerX" id="m2j-Yh-b1f"/>
-                                    <constraint firstItem="LFk-o4-bgk" firstAttribute="top" secondItem="YBN-mb-4Di" secondAttribute="top" constant="20" id="mRP-zT-mAE"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="528" id="ogJ-IZ-uAN"/>
                                     <constraint firstAttribute="bottom" secondItem="vBo-TB-Sjy" secondAttribute="bottom" constant="347" id="opa-ZF-uS3"/>
                                     <constraint firstItem="H4H-w7-b3Y" firstAttribute="top" secondItem="c1N-dY-ucZ" secondAttribute="bottom" constant="20" id="wa0-WQ-gis"/>
@@ -1363,46 +1363,61 @@
                                     <mask key="constraints">
                                         <exclude reference="JIm-Fx-QzJ"/>
                                         <exclude reference="ogJ-IZ-uAN"/>
-                                        <exclude reference="mRP-zT-mAE"/>
+                                        <exclude reference="gJb-pT-uVW"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
                                     <mask key="constraints">
                                         <exclude reference="Bq3-US-sLk"/>
-                                        <include reference="mRP-zT-mAE"/>
+                                        <include reference="gJb-pT-uVW"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular" ambiguous="YES">
                                     <rect key="frame" x="0.0" y="64" width="600" height="728"/>
                                 </variation>
                             </scrollView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0P6-bV-lOp">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="Add Basic" id="Bzz-bd-ops">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="iC2-DE-P4R">
+                                            <connections>
+                                                <action selector="Cancel:" destination="lMg-ym-jsS" id="396-nX-oZ2"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="play" id="Sqz-No-Fbt">
+                                            <connections>
+                                                <action selector="SaveAndForword:" destination="lMg-ym-jsS" id="zxO-zG-hTp"/>
+                                                <segue destination="fwB-hf-z9B" kind="presentation" identifier="BasicTransactionToPreExtrationSegue" id="vf2-sr-3u1"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                                <connections>
+                                    <outlet property="delegate" destination="lMg-ym-jsS" id="TeL-RL-5zy"/>
+                                </connections>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="0P6-bV-lOp" firstAttribute="top" secondItem="1O3-TD-J6S" secondAttribute="bottom" id="57O-eO-Nee"/>
+                            <constraint firstItem="0P6-bV-lOp" firstAttribute="leading" secondItem="lrT-hw-eHi" secondAttribute="leading" id="5sZ-kn-9Y9"/>
                             <constraint firstAttribute="trailing" secondItem="YBN-mb-4Di" secondAttribute="trailing" id="7Zs-z3-IPI"/>
                             <constraint firstItem="23G-PI-3oY" firstAttribute="top" secondItem="YBN-mb-4Di" secondAttribute="bottom" id="CsX-5W-qT8"/>
+                            <constraint firstAttribute="trailing" secondItem="0P6-bV-lOp" secondAttribute="trailing" id="Jgg-WW-Q5o"/>
                             <constraint firstItem="YBN-mb-4Di" firstAttribute="leading" secondItem="lrT-hw-eHi" secondAttribute="leading" id="QN6-4L-hNX"/>
-                            <constraint firstItem="YBN-mb-4Di" firstAttribute="top" secondItem="1O3-TD-J6S" secondAttribute="bottom" id="bKC-OM-9vw"/>
+                            <constraint firstItem="YBN-mb-4Di" firstAttribute="top" secondItem="0P6-bV-lOp" secondAttribute="bottom" id="YMy-Jx-brM"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Transaction - Basic" id="FQf-KO-McE">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fOh-yr-5pm">
-                            <connections>
-                                <action selector="Cancel:" destination="lMg-ym-jsS" id="405-RM-fyJ"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Forward" id="VQc-m2-lYO">
-                            <connections>
-                                <action selector="SaveAndForword:" destination="lMg-ym-jsS" id="7B7-hA-8na"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="FQf-KO-McE"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="Machine_NameText" destination="c1N-dY-ucZ" id="Sjy-VU-hK3"/>
                         <outlet property="Run_DateText" destination="H4H-w7-b3Y" id="eph-GZ-LSw"/>
                         <outlet property="Run_DurationText" destination="vBo-TB-Sjy" id="bjj-Tp-nbB"/>
                         <outlet property="Run_NoText" destination="LFk-o4-bgk" id="Hgu-P3-WYz"/>
-                        <segue destination="fwB-hf-z9B" kind="show" identifier="BasicTransactionToPreExtrationSegue" id="eta-HH-8GY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IYr-Vz-oZB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1421,12 +1436,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="UaO-ZV-Dve">
-                                <rect key="frame" x="0.0" y="68" width="600" height="532"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="532" id="yMR-9j-sHQ"/>
-                                </constraints>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pks-F3-72Y">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="Add Process Run" id="XXH-Mr-zJc">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="YlQ-sJ-qA2">
+                                            <connections>
+                                                <action selector="Cancel:" destination="n7M-xh-KKU" id="3NY-e9-dMZ"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="play" id="Bnd-JI-SDd">
+                                            <connections>
+                                                <action selector="SaveAndForward:" destination="n7M-xh-KKU" id="YrL-Tg-1Kj"/>
+                                                <segue destination="0DX-Le-gpT" kind="presentation" identifier="Run_ProcessToPost_ExtractionSegue" id="U52-47-JDD"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                                <connections>
+                                    <outlet property="delegate" destination="n7M-xh-KKU" id="Bne-Rd-Q28"/>
+                                </connections>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="UaO-ZV-Dve">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ProcessRunCellIdentifier" id="DJh-J1-1wf" customClass="Process_RunCell">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -1434,55 +1467,55 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DJh-J1-1wf" id="bFJ-h9-8oZ">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" directionalLockEnabled="YES" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JEw-Ph-6hk">
-                                                    <rect key="frame" x="8" y="1" width="600" height="42"/>
+                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JEw-Ph-6hk">
+                                                    <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                                     <subviews>
-                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Interval" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DmK-R0-zFC">
-                                                            <rect key="frame" x="8" y="10" width="56" height="21"/>
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Interval" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DmK-R0-zFC">
+                                                            <rect key="frame" x="8" y="7" width="56" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                                                             <connections>
                                                                 <outlet property="delegate" destination="n7M-xh-KKU" id="fPy-eD-ygQ"/>
                                                             </connections>
                                                         </textField>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Parameter 1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7dk-Q5-DzM">
-                                                            <rect key="frame" x="72" y="10" width="88" height="21"/>
+                                                        <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Parameter 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7dk-Q5-DzM">
+                                                            <rect key="frame" x="72" y="7" width="94" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                             <connections>
                                                                 <outlet property="delegate" destination="n7M-xh-KKU" id="nBE-5o-PQK"/>
                                                             </connections>
                                                         </textField>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Parameter 2" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kiw-Al-Gq6">
-                                                            <rect key="frame" x="168" y="10" width="94" height="21"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="n7M-xh-KKU" id="iWx-9R-rrk"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Parameter 3" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rq0-KF-tqU">
-                                                            <rect key="frame" x="270" y="10" width="94" height="21"/>
+                                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Parameter 3" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rq0-KF-tqU">
+                                                            <rect key="frame" x="276" y="7" width="94" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                             <connections>
                                                                 <outlet property="delegate" destination="n7M-xh-KKU" id="hVJ-ZG-gsl"/>
                                                             </connections>
                                                         </textField>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Value" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fHE-mK-pax">
-                                                            <rect key="frame" x="474" y="10" width="97" height="21"/>
+                                                        <textField opaque="NO" clipsSubviews="YES" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Value" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fHE-mK-pax">
+                                                            <rect key="frame" x="480" y="7" width="94" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                             <connections>
                                                                 <outlet property="delegate" destination="n7M-xh-KKU" id="raj-Wm-2vo"/>
                                                             </connections>
                                                         </textField>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Parameter 4" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aHz-SI-BaA">
-                                                            <rect key="frame" x="372" y="10" width="94" height="21"/>
+                                                        <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Parameter 4" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aHz-SI-BaA">
+                                                            <rect key="frame" x="378" y="7" width="94" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                             <connections>
                                                                 <outlet property="delegate" destination="n7M-xh-KKU" id="qKk-uB-uDW"/>
+                                                            </connections>
+                                                        </textField>
+                                                        <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Parameter 2" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kiw-Al-Gq6">
+                                                            <rect key="frame" x="174" y="7" width="94" height="30"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                            <connections>
+                                                                <outlet property="delegate" destination="n7M-xh-KKU" id="iWx-9R-rrk"/>
                                                             </connections>
                                                         </textField>
                                                     </subviews>
@@ -1491,6 +1524,12 @@
                                                     </connections>
                                                 </scrollView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="JEw-Ph-6hk" secondAttribute="trailing" id="CGD-ja-tCl"/>
+                                                <constraint firstItem="JEw-Ph-6hk" firstAttribute="top" secondItem="bFJ-h9-8oZ" secondAttribute="top" id="CTd-ZO-uhC"/>
+                                                <constraint firstAttribute="bottom" secondItem="JEw-Ph-6hk" secondAttribute="bottom" id="MZJ-uF-uiS"/>
+                                                <constraint firstItem="JEw-Ph-6hk" firstAttribute="leading" secondItem="bFJ-h9-8oZ" secondAttribute="leading" id="vY4-un-Rga"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="IntervalText" destination="DmK-R0-zFC" id="USb-ew-gcz"/>
@@ -1511,28 +1550,22 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="5H7-PH-xPD" firstAttribute="top" secondItem="UaO-ZV-Dve" secondAttribute="bottom" id="2ZD-Hd-yJW"/>
-                            <constraint firstItem="UaO-ZV-Dve" firstAttribute="top" secondItem="bgF-Ip-UWZ" secondAttribute="bottom" constant="4" id="LrT-Og-eiv"/>
-                            <constraint firstItem="UaO-ZV-Dve" firstAttribute="leading" secondItem="0QG-Yk-LyI" secondAttribute="leading" id="cgv-yx-09q"/>
-                            <constraint firstAttribute="trailing" secondItem="UaO-ZV-Dve" secondAttribute="trailing" id="ynM-WX-ZqZ"/>
+                            <constraint firstItem="pks-F3-72Y" firstAttribute="leading" secondItem="0QG-Yk-LyI" secondAttribute="leading" id="M02-0u-fK0"/>
+                            <constraint firstItem="pks-F3-72Y" firstAttribute="top" secondItem="bgF-Ip-UWZ" secondAttribute="bottom" id="PI9-f1-mmF"/>
+                            <constraint firstItem="UaO-ZV-Dve" firstAttribute="leading" secondItem="0QG-Yk-LyI" secondAttribute="leading" id="V7n-sj-SaJ"/>
+                            <constraint firstItem="UaO-ZV-Dve" firstAttribute="top" secondItem="pks-F3-72Y" secondAttribute="bottom" id="Whr-B4-NQy"/>
+                            <constraint firstAttribute="trailing" secondItem="pks-F3-72Y" secondAttribute="trailing" id="YxD-M3-Yu6"/>
+                            <constraint firstItem="5H7-PH-xPD" firstAttribute="top" secondItem="UaO-ZV-Dve" secondAttribute="bottom" id="f8u-0i-w2a"/>
+                            <constraint firstAttribute="trailing" secondItem="UaO-ZV-Dve" secondAttribute="trailing" id="kWC-YW-Xvi"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add Transaction -Process Run" id="YSN-r4-yRh">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="dOp-fc-beo">
-                            <connections>
-                                <action selector="Cancel:" destination="n7M-xh-KKU" id="g0F-65-n7P"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Forward" id="5hY-B5-bwV">
-                            <connections>
-                                <action selector="SaveAndForward:" destination="n7M-xh-KKU" id="V1P-J8-kB5"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="dOp-fc-beo"/>
+                        <barButtonItem key="rightBarButtonItem" title="Forward" id="5hY-B5-bwV"/>
                     </navigationItem>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="aTableView" destination="UaO-ZV-Dve" id="1F1-AT-JPi"/>
-                        <segue destination="0DX-Le-gpT" kind="show" identifier="Run_ProcessToPost_ExtractionSegue" id="xxh-HR-C3J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NtZ-Dg-fEV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1551,12 +1584,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="xGE-ek-t2H">
-                                <rect key="frame" x="0.0" y="68" width="600" height="532"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="532" id="WdM-QX-SPu"/>
-                                </constraints>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="29L-Ou-SdV">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="Add Post-extraction" id="ZBc-Dj-YJF">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="7R2-03-Hxh">
+                                            <connections>
+                                                <action selector="Cancel:" destination="0DX-Le-gpT" id="eNO-hj-Fs1"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="dag-Ov-JgQ">
+                                            <connections>
+                                                <action selector="SaveAndExit:" destination="0DX-Le-gpT" id="JDw-eK-Zrw"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                                <connections>
+                                    <outlet property="delegate" destination="0DX-Le-gpT" id="2Of-vK-dgo"/>
+                                </connections>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="xGE-ek-t2H">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Post_ExtractionCellIdentifier" id="kgh-j5-K94">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -1574,23 +1624,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="xGE-ek-t2H" secondAttribute="trailing" id="Xf7-Tg-GE8"/>
-                            <constraint firstItem="xGE-ek-t2H" firstAttribute="top" secondItem="EEa-dq-1Mn" secondAttribute="bottom" constant="4" id="adA-5p-Jqu"/>
-                            <constraint firstItem="jN2-XB-zDZ" firstAttribute="top" secondItem="xGE-ek-t2H" secondAttribute="bottom" id="ctZ-G2-PND"/>
-                            <constraint firstItem="xGE-ek-t2H" firstAttribute="leading" secondItem="Q1O-gG-Rja" secondAttribute="leading" id="pGH-hp-VCu"/>
+                            <constraint firstItem="29L-Ou-SdV" firstAttribute="top" secondItem="EEa-dq-1Mn" secondAttribute="bottom" id="BWP-Ke-veS"/>
+                            <constraint firstAttribute="trailing" secondItem="29L-Ou-SdV" secondAttribute="trailing" id="DQN-Ae-Teg"/>
+                            <constraint firstItem="29L-Ou-SdV" firstAttribute="leading" secondItem="Q1O-gG-Rja" secondAttribute="leading" id="Ook-tW-oIj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add Transaction - Post-extraction" id="eHg-Js-ebs">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OPk-Yi-sgg">
-                            <connections>
-                                <action selector="Cancel:" destination="0DX-Le-gpT" id="wjb-F3-scm"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="oyw-7c-KUj">
-                            <connections>
-                                <action selector="SaveAndExit:" destination="0DX-Le-gpT" id="axO-Iz-6Zb"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OPk-Yi-sgg"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="oyw-7c-KUj"/>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="xGE-ek-t2H" id="rtD-W4-LEv"/>
@@ -1605,7 +1646,7 @@
         <!--Add Transaction - Pre-extraction-->
         <scene sceneID="QNM-qD-3iZ">
             <objects>
-                <viewController storyboardIdentifier="AddTransaction_Pre_ID" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fwB-hf-z9B" customClass="AddTransaction_Pre" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddTransaction_Pre_ID" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fwB-hf-z9B" customClass="AddTransaction_Pre" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rId-aj-oCs"/>
                         <viewControllerLayoutGuide type="bottom" id="ZoZ-gg-lon"/>
@@ -1614,13 +1655,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="8eF-5U-jzh">
-                                <rect key="frame" x="0.0" y="68" width="600" height="532"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="532" id="5gO-yP-qcI"/>
-                                    <constraint firstAttribute="width" constant="600" id="Moh-7S-rbj"/>
-                                </constraints>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2si-DC-6cn">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="Add Pre-extraction" id="tYz-Dk-n74">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Tci-ta-72b">
+                                            <connections>
+                                                <action selector="Cancel:" destination="fwB-hf-z9B" id="cv5-3C-Lk2"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="play" id="Njz-Tg-PKw">
+                                            <connections>
+                                                <action selector="SaveAndForward:" destination="fwB-hf-z9B" id="C8M-pq-Y07"/>
+                                                <segue destination="n7M-xh-KKU" kind="presentation" identifier="Pre_ExtractionToRunExtractionSegue" id="LSq-sd-h6m"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                                <connections>
+                                    <outlet property="delegate" destination="fwB-hf-z9B" id="hYc-cO-vAP"/>
+                                </connections>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="8eF-5U-jzh">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Pre_ExtractionCellIdentifier" id="Ok1-yy-XQA" customClass="AddTransaction_PreCell">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -1628,14 +1686,28 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ok1-yy-XQA" id="AWl-IH-H5c">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Parameter 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cKV-Cq-rs9">
-                                                    <rect key="frame" x="150" y="7" width="300" height="30"/>
-                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Parameter 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cKV-Cq-rs9">
+                                                    <rect key="frame" x="20" y="7" width="300" height="30"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" constant="300" id="e9e-Tp-iX3"/>
                                                         <constraint firstAttribute="width" constant="300" id="hEV-iI-7rR"/>
+                                                        <constraint firstAttribute="width" constant="240" id="tI6-a6-K7H"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="hEV-iI-7rR"/>
+                                                            <exclude reference="tI6-a6-K7H"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <mask key="constraints">
+                                                            <exclude reference="e9e-Tp-iX3"/>
+                                                            <include reference="tI6-a6-K7H"/>
+                                                        </mask>
+                                                    </variation>
                                                     <connections>
                                                         <outlet property="delegate" destination="fwB-hf-z9B" id="BO6-Bn-qg0"/>
                                                     </connections>
@@ -1644,7 +1716,23 @@
                                             <constraints>
                                                 <constraint firstItem="cKV-Cq-rs9" firstAttribute="top" secondItem="AWl-IH-H5c" secondAttribute="topMargin" constant="-1" id="AtN-0t-MGb"/>
                                                 <constraint firstItem="cKV-Cq-rs9" firstAttribute="top" secondItem="AWl-IH-H5c" secondAttribute="topMargin" constant="-1" id="J1r-g8-Dau"/>
+                                                <constraint firstItem="cKV-Cq-rs9" firstAttribute="top" secondItem="AWl-IH-H5c" secondAttribute="top" constant="7" id="Pzt-n2-QLk"/>
+                                                <constraint firstItem="cKV-Cq-rs9" firstAttribute="leading" secondItem="AWl-IH-H5c" secondAttribute="leading" constant="20" id="d5t-0R-F6O"/>
+                                                <constraint firstItem="cKV-Cq-rs9" firstAttribute="leading" secondItem="AWl-IH-H5c" secondAttribute="leading" constant="10" id="hu3-wQ-UYy"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="AtN-0t-MGb"/>
+                                                    <exclude reference="J1r-g8-Dau"/>
+                                                    <exclude reference="hu3-wQ-UYy"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="constraints">
+                                                    <exclude reference="d5t-0R-F6O"/>
+                                                    <include reference="hu3-wQ-UYy"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="p_1Text" destination="cKV-Cq-rs9" id="85D-iV-uaW"/>
@@ -1659,27 +1747,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="8eF-5U-jzh" firstAttribute="top" secondItem="rId-aj-oCs" secondAttribute="bottom" constant="4" id="2wn-HW-mKg"/>
-                            <constraint firstItem="ZoZ-gg-lon" firstAttribute="top" secondItem="8eF-5U-jzh" secondAttribute="bottom" id="D3c-lm-TXX"/>
+                            <constraint firstItem="2si-DC-6cn" firstAttribute="top" secondItem="rId-aj-oCs" secondAttribute="bottom" id="1vd-hg-YCG"/>
                             <constraint firstAttribute="trailing" secondItem="8eF-5U-jzh" secondAttribute="trailing" id="S0B-fv-hKp"/>
+                            <constraint firstItem="2si-DC-6cn" firstAttribute="leading" secondItem="rro-YP-Wn1" secondAttribute="leading" id="VGH-KK-mGN"/>
+                            <constraint firstAttribute="bottom" secondItem="8eF-5U-jzh" secondAttribute="bottom" id="hDW-gp-z65"/>
+                            <constraint firstAttribute="trailing" secondItem="2si-DC-6cn" secondAttribute="trailing" id="lo6-sA-12t"/>
                             <constraint firstItem="8eF-5U-jzh" firstAttribute="leading" secondItem="rro-YP-Wn1" secondAttribute="leading" id="nxj-aP-Mwv"/>
+                            <constraint firstItem="8eF-5U-jzh" firstAttribute="top" secondItem="2si-DC-6cn" secondAttribute="bottom" id="qDI-hn-Mgn"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Add Transaction - Pre-extraction" id="Ncd-L4-icJ">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fL5-3G-SyQ">
-                            <connections>
-                                <action selector="Cancel:" destination="fwB-hf-z9B" id="v81-yy-wpW"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Forward" id="YVT-fN-RGi">
-                            <connections>
-                                <action selector="SaveAndForward:" destination="fwB-hf-z9B" id="ncu-6x-jhx"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fL5-3G-SyQ"/>
+                        <barButtonItem key="rightBarButtonItem" title="Forward" id="YVT-fN-RGi"/>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="8eF-5U-jzh" id="XPk-N3-fEU"/>
-                        <segue destination="n7M-xh-KKU" kind="show" identifier="Pre_ExtractionToRunExtractionSegue" id="DsE-Xt-xqs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BTU-s6-Re3" userLabel="First Responder" sceneMemberID="firstResponder"/>

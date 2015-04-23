@@ -53,6 +53,10 @@
     }];
    }
 
+-(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+    return UIBarPositionTopAttached;
+}
+
 - (void)refreshTable {
     //TODO: refresh your data
     [self.refreshControl endRefreshing];
@@ -60,17 +64,24 @@
 }
 
 - (IBAction)Cancel:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    //[self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 { NSLog(@"The No Of ROws %ld",self.ObjectCount);
 // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
     return self.ObjectCount ;
-   }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.1f;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

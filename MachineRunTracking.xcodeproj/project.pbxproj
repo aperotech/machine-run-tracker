@@ -592,7 +592,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = AperoTechnologies;
+				ORGANIZATIONNAME = "Apero Technologies";
 				TargetAttributes = {
 					04461CA31AD3913700CBC80A = {
 						CreatedOnToolsVersion = 6.1;

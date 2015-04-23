@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface AddTransaction_Run : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate ,UITextFieldDelegate>
+@interface AddTransaction_Run : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate ,UITextFieldDelegate, UIBarPositioningDelegate>
 
 @property(strong,nonatomic)PFObject *parameterAdd_RunPF;
 @property (nonatomic, strong) IBOutlet UITableView *aTableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *RunProcessArray;
 
-- (void)addORDeleteRows;
+//- (void)addORDeleteRows;
 @property(strong,nonatomic) UIRefreshControl *refreshControl;
 @property (weak,nonatomic)IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;

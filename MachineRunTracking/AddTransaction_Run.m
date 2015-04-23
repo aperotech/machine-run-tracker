@@ -87,6 +87,11 @@
     
     // Do any additional setup after loading the view.
 }
+
+-(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+    return UIBarPositionTopAttached;
+}
+
 - (void)refreshTable {
     //TODO: refresh your data
     [self.refreshControl endRefreshing];
@@ -123,7 +128,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    int count = [self.RunProcessArray count];
+    int count = (int)[self.RunProcessArray count];
     NSLog(@"The Count Is %d",count);
     if(self.editing) count++;
     return count;
@@ -328,8 +333,8 @@
 
 
 - (IBAction)Cancel:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
-    
+    //[self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

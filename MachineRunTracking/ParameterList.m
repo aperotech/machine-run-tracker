@@ -85,7 +85,7 @@
     return query;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
  {
  return 40.0f;
  }
@@ -129,7 +129,7 @@
  
  return sectionHeaderView;
  
- }
+ }*/
  
 
 
@@ -137,22 +137,39 @@
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object
 {
-    static NSString *simpleTableIdentifier = @"ParameterListCellIdentifier";
-    
-    ParameterListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    if (cell == nil) {
-        cell = [[ParameterListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    if (indexPath.row==0) {
+        static NSString *simpleTableIdentifier1 = @"ParameterListHeaderCellIdentifier";
+        
+        ParameterListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier1];
+        if (cell == nil) {
+            cell = [[ParameterListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier1];
+        }
+        
+        // Configure the cell
+        cell.backgroundColor=[UIColor grayColor];
+      //  [cell.parameterName setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
+        //[cell.parameterType setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
+       // [cell.parameterUnits setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
+        cell.parameterName.text=@"Name";
+        cell.parameterType.text=@"Type";
+        cell.parameterUnits.text=@"Units";
+        return cell;
+    } else {
+        static NSString *simpleTableIdentifier = @"ParameterListCellIdentifier";
+        
+        ParameterListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+        if (cell == nil) {
+            cell = [[ParameterListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        }
+        
+        // Configure the cell
+        cell.parameterName.text=[object objectForKey:@"Name"];
+        cell.parameterType.text=[object objectForKey:@"Type"];
+        cell.parameterUnits.text=[object objectForKey:@"Units"];
+        
+        return cell;
     }
-    
-    // Configure the cell
-    cell.parameterName.text=[object objectForKey:@"Name"];
-    cell.parameterType.text=[object objectForKey:@"Type"];
-    cell.parameterUnits.text=[object objectForKey:@"Units"];
-    
-    
-    
-    
-    return cell;
+ 
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

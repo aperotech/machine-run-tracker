@@ -8,13 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Process_RunCell : UITableViewCell<UITableViewDataSource,UITableViewDelegate>
-
-{
-    UITableView *horizontalTableView;
-    
-    NSArray *contentArray;
-}
+@interface Process_RunCell : UITableViewCell
 
 
 

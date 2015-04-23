@@ -19,4 +19,8 @@
 @property(nonatomic,weak) NSArray *myArray;
 @property (strong, nonatomic) IBOutlet UIPickerView *picker;
 @property (strong, nonatomic) NSArray *pickerArray;
+@property (weak,nonatomic)UITextField *activeField;
+@property (weak,nonatomic) UIToolbar *mypickerToolbar;
+
+
 @end

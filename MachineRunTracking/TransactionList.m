@@ -85,7 +85,7 @@
     return query;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 40.0f;
 }
@@ -130,29 +130,52 @@
     return sectionHeaderView;
     
 }
-
+*/
 
 
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object
 {
-    static NSString *simpleTableIdentifier = @"TransactionListCellIdentifier";
     
-    TransactionListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    if (cell == nil) {
-        cell = [[TransactionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    if (indexPath.row==0) {
+        static NSString *simpleTableIdentifier1 = @"TransactionListHeaderCellIdentifier";
+        
+        TransactionListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier1];
+        if (cell == nil) {
+            cell = [[TransactionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier1];
+        }
+        
+        // Configure the cell
+        cell.backgroundColor=[UIColor grayColor];
+        
+        cell.Run_No.text=[object objectForKey:@"Run_No"];
+        cell.Machine_Name.text=[object objectForKey:@"Machine_Name"];
+        cell.Run_Date.text=[object objectForKey:@"Run_Date"];
+        
+        
+        return cell;
+
+    } else {
+        static NSString *simpleTableIdentifier = @"TransactionListCellIdentifier";
+        
+        TransactionListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+        if (cell == nil) {
+            cell = [[TransactionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        }
+        
+        // Configure the cell
+        cell.Run_No.text=[object objectForKey:@"Run_No"];
+        cell.Machine_Name.text=[object objectForKey:@"Machine_Name"];
+        cell.Run_Date.text=[object objectForKey:@"Run_Date"];
+        return cell;
     }
     
-    // Configure the cell
-    cell.Run_No.text=[object objectForKey:@"Run_No"];
-    cell.Machine_Name.text=[object objectForKey:@"Machine_Name"];
-    cell.Run_Date.text=[object objectForKey:@"Run_Date"];
     
     
     
     
-    return cell;
+   
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

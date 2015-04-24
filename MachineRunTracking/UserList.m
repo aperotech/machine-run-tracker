@@ -45,6 +45,11 @@
    [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
     PFUser *currentUser = [PFUser currentUser];
    
+    //[query whereKey:@"Parameter_4" equalTo:@"Akshay"];
+    
+    
+    self.HeaderArray=[[NSMutableArray alloc]initWithObjects:@"UserName",@"email",@"User Type", nil];
+    
     
     if (currentUser) {
     //    NSLog(@"Current user: %@", currentUser.username);
@@ -100,19 +105,39 @@
 // a UITableViewCellStyleDefault style cell with the label being the textKey in the object,
 // and the imageView being the imageKey in the object.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
+    
+    
+    if(indexPath.row==0){
+     static NSString *CellIdentifier1 = @"UserListHeaderCellIdentifier";
+        
+        UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+        self.tableView.separatorColor = [UIColor lightGrayColor];
+        if (cell == nil) {
+            cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
+        }
+        cell.backgroundColor=[UIColor grayColor];
+        cell.userNameLabel.text= [self.HeaderArray objectAtIndex:0];
+        cell.userEmailLabel.text=[self.HeaderArray objectAtIndex:2];
+        cell.userTypeLabel.text=[self.HeaderArray objectAtIndex:1];
+        return cell;
+    }else {
     static NSString *CellIdentifier = @"UserListCellIdentifier";
- 
-     UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    self.tableView.separatorColor = [UIColor lightGrayColor];
-    if (cell == nil) {
-        cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+   
+        UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+       
+        self.tableView.separatorColor = [UIColor lightGrayColor];
+        if (cell == nil) {
+            cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        cell.userNameLabel.text=[object objectForKey:@"username"];
+        cell.userEmailLabel.text=[object objectForKey:@"email"];
+        cell.userTypeLabel.text=[object objectForKey:@"usertype"];
+        return cell;
+
     }
     
-    cell.userNameLabel.text=[object objectForKey:@"username"];
-   cell.userEmailLabel.text=[object objectForKey:@"email"];
-   cell.userTypeLabel.text=[object objectForKey:@"usertype"];
-    
-         return cell;
 }
 
 
@@ -134,7 +159,7 @@
     [error localizedDescription];
    
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 40.0f;
 }
@@ -178,7 +203,7 @@
     
     return sectionHeaderView;
     
-}
+}*/
 
 
 #pragma mark - UITableViewDelegate
@@ -192,7 +217,7 @@
     
     if ([segue.identifier isEqualToString:@"userListTouserDetailsSegue"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        PFObject *object = [self.objects objectAtIndex:indexPath.row];
+        PFObject *object = [self.objects objectAtIndex:indexPath.row ];
         
         UserDetails *userdetailsObj = (UserDetails *)segue.destinationViewController;
         userdetailsObj.UpdateObjPF = object;

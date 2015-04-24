@@ -10,12 +10,6 @@
 
 @interface Process_RunCell : UITableViewCell
 
-{
-    UITableView *horizontalTableView;
-    
-    NSArray *contentArray;
-}
-
 
 
 

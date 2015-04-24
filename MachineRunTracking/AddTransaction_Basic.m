@@ -7,7 +7,7 @@
 //
 
 #import "AddTransaction_Basic.h"
-#import "SegmentedLocationVC.h"
+//#import "SegmentedLocationVC.h"
 @interface AddTransaction_Basic ()
 
 @end

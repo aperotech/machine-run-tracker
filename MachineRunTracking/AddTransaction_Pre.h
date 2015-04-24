@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SegmentedLocationVC.h"
+//#import "SegmentedLocationVC.h"
 #import <Parse/Parse.h>
 /*@class AddTransaction_Pre;
 @protocol AddTransaction_PreDelegates <NSObject>

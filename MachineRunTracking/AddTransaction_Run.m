@@ -10,7 +10,7 @@
 #import "Process_RunCell.h"
 #import "MainMenu.h"
 #import <Parse/Parse.h>
-
+#define valueForX 8
 @interface AddTransaction_Run ()
 
 @end    
@@ -224,9 +224,18 @@
     if (cell == nil) {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
-        
-        
-        cell.editingAccessoryType = YES;
+        /*for (int i=indexPath.row ;i< [self.dataArray count];i++) {
+            UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(valueForX+102,10,88,21)];
+            valueTextField.tag = indexPath.row;
+            [valueTextField borderStyle];
+            valueTextField.backgroundColor =[UIColor grayColor];
+            valueTextField.delegate = self;
+            valueTextField.placeholder=@"Parameters";
+            [cell.contentView addSubview:valueTextField];
+            
+            
+            cell.editingAccessoryType = YES;
+        }*/
     }
     
     int count = 0;
@@ -259,7 +268,7 @@
     cell.ValueText.text = @"Parameters3";*/
     
     
-    cell.IntervalText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Interval"];
+   cell.IntervalText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Interval"];
     cell.ParametersText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_1"];
     cell.Parameters1Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_2"];
     cell.Parameters2Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_3"];
@@ -368,7 +377,7 @@
         [self updateParameters];
     }
     else {
-        [self saveParameters];
+[self saveParameters];
     }
 
 }

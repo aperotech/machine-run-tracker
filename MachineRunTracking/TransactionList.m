@@ -46,6 +46,19 @@
 {
     [super viewDidLoad];
     
+  /*  PFQuery *query = [PFQuery queryWithClassName:@"_User"];
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        if (!object) {
+            // Did not find any UserStats for the current user
+        } else {
+            // Found UserStats
+          //  int highScore = [[object objectForKey:@"highScore"] intValue];
+        }
+    }];
+    */
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshTable:)
                                                  name:@"refreshTable"
@@ -149,9 +162,9 @@
         // Configure the cell
         cell.backgroundColor=[UIColor grayColor];
         
-        cell.Run_No.text=[object objectForKey:@"Run_No"];
-        cell.Machine_Name.text=[object objectForKey:@"Machine_Name"];
-        cell.Run_Date.text=[object objectForKey:@"Run_Date"];
+        cell.Run_No.text=@"Run_No";
+        cell.Machine_Name.text=@"Machine_Name";
+        cell.Run_Date.text=@"Run_Date";
         
         
         return cell;

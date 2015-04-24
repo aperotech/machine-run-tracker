@@ -22,9 +22,29 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    PFQuery *query = [PFQuery queryWithClassName:@"Parameters"];
-    [query whereKey:@"Type" equalTo:@"Process_run"];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+    [query orderByDescending:@"createdAt"];
+    
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        
+        if (!object) {
+            // Did not find any UserStats for the current user
+        } else {
+            // Found UserStats
+            NSLog(@"The Objec ts %@",object);
+            self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
+            NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
+        }
+        
+        
+    }];
+    NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
+
+    
+    
+    PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
+    [query1 whereKey:@"Type" equalTo:@"Process_run"];
+    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
         NSLog(@"all types: %ld",(long)objects.count);
        // self.ObjectCount=objects.count;
@@ -44,9 +64,9 @@
               // [self.aTableView addSubview:self.refreshControl];
               // [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
               
-                PFQuery *query = [PFQuery queryWithClassName:@"Run_Process"];
-                [query whereKey:@"Parameter_4" equalTo:@"Akshay"];
-                [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                PFQuery *query2 = [PFQuery queryWithClassName:@"Run_Process"];
+                [query2 whereKey:@"Parameter_4" equalTo:@"Akshay"];
+                [query2 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                     // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                     NSLog(@"all types: %ld",(long)objects.count);
                     // self.ObjectCount=objects.count;
@@ -226,9 +246,20 @@
     static NSString *CellIdentifier = @"ProcessRunCellIdentifier";
     
     Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell != nil) {
+    if (cell == nil) {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
+       /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
+            UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
+            valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)
+            valueTextField.borderStyle = UITextBorderStyleRoundedRect;
+            [valueTextField setReturnKeyType:UIReturnKeyDefault];
+            [valueTextField setEnablesReturnKeyAutomatically:YES];
+            [valueTextField setDelegate:self];
+            valueTextField.placeholder=@"P_1";
+valueTextField.backgroundColor=[UIColor grayColor];
+            [cell.contentView addSubview:valueTextField];
+            // don't forget to do [tf release]; if not using ARC
+        }*/
         /*for (int i=indexPath.row ;i< [self.dataArray count];i++) {
             UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.scrollView.bounds.origin.x +203,10,88,21)];
             valueTextField.tag = indexPath.row;
@@ -345,7 +376,15 @@
     //[self.navigationController popViewControllerAnimated:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
+/*- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    UITableViewCell *cell = (UITableViewCell *)[[[textField superview]superview ] superview];
+    UITextField *nextTextField = [cell.contentView viewWithTag:textField.tag + 1];
+    [nextTextField becomeFirstResponder];
+    NSLog(@"The Value In Next text Field Is %@",nextTextField.text);
+    return nextTextField.text;
+}*/
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[[[textField superview]superview ] superview];
@@ -377,18 +416,26 @@
     
 }
 -(IBAction)SaveAndForward:(id)sender {
-  // [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+   
+   
+    //[self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+    
     if (self.parameterAdd_RunPF != nil) {
         [self updateParameters];
     }
     else {
-[self saveParameters];
+        [self saveParameters];
     }
 
 }
 
 - (void)saveParameters
 {
+    
+   
+
+    
+    
     PFObject *NewParameter=[PFObject  objectWithClassName:@"Run_Process" ];
     
     if([NewParameter save]) {
@@ -400,6 +447,7 @@
         ParameterValue[@"Parameter_3"] = self.Parameter3;
         ParameterValue[@"Parameter_4"] = @"Akshay";
         ParameterValue[@"Value"] = self.Value;
+        ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
         
         
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -472,7 +520,7 @@
             [UpdateParameter setObject:self.Parameter3 forKey:@"Parameter_3"];
             [UpdateParameter setObject:@"Akshay" forKey:@"Parameter_4"];
             [UpdateParameter setObject:self.Value forKey:@"Value"];
-            
+            [UpdateParameter setObject:self.LastInsertedTransactionNo forKey:@"Run_No"];
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {

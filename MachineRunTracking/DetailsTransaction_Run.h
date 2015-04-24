@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <Parse/Parse.h>
 @interface DetailsTransaction_Run : UIViewController
-
+@property (weak, nonatomic) IBOutlet UILabel *MachineNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *RunDurationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *RunDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *RunNoLabel;
+@property(strong,nonatomic)PFObject *DetialsTransaction_RunPF;
 @end

@@ -7,17 +7,125 @@
 //
 
 #import "DetailsTransaction_Pre.h"
-
+#import "DetailsPreCell.h"
 @interface DetailsTransaction_Pre ()
 
 @end
 
 @implementation DetailsTransaction_Pre
+@synthesize Run_noLabel,RunDateLabel,RunDurationLabel,MachineNameLabel;
+
 @synthesize DetialsTransaction_PrePF;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if (DetialsTransaction_PrePF !=NULL) {
+        Run_noLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_No"];
+        RunDateLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_Date"];
+        RunDurationLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_Duration"];
+        MachineNameLabel.text=[DetialsTransaction_PrePF objectForKey:@"Machine_Name"];
+    }
     // Do any additional setup after loading the view.
+    PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
+    [query1 whereKey:@"Type" equalTo:@"Pre_Extraction"];
+    NSLog(@"The Query For Pre_Extraction %@",query1);
+    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+        NSLog(@"all types: %ld",(long)objects.count);
+        self.ObjectCount=objects.count;
+        if(error){
+            NSLog(@"Error!");
+        }
+        else {
+            if (objects.count == 0) {
+                NSLog(@"None found");
+            }
+            else {
+                [self.tableView reloadData];
+                }
+            //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+        }
+    }];
+
+    PFQuery *query2 = [PFQuery queryWithClassName:@"Pre_Extraction"];
+    [query2 whereKey:@"Run_No" equalTo:Run_noLabel.text];
+    NSLog(@"The Query For loade objecs %@",query2);
+    [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
+        // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+        NSLog(@"all types: %ld",(long)runArray.count);
+        //self.ObjectCount=runArray.count;
+        if(error){
+            NSLog(@"Error!");
+        }
+        else {
+            if (runArray.count == 0) {
+                NSLog(@"None found");
+            }
+            else {
+                NSLog(@"The Objecds Are %@",runArray);
+                self.runArrayPre=[[NSArray alloc]initWithArray:runArray];
+                NSLog(@"The RunArray Pre Are %@",self.runArrayPre);
+                [self.tableView reloadData];
+            }
+            //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+        }
+    }];
+
+
 }
+
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{ NSLog(@"The No Of ROws %ld",self.ObjectCount);
+    // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+    return self.ObjectCount ;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.1f;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *simpleTableIdentifier = @"Pre_ExtractionCellIdentifier";
+    
+    DetailsPreCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    
+    if (cell == nil) {
+        cell = [[DetailsPreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        cell.backgroundColor=[UIColor grayColor];
+    }
+    cell.parameterLabel.tag=indexPath.row;
+    /*if (indexPath.row==0) {
+        cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:0 ]objectForKey:@"Parameter_1"];
+        NSLog(@"Index Path Row 0 %@",cell.parameterLabel.text);
+    }
+    if (indexPath.row==1) {
+        cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:1 ]objectForKey:@"Parameter_2"];
+        NSLog(@"Index Path Row 1 %@",cell.parameterLabel.text);
+    }
+    if (indexPath.row==2) {
+        cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:2 ]objectForKey:@"Parameter_3"];
+        NSLog(@"Index Path Row 2 %@",cell.parameterLabel.text);
+    }
+    if (indexPath.row==3) {
+        cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:3 ]objectForKey:@"Parameter_4"];
+        NSLog(@"Index Path Row 3 %@",cell.parameterLabel.text);
+    }*/
+   // cell.textLabel.tag=indexPath.row;
+    // Configure the cell...
+    
+    
+    return cell;
+}
+
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

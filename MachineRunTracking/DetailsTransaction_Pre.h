@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface DetailsTransaction_Pre : UIViewController
+@interface DetailsTransaction_Pre : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@property (weak, nonatomic) IBOutlet UISegmentedControl *SegmentControl;
+@property (weak, nonatomic) IBOutlet UILabel *RunDurationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *RunDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *Run_noLabel;
+@property (weak, nonatomic) IBOutlet UILabel *MachineNameLabel;
+@property (weak ,nonatomic) IBOutlet UITableView *tableView;
 @property(strong,nonatomic)PFObject *DetialsTransaction_PrePF;
+
+@property (strong,nonatomic)NSArray *runArrayPre;
+
+
+@property(nonatomic)NSInteger ObjectCount;
 @end

@@ -21,14 +21,30 @@
     [super viewDidLoad];
     // [self setupViewControllers];
     
+    PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+    [query orderByDescending:@"createdAt"];
     
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        
+        if (!object) {
+            // Did not find any UserStats for the current user
+        } else {
+            // Found UserStats
+            NSLog(@"The Objec ts %@",object);
+            self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
+            NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
+        }
+        
+        
+    }];
+
    
         // Do any additional setup after loading the view.
     // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
     
-    PFQuery *query = [PFQuery queryWithClassName:@"Parameters"];
-    [query whereKey:@"Type" equalTo:@"Post_Extraction"];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
+    [query1 whereKey:@"Type" equalTo:@"Post_Extraction"];
+    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSLog(@"all types: %ld",(unsigned long)objects.count);
         self.ObjectCount=objects.count;
         if(error){
@@ -135,7 +151,7 @@
 
 
 -(IBAction)SaveAndExit:(id)sender {
-    
+   
     /* NSString *name = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
      
      NSString *description = [descriptionText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -174,7 +190,7 @@
         ParameterValue[@"Parameter_2"] = self.Parameter1;
         ParameterValue[@"Parameter_3"] = self.Parameter2;
         ParameterValue[@"Parameter_4"] = @"Akshay";
-        
+        ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
@@ -247,7 +263,7 @@
             [UpdateParameter setObject:self.Parameter1 forKey:@"Parameter_2"];
             [UpdateParameter setObject:self.Parameter2 forKey:@"Parameter_3"];
             [UpdateParameter setObject:self.Parameter0 forKey:@"Parameter_4"];
-            
+            [UpdateParameter setObject:self.LastInsertedTransactionNo forKey:@"Run_No"];
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {

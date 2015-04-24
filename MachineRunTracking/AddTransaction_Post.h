@@ -18,5 +18,6 @@
 @property(nonatomic,strong)NSString *Parameter1;
 @property(nonatomic,strong)NSString *Parameter2;
 @property(nonatomic,strong)IBOutlet UITableView *tableView;
+@property(nonatomic,strong)NSString *LastInsertedTransactionNo;
 -(IBAction)SaveAndExit:(id)sender;
 @end

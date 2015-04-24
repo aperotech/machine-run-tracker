@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
@@ -449,12 +449,12 @@
         <scene sceneID="5bO-Ha-ZMw">
             <objects>
                 <tableViewController id="ZxU-n2-Kc0" customClass="TransactionList" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6P1-ub-Lvf">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="6P1-ub-Lvf">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransactionListHeaderCellIdentifier" id="lPH-E9-euK" customClass="TransactionListCell">
+                            <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransactionListHeaderCellIdentifier" id="lPH-E9-euK" customClass="TransactionListCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lPH-E9-euK" id="LSR-ru-vLY">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -812,7 +812,7 @@
                                 <rect key="frame" x="0.0" y="179" width="600" height="421"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="fUU-V6-pl1">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Pre_ExtractionCellIdentifier" id="fUU-V6-pl1" customClass="DetailsPreCell">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fUU-V6-pl1" id="7pV-EN-9SX">
@@ -863,8 +863,15 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="parameterLabel" destination="zA2-F2-v9X" id="Pzm-uk-96E"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="LMG-fb-Gqe" id="h1c-M6-KZt"/>
+                                    <outlet property="delegate" destination="LMG-fb-Gqe" id="oD3-aL-MWc"/>
+                                </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Run Date :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ev5-uc-QF0">
                                 <rect key="frame" x="291" y="121" width="78" height="20"/>
@@ -995,6 +1002,12 @@
                     </view>
                     <navigationItem key="navigationItem" title="Transaction - Pre-extraction" id="kkV-HZ-0d1"/>
                     <connections>
+                        <outlet property="MachineNameLabel" destination="xPH-c5-2s4" id="zff-Ei-MdU"/>
+                        <outlet property="RunDateLabel" destination="ayg-SY-0bf" id="zVX-sB-JIn"/>
+                        <outlet property="RunDurationLabel" destination="CbB-vd-qkA" id="hTN-oA-Kbr"/>
+                        <outlet property="Run_noLabel" destination="QzS-Pg-GRM" id="XWV-DG-CUE"/>
+                        <outlet property="SegmentControl" destination="2M7-qW-W5L" id="LBh-nb-nL1"/>
+                        <outlet property="tableView" destination="ZsB-VF-Equ" id="ZJj-F0-cWL"/>
                         <segue destination="Srj-ym-zrs" kind="show" id="FQS-6C-VKr"/>
                     </connections>
                 </viewController>
@@ -1005,7 +1018,7 @@
         <!--Transaction - Run-->
         <scene sceneID="HY2-49-9pT">
             <objects>
-                <viewController id="drS-4h-HqQ" sceneMemberID="viewController">
+                <viewController id="drS-4h-HqQ" customClass="DetailsTransaction_Run" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="v0W-9z-BSK"/>
                         <viewControllerLayoutGuide type="bottom" id="zac-Ec-8ge"/>
@@ -1196,6 +1209,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Transaction - Run" id="tsP-tE-SR7"/>
+                    <connections>
+                        <outlet property="MachineNameLabel" destination="PrA-JV-aZt" id="yix-gC-YzI"/>
+                        <outlet property="RunDateLabel" destination="mnG-y2-2P2" id="Kve-nd-Pty"/>
+                        <outlet property="RunDurationLabel" destination="vT4-eq-guc" id="F16-DG-YxZ"/>
+                        <outlet property="RunNoLabel" destination="iv8-t9-8S8" id="Eam-qh-TPH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HJE-1J-1AO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1357,6 +1376,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Transaction - Post-extraction" id="lsf-cm-VIb"/>
+                    <connections>
+                        <outlet property="MachineNameLabel" destination="pCy-fz-s4B" id="qQw-u8-llf"/>
+                        <outlet property="RunDateLabel" destination="3JL-Mq-QSC" id="y9o-Xg-xHP"/>
+                        <outlet property="RunDurationLabel" destination="5Ke-v5-4I2" id="2Sr-Qf-TDY"/>
+                        <outlet property="RunNoLabel" destination="smJ-mD-91t" id="Gey-fj-tRG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mOA-IT-GCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1514,7 +1539,6 @@
                                         <barButtonItem key="rightBarButtonItem" systemItem="play" id="Sqz-No-Fbt">
                                             <connections>
                                                 <action selector="SaveAndForword:" destination="lMg-ym-jsS" id="zxO-zG-hTp"/>
-                                                <segue destination="fwB-hf-z9B" kind="presentation" identifier="BasicTransactionToPreExtrationSegue" id="vf2-sr-3u1"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -1544,6 +1568,7 @@
                         <outlet property="Run_DateText" destination="H4H-w7-b3Y" id="eph-GZ-LSw"/>
                         <outlet property="Run_DurationText" destination="vBo-TB-Sjy" id="bjj-Tp-nbB"/>
                         <outlet property="Run_NoText" destination="LFk-o4-bgk" id="Hgu-P3-WYz"/>
+                        <segue destination="fwB-hf-z9B" kind="presentation" identifier="BasicTransactionToPreExtrationSegue" id="TyB-08-rsP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IYr-Vz-oZB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1574,7 +1599,6 @@
                                         <barButtonItem key="rightBarButtonItem" systemItem="play" id="Bnd-JI-SDd">
                                             <connections>
                                                 <action selector="SaveAndForward:" destination="n7M-xh-KKU" id="YrL-Tg-1Kj"/>
-                                                <segue destination="0DX-Le-gpT" kind="presentation" identifier="Run_ProcessToPost_ExtractionSegue" id="U52-47-JDD"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -1692,6 +1716,7 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="aTableView" destination="UaO-ZV-Dve" id="1F1-AT-JPi"/>
+                        <segue destination="0DX-Le-gpT" kind="presentation" identifier="Run_ProcessToPost_ExtractionSegue" id="rpl-PL-ucm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NtZ-Dg-fEV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1793,7 +1818,6 @@
                                         <barButtonItem key="rightBarButtonItem" systemItem="play" id="Njz-Tg-PKw">
                                             <connections>
                                                 <action selector="SaveAndForward:" destination="fwB-hf-z9B" id="C8M-pq-Y07"/>
-                                                <segue destination="n7M-xh-KKU" kind="presentation" identifier="Pre_ExtractionToRunExtractionSegue" id="LSq-sd-h6m"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -1890,6 +1914,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="8eF-5U-jzh" id="XPk-N3-fEU"/>
+                        <segue destination="n7M-xh-KKU" kind="presentation" identifier="Pre_ExtractionToRunExtractionSegue" id="wv7-Lz-3xH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BTU-s6-Re3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1908,7 +1933,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUs-Sm-6TO">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUs-Sm-6TO">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="User Type " minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z2A-t6-2jz">
@@ -2964,7 +2989,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pt5-Bt-1Q9">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pt5-Bt-1Q9">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uZO-4S-z2b">
@@ -3311,7 +3336,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEP-Pb-Yxe">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEP-Pb-Yxe">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Code" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="79Q-jh-FAF">

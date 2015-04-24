@@ -25,11 +25,13 @@
     
     // Do any additional setup after loading the view.
    // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
+    
+    
    
-    PFQuery *query = [PFQuery queryWithClassName:@"Parameters"];
-    [query whereKey:@"Type" equalTo:@"Pre_Extraction"];
-    NSLog(@"The Query For Pre_Extraction %@",query);
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
+    [query1 whereKey:@"Type" equalTo:@"Pre_Extraction"];
+    NSLog(@"The Query For Pre_Extraction %@",query1);
+    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
       // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
         NSLog(@"all types: %ld",(long)objects.count);
         self.ObjectCount=objects.count;
@@ -51,6 +53,28 @@
             //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
         }
     }];
+    
+    
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+    [query orderByDescending:@"createdAt"];
+    
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        
+        if (!object) {
+            // Did not find any UserStats for the current user
+        } else {
+            // Found UserStats
+            NSLog(@"The Objec ts %@",object);
+            self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
+            NSLog(@"The String Is To Be Inside %@",self.LastInsertedTransactionNo);
+        }
+        
+        
+    }];
+    NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
+    
+
    }
 
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
@@ -91,7 +115,7 @@
 
     if (cell == nil) {
         cell = [[AddTransaction_PreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
-        
+        cell.backgroundColor=[UIColor grayColor];
     }
     
     cell.p_1Text.tag=indexPath.row;
@@ -175,6 +199,8 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 
 -(IBAction)SaveAndForward:(id)sender {
     
+    
+    
    /* NSString *name = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *description = [descriptionText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -190,13 +216,13 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     }
     else {*/
         
-        //[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+       // [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
         if (parameterAdd_PrePF != nil) {
-           [self updateParameters];
+        [self updateParameters];
         }
         else {
-           [self saveParameters];
+        [self saveParameters];
         }
     //}
     
@@ -213,6 +239,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
      ParameterValue[@"Parameter_2"] = self.Parameter1;
      ParameterValue[@"Parameter_3"] = self.Parameter2;
      ParameterValue[@"Parameter_4"] = self.Parameter3;
+     ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
      
      [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
      if (succeeded) {
@@ -282,7 +309,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             [UpdateParameter setObject:self.Parameter1 forKey:@"Parameter_2"];
             [UpdateParameter setObject:self.Parameter2 forKey:@"Parameter_3"];
             [UpdateParameter setObject:self.Parameter0 forKey:@"Parameter_4"];
-            
+            [UpdateParameter setObject:self.LastInsertedTransactionNo forKey:@"Run_No"];
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {

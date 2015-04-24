@@ -35,4 +35,6 @@
 @property(nonatomic,strong)NSString *Parameter2;
 @property(nonatomic,strong)NSString *Parameter3;
 
+@property(nonatomic,strong)NSString *LastInsertedTransactionNo;
+
 @end

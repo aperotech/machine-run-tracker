@@ -39,6 +39,7 @@
 		044DC1AE1ADBCE7B002578C2 /* DetailsTransaction_Pre.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1AD1ADBCE7B002578C2 /* DetailsTransaction_Pre.m */; };
 		044DC1B11ADBCE93002578C2 /* DetailsTransaction_Run.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */; };
 		044DC1B41ADBCEAF002578C2 /* DetailsTransaction_Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */; };
+		047CF3931AEA746C00C1DDD8 /* DetailsPreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 047CF3921AEA746C00C1DDD8 /* DetailsPreCell.m */; };
 		A1A2B00D1AE8D65500A9DA14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B00B1AE8D62300A9DA14 /* Foundation.framework */; };
 		A1A2B00E1AE8D65700A9DA14 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B0091AE8D61900A9DA14 /* UIKit.framework */; };
 		A1A2B0121AE8D67800A9DA14 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B00F1AE8D67800A9DA14 /* Bolts.framework */; };
@@ -132,6 +133,8 @@
 		044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTransaction_Run.m; sourceTree = "<group>"; };
 		044DC1B21ADBCEAF002578C2 /* DetailsTransaction_Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsTransaction_Post.h; sourceTree = "<group>"; };
 		044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTransaction_Post.m; sourceTree = "<group>"; };
+		047CF3911AEA746C00C1DDD8 /* DetailsPreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsPreCell.h; sourceTree = "<group>"; };
+		047CF3921AEA746C00C1DDD8 /* DetailsPreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsPreCell.m; sourceTree = "<group>"; };
 		A1A2B0091AE8D61900A9DA14 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A1A2B00B1AE8D62300A9DA14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1A2B00F1AE8D67800A9DA14 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -475,6 +478,8 @@
 			children = (
 				044DC1AC1ADBCE7B002578C2 /* DetailsTransaction_Pre.h */,
 				044DC1AD1ADBCE7B002578C2 /* DetailsTransaction_Pre.m */,
+				047CF3911AEA746C00C1DDD8 /* DetailsPreCell.h */,
+				047CF3921AEA746C00C1DDD8 /* DetailsPreCell.m */,
 			);
 			name = Pre;
 			sourceTree = "<group>";
@@ -663,6 +668,7 @@
 				044DC1A51ADBCE10002578C2 /* AddTransaction_Pre.m in Sources */,
 				044DC18A1ADB8276002578C2 /* ParameterListCell.m in Sources */,
 				044DC1B11ADBCE93002578C2 /* DetailsTransaction_Run.m in Sources */,
+				047CF3931AEA746C00C1DDD8 /* DetailsPreCell.m in Sources */,
 				04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */,
 				044DC1A81ADBCE31002578C2 /* AddTransaction_Run.m in Sources */,
 				04461CAA1AD3913700CBC80A /* main.m in Sources */,

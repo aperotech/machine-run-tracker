@@ -221,11 +221,11 @@
     static NSString *CellIdentifier = @"ProcessRunCellIdentifier";
     
     Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    if (cell != nil) {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         /*for (int i=indexPath.row ;i< [self.dataArray count];i++) {
-            UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(valueForX+102,10,88,21)];
+            UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.scrollView.bounds.origin.x +203,10,88,21)];
             valueTextField.tag = indexPath.row;
             [valueTextField borderStyle];
             valueTextField.backgroundColor =[UIColor grayColor];

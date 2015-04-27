@@ -8,6 +8,9 @@
 
 #import "DetailsTransaction_Pre.h"
 #import "DetailsPreCell.h"
+#import "DetailsTransaction_Post.h"
+#import "DetailsTransaction_Run.h"
+#import "SegmentedControlVC.h"
 @interface DetailsTransaction_Pre ()
 
 @end
@@ -30,7 +33,7 @@
     NSLog(@"The Query For Pre_Extraction %@",query1);
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-        NSLog(@"all types: %ld",(long)objects.count);
+        NSLog(@"all types1: %ld",(long)objects.count);
         self.ObjectCount=objects.count;
         if(error){
             NSLog(@"Error!");
@@ -51,7 +54,7 @@
     NSLog(@"The Query For loade objecs %@",query2);
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-        NSLog(@"all types: %ld",(long)runArray.count);
+        NSLog(@"all types2: %ld",(long)runArray.count);
         //self.ObjectCount=runArray.count;
         if(error){
             NSLog(@"Error!");
@@ -100,22 +103,26 @@
         cell.backgroundColor=[UIColor grayColor];
     }
     cell.parameterLabel.tag=indexPath.row;
-    /*if (indexPath.row==0) {
-        cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:0 ]objectForKey:@"Parameter_1"];
+    if (indexPath.row==0) {
+        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_1"];
+       [[self.runArrayPre objectAtIndex:0]objectForKey:@"Parameter_1"];
         NSLog(@"Index Path Row 0 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==1) {
-        cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:1 ]objectForKey:@"Parameter_2"];
+        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_2"];
+        [[self.runArrayPre objectAtIndex:0]objectForKey:@"Parameter_2"];
         NSLog(@"Index Path Row 1 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==2) {
-        cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:2 ]objectForKey:@"Parameter_3"];
+        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_3"];
+        [[self.runArrayPre objectAtIndex:0]objectForKey:@"Parameter_3"];
         NSLog(@"Index Path Row 2 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==3) {
-        cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:3 ]objectForKey:@"Parameter_4"];
+        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_4"];
+        [[self.runArrayPre objectAtIndex:0 ]objectForKey:@"Parameter_4"];
         NSLog(@"Index Path Row 3 %@",cell.parameterLabel.text);
-    }*/
+    }
    // cell.textLabel.tag=indexPath.row;
     // Configure the cell...
     
@@ -132,14 +139,25 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if([segue.identifier isEqualToString:@"DetailsPreToDetailsRunSegue"]) {
+        //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+      //  PFObject *object = [self.objects objectAtIndex:indexPath.row];
+        
+        DetailsTransaction_Run *DetailsTransaction_RunObj = (DetailsTransaction_Run *)segue.destinationViewController;
+        DetailsTransaction_RunObj.DetialsTransaction_RunPF = DetialsTransaction_PrePF;
+    }
+    else if ([segue.identifier isEqualToString:@"DetailsTransactionPreToPostSegue"]){
+        DetailsTransaction_Post *DetailsTransaction_PostObj=(DetailsTransaction_Post *)segue.destinationViewController;
+        DetailsTransaction_PostObj.DetialsTransaction_PostPF=DetialsTransaction_PrePF;
+    }
+    
 }
-*/
+
 
 @end

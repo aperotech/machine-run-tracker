@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 @interface DetailsTransaction_Pre : UIViewController<UITableViewDataSource,UITableViewDelegate>
-@property (weak, nonatomic) IBOutlet UISegmentedControl *SegmentControl;
+@property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
 @property (weak, nonatomic) IBOutlet UILabel *RunDurationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *RunDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *Run_noLabel;

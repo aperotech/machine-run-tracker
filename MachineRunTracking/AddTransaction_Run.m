@@ -156,7 +156,7 @@
 
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 40.0f;
 }
@@ -238,11 +238,82 @@
     
     return sectionHeaderView;
     
-}
+}*/
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.row==0) {
+        static NSString *CellIdentifier = @"ProcessRunHeaderCellIdentifier";
+        
+        Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
+             UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
+             valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)
+             valueTextField.borderStyle = UITextBorderStyleRoundedRect;
+             [valueTextField setReturnKeyType:UIReturnKeyDefault];
+             [valueTextField setEnablesReturnKeyAutomatically:YES];
+             [valueTextField setDelegate:self];
+             valueTextField.placeholder=@"P_1";
+             valueTextField.backgroundColor=[UIColor grayColor];
+             [cell.contentView addSubview:valueTextField];
+             // don't forget to do [tf release]; if not using ARC
+             }*/
+            /*for (int i=indexPath.row ;i< [self.dataArray count];i++) {
+             UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.scrollView.bounds.origin.x +203,10,88,21)];
+             valueTextField.tag = indexPath.row;
+             [valueTextField borderStyle];
+             valueTextField.backgroundColor =[UIColor grayColor];
+             valueTextField.delegate = self;
+             valueTextField.placeholder=@"Parameters";
+             [cell.contentView addSubview:valueTextField];
+             
+             
+             cell.editingAccessoryType = YES;
+             }*/
+        }
+        
+        int count = 0;
+        if(self.editing && indexPath.row != 0)
+            count = 1;
+        
+        if(indexPath.row == ([self.RunProcessArray count]) && self.editing){
+            
+            //   cell.IntervalText.text = @"Interval ";
+            // cell.ParametersText.text = @"Is";
+            // cell.Parameters1Text.text=@"Showing";
+            //cell.Parameters2Text.text=@"Parameters";
+            //cell.Parameters3Text.text=@"Parameters2";
+            // cell.ValueText.text = @"Parameters3";
+            return cell;
+        }
+        
+        /*  cell.IntervalText.text = [[self.dataArray objectAtIndex:indexPath.row ]objectForKey:@"Description"];
+         cell.ParametersText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+         cell.Parameters1Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Type"];
+         cell.Parameters2Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Units"];
+         cell.Parameters3Text.text= @"Parameter 3";//[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_4"];
+         cell.ValueText.text = @"Value";//[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Value"];*/
+        
+        /* cell.IntervalText.text = @"Here ";
+         cell.ParametersText.text = @"Is";
+         cell.Parameters1Text.text=@"Showing";
+         cell.Parameters2Text.text=@"Parameters";
+         cell.Parameters3Text.text=@"Parameters2";
+         cell.ValueText.text = @"Parameters3";*/
+        
+        cell.backgroundColor=[UIColor grayColor];
+        cell.IntervalText.text = @"Interval";
+        cell.ParametersText.text = @"Parameter_1";
+        cell.Parameters1Text.text=@"Parameter_2";
+        cell.Parameters2Text.text=@"Parameter_3";
+        cell.Parameters3Text.text=@"Parameter_4";
+        cell.ValueText.text = @"Value";
+        // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        return cell;
+
+    }else{
     static NSString *CellIdentifier = @"ProcessRunCellIdentifier";
     
     Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -312,6 +383,7 @@ valueTextField.backgroundColor=[UIColor grayColor];
     cell.ValueText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Value"];
    // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
+    }
 }
 
 
@@ -418,7 +490,7 @@ valueTextField.backgroundColor=[UIColor grayColor];
 -(IBAction)SaveAndForward:(id)sender {
    
    
-    //[self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+  //  [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
     
     if (self.parameterAdd_RunPF != nil) {
         [self updateParameters];

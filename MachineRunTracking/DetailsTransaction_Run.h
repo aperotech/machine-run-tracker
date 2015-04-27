@@ -14,4 +14,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *RunDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *RunNoLabel;
 @property(strong,nonatomic)PFObject *DetialsTransaction_RunPF;
+@property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
+@property (weak ,nonatomic) IBOutlet UITableView *tableView;
+@property(nonatomic)NSInteger ObjectCount;
+@property (strong,nonatomic)NSArray *runArrayRun;
 @end

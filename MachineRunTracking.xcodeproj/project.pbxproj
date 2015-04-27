@@ -13,6 +13,9 @@
 		042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE91AD7D72A0065816D /* MachineDetails.m */; };
 		042A8AED1AD7D88F0065816D /* MachineListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AEC1AD7D88F0065816D /* MachineListCell.m */; };
 		044069011ADE83C400F2FF6F /* EmptySegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 044069001ADE83C400F2FF6F /* EmptySegue.m */; };
+		04418DDD1AEE05B0003DA174 /* DetailsPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DDC1AEE05B0003DA174 /* DetailsPostCell.m */; };
+		04418DE01AEE08AD003DA174 /* SegmentedControlVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */; };
+		04418DE31AEE1BEA003DA174 /* DetailsProcessRunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DE21AEE1BEA003DA174 /* DetailsProcessRunCell.m */; };
 		0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */; };
 		04461CAA1AD3913700CBC80A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CA91AD3913700CBC80A /* main.m */; };
 		04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAC1AD3913700CBC80A /* AppDelegate.m */; };
@@ -82,6 +85,12 @@
 		042A8AEC1AD7D88F0065816D /* MachineListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineListCell.m; sourceTree = "<group>"; };
 		044068FF1ADE83C400F2FF6F /* EmptySegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptySegue.h; sourceTree = "<group>"; };
 		044069001ADE83C400F2FF6F /* EmptySegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptySegue.m; sourceTree = "<group>"; };
+		04418DDB1AEE05B0003DA174 /* DetailsPostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsPostCell.h; sourceTree = "<group>"; };
+		04418DDC1AEE05B0003DA174 /* DetailsPostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsPostCell.m; sourceTree = "<group>"; };
+		04418DDE1AEE08AD003DA174 /* SegmentedControlVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedControlVC.h; sourceTree = "<group>"; };
+		04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedControlVC.m; sourceTree = "<group>"; };
+		04418DE11AEE1BEA003DA174 /* DetailsProcessRunCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsProcessRunCell.h; sourceTree = "<group>"; };
+		04418DE21AEE1BEA003DA174 /* DetailsProcessRunCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsProcessRunCell.m; sourceTree = "<group>"; };
 		0445C60F1ADD2FEA001434B3 /* AddTransaction_PreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_PreCell.h; sourceTree = "<group>"; };
 		0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_PreCell.m; sourceTree = "<group>"; };
 		04461CA41AD3913700CBC80A /* MachineRunTracking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MachineRunTracking.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -469,6 +478,8 @@
 				044DC1B51ADBF734002578C2 /* Pre */,
 				044DC1B71ADBF75A002578C2 /* Post */,
 				044DC1B61ADBF752002578C2 /* Run */,
+				04418DDE1AEE08AD003DA174 /* SegmentedControlVC.h */,
+				04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */,
 			);
 			name = "Transaction Details";
 			sourceTree = "<group>";
@@ -489,6 +500,8 @@
 			children = (
 				044DC1AF1ADBCE93002578C2 /* DetailsTransaction_Run.h */,
 				044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */,
+				04418DE11AEE1BEA003DA174 /* DetailsProcessRunCell.h */,
+				04418DE21AEE1BEA003DA174 /* DetailsProcessRunCell.m */,
 			);
 			name = Run;
 			sourceTree = "<group>";
@@ -498,6 +511,8 @@
 			children = (
 				044DC1B21ADBCEAF002578C2 /* DetailsTransaction_Post.h */,
 				044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */,
+				04418DDB1AEE05B0003DA174 /* DetailsPostCell.h */,
+				04418DDC1AEE05B0003DA174 /* DetailsPostCell.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -647,6 +662,7 @@
 				042A8AED1AD7D88F0065816D /* MachineListCell.m in Sources */,
 				0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */,
 				04461CEF1AD3A97B00CBC80A /* AddUser.m in Sources */,
+				04418DE01AEE08AD003DA174 /* SegmentedControlVC.m in Sources */,
 				A1D01A081AE7CAD300DFD00D /* Process_RunCell.m in Sources */,
 				044DC1861ADB822A002578C2 /* ParameterList.m in Sources */,
 				042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */,
@@ -660,6 +676,7 @@
 				044DC19C1ADBCD57002578C2 /* TransactionListCell.m in Sources */,
 				044DC1AE1ADBCE7B002578C2 /* DetailsTransaction_Pre.m in Sources */,
 				04461D1C1AD3B1EF00CBC80A /* UserListCell.m in Sources */,
+				04418DDD1AEE05B0003DA174 /* DetailsPostCell.m in Sources */,
 				04461CE91AD3A8F100CBC80A /* UserDetails.m in Sources */,
 				044DC1921ADB82CF002578C2 /* parameterDetails.m in Sources */,
 				044069011ADE83C400F2FF6F /* EmptySegue.m in Sources */,
@@ -668,6 +685,7 @@
 				044DC1A51ADBCE10002578C2 /* AddTransaction_Pre.m in Sources */,
 				044DC18A1ADB8276002578C2 /* ParameterListCell.m in Sources */,
 				044DC1B11ADBCE93002578C2 /* DetailsTransaction_Run.m in Sources */,
+				04418DE31AEE1BEA003DA174 /* DetailsProcessRunCell.m in Sources */,
 				047CF3931AEA746C00C1DDD8 /* DetailsPreCell.m in Sources */,
 				04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */,
 				044DC1A81ADBCE31002578C2 /* AddTransaction_Run.m in Sources */,

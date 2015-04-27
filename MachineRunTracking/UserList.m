@@ -48,7 +48,7 @@
     //[query whereKey:@"Parameter_4" equalTo:@"Akshay"];
     
     
-    self.HeaderArray=[[NSMutableArray alloc]initWithObjects:@"UserName",@"email",@"User Type", nil];
+    self.HeaderArray=[[NSMutableArray alloc]initWithObjects:@"Name",@"Email",@"User Type", nil];
     
     
     if (currentUser) {
@@ -117,8 +117,8 @@
         }
         cell.backgroundColor=[UIColor grayColor];
         cell.userNameLabel.text= [self.HeaderArray objectAtIndex:0];
-        cell.userEmailLabel.text=[self.HeaderArray objectAtIndex:2];
-        cell.userTypeLabel.text=[self.HeaderArray objectAtIndex:1];
+        cell.userEmailLabel.text=[self.HeaderArray objectAtIndex:1];
+        cell.userTypeLabel.text=[self.HeaderArray objectAtIndex:2];
         return cell;
     }else {
     static NSString *CellIdentifier = @"UserListCellIdentifier";

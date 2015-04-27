@@ -10,30 +10,89 @@
 #import <Parse/Parse.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #define k_KEYBOARD_OFFSET 80.0
-@implementation AddUser
-@synthesize userEmailText,userNameText,userTypeText,passwordText;
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.navigationController.navigationBarHidden=NO;
-    userNameText.delegate = self;
-    //userTypeText.delegate = self;
-    userEmailText.delegate = self;
-    passwordText.delegate=self;
-    self.myArray = [NSArray arrayWithObjects:@"Admin",@"Standard",nil];
-    self.picker.dataSource=self;
-    self.picker.delegate=self;
-    [self loadItemData];
+
+@implementation AddUser {
+    NSArray *userType;
+    UIPickerView *userPicker;
+    UIToolbar *userPickerToolbar;
 }
 
-- (void)didReceiveMemoryWarning
+@synthesize userEmailText, userNameText, userTypeText, passwordText, scrollView;
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    //self.navigationController.navigationBarHidden=NO;
+    
+    //[self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)];
+    
+    //Initialize user picker
+    userType = [NSArray arrayWithObjects:@"Admin",@"Standard",nil];
+    
+    userPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(16, self.userEmailText.frame.origin.y, 288, 120)];
+    userPicker.delegate = self;
+    userPicker.dataSource = self;
+    
+    [userPicker setBackgroundColor:[UIColor lightTextColor]];
+    [userPicker setShowsSelectionIndicator:YES];
+    [self.userTypeText setInputView:userPicker];
+    
+    //Creating a toolbar above picker where Done button can be added
+    userPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 288, 40)];
+    [userPickerToolbar setBarStyle:UIBarStyleDefault];
+    [userPickerToolbar sizeToFit];
+    
+    //Create Done button to add to picker toolbar
+    NSMutableArray *barItems = [[NSMutableArray alloc] init];
+    
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    [barItems addObject:flexSpace];
+    
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(userPickerDoneClicked)];
+    [barItems addObject:doneBtn];
+    
+    [userPickerToolbar setItems:barItems animated:YES];
+    [self.userTypeText setInputAccessoryView:userPickerToolbar];
+
+}
+
+-(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+    return UIBarPositionTopAttached;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self registerForKeyboardNotifications];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [self deregisterFromKeyboardNotifications];
+    
+    [super viewDidDisappear:animated];
+}
+
+#pragma mark - Textfield delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    if (textField == self.userNameText) {
+        [self.userTypeText becomeFirstResponder];
+    } else if (textField == self.userEmailText) {
+        [self.passwordText becomeFirstResponder];
+    } else if (textField == self.passwordText) {
+        [self.passwordText resignFirstResponder];
+    }
+    
+    return YES;
+}
+
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
--(IBAction)save:(id)sender
-{
+-(IBAction)save:(id)sender {
    /* PFObject *newUser = [PFObject objectWithClassName:@"user"];
     [newUser setObject:userNameText.text forKey:@"Name"];
     [newUser setObject:passwordText.text forKey:@"Password"];
@@ -71,21 +130,29 @@
                 
                 // Dismiss the controller
                 //[self dismissViewControllerAnimated:YES completion:nil];
-               [self.navigationController popViewControllerAnimated:YES];
+               [self dismissViewControllerAnimated:YES completion:nil];
+               //[self.navigationController popViewControllerAnimated:YES];
             }
         }];
     }
-
 }
 
--(IBAction)cancel:(id)sender{
+-(IBAction)cancel:(id)sender {
   //  [self.navigationController popToRootViewControllerAnimated:YES];
-    [self.navigationController popViewControllerAnimated:YES];
+    //[self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+//Method to disable any user input for the user type text field
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField == self.userTypeText) {
+        return NO;
+    }
+    return YES;
+}
 
 #pragma mark- UIPicker View
-- (void)attachPickerToTextField: (UITextField*) textField :(UIPickerView*) picker{
+/*- (void)attachPickerToTextField: (UITextField*) textField :(UIPickerView*) picker {
     picker.delegate = self;
     picker.dataSource = self;
     textField.delegate = self;
@@ -93,63 +160,55 @@
 }
 
 -(void)loadItemData {
-        self.pickerArray  = [[NSArray alloc] initWithArray:self.myArray];
-    
-   
+    self.pickerArray  = [[NSArray alloc] initWithArray:self.myArray];
+ 
     self.picker = [[UIPickerView alloc] initWithFrame:CGRectZero];
     
     [self attachPickerToTextField:self.userTypeText :self.picker];
-    
-    
-}
+}*/
 
+#pragma mark - Picker delegate methods
 
-
-#pragma mark - Keyboard delegate stuff
-
-// let tapping on the background (off the input field) close the thing
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [userTypeText resignFirstResponder];
-  
-}
-
-#pragma mark - Picker delegate stuff
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     return 1;
 }
 
 
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    if (pickerView == self.picker){
-        return self.pickerArray.count;
-    }
-       return 0;
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return userType.count;
 }
 
--(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    if (pickerView == self.picker){
-        return [self.pickerArray objectAtIndex:row];
-    }
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    
+    return [userType objectAtIndex:row];
+}
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
+    return 30;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    self.userTypeText.text = [userType objectAtIndex:row];
    
-    
-    return @"???";
+    //[[self view] endEditing:YES];
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    if (pickerView == self.picker){
-        userTypeText.text = [self.pickerArray objectAtIndex:row];
-        
+//Method to call when Done is clicked on Age picker drop down
+- (void)userPickerDoneClicked {
+    if ([self.userTypeText.text isEqualToString:@""]) {
+        self.userTypeText.text = [userType objectAtIndex:0];
     }
-    
-    [[self view] endEditing:YES];
+    [self.userTypeText resignFirstResponder];
+    [self.userEmailText becomeFirstResponder];
 }
 
+/*#pragma mark - Keyboard delegate stuff
 
+// let tapping on the background (off the input field) close the thing
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [userTypeText resignFirstResponder];
+    
+}*/
 
 //methods to check when a field text is edited, accordingly, adjust keyboard
 // Implementing picker for age text field
@@ -211,20 +270,6 @@
  
  self.scrollView.contentOffset = CGPointMake(0, textField.frame.origin.y);
  }*/
-
-#pragma mark - Textfield delegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return YES;
-}
-
-
-
-
-
-
 
 /*#pragma mark - UITextFieldDelegate method implementation
 

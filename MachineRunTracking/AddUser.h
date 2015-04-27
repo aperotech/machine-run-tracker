@@ -8,19 +8,18 @@
 
 #import "ViewController.h"
 
-@interface AddUser : ViewController<UINavigationControllerDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIPopoverControllerDelegate>
-@property (nonatomic,strong)IBOutlet UIScrollView *scrollView;
-@property (strong,nonatomic) IBOutlet UITextField *userNameText;
-@property (strong,nonatomic) IBOutlet UITextField *userTypeText;
+@interface AddUser : ViewController<UINavigationControllerDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate, UIBarPositioningDelegate>
+
+@property (nonatomic,weak) IBOutlet UIScrollView *scrollView;
+@property (weak,nonatomic) IBOutlet UITextField *userNameText;
+@property (weak,nonatomic) IBOutlet UITextField *userTypeText;
 @property (strong,nonatomic) IBOutlet UITextField *passwordText;
 @property (strong,nonatomic) IBOutlet UITextField *userEmailText;
+@property (strong,nonatomic)UITextField *activeField;
+
 - (IBAction)save:(id)sender;
 - (IBAction)cancel:(id)sender;
-@property(nonatomic,weak) NSArray *myArray;
-@property (strong, nonatomic) IBOutlet UIPickerView *picker;
-@property (strong, nonatomic) NSArray *pickerArray;
-@property (weak,nonatomic)UITextField *activeField;
-@property (weak,nonatomic) UIToolbar *mypickerToolbar;
+
 
 
 @end

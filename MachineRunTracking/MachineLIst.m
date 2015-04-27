@@ -186,7 +186,7 @@ UILabel *headerLabel4 = [[UILabel alloc] initWithFrame:
         // Configure the cell
         cell.backgroundColor=[UIColor grayColor];
         cell.codeLabel.text=@"Code";
-        cell.nameLabel.text=@"Machine_Name";
+        cell.nameLabel.text=@"Name";
         cell.locationLabel.text=@"Location";
         cell.capacityLabel.text=@"Capacity";
         

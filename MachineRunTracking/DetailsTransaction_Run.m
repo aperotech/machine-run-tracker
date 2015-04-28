@@ -18,10 +18,10 @@
 @synthesize DetialsTransaction_RunPF;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"The Run Loaded");
+  //  NSLog(@"The Run Loaded");
     // Do any additional setup after loading the view.
    //  self.navigationController.navigationBar.topItem.title=@"";
-    
+     self.navigationController.navigationItem.title=@"Process Run";
     if (DetialsTransaction_RunPF !=NULL) {
         self.RunNoLabel.text=[DetialsTransaction_RunPF objectForKey:@"Run_No"];
         self.RunDateLabel.text=[DetialsTransaction_RunPF objectForKey:@"Run_Date"];
@@ -31,10 +31,10 @@
     // Do any additional setup after loading the view.
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process_run"];
-    NSLog(@"The Query For RunProcess %@",query1);
+   // NSLog(@"The Query For RunProcess %@",query1);
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-        NSLog(@"all types: %ld",(long)objects.count);
+        //NSLog(@"all types: %ld",(long)objects.count);
         //self.ObjectCount=objects.count;
         if(error){
             NSLog(@"Error!");
@@ -52,10 +52,10 @@
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Run_Process"];
     [query2 whereKey:@"Run_No" equalTo:self.RunNoLabel.text];
-    NSLog(@"The Query For loade objecs %@",query2);
+   // NSLog(@"The Query For loade objecs %@",query2);
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-        NSLog(@"all types: %ld",(long)runArray.count);
+       // NSLog(@"all types: %ld",(long)runArray.count);
         self.ObjectCount=runArray.count;
         if(error){
             NSLog(@"Error!");
@@ -65,9 +65,9 @@
                 NSLog(@"None found2");
             }
             else {
-                NSLog(@"The Objecds Are %@",runArray);
+            //    NSLog(@"The Objecds Are %@",runArray);
                 self.runArrayRun=[[NSArray alloc]initWithArray:runArray];
-                NSLog(@"The RunArray Pre Are %@",self.runArrayRun);
+             //   NSLog(@"The RunArray Pre Are %@",self.runArrayRun);
                 [self.tableView reloadData];
             }
             //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
@@ -90,7 +90,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{ NSLog(@"The No Of ROws %ld",self.ObjectCount);
+{// NSLog(@"The No Of ROws %ld",self.ObjectCount);
     // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
     return self.ObjectCount + 1 ;
 }

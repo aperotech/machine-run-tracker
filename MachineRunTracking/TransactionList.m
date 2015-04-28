@@ -12,6 +12,8 @@
 #import "DetailsTransaction_Pre.h"
 #import "AddTransaction_Post.h"
 #import "SegmentedControlVC.h"
+#import "AddTransaction_Pre.h"
+#import "AddTransaction_Run.h"
 #import <Parse/Parse.h>
 @interface TransactionList ()
 
@@ -244,14 +246,29 @@
     
     if ([unwindSegue.identifier isEqualToString:@"PostUnwindToTransactionListSegue"]) {
         AddTransaction_Post *AddPostVC = (AddTransaction_Post *)unwindSegue.sourceViewController;
-        NSLog(@"The Parameter 0 are %@",AddPostVC.Parameter0);
+       // NSLog(@"The Parameter 0 are %@",AddPostVC.Parameter0);
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(refreshTable:)
                                                      name:@"refreshTable"
                                                    object:nil];
         [self.tableView reloadData];
     }
-    
+    else if ([unwindSegue.identifier isEqualToString:@"PreUnwindToTransactionListSegue"]){
+        AddTransaction_Pre *addtransactionPre=(AddTransaction_Pre *)unwindSegue.sourceViewController;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshTable:)
+                                                     name:@"refreshTable"
+                                                   object:nil];
+        [self.tableView reloadData];
+    }
+    else if ([unwindSegue.identifier isEqualToString:@"RunUnwindToTransactionListSegue"]){
+        AddTransaction_Run *addtransactionRun=(AddTransaction_Run *)unwindSegue.sourceViewController;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshTable:)
+                                                     name:@"refreshTable"
+                                                   object:nil];
+        [self.tableView reloadData];
+    }
 }
 
 

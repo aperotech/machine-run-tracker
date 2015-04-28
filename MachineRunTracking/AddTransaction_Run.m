@@ -240,14 +240,22 @@
     
 }*/
 
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscapeRight;
+}
 
+-(BOOL)shouldAutorotate {
+    return NO;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row==0) {
         static NSString *CellIdentifier = @"ProcessRunHeaderCellIdentifier";
         
         Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+       
         if (cell == nil) {
             cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+           
             /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
              UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
              valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)
@@ -317,8 +325,10 @@
     static NSString *CellIdentifier = @"ProcessRunCellIdentifier";
     
     Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
     if (cell == nil) {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
        /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
             UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
             valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)

@@ -42,6 +42,8 @@
         ((UIViewController *)segue.destinationViewController).view.frame = CGRectMake(0,0,self.view.frame.size.width, self.view.frame.size.height);
         [self.view addSubview:((UIViewController *)segue.destinationViewController).view];
         [segue.destinationViewController didMoveToParentViewController:self];
+       /* DetailsTransaction_Pre *DetialsTransactionPreObj=(DetailsTransaction_Pre *)segue.destinationViewController;
+        DetialsTransactionPreObj.DetialsTransaction_PrePF=ContainerControlPF;*/
         
     } else {
         

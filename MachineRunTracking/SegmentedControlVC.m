@@ -22,6 +22,9 @@
 @synthesize SegmentControlPF;
 - (void)viewDidLoad {
     [super viewDidLoad];
+     self.navigationItem.title=@"Pre-extraction";
+    [self.containerView setPre_ExtractionActive];
+   // self.containerView.ContainerControlPF=SegmentControlPF;
         // self.navigationController.navigationBar.topItem.title=@"";
     
   //  self.containerView =[[ContainerViewController alloc]init];
@@ -142,15 +145,18 @@
     
     switch (self.segmentedControl.selectedSegmentIndex) {
         case 0:
+            self.navigationItem.title=@"Pre-extraction";
             [self.containerView setPre_ExtractionActive];
             
             break;
         case 1:
+            self.navigationItem.title=@"Process Run";
             [self.containerView setRun_ProcessActive];
             [self  supportedInterfaceOrientations];
             [self shouldAutorotate];
             break;
         case 2:
+            self.navigationItem.title=@"Post-extraction";
             [self.containerView setPost_ExtractionActive];
             break;
         
@@ -184,6 +190,7 @@
  self.containerView = segue.destinationViewController;
    //  ContainerViewController *containerControlVCObj=(ContainerViewController *)segue.destinationViewController;
      self.containerView.ContainerControlPF=SegmentControlPF;
+     
     // self.containerView.ContainerControlPF=SegmentControlPF;
 
  }

@@ -44,7 +44,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
+   // self.navigationController.navigationBar.topItem.title=@"";
    /* [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
     PFUser *currentUser = [PFUser currentUser];
     PFQuery *query = [PFQuery queryWithClassName:@"_User"];
@@ -101,7 +101,7 @@
 - (PFQuery *)queryForTable
 {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    
+    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
     /*    if ([self.objects count] == 0) {

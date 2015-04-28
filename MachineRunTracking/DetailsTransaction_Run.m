@@ -18,8 +18,9 @@
 @synthesize DetialsTransaction_RunPF;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"The Run Loaded");
     // Do any additional setup after loading the view.
-    
+   //  self.navigationController.navigationBar.topItem.title=@"";
     
     if (DetialsTransaction_RunPF !=NULL) {
         self.RunNoLabel.text=[DetialsTransaction_RunPF objectForKey:@"Run_No"];
@@ -75,7 +76,13 @@
 
     
 }
+/*-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscapeRight;
+}
 
+-(BOOL)shouldAutorotate {
+    return NO;
+}*/
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

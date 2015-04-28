@@ -16,6 +16,7 @@
 @synthesize nameText,descriptionText,typeText,unitsText;
 - (void)viewDidLoad {
     [super viewDidLoad];
+  // self.navigationController.navigationBar.topItem.title = @"";
    
     nameText.delegate = self;
     descriptionText.delegate = self;

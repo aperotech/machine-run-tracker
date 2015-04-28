@@ -16,6 +16,8 @@
 @synthesize codeText,nameText,descriptionText,trackingFrequencyText,locationText,capacityText,maintanceFrequencyText,lastMaintanceDate;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // self.navigationController.navigationBar.topItem.title=@"";
+    
     codeText.delegate=self;
     nameText.delegate=self;
     descriptionText.delegate=self;

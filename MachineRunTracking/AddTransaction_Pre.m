@@ -43,6 +43,8 @@
                 NSLog(@"None found");
             }
             else {
+               // self.placeholderArray=[[NSMutableArray alloc]initWithArray:objects];
+                //NSLog(@"The Object Array For Pre Is %@",objects);
                 [self.tableView reloadData];
               // self.refreshControl = [[UIRefreshControl alloc]init];
               //  [self.tableView addSubview:self.refreshControl];
@@ -116,9 +118,9 @@
     if (cell == nil) {
         cell = [[AddTransaction_PreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
         cell.backgroundColor=[UIColor grayColor];
+        
     }
-    
-    cell.p_1Text.tag=indexPath.row;
+       cell.p_1Text.tag=indexPath.row;
     // Configure the cell...
    
     
@@ -160,6 +162,7 @@
 UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   // NSLog(@"text Field index path %ld ,%@ ",indexPath.row,cell);
 }*/
+
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
     UITableView *table = (UITableView *)[[cell superview] superview];
@@ -216,13 +219,13 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     }
     else {*/
         
-       // [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+        [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
         if (parameterAdd_PrePF != nil) {
-       [self updateParameters];
+      // [self updateParameters];
         }
         else {
-        [self saveParameters];
+       // [self saveParameters];
         }
     //}
     

@@ -16,6 +16,7 @@
 		04418DDD1AEE05B0003DA174 /* DetailsPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DDC1AEE05B0003DA174 /* DetailsPostCell.m */; };
 		04418DE01AEE08AD003DA174 /* SegmentedControlVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */; };
 		04418DE31AEE1BEA003DA174 /* DetailsProcessRunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DE21AEE1BEA003DA174 /* DetailsProcessRunCell.m */; };
+		04418DE61AEE4DEE003DA174 /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DE51AEE4DEE003DA174 /* ContainerViewController.m */; };
 		0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */; };
 		04461CAA1AD3913700CBC80A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CA91AD3913700CBC80A /* main.m */; };
 		04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAC1AD3913700CBC80A /* AppDelegate.m */; };
@@ -91,6 +92,8 @@
 		04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedControlVC.m; sourceTree = "<group>"; };
 		04418DE11AEE1BEA003DA174 /* DetailsProcessRunCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsProcessRunCell.h; sourceTree = "<group>"; };
 		04418DE21AEE1BEA003DA174 /* DetailsProcessRunCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsProcessRunCell.m; sourceTree = "<group>"; };
+		04418DE41AEE4DEE003DA174 /* ContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerViewController.h; sourceTree = "<group>"; };
+		04418DE51AEE4DEE003DA174 /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerViewController.m; sourceTree = "<group>"; };
 		0445C60F1ADD2FEA001434B3 /* AddTransaction_PreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_PreCell.h; sourceTree = "<group>"; };
 		0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_PreCell.m; sourceTree = "<group>"; };
 		04461CA41AD3913700CBC80A /* MachineRunTracking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MachineRunTracking.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -240,6 +243,10 @@
 		044069021ADE89A100F2FF6F /* Segment Control */ = {
 			isa = PBXGroup;
 			children = (
+				04418DDE1AEE08AD003DA174 /* SegmentedControlVC.h */,
+				04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */,
+				04418DE41AEE4DEE003DA174 /* ContainerViewController.h */,
+				04418DE51AEE4DEE003DA174 /* ContainerViewController.m */,
 				044068FF1ADE83C400F2FF6F /* EmptySegue.h */,
 				044069001ADE83C400F2FF6F /* EmptySegue.m */,
 			);
@@ -467,7 +474,6 @@
 				044DC1BA1ADBF792002578C2 /* Pre */,
 				044DC1B91ADBF786002578C2 /* Run */,
 				044DC1B81ADBF77A002578C2 /* Post */,
-				044069021ADE89A100F2FF6F /* Segment Control */,
 			);
 			name = "Add Transactions";
 			sourceTree = "<group>";
@@ -475,11 +481,10 @@
 		044DC1961ADBCCE1002578C2 /* Transaction Details */ = {
 			isa = PBXGroup;
 			children = (
+				044069021ADE89A100F2FF6F /* Segment Control */,
 				044DC1B51ADBF734002578C2 /* Pre */,
 				044DC1B71ADBF75A002578C2 /* Post */,
 				044DC1B61ADBF752002578C2 /* Run */,
-				04418DDE1AEE08AD003DA174 /* SegmentedControlVC.h */,
-				04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */,
 			);
 			name = "Transaction Details";
 			sourceTree = "<group>";
@@ -677,6 +682,7 @@
 				044DC1AE1ADBCE7B002578C2 /* DetailsTransaction_Pre.m in Sources */,
 				04461D1C1AD3B1EF00CBC80A /* UserListCell.m in Sources */,
 				04418DDD1AEE05B0003DA174 /* DetailsPostCell.m in Sources */,
+				04418DE61AEE4DEE003DA174 /* ContainerViewController.m in Sources */,
 				04461CE91AD3A8F100CBC80A /* UserDetails.m in Sources */,
 				044DC1921ADB82CF002578C2 /* parameterDetails.m in Sources */,
 				044069011ADE83C400F2FF6F /* EmptySegue.m in Sources */,

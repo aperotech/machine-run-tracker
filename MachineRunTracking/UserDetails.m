@@ -12,6 +12,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+  //   self.navigationController.navigationBar.topItem.title=@"";
     self.userNameUpdateText.delegate=self;
     self.userTypeUpdateText.delegate=self;
     self.userEmailUpdateText.delegate=self;

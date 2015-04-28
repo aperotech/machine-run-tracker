@@ -15,6 +15,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   //  self.navigationController.navigationBar.topItem.title=@"";
     self.navigationController.navigationBarHidden=NO;
     userNameText.delegate = self;
     //userTypeText.delegate = self;

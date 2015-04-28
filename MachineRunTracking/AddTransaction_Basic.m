@@ -16,7 +16,10 @@
 @synthesize BasicTransactionPF;
 @synthesize Run_NoText,Run_DateText,Run_DurationText,Machine_NameText;
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
+     self.navigationController.navigationBar.topItem.title=@"";
+    
     Run_NoText.delegate=self;
     Run_DateText.delegate=self;
     Run_DurationText.delegate=self;
@@ -24,13 +27,13 @@
     // Do any additional setup after loading the view.
 }
 
--(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+/*-(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
-}
+}*/
 
 - (IBAction)SaveAndForword:(id)sender {
-  // [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
-    NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+   [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+   /* NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *Run_Date = [Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -75,7 +78,7 @@
         }
         
     }];
-    }
+    }*/
 }
 
 - (IBAction)Cancel:(id)sender {

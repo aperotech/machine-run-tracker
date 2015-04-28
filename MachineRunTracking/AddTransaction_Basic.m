@@ -32,8 +32,8 @@
 }*/
 
 - (IBAction)SaveAndForword:(id)sender {
-   [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
-   /* NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  // [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+    NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *Run_Date = [Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -78,7 +78,7 @@
         }
         
     }];
-    }*/
+    }
 }
 
 - (IBAction)Cancel:(id)sender {
@@ -94,7 +94,12 @@
     [super viewDidUnload];
 }
 
+
 #pragma mark - Textfield delegate
+
+
+
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -122,7 +127,7 @@
     [UIView beginAnimations: @"animateTextField" context: nil];
     [UIScrollView setAnimationBeginsFromCurrentState: YES];
     [UIScrollView setAnimationDuration: movementDuration];
-    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+    self.scrollView.frame = CGRectOffset(self.view.frame, 0, movement);
     [UIView commitAnimations];
 }
 

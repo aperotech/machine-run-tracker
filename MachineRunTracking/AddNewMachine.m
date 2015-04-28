@@ -91,8 +91,6 @@
     
     [datePickerToolbar setItems:dateBarItems animated:YES];
     [self.lastMaintanceDate setInputAccessoryView:datePickerToolbar];
-
-
 }
 
 /*- (void)keyboardWillShow:(NSNotification *)notification

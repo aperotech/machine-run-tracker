@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface MachineDetails : UIViewController<UITextFieldDelegate,UIScrollViewDelegate>
+@interface MachineDetails : UIViewController <UITextFieldDelegate,UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property(strong,nonatomic)PFObject *MachineDetailsPF;
 
@@ -21,6 +21,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *capacityText;
 @property (weak, nonatomic) IBOutlet UITextField *maintanceFrequencyText;
 @property (weak, nonatomic) IBOutlet UITextField *lastMaintanceDate;
-@property (weak,nonatomic) UITextField *activeField;
+@property (strong,nonatomic) UITextField *activeField;
 
 @end

@@ -29,11 +29,13 @@
     
    
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
+   
     [query1 whereKey:@"Type" equalTo:@"Pre_Extraction"];
-    NSLog(@"The Query For Pre_Extraction %@",query1);
+    
+   // NSLog(@"The Query For Pre_Extraction %@",query1);
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
       // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-        NSLog(@"all types: %ld",(long)objects.count);
+     //   NSLog(@"all types: %ld",(long)objects.count);
         self.ObjectCount=objects.count;
         if(error){
             NSLog(@"Error!");
@@ -43,6 +45,7 @@
                 NSLog(@"None found");
             }
             else {
+               
                // self.placeholderArray=[[NSMutableArray alloc]initWithArray:objects];
                 //NSLog(@"The Object Array For Pre Is %@",objects);
                 [self.tableView reloadData];
@@ -67,17 +70,20 @@
             // Did not find any UserStats for the current user
         } else {
             // Found UserStats
-            NSLog(@"The Objec ts %@",object);
+            self.placeholderArray=[object allKeys];
+         //   NSLog(@"The self.placeholderArray %@",object);
             self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
-            NSLog(@"The String Is To Be Inside %@",self.LastInsertedTransactionNo);
+        //    NSLog(@"The String Is To Be Inside %@",self.LastInsertedTransactionNo);
         }
         
         
     }];
-    NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
+  ///  NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
     
 
    }
+
+
 
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
@@ -91,7 +97,8 @@
 
 - (IBAction)Cancel:(id)sender {
     //[self.navigationController popViewControllerAnimated:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self dismissViewControllerAnimated:YES completion:nil];
+     [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -100,7 +107,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{ NSLog(@"The No Of ROws %ld",self.ObjectCount);
+{// NSLog(@"The No Of ROws %ld",self.ObjectCount);
 // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
     return self.ObjectCount ;
 }
@@ -120,10 +127,21 @@
         cell.backgroundColor=[UIColor grayColor];
         
     }
+    
        cell.p_1Text.tag=indexPath.row;
     // Configure the cell...
-   
-    
+    if (indexPath.row==0) {
+        cell.p_1Text.placeholder=@"Parameter_1";
+    }
+    if (indexPath.row==1) {
+        cell.p_1Text.placeholder=@"Parameter_2";
+    }
+    if (indexPath.row==2) {
+        cell.p_1Text.placeholder=@"Parameter_3";
+    }
+    if (indexPath.row==3) {
+        cell.p_1Text.placeholder=@"Parameter_4";
+    }
     return cell;
 }
 
@@ -170,31 +188,31 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     if (textField.tag==0) {
         self.Parameter0=textField.text;
-        NSLog(@"Parameter0 %@",self.Parameter0);
+      //  NSLog(@"Parameter0 %@",self.Parameter0);
  
     
     }
     if (textField.tag==1) {
        self.Parameter1=textField.text;
-         NSLog(@"Parameter1 %@",self.Parameter1);
+       //  NSLog(@"Parameter1 %@",self.Parameter1);
       
         
     }
     if (textField.tag==2) {
         self.Parameter2=textField.text;
-         NSLog(@"Parameter2 %@",self.Parameter2);
+       //  NSLog(@"Parameter2 %@",self.Parameter2);
       
     
     }
     if (textField.tag==3) {
         self.Parameter3=textField.text;
-        NSLog(@"Parameter3 %@",self.Parameter3);
+      //  NSLog(@"Parameter3 %@",self.Parameter3);
         
         
     }
   
     
-       NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
+     //  NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
    }
 
 
@@ -219,13 +237,13 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     }
     else {*/
         
-        [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+        //[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
         if (parameterAdd_PrePF != nil) {
-      // [self updateParameters];
+       [self updateParameters];
         }
         else {
-       // [self saveParameters];
+        [self saveParameters];
         }
     //}
     
@@ -249,7 +267,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
      [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
     // [self.navigationController popViewControllerAnimated:YES];
          [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
-     NSLog(@"The object has been saved");
+    // NSLog(@"The object has been saved");
      // The object has been saved.
      } else {
      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -257,7 +275,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
      delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
      [alertView show];
 
-     NSLog(@"here was a problem, check error.description");
+    // NSLog(@"here was a problem, check error.description");
      // There was a problem, check error.description
      }
      }];

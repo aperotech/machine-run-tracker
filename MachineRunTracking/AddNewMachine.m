@@ -8,28 +8,93 @@
 
 #import "AddNewMachine.h"
 #import <Parse/Parse.h>
+
 @interface AddNewMachine ()
 
 @end
 
-@implementation AddNewMachine
-@synthesize codeText,nameText,descriptionText,trackingFrequencyText,locationText,capacityText,maintanceFrequencyText,lastMaintanceDate;
+@implementation AddNewMachine {
+    NSArray *frequency;
+    UIPickerView *frequencyPicker;
+    UIDatePicker *datePicker;
+    UIToolbar *frequencyPickerToolbar, *datePickerToolbar;
+    NSString *date, *freq;
+    NSDateFormatter *formatter;
+}
+
+
+@synthesize codeText,nameText,descriptionText,trackingFrequencyText,locationText,capacityText,maintanceFrequencyText,lastMaintanceDate, scrollView;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    codeText.delegate=self;
-    nameText.delegate=self;
-    descriptionText.delegate=self;
-    trackingFrequencyText.delegate=self;
-    locationText.delegate=self;
-    capacityText.delegate=self;
-    maintanceFrequencyText.delegate=self;
-    lastMaintanceDate.delegate=self;
+    
+    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, 800.0)];
+    
     // Do any additional setup after loading the view.
     
-  //  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+   //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
  //   self.datePicker=[[UIDatePicker alloc] init];//frames are just for demo
  //   [lastMaintanceDate setInputView:self.datePicker];
+    
+    //Initialize frequency picker
+    frequency = [NSArray arrayWithObjects:@"Daily",@"Weekly", @"Monthly", @"Quarterly", @"Semi-Annually", @"Annually", nil];
+    
+    frequencyPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(16, self.locationText.frame.origin.y, 288, 120)];
+    frequencyPicker.delegate = self;
+    frequencyPicker.dataSource = self;
+    
+    [frequencyPicker setBackgroundColor:[UIColor lightTextColor]];
+    [frequencyPicker setShowsSelectionIndicator:YES];
+    [self.trackingFrequencyText setInputView:frequencyPicker];
+    [self.maintanceFrequencyText setInputView:frequencyPicker];
+    
+    //Creating a toolbar above picker where Done button can be added
+    frequencyPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 288, 40)];
+    [frequencyPickerToolbar setBarStyle:UIBarStyleDefault];
+    [frequencyPickerToolbar sizeToFit];
+    
+    //Create Done button to add to picker toolbar
+    NSMutableArray *barItems = [[NSMutableArray alloc] init];
+    
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    [barItems addObject:flexSpace];
+    
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(frequencyPickerDoneClicked)];
+    [barItems addObject:doneBtn];
+    
+    [frequencyPickerToolbar setItems:barItems animated:NO];
+    [self.trackingFrequencyText setInputAccessoryView:frequencyPickerToolbar];
+    [self.maintanceFrequencyText setInputAccessoryView:frequencyPickerToolbar];
+    
+    //Creating date picker for last maintenance date
+    formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd MMMM YYYY"];
+    
+    datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(16, (self.lastMaintanceDate.frame.origin.y + 10.0), 288, 162)];
+    
+    [datePicker setDatePickerMode:UIDatePickerModeDate];
+    [datePicker setBackgroundColor:[UIColor lightTextColor]];
+    [self.lastMaintanceDate setInputView:datePicker];
+    
+    //Creating a toolbar above Date picker where Done button can be added
+    datePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 288, 40)];
+    [datePickerToolbar setBarStyle:UIBarStyleDefault];
+    [datePickerToolbar sizeToFit];
+    
+    //Create Done button to add to picker toolbar
+    NSMutableArray *dateBarItems = [[NSMutableArray alloc] init];
+    
+    [dateBarItems addObject:flexSpace];
+    
+    UIBarButtonItem *dateDoneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(datePickerDoneClicked)];
+    [dateBarItems addObject:dateDoneBtn];
+    
+    [datePickerToolbar setItems:dateBarItems animated:YES];
+    [self.lastMaintanceDate setInputAccessoryView:datePickerToolbar];
+
+
 }
+
 /*- (void)keyboardWillShow:(NSNotification *)notification
 {
     if(self.datePickerToolbar == nil) {
@@ -62,10 +127,107 @@
     ///do nescessary date calculation here
     
 }*/
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+-(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+    return UIBarPositionTopAttached;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self registerForKeyboardNotifications];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [self deregisterFromKeyboardNotifications];
+    
+    [super viewDidDisappear:animated];
+}
+
+#pragma mark - Textfield delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.codeText) {
+        [self.nameText becomeFirstResponder];
+    } else if (textField == self.nameText) {
+        [self.descriptionText becomeFirstResponder];
+    } else if (textField == self.descriptionText) {
+        [self.trackingFrequencyText becomeFirstResponder];
+    } else if (textField == self.capacityText) {
+        [self.locationText becomeFirstResponder];
+    } else if (textField == self.locationText) {
+        [self.maintanceFrequencyText becomeFirstResponder];
+    }
+    
+    return YES;
+}
+
+//Method to disable any user input for the user type text field
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField == self.trackingFrequencyText | textField == self.maintanceFrequencyText) {
+        return NO;
+    }
+    return YES;
+}
+
+#pragma mark - Picker delegate methods
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return frequency.count;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    
+    return [frequency objectAtIndex:row];
+}
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
+    return 30;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    if (self.activeField == self.trackingFrequencyText) {
+        self.trackingFrequencyText.text = [frequency objectAtIndex:row];
+    } else if (self.activeField == self.maintanceFrequencyText){
+        self.maintanceFrequencyText.text = [frequency objectAtIndex:row];
+    }
+    freq = [frequency objectAtIndex:row];
+}
+
+//Method to call when Done is clicked on Age picker drop down
+- (void)frequencyPickerDoneClicked {
+    if (self.activeField == self.trackingFrequencyText) {
+        if ([self.trackingFrequencyText.text isEqualToString:@""]) {
+            self.trackingFrequencyText.text = [frequency objectAtIndex:0];
+        }
+        [self.capacityText becomeFirstResponder];
+    }
+    if (self.activeField == self.maintanceFrequencyText) {
+        if ([self.maintanceFrequencyText.text isEqualToString:@""]) {
+            self.maintanceFrequencyText.text = freq;
+        }
+        [self.lastMaintanceDate becomeFirstResponder];
+    }   
+}
+
+//Method to call when Done is clicked on Date picker drop down
+- (void)datePickerDoneClicked {
+    date = [formatter stringFromDate:datePicker.date];
+    self.lastMaintanceDate.text = date;
+    
+    [self.lastMaintanceDate resignFirstResponder];
+}
+
 
 - (IBAction)save:(id)sender {
     // Create PFObject with recipe information
@@ -93,7 +255,8 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
             
             // Dismiss the controller
-             [self.navigationController popViewControllerAnimated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
+            //[self.navigationController popViewControllerAnimated:YES];
             
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -105,7 +268,8 @@
 }
 
 - (IBAction)cancel:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidUnload {
     [self setCodeText:nil];
@@ -181,13 +345,7 @@
     self.scrollView.contentOffset = CGPointMake(0, textField.frame.origin.y);
 }*/
 
-#pragma mark - Textfield delegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return YES;
-}
 /*
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {

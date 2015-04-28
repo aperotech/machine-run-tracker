@@ -8,92 +8,120 @@
 
 #import "addNewParameter.h"
 #import <Parse/Parse.h>
+
 @interface addNewParameter ()
 
 @end
 
-@implementation addNewParameter
-@synthesize nameText,descriptionText,typeText,unitsText;
+@implementation addNewParameter {
+    NSArray *parameterType;
+    UIPickerView *parameterPicker;
+    UIToolbar *parameterPickerToolbar;
+}
+
+@synthesize nameText,descriptionText,typeText,unitsText, scrollView;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
    
-    nameText.delegate = self;
-    descriptionText.delegate = self;
-    typeText.delegate=self;
-    unitsText.delegate=self;
-    // Do any additional setup after loading the view.
-    self.myArray = [NSArray arrayWithObjects:@"Pre_Extraction",@"Process_run",@"Post_Extraction",nil];
-    self.picker.dataSource=self;
-    self.picker.delegate=self;
-    [self loadItemData];
+    //Initialize user picker
+    parameterType = [NSArray arrayWithObjects:@"Pre-Extraction", @"Process Run", @"Post-Extraction", nil];
+    
+    parameterPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(16, self.unitsText.frame.origin.y, 288, 120)];
+    parameterPicker.delegate = self;
+    parameterPicker.dataSource = self;
+    
+    [parameterPicker setBackgroundColor:[UIColor lightTextColor]];
+    [parameterPicker setShowsSelectionIndicator:YES];
+    [self.typeText setInputView:parameterPicker];
+    
+    //Creating a toolbar above picker where Done button can be added
+    parameterPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 288, 40)];
+    [parameterPickerToolbar setBarStyle:UIBarStyleDefault];
+    [parameterPickerToolbar sizeToFit];
+    
+    //Create Done button to add to picker toolbar
+    NSMutableArray *barItems = [[NSMutableArray alloc] init];
+    
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    [barItems addObject:flexSpace];
+    
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(parameterPickerDoneClicked)];
+    [barItems addObject:doneBtn];
+    
+    [parameterPickerToolbar setItems:barItems animated:YES];
+    [self.typeText setInputAccessoryView:parameterPickerToolbar];
 }
 
-#pragma mark- UIPicker View
-- (void)attachPickerToTextField: (UITextField*) textField :(UIPickerView*) picker{
-    picker.delegate = self;
-    picker.dataSource = self;
-    textField.delegate = self;
-    textField.inputView = picker;
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
--(void)loadItemData {
-    self.pickerArray  = [[NSArray alloc] initWithArray:self.myArray];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
-    
-    self.picker = [[UIPickerView alloc] initWithFrame:CGRectZero];
-    
-    [self attachPickerToTextField:self.typeText :self.picker];
-    
-    
+    [self registerForKeyboardNotifications];
 }
 
-
-
-#pragma mark - Keyboard delegate stuff
-
-// let tapping on the background (off the input field) close the thing
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [typeText resignFirstResponder];
+- (void)viewDidDisappear:(BOOL)animated {
+    [self deregisterFromKeyboardNotifications];
     
+    [super viewDidDisappear:animated];
 }
 
-#pragma mark - Picker delegate stuff
+-(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+    return UIBarPositionTopAttached;
+}
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
+#pragma mark - Picker delegate
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     return 1;
 }
 
 
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    if (pickerView == self.picker){
-        return self.pickerArray.count;
-    }
-    return 0;
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return parameterType.count;
 }
 
--(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    if (pickerView == self.picker){
-        return [self.pickerArray objectAtIndex:row];
-    }
-    
-    
-    return @"???";
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return [parameterType objectAtIndex:row];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    if (pickerView == self.picker){
-        typeText.text = [self.pickerArray objectAtIndex:row];
-        
-    }
-    
-    [[self view] endEditing:YES];
+    self.typeText.text = [parameterType objectAtIndex:row];
 }
 
+//Method to disable any user input for the user type text field
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField == self.typeText) {
+        return NO;
+    }
+    return YES;
+}
 
+//Method to call when Done is clicked on Age picker drop down
+- (void)parameterPickerDoneClicked {
+    if ([self.typeText.text isEqualToString:@""]) {
+        self.typeText.text = [parameterType objectAtIndex:0];
+    }
+    
+    [self.unitsText becomeFirstResponder];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.nameText) {
+        [self.descriptionText becomeFirstResponder];
+    } else if (textField == self.descriptionText) {
+        [self.typeText becomeFirstResponder];
+    } else if (textField == self.unitsText) {
+        [self.unitsText resignFirstResponder];
+    }
+    return YES;
+}
 
 - (IBAction)save:(id)sender {
     // Create PFObject with recipe information
@@ -118,7 +146,7 @@
              [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
             
             // Dismiss the controller
-            [self.navigationController popViewControllerAnimated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
             
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -130,7 +158,7 @@
 }
 
 - (IBAction)cancel:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)viewDidUnload {
     [self setNameText:nil];
@@ -140,6 +168,7 @@
     
     [super viewDidUnload];
 }
+
 //methods to check when a field text is edited, accordingly, adjust keyboard
 // Implementing picker for age text field
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -193,44 +222,6 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     self.scrollView.contentInset = contentInsets;
     self.scrollView.scrollIndicatorInsets = contentInsets;
-}
-
-#pragma mark - Textfield delegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return YES;
-}
-/*
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    [self animateTextField:textField up:YES];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    [self animateTextField:textField up:NO];
-}
-
--(void)animateTextField:(UITextField*)textField up:(BOOL)up
-{
-    const int movementDistance = -60; // tweak as needed
-    const float movementDuration = 0.3f; // tweak as needed
-    
-    int movement = (up ? movementDistance : -movementDistance);
-    
-    [UIView beginAnimations: @"animateTextField" context: nil];
-    [UIScrollView setAnimationBeginsFromCurrentState: YES];
-    [UIScrollView setAnimationDuration: movementDuration];
-    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    [UIView commitAnimations];
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 /*

@@ -9,7 +9,7 @@
 #import "DetailsPreCell.h"
 
 @implementation DetailsPreCell
-@synthesize parameterLabel;
+@synthesize parameterLabel,ParameterNameLabel;
 - (void)awakeFromNib {
     // Initialization code
 }

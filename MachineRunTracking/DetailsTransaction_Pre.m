@@ -21,6 +21,9 @@
 @synthesize DetialsTransaction_PrePF;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // self.navigationController.navigationBar.topItem.title=@"";
+    
+    NSLog(@"The Pre Loaded");
     if (DetialsTransaction_PrePF !=NULL) {
         Run_noLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_No"];
         RunDateLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_Date"];
@@ -43,6 +46,7 @@
                 NSLog(@"None found");
             }
             else {
+                
                 [self.tableView reloadData];
                 }
             //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
@@ -104,23 +108,26 @@
     }
     cell.parameterLabel.tag=indexPath.row;
     if (indexPath.row==0) {
-        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_1"];
-       [[self.runArrayPre objectAtIndex:0]objectForKey:@"Parameter_1"];
+        cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:0]objectForKey:@"Parameter_1"];
+        cell.ParameterNameLabel.text=@"Parameter_1";
         NSLog(@"Index Path Row 0 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==1) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_2"];
         [[self.runArrayPre objectAtIndex:0]objectForKey:@"Parameter_2"];
+        cell.ParameterNameLabel.text=@"Parameter_2";
         NSLog(@"Index Path Row 1 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==2) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_3"];
         [[self.runArrayPre objectAtIndex:0]objectForKey:@"Parameter_3"];
+        cell.ParameterNameLabel.text=@"Parameter_3";
         NSLog(@"Index Path Row 2 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==3) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_4"];
         [[self.runArrayPre objectAtIndex:0 ]objectForKey:@"Parameter_4"];
+        cell.ParameterNameLabel.text=@"Parameter_4";
         NSLog(@"Index Path Row 3 %@",cell.parameterLabel.text);
     }
    // cell.textLabel.tag=indexPath.row;

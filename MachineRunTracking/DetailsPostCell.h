@@ -10,4 +10,5 @@
 
 @interface DetailsPostCell : UITableViewCell
 @property(strong,nonatomic)IBOutlet UILabel *parameterLabel;
+@property (strong,nonatomic) IBOutlet UILabel *ParameterNameLabel;
 @end

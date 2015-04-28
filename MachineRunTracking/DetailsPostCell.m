@@ -9,7 +9,7 @@
 #import "DetailsPostCell.h"
 
 @implementation DetailsPostCell
-@synthesize parameterLabel;
+@synthesize parameterLabel,ParameterNameLabel;
 - (void)awakeFromNib {
     // Initialization code
 }

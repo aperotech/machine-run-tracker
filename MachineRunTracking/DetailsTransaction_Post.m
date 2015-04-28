@@ -18,6 +18,9 @@
 @synthesize DetialsTransaction_PostPF;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"The Post Loaded");
+     //self.navigationController.navigationBar.topItem.title=@"";
+    
     // Do any additional setup after loading the view.
     if (DetialsTransaction_PostPF !=NULL) {
         self.RunNoLabel.text=[DetialsTransaction_PostPF objectForKey:@"Run_No"];
@@ -105,21 +108,25 @@
     if (indexPath.row==0) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_1"];
         [[self.runArrayPost objectAtIndex:0]objectForKey:@"Parameter_1"];
+        cell.ParameterNameLabel.text=@"Parameter_1";
         NSLog(@"Index Path Row 0 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==1) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_2"];
         [[self.runArrayPost objectAtIndex:0]objectForKey:@"Parameter_2"];
+        cell.ParameterNameLabel.text=@"Parameter_2";
         NSLog(@"Index Path Row 1 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==2) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_3"];
         [[self.runArrayPost objectAtIndex:0]objectForKey:@"Parameter_3"];
+        cell.ParameterNameLabel.text=@"Parameter_3";
         NSLog(@"Index Path Row 2 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==3) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_4"];
         [[self.runArrayPost objectAtIndex:0 ]objectForKey:@"Parameter_4"];
+        cell.ParameterNameLabel.text=@"Parameter_4";
         NSLog(@"Index Path Row 3 %@",cell.parameterLabel.text);
     }
     // cell.textLabel.tag=indexPath.row;

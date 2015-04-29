@@ -32,10 +32,9 @@
    
     [query1 whereKey:@"Type" equalTo:@"Pre_Extraction"];
     
-   // NSLog(@"The Query For Pre_Extraction %@",query1);
+   
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-      // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-     //   NSLog(@"all types: %ld",(long)objects.count);
+     
         self.ObjectCount=objects.count;
         if(error){
             NSLog(@"Error!");
@@ -46,16 +45,11 @@
             }
             else {
                
-               // self.placeholderArray=[[NSMutableArray alloc]initWithArray:objects];
-                //NSLog(@"The Object Array For Pre Is %@",objects);
+               
                 [self.tableView reloadData];
-              // self.refreshControl = [[UIRefreshControl alloc]init];
-              //  [self.tableView addSubview:self.refreshControl];
-               // [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
-            
-             //   NSLog(@"objectArray %@",objects);
+              
             }
-            //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+            
         }
     }];
     
@@ -71,23 +65,20 @@
         } else {
             // Found UserStats
             self.placeholderArray=[object allKeys];
-         //   NSLog(@"The self.placeholderArray %@",object);
+        
             self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
-        //    NSLog(@"The String Is To Be Inside %@",self.LastInsertedTransactionNo);
+       
         }
         
         
     }];
-  ///  NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
-    
+  
 
    }
 
 
 
--(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
-    return UIBarPositionTopAttached;
-}
+
 
 - (void)refreshTable {
     //TODO: refresh your data
@@ -237,13 +228,13 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     }
     else {*/
         
-        //[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+        [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
         if (parameterAdd_PrePF != nil) {
-       [self updateParameters];
+      // [self updateParameters];
         }
         else {
-        [self saveParameters];
+       // [self saveParameters];
         }
     //}
     

@@ -83,7 +83,13 @@
 -(BOOL)shouldAutorotate {
     return NO;
 }*/
+/*-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscapeRight;
+}
 
+-(BOOL)shouldAutorotate {
+    return NO;
+}*/
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;

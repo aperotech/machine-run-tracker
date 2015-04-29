@@ -19,7 +19,7 @@
 @property(strong,nonatomic) UIRefreshControl *refreshControl;
 @property (weak,nonatomic)IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;
-
+@property (strong, nonatomic) IBOutlet UITextField * activeField;
 
 @property(nonatomic,strong)NSString *Interval;
 @property(nonatomic,strong)NSString *Parameter1;

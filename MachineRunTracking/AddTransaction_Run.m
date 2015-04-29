@@ -102,7 +102,7 @@
   //  UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style: UIBarButtonItemStylePlain target:self action:@selector(addORDeleteRows)];[self.navigationItem setLeftBarButtonItem:addButton];
     [super setEditing:YES animated:YES];
     [aTableView setEditing:YES animated:YES];
-    [aTableView reloadData];
+  //  [aTableView reloadData];
     // NSLog(@"AddTransaction_Run Loaded!");
     
     // Do any additional setup after loading the view.
@@ -156,90 +156,6 @@
 
 }
 
-/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 40.0f;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
-    UIView *sectionHeaderView = [[UIView alloc] initWithFrame:
-                                 CGRectMake(0,0, aTableView.frame.size.width, 42.0)];
-    sectionHeaderView.backgroundColor = [UIColor grayColor];
-    
-    UIScrollView *scrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(0,0,aTableView.frame.size.width,42.0)];
-    scrollView.contentSize=CGSizeMake(600, 42);
-   scrollView.scrollEnabled=YES;
-    scrollView.userInteractionEnabled=YES;
-    scrollView.showsVerticalScrollIndicator=NO;
-    scrollView.showsHorizontalScrollIndicator=YES;
-    scrollView.delegate=self;
-    [sectionHeaderView addSubview:scrollView];
-    
-    //scrollView.superview=sectionHeaderView;
-    
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:
-                            CGRectMake(55, 10, sectionHeaderView.frame.size.width, 21.0)];
-    
-    headerLabel.backgroundColor = [UIColor clearColor];
-    headerLabel.textAlignment = NSTextAlignmentLeft;
-    [headerLabel setFont:[UIFont fontWithName:@"System" size:15.0]];
-    headerLabel.text = @"Interval";
-    [scrollView addSubview:headerLabel];
-    
-    UILabel *headerLabel1 = [[UILabel alloc] initWithFrame:
-                             CGRectMake(120,10, sectionHeaderView.frame.size.width, 21.0)];
-    
-    headerLabel1.backgroundColor = [UIColor clearColor];
-    headerLabel1.textAlignment = NSTextAlignmentLeft;
-    [headerLabel1 setFont:[UIFont fontWithName:@"System" size:15.0]];
-    headerLabel1.text = @"Parameter 1";
-    [scrollView addSubview:headerLabel1];
-    
-    UILabel *headerLabel3 = [[UILabel alloc] initWithFrame:
-                             CGRectMake(216,10, sectionHeaderView.frame.size.width, 21.0)];
-    
-    headerLabel3.backgroundColor = [UIColor clearColor];
-    headerLabel3.textAlignment = NSTextAlignmentLeft;
-    [headerLabel3 setFont:[UIFont fontWithName:@"System" size:15.0]];
-    headerLabel3.text = @"Parameter 2";
-    [scrollView addSubview:headerLabel3];
-    
-    UILabel *headerLabel4 = [[UILabel alloc] initWithFrame:
-                             CGRectMake(318,10, sectionHeaderView.frame.size.width, 21.0)];
-    
-    headerLabel4.backgroundColor = [UIColor clearColor];
-    headerLabel4.textAlignment = NSTextAlignmentLeft;
-    [headerLabel4 setFont:[UIFont fontWithName:@"System" size:15.0]];
-    headerLabel4.text = @"Parameter 3";
-    [scrollView addSubview:headerLabel4];
-    
-    UILabel *headerLabel5 = [[UILabel alloc] initWithFrame:
-                             CGRectMake(420,10, sectionHeaderView.frame.size.width, 21.0)];
-    
-    headerLabel5.backgroundColor = [UIColor clearColor];
-    headerLabel5.textAlignment = NSTextAlignmentLeft;
-    [headerLabel5 setFont:[UIFont fontWithName:@"System" size:15.0]];
-    headerLabel5.text = @"Parameter 4";
-    [scrollView addSubview:headerLabel5];
-    
-    UILabel *headerLabel6 = [[UILabel alloc] initWithFrame:
-                             CGRectMake(522,10, sectionHeaderView.frame.size.width, 21.0)];
-    
-    headerLabel6.backgroundColor = [UIColor clearColor];
-    headerLabel6.textAlignment = NSTextAlignmentLeft;
-    [headerLabel6 setFont:[UIFont fontWithName:@"System" size:15.0]];
-    headerLabel6.text = @"Value";
-    [scrollView addSubview:headerLabel6];
-    
-    
-    
-    
-    
-    return sectionHeaderView;
-    
-}*/
-
 -(NSUInteger)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskLandscapeRight;
 }
@@ -282,7 +198,7 @@
              }*/
         }
         
-        int count = 0;
+      /*  int count = 0;
         if(self.editing && indexPath.row != 0)
             count = 1;
         
@@ -296,7 +212,7 @@
             // cell.ValueText.text = @"Parameters3";
             return cell;
         }
-        
+        */
         /*  cell.IntervalText.text = [[self.dataArray objectAtIndex:indexPath.row ]objectForKey:@"Description"];
          cell.ParametersText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
          cell.Parameters1Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Type"];
@@ -494,20 +410,20 @@ valueTextField.backgroundColor=[UIColor grayColor];
         self.Value=textField.text;
       //  NSLog(@"Value %@",self.Value);
     }
-    //  NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
+     NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
     
     
 }
 -(IBAction)SaveAndForward:(id)sender {
    
    
-    [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+  //  [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
     
     if (self.parameterAdd_RunPF != nil) {
-      //  [self updateParameters];
+        [self updateParameters];
     }
     else {
-       // [self saveParameters];
+        [self saveParameters];
     }
 
 }
@@ -629,6 +545,99 @@ valueTextField.backgroundColor=[UIColor grayColor];
     return YES;
 }
 
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self registerForKeyboardNotifications];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [self deregisterFromKeyboardNotifications];
+    
+    [super viewDidDisappear:animated];
+}
+
+//methods to check when a field text is edited, accordingly, adjust keyboard
+// Implementing picker for age text field
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    
+  //  UITableViewCell *cell = (UITableViewCell *)[[[textField superview]superview ] superview];
+   // UITableView *table = (UITableView *)[[cell superview] superview];
+   // NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
+  //  self.activeField =textField;
+  
+    UITableViewCell *cell;
+    
+    
+        // Load resources for iOS 7 or later
+    cell = (UITableViewCell *) [[[[textField superview]superview ] superview]superview];
+        // TextField -> UITableVieCellContentView -> (in iOS 7!)ScrollView -> Cell!
+    
+    [aTableView scrollToRowAtIndexPath:[aTableView indexPathForCell:cell] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    
+}
+
+/*- (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.activeField = textField;
+}*/
+
+//Methods to take care of UIScrollView when keyboard appears
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)deregisterFromKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidHideNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    aTableView.contentInset = contentInsets;
+    aTableView.scrollIndicatorInsets = contentInsets;
+    
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    // Your application might not need or want this behavior.
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {
+        CGPoint scrollPoint = CGPointMake(0.0, (self.activeField.frame.origin.y-kbSize.height));
+        [aTableView setContentOffset:scrollPoint animated:YES];
+    }
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    aTableView.contentInset = contentInsets;
+    aTableView.scrollIndicatorInsets = contentInsets;
+}
+
+/*- (void)viewDidUnload {
+    [self setInterval:nil];
+    [self setParameter1:nil];
+    [self setParameter2:nil];
+    [self setParameter3:nil];
+    [self setParameter4:nil];
+    [self setValue:nil];
+    
+    
+    [super viewDidUnload];
+}*/
 
 
 

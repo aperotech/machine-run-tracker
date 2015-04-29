@@ -97,7 +97,9 @@
 -(void)setRun_ProcessActive
 {
     [self performSegueWithIdentifier:@"ContainerToDetailsRunProcessSegue" sender:nil];
-   
+    [self shouldAutorotate];
+    [self supportedInterfaceOrientations];
+    
 }
 
 -(void)setPost_ExtractionActive
@@ -106,7 +108,12 @@
 }
 
 
-
+-(BOOL)shouldAutorotate {
+    return NO;
+}
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscapeRight;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

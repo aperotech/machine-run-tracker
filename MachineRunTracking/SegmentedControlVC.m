@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
      self.navigationItem.title=@"Pre-extraction";
-    [self.containerView setPre_ExtractionActive];
+   // [self.containerView setPre_ExtractionActive];
    // self.containerView.ContainerControlPF=SegmentControlPF;
         // self.navigationController.navigationBar.topItem.title=@"";
     
@@ -143,7 +143,7 @@
 - (IBAction)segmentControlChanged:(id)sender {
     
     
-    switch (self.segmentedControl.selectedSegmentIndex) {
+    switch (self.segmentedControl.selectedSegmentIndex ) {
         case 0:
             self.navigationItem.title=@"Pre-extraction";
             [self.containerView setPre_ExtractionActive];

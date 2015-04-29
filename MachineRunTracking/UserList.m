@@ -12,6 +12,9 @@
 #import <Parse/Parse.h>
 
 @implementation UserList
+{
+    NSMutableArray *NewUserArray;
+}
 //MainMenuToUserListSegue
 //userListTouserDetailsSegue
 //userListToAddUserSegue
@@ -45,7 +48,7 @@
   //   self.navigationController.navigationBar.topItem.title=@"";
     
    [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
-    PFUser *currentUser = [PFUser currentUser];
+    self.CurrentUser = [PFUser currentUser];
    
     //[query whereKey:@"Parameter_4" equalTo:@"Akshay"];
     
@@ -53,7 +56,7 @@
     self.HeaderArray=[[NSMutableArray alloc]initWithObjects:@"Name",@"Email",@"User Type", nil];
     
     
-    if (currentUser) {
+    if (self.CurrentUser) {
     //    NSLog(@"Current user: %@", currentUser.username);
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(refreshTable:)
@@ -151,10 +154,36 @@
     // Remove the row from data model
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
     
-        [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+       /* [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             [self refreshTable:nil];
-        }];
-      
+        }];*/
+    
+    
+    
+    self.CurrentUser = [PFUser currentUser];
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"username" notEqualTo:self.CurrentUser];
+   // [query orderByAscending:FF_USER_NOMECOGNOME];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (error) {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+            
+        } else {
+            
+            NSLog(@"%@", objects);
+            NewUserArray = [[NSMutableArray alloc] init];
+            for (PFObject *object in objects) {
+                
+                [NewUserArray addObject:object];
+                
+            }
+            
+            [tableView reloadData];
+        }
+    }];
+
+    
+    
 }
 
 - (void) objectsDidLoad:(NSError *)error

@@ -13,7 +13,7 @@
 
 
 @property (nonatomic,strong)NSMutableArray *HeaderArray;
-
+@property (nonatomic, strong) PFUser * CurrentUser;
 
 
 

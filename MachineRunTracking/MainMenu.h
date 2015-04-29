@@ -10,4 +10,9 @@
 
 @interface MainMenu : UIViewController
 - (IBAction)logout:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *UserButton;
+@property (weak, nonatomic) IBOutlet UIButton *MachineButton;
+@property (weak, nonatomic) IBOutlet UIButton *TransactionsButton;
+@property (weak, nonatomic) IBOutlet UIButton *ParametersButton;
+
 @end

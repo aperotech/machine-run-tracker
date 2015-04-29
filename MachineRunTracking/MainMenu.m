@@ -8,35 +8,23 @@
 
 #import "MainMenu.h"
 #import <Parse/Parse.h>
+#import <QuartzCore/QuartzCore.h>
 @implementation MainMenu
+
+@synthesize UserButton,ParametersButton,TransactionsButton,MachineButton;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-  /*  PFObject *dynamicclassobj=[PFObject  objectWithClassName:@"CustomClass" ];
+    UserButton.layer.borderWidth=1.0f;
+    UserButton.layer.borderColor=[[UIColor blackColor]CGColor];
+    ParametersButton.layer.borderWidth=1.0f;
+    ParametersButton.layer.borderColor=[[UIColor blackColor]CGColor];
+    TransactionsButton.layer.borderWidth=1.0f;
+    TransactionsButton.layer.borderColor=[[UIColor blackColor]CGColor];
+    MachineButton.layer.borderWidth=1.0f;
+    MachineButton.layer.borderColor=[[UIColor blackColor]CGColor];
     
-    if([dynamicclassobj save]) {
-       NSLog(@"Successfully Created");
-        PFObject *gameScore = [PFObject objectWithClassName:@"CustomClass"];
-        gameScore[@"score"] = @1337;
-         gameScore[@"myNumber"] = @"someValue";
-        gameScore[@"ScoreName"] = @123123;
-    gameScore[@"First_Name"] = @"Akshay";
-    gameScore[@"Last_Name"] = @"Shrirao";
-    gameScore[@"Nick_Name"] = @"Bunty";
-    gameScore[@"Company_Name"] = @"Apero Technologies";
-        [gameScore saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (succeeded) {
-                NSLog(@"The object has been saved");
-                // The object has been saved.
-            } else {
-                NSLog(@"here was a problem, check error.description");
-                // There was a problem, check error.description
-            }
-        }];
-       
-      //  class created;
-    
-    }*/
-   }
+     }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

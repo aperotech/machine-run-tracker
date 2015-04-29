@@ -44,6 +44,7 @@
 		044DC1B41ADBCEAF002578C2 /* DetailsTransaction_Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */; };
 		045DF3D61AEF9C8400AA40C1 /* AddPostExtractionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 045DF3D51AEF9C8400AA40C1 /* AddPostExtractionCell.m */; };
 		047CF3931AEA746C00C1DDD8 /* DetailsPreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 047CF3921AEA746C00C1DDD8 /* DetailsPreCell.m */; };
+		A120C64E1AF0B21C004DB0D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A120C64C1AF0B21C004DB0D2 /* Main.storyboard */; };
 		A1A2B00D1AE8D65500A9DA14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B00B1AE8D62300A9DA14 /* Foundation.framework */; };
 		A1A2B00E1AE8D65700A9DA14 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B0091AE8D61900A9DA14 /* UIKit.framework */; };
 		A1A2B0121AE8D67800A9DA14 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B00F1AE8D67800A9DA14 /* Bolts.framework */; };
@@ -148,6 +149,7 @@
 		045DF3D51AEF9C8400AA40C1 /* AddPostExtractionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPostExtractionCell.m; sourceTree = "<group>"; };
 		047CF3911AEA746C00C1DDD8 /* DetailsPreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsPreCell.h; sourceTree = "<group>"; };
 		047CF3921AEA746C00C1DDD8 /* DetailsPreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsPreCell.m; sourceTree = "<group>"; };
+		A120C64D1AF0B21C004DB0D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A1A2B0091AE8D61900A9DA14 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A1A2B00B1AE8D62300A9DA14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1A2B00F1AE8D67800A9DA14 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 		04461CE41AD3A3FA00CBC80A /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
+				A120C64C1AF0B21C004DB0D2 /* Main.storyboard */,
 				04461CB41AD3913700CBC80A /* Images.xcassets */,
 				04461CB61AD3913700CBC80A /* LaunchScreen.xib */,
 			);
@@ -644,6 +647,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A120C64E1AF0B21C004DB0D2 /* Main.storyboard in Resources */,
 				04461CB81AD3913700CBC80A /* LaunchScreen.xib in Resources */,
 				04461CB51AD3913700CBC80A /* Images.xcassets in Resources */,
 			);
@@ -726,6 +730,14 @@
 				04461CB71AD3913700CBC80A /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		A120C64C1AF0B21C004DB0D2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A120C64D1AF0B21C004DB0D2 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

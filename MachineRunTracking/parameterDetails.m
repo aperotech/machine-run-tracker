@@ -13,8 +13,9 @@
 @end
 
 @implementation parameterDetails
-@synthesize nameText,descriptionText,typeText,unitsText;
-@synthesize parameterDetailsPF;
+
+@synthesize nameText,descriptionText,typeText,unitsText, parameterDetailsPF;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
    //  self.navigationController.navigationBar.topItem.title=@"";
@@ -30,6 +31,19 @@
     
     // Do any additional setup after loading the view.
 }
+
+#pragma mark - Textfield delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.descriptionText) {
+        [self.unitsText becomeFirstResponder];
+    } else if (textField == self.unitsText) {
+        [self.unitsText resignFirstResponder];
+    }
+    return YES;
+}
+
 - (IBAction)UpdateButton:(id)sender {
     
     NSString *name = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -59,19 +73,13 @@
     
 }
 
-- (void)saveNote
-{
-    
+- (void)saveNote {
     PFObject *NewParameter = [PFObject objectWithClassName:@"Parameters"];
-    
     
     [NewParameter setObject:nameText.text forKey:@"Name"];
     [NewParameter setObject:descriptionText.text forKey:@"Description"];
     [NewParameter setObject:typeText.text forKey:@"Type"];
     [NewParameter setObject:unitsText.text forKey:@"Units"];
-    
-    
-    
     
     //  NewMachine[@"Machine"] = [PFUser currentUser];
     
@@ -89,9 +97,7 @@
     
 }
 
-- (void)updateNote
-{
-    
+- (void)updateNote {
     PFQuery *query = [PFQuery queryWithClassName:@"Parameters"];
     
     // Retrieve the object by id
@@ -123,40 +129,7 @@
                 }
             }];
         }
-        
     }];
-    
-}
-#pragma mark - UITextFieldDelegate method implementation
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
-    return YES;
-}
-
-
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    [self animateTextField:textField up:YES];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    [self animateTextField:textField up:NO];
-}
-
--(void)animateTextField:(UITextField*)textField up:(BOOL)up
-{
-    const int movementDistance = -60; // tweak as needed
-    const float movementDuration = 0.3f; // tweak as needed
-    
-    int movement = (up ? movementDistance : -movementDistance);
-    
-    [UIView beginAnimations: @"animateTextField" context: nil];
-    [UIScrollView setAnimationBeginsFromCurrentState: YES];
-    [UIScrollView setAnimationDuration: movementDuration];
-    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    [UIScrollView commitAnimations];
 }
 
 

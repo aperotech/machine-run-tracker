@@ -47,6 +47,6 @@
      //[self performSegueWithIdentifier:@"unwindToLoginSegue" sender:self];
     [self dismissViewControllerAnimated:YES completion:nil];
    // [self.navigationController popViewControllerAnimated:YES];
-    NSLog(@"Successfully Logout ");
+    //NSLog(@"Successfully Logout ");
     }
 @end

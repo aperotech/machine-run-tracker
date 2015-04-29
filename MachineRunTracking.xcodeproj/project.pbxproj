@@ -21,7 +21,6 @@
 		04461CAA1AD3913700CBC80A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CA91AD3913700CBC80A /* main.m */; };
 		04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAC1AD3913700CBC80A /* AppDelegate.m */; };
 		04461CB01AD3913700CBC80A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAF1AD3913700CBC80A /* ViewController.m */; };
-		04461CB31AD3913700CBC80A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04461CB11AD3913700CBC80A /* Main.storyboard */; };
 		04461CB51AD3913700CBC80A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04461CB41AD3913700CBC80A /* Images.xcassets */; };
 		04461CB81AD3913700CBC80A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04461CB61AD3913700CBC80A /* LaunchScreen.xib */; };
 		04461CC41AD3913700CBC80A /* MachineRunTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CC31AD3913700CBC80A /* MachineRunTrackingTests.m */; };
@@ -104,7 +103,6 @@
 		04461CAC1AD3913700CBC80A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		04461CAE1AD3913700CBC80A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		04461CAF1AD3913700CBC80A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		04461CB21AD3913700CBC80A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		04461CB41AD3913700CBC80A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		04461CB71AD3913700CBC80A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		04461CBD1AD3913700CBC80A /* MachineRunTrackingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MachineRunTrackingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -342,7 +340,6 @@
 		04461CE41AD3A3FA00CBC80A /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				04461CB11AD3913700CBC80A /* Main.storyboard */,
 				04461CB41AD3913700CBC80A /* Images.xcassets */,
 				04461CB61AD3913700CBC80A /* LaunchScreen.xib */,
 			);
@@ -647,7 +644,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04461CB31AD3913700CBC80A /* Main.storyboard in Resources */,
 				04461CB81AD3913700CBC80A /* LaunchScreen.xib in Resources */,
 				04461CB51AD3913700CBC80A /* Images.xcassets in Resources */,
 			);
@@ -724,14 +720,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		04461CB11AD3913700CBC80A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				04461CB21AD3913700CBC80A /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		04461CB61AD3913700CBC80A /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

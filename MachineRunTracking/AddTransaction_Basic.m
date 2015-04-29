@@ -16,7 +16,10 @@
 @synthesize BasicTransactionPF;
 @synthesize Run_NoText,Run_DateText,Run_DurationText,Machine_NameText;
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
+     self.navigationController.navigationBar.topItem.title=@"";
+    
     Run_NoText.delegate=self;
     Run_DateText.delegate=self;
     Run_DurationText.delegate=self;
@@ -24,9 +27,9 @@
     // Do any additional setup after loading the view.
 }
 
--(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+/*-(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
-}
+}*/
 
 - (IBAction)SaveAndForword:(id)sender {
   // [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
@@ -91,7 +94,12 @@
     [super viewDidUnload];
 }
 
+
 #pragma mark - Textfield delegate
+
+
+
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -119,7 +127,7 @@
     [UIView beginAnimations: @"animateTextField" context: nil];
     [UIScrollView setAnimationBeginsFromCurrentState: YES];
     [UIScrollView setAnimationDuration: movementDuration];
-    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+    self.scrollView.frame = CGRectOffset(self.view.frame, 0, movement);
     [UIView commitAnimations];
 }
 

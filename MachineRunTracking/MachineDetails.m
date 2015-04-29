@@ -26,8 +26,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // self.navigationController.navigationBar.topItem.title=@"";
     
-    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, 1000.0)];
+    codeText.delegate=self;
+    nameText.delegate=self;
+    descriptionText.delegate=self;
+    trackingFrequencyText.delegate=self;
+    locationText.delegate=self;
+    capacityText.delegate=self;
+    maintanceFrequencyText.delegate=self;
+    lastMaintanceDate.delegate=self;
     
     if (MachineDetailsPF != nil) {
     codeText.text=[MachineDetailsPF objectForKey:@"Code"];

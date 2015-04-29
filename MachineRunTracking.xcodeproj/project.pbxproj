@@ -16,11 +16,11 @@
 		04418DDD1AEE05B0003DA174 /* DetailsPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DDC1AEE05B0003DA174 /* DetailsPostCell.m */; };
 		04418DE01AEE08AD003DA174 /* SegmentedControlVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */; };
 		04418DE31AEE1BEA003DA174 /* DetailsProcessRunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DE21AEE1BEA003DA174 /* DetailsProcessRunCell.m */; };
+		04418DE61AEE4DEE003DA174 /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04418DE51AEE4DEE003DA174 /* ContainerViewController.m */; };
 		0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */; };
 		04461CAA1AD3913700CBC80A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CA91AD3913700CBC80A /* main.m */; };
 		04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAC1AD3913700CBC80A /* AppDelegate.m */; };
 		04461CB01AD3913700CBC80A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAF1AD3913700CBC80A /* ViewController.m */; };
-		04461CB31AD3913700CBC80A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04461CB11AD3913700CBC80A /* Main.storyboard */; };
 		04461CB51AD3913700CBC80A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04461CB41AD3913700CBC80A /* Images.xcassets */; };
 		04461CB81AD3913700CBC80A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04461CB61AD3913700CBC80A /* LaunchScreen.xib */; };
 		04461CC41AD3913700CBC80A /* MachineRunTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CC31AD3913700CBC80A /* MachineRunTrackingTests.m */; };
@@ -42,7 +42,9 @@
 		044DC1AE1ADBCE7B002578C2 /* DetailsTransaction_Pre.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1AD1ADBCE7B002578C2 /* DetailsTransaction_Pre.m */; };
 		044DC1B11ADBCE93002578C2 /* DetailsTransaction_Run.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */; };
 		044DC1B41ADBCEAF002578C2 /* DetailsTransaction_Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */; };
+		045DF3D61AEF9C8400AA40C1 /* AddPostExtractionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 045DF3D51AEF9C8400AA40C1 /* AddPostExtractionCell.m */; };
 		047CF3931AEA746C00C1DDD8 /* DetailsPreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 047CF3921AEA746C00C1DDD8 /* DetailsPreCell.m */; };
+		A120C64E1AF0B21C004DB0D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A120C64C1AF0B21C004DB0D2 /* Main.storyboard */; };
 		A1A2B00D1AE8D65500A9DA14 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B00B1AE8D62300A9DA14 /* Foundation.framework */; };
 		A1A2B00E1AE8D65700A9DA14 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B0091AE8D61900A9DA14 /* UIKit.framework */; };
 		A1A2B0121AE8D67800A9DA14 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B00F1AE8D67800A9DA14 /* Bolts.framework */; };
@@ -91,6 +93,8 @@
 		04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedControlVC.m; sourceTree = "<group>"; };
 		04418DE11AEE1BEA003DA174 /* DetailsProcessRunCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsProcessRunCell.h; sourceTree = "<group>"; };
 		04418DE21AEE1BEA003DA174 /* DetailsProcessRunCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsProcessRunCell.m; sourceTree = "<group>"; };
+		04418DE41AEE4DEE003DA174 /* ContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerViewController.h; sourceTree = "<group>"; };
+		04418DE51AEE4DEE003DA174 /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerViewController.m; sourceTree = "<group>"; };
 		0445C60F1ADD2FEA001434B3 /* AddTransaction_PreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_PreCell.h; sourceTree = "<group>"; };
 		0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_PreCell.m; sourceTree = "<group>"; };
 		04461CA41AD3913700CBC80A /* MachineRunTracking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MachineRunTracking.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,7 +104,6 @@
 		04461CAC1AD3913700CBC80A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		04461CAE1AD3913700CBC80A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		04461CAF1AD3913700CBC80A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		04461CB21AD3913700CBC80A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		04461CB41AD3913700CBC80A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		04461CB71AD3913700CBC80A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		04461CBD1AD3913700CBC80A /* MachineRunTrackingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MachineRunTrackingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,8 +145,11 @@
 		044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTransaction_Run.m; sourceTree = "<group>"; };
 		044DC1B21ADBCEAF002578C2 /* DetailsTransaction_Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsTransaction_Post.h; sourceTree = "<group>"; };
 		044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTransaction_Post.m; sourceTree = "<group>"; };
+		045DF3D41AEF9C8400AA40C1 /* AddPostExtractionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPostExtractionCell.h; sourceTree = "<group>"; };
+		045DF3D51AEF9C8400AA40C1 /* AddPostExtractionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPostExtractionCell.m; sourceTree = "<group>"; };
 		047CF3911AEA746C00C1DDD8 /* DetailsPreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsPreCell.h; sourceTree = "<group>"; };
 		047CF3921AEA746C00C1DDD8 /* DetailsPreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsPreCell.m; sourceTree = "<group>"; };
+		A120C64D1AF0B21C004DB0D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A1A2B0091AE8D61900A9DA14 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A1A2B00B1AE8D62300A9DA14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1A2B00F1AE8D67800A9DA14 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -240,6 +246,10 @@
 		044069021ADE89A100F2FF6F /* Segment Control */ = {
 			isa = PBXGroup;
 			children = (
+				04418DDE1AEE08AD003DA174 /* SegmentedControlVC.h */,
+				04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */,
+				04418DE41AEE4DEE003DA174 /* ContainerViewController.h */,
+				04418DE51AEE4DEE003DA174 /* ContainerViewController.m */,
 				044068FF1ADE83C400F2FF6F /* EmptySegue.h */,
 				044069001ADE83C400F2FF6F /* EmptySegue.m */,
 			);
@@ -332,7 +342,7 @@
 		04461CE41AD3A3FA00CBC80A /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				04461CB11AD3913700CBC80A /* Main.storyboard */,
+				A120C64C1AF0B21C004DB0D2 /* Main.storyboard */,
 				04461CB41AD3913700CBC80A /* Images.xcassets */,
 				04461CB61AD3913700CBC80A /* LaunchScreen.xib */,
 			);
@@ -467,7 +477,6 @@
 				044DC1BA1ADBF792002578C2 /* Pre */,
 				044DC1B91ADBF786002578C2 /* Run */,
 				044DC1B81ADBF77A002578C2 /* Post */,
-				044069021ADE89A100F2FF6F /* Segment Control */,
 			);
 			name = "Add Transactions";
 			sourceTree = "<group>";
@@ -475,11 +484,10 @@
 		044DC1961ADBCCE1002578C2 /* Transaction Details */ = {
 			isa = PBXGroup;
 			children = (
+				044069021ADE89A100F2FF6F /* Segment Control */,
 				044DC1B51ADBF734002578C2 /* Pre */,
 				044DC1B71ADBF75A002578C2 /* Post */,
 				044DC1B61ADBF752002578C2 /* Run */,
-				04418DDE1AEE08AD003DA174 /* SegmentedControlVC.h */,
-				04418DDF1AEE08AD003DA174 /* SegmentedControlVC.m */,
 			);
 			name = "Transaction Details";
 			sourceTree = "<group>";
@@ -522,6 +530,8 @@
 			children = (
 				044DC1A91ADBCE49002578C2 /* AddTransaction_Post.h */,
 				044DC1AA1ADBCE49002578C2 /* AddTransaction_Post.m */,
+				045DF3D41AEF9C8400AA40C1 /* AddPostExtractionCell.h */,
+				045DF3D51AEF9C8400AA40C1 /* AddPostExtractionCell.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -637,7 +647,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04461CB31AD3913700CBC80A /* Main.storyboard in Resources */,
+				A120C64E1AF0B21C004DB0D2 /* Main.storyboard in Resources */,
 				04461CB81AD3913700CBC80A /* LaunchScreen.xib in Resources */,
 				04461CB51AD3913700CBC80A /* Images.xcassets in Resources */,
 			);
@@ -677,6 +687,7 @@
 				044DC1AE1ADBCE7B002578C2 /* DetailsTransaction_Pre.m in Sources */,
 				04461D1C1AD3B1EF00CBC80A /* UserListCell.m in Sources */,
 				04418DDD1AEE05B0003DA174 /* DetailsPostCell.m in Sources */,
+				04418DE61AEE4DEE003DA174 /* ContainerViewController.m in Sources */,
 				04461CE91AD3A8F100CBC80A /* UserDetails.m in Sources */,
 				044DC1921ADB82CF002578C2 /* parameterDetails.m in Sources */,
 				044069011ADE83C400F2FF6F /* EmptySegue.m in Sources */,
@@ -687,6 +698,7 @@
 				044DC1B11ADBCE93002578C2 /* DetailsTransaction_Run.m in Sources */,
 				04418DE31AEE1BEA003DA174 /* DetailsProcessRunCell.m in Sources */,
 				047CF3931AEA746C00C1DDD8 /* DetailsPreCell.m in Sources */,
+				045DF3D61AEF9C8400AA40C1 /* AddPostExtractionCell.m in Sources */,
 				04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */,
 				044DC1A81ADBCE31002578C2 /* AddTransaction_Run.m in Sources */,
 				04461CAA1AD3913700CBC80A /* main.m in Sources */,
@@ -712,20 +724,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		04461CB11AD3913700CBC80A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				04461CB21AD3913700CBC80A /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		04461CB61AD3913700CBC80A /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				04461CB71AD3913700CBC80A /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		A120C64C1AF0B21C004DB0D2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A120C64D1AF0B21C004DB0D2 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

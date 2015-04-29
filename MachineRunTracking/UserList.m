@@ -42,6 +42,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+  //   self.navigationController.navigationBar.topItem.title=@"";
+    
    [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
     PFUser *currentUser = [PFUser currentUser];
    
@@ -91,7 +93,7 @@
     // Create a query
     
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    
+    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     return query;
 }
 

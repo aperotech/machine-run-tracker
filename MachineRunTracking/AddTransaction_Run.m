@@ -31,14 +31,14 @@
             // Did not find any UserStats for the current user
         } else {
             // Found UserStats
-            NSLog(@"The Objec ts %@",object);
+          //  NSLog(@"The Objec ts %@",object);
             self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
-            NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
+          //  NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
         }
         
         
     }];
-    NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
+   // NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
 
     
     
@@ -46,7 +46,7 @@
     [query1 whereKey:@"Type" equalTo:@"Process_run"];
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-        NSLog(@"all types: %ld",(long)objects.count);
+      //  NSLog(@"all types: %ld",(long)objects.count);
        // self.ObjectCount=objects.count;
         if(error){
             NSLog(@"Error!");
@@ -59,7 +59,7 @@
                // [aTableView reloadData];
                // self.dataArray = [[NSMutableArray alloc] initWithObjects:@"Tiger",@"Leopard",@"Snow Leopard",@"Lion",nil];
                 self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
-                NSLog(@"The Data Array Is %@",self.dataArray);
+               // NSLog(@"The Data Array Is %@",self.dataArray);
               // self.refreshControl = [[UIRefreshControl alloc]init];
               // [self.aTableView addSubview:self.refreshControl];
               // [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
@@ -68,7 +68,7 @@
                 [query2 whereKey:@"Parameter_4" equalTo:@"Akshay"];
                 [query2 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                     // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                    NSLog(@"all types: %ld",(long)objects.count);
+                  //  NSLog(@"all types: %ld",(long)objects.count);
                     // self.ObjectCount=objects.count;
                     if(error){
                         NSLog(@"Error!");
@@ -81,7 +81,7 @@
                             [aTableView reloadData];
                             
                             self.RunProcessArray=[[NSMutableArray alloc]initWithArray:objects];
-                            NSLog(@"The  self.PostExtractionArray Is %@", self.RunProcessArray);
+                        //    NSLog(@"The  self.PostExtractionArray Is %@", self.RunProcessArray);
                             self.refreshControl = [[UIRefreshControl alloc]init];
                             [self.aTableView addSubview:self.refreshControl];
                             [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
@@ -103,7 +103,7 @@
     [super setEditing:YES animated:YES];
     [aTableView setEditing:YES animated:YES];
     [aTableView reloadData];
-     NSLog(@"AddTransaction_Run Loaded!");
+    // NSLog(@"AddTransaction_Run Loaded!");
     
     // Do any additional setup after loading the view.
 }
@@ -149,7 +149,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     int count = (int)[self.RunProcessArray count];
-    NSLog(@"The Count Is %d",count);
+   // NSLog(@"The Count Is %d",count);
     if(self.editing) count++;
     return count;
     
@@ -240,14 +240,22 @@
     
 }*/
 
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscapeRight;
+}
 
+-(BOOL)shouldAutorotate {
+    return NO;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row==0) {
         static NSString *CellIdentifier = @"ProcessRunHeaderCellIdentifier";
         
         Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+       
         if (cell == nil) {
             cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+           
             /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
              UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
              valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)
@@ -317,8 +325,10 @@
     static NSString *CellIdentifier = @"ProcessRunCellIdentifier";
     
     Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
     if (cell == nil) {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
        /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
             UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
             valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)
@@ -446,7 +456,8 @@ valueTextField.backgroundColor=[UIColor grayColor];
 
 - (IBAction)Cancel:(id)sender {
     //[self.navigationController popViewControllerAnimated:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
+   // [self dismissViewControllerAnimated:YES completion:nil];
+     [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
 }
 /*- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
@@ -465,38 +476,38 @@ valueTextField.backgroundColor=[UIColor grayColor];
     
     if (textField.tag==0) {
         self.Interval=textField.text;
-        NSLog(@"Interval %@",self.Interval);
+     //   NSLog(@"Interval %@",self.Interval);
       }
     if (textField.tag==1) {
         self.Parameter1=textField.text;
-        NSLog(@"Parameter1 %@",self.Parameter1);
+      //  NSLog(@"Parameter1 %@",self.Parameter1);
     }
     if (textField.tag==2) {
         self.Parameter2=textField.text;
-        NSLog(@"Parameter2 %@",self.Parameter2);
+       // NSLog(@"Parameter2 %@",self.Parameter2);
     }
     if (textField.tag==3) {
         self.Parameter3=textField.text;
-        NSLog(@"Parameter3 %@",self.Parameter3);
+      ///  NSLog(@"Parameter3 %@",self.Parameter3);
     }
     if (textField.tag==4) {
         self.Value=textField.text;
-        NSLog(@"Value %@",self.Value);
+      //  NSLog(@"Value %@",self.Value);
     }
-      NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
+    //  NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
     
     
 }
 -(IBAction)SaveAndForward:(id)sender {
    
    
-  //  [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+    [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
     
     if (self.parameterAdd_RunPF != nil) {
-        [self updateParameters];
+      //  [self updateParameters];
     }
     else {
-        [self saveParameters];
+       // [self saveParameters];
     }
 
 }

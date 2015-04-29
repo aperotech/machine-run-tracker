@@ -17,4 +17,8 @@
 @property (strong,nonatomic)IBOutlet UITextField *Run_DurationText;
 -(IBAction)SaveAndForword:(id)sender;
 -(IBAction)Cancel:(id)sender;
+
+@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
+
+- (IBAction)dismissKeyboard:(id)sender;
 @end

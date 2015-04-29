@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 #import "TransactionList.h"
 #import <Parse/Parse.h>
+#import "AddPostExtractionCell.h"
 @interface AddTransaction_Post ()
 
 @end
@@ -30,9 +31,9 @@
             // Did not find any UserStats for the current user
         } else {
             // Found UserStats
-            NSLog(@"The Objec ts %@",object);
+          //  NSLog(@"The Objec ts0 %@",object);
             self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
-            NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
+           // NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
         }
         
         
@@ -45,7 +46,7 @@
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Post_Extraction"];
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        NSLog(@"all types: %ld",(unsigned long)objects.count);
+       // NSLog(@"all types1: %ld",(unsigned long)objects.count);
         self.ObjectCount=objects.count;
         if(error){
             NSLog(@"Error!");
@@ -57,7 +58,7 @@
             else {
                  [self.tableView reloadData];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                   NSLog(@"objectArray %@",objects);
+                //   NSLog(@"objectArray1 %@",objects);
             }
             
         }
@@ -71,7 +72,8 @@
 
 - (IBAction)Cancel:(id)sender {
     //[self.navigationController popViewControllerAnimated:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
+   // [self dismissViewControllerAnimated:YES completion:nil];
+    [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -86,20 +88,35 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *simpleTableIdentifier = @"Post_ExtractionCellIdentifier";
     
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    if (cell != nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    AddPostExtractionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    if (cell == nil) {
+        cell = [[AddPostExtractionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
         // cell.p_1Text.text = @"New Parameter";
-        UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(150,12,300,26)];
+       /* UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(150,12,300,26)];
         valueTextField.tag = indexPath.row;
         [valueTextField borderStyle];
         valueTextField.backgroundColor =[UIColor grayColor];
         valueTextField.delegate = self;
         valueTextField.placeholder=@"Parameters";
-        [cell.contentView addSubview:valueTextField];
+        [cell.contentView addSubview:valueTextField];*/
         // [valueTextField release];
         // cell.
     }
+    cell.p_1Text.tag=indexPath.row;
+    if (indexPath.row==0) {
+        cell.p_1Text.placeholder=@"Parameter_1";
+    }
+    if (indexPath.row==1) {
+        cell.p_1Text.placeholder=@"Parameter_2";
+    }
+    if (indexPath.row==2) {
+        cell.p_1Text.placeholder=@"Parameter_3";
+    }
+    if (indexPath.row==3) {
+        cell.p_1Text.placeholder=@"Parameter_4";
+    }
+    
+
     // cell.p_1Text.text = @"New Parameter";
     /* for (int i=0; i<self.ObjectCount;i++) {
      if (indexPath.row == i) {
@@ -125,26 +142,31 @@
     
     if (textField.tag==0) {
         self.Parameter0=textField.text;
-        NSLog(@"Parameter0 %@",self.Parameter0);
+      //  NSLog(@"Parameter0 %@",self.Parameter0);
         
         
     }
     if (textField.tag==1) {
         self.Parameter1=textField.text;
-        NSLog(@"Parameter1 %@",self.Parameter1);
+       // NSLog(@"Parameter1 %@",self.Parameter1);
         
         
     }
     if (textField.tag==2) {
         self.Parameter2=textField.text;
-        NSLog(@"Parameter2 %@",self.Parameter2);
+      //  NSLog(@"Parameter2 %@",self.Parameter2);
+        
+        
+    }
+    if (textField.tag==3) {
+        self.Parameter3=textField.text;
+       // NSLog(@"Parameter2 %@",self.Parameter3);
         
         
     }
     
     
-    
-    NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
+   // NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
 }
 
 
@@ -189,7 +211,7 @@
         ParameterValue[@"Parameter_1"] = self.Parameter0;
         ParameterValue[@"Parameter_2"] = self.Parameter1;
         ParameterValue[@"Parameter_3"] = self.Parameter2;
-        ParameterValue[@"Parameter_4"] = @"Akshay";
+        ParameterValue[@"Parameter_4"] = self.Parameter3;
         ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
@@ -208,7 +230,7 @@
                                                                    delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
                 
-                NSLog(@"here was a problem, check error.description");
+               // NSLog(@"here was a problem, check error.description");
                 // There was a problem, check error.description
             }
         }];

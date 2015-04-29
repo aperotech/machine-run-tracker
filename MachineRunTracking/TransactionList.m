@@ -11,7 +11,9 @@
 #import "AddTransaction_Basic.h"
 #import "DetailsTransaction_Pre.h"
 #import "AddTransaction_Post.h"
-
+#import "SegmentedControlVC.h"
+#import "AddTransaction_Pre.h"
+#import "AddTransaction_Run.h"
 #import <Parse/Parse.h>
 @interface TransactionList ()
 
@@ -45,7 +47,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   // self.navigationController.navigationBar.topItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
+    // self.navigationController.navigationBar.topItem.title=@"";
+    // self.navigationController.navigationBar.backItem.title=@"";
   /*  PFQuery *query = [PFQuery queryWithClassName:@"_User"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
@@ -86,7 +91,7 @@
 - (PFQuery *)queryForTable
 {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    
+    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
     /*    if ([self.objects count] == 0) {
@@ -212,12 +217,14 @@
         AddTransaction_Basic *AddTransaction_BasicObj = (AddTransaction_Basic *)segue.destinationViewController;
         AddTransaction_BasicObj.BasicTransactionPF = object;
     }
-    else*/ if([segue.identifier isEqualToString:@"TransactionListToDetailsPreSegue"]) {
+    else*/ if([segue.identifier isEqualToString:@"TransactionListToSegmentedControlSegue"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         PFObject *object = [self.objects objectAtIndex:indexPath.row];
         
-        DetailsTransaction_Pre *DetailsTransaction_PreObj = (DetailsTransaction_Pre *)segue.destinationViewController;
-        DetailsTransaction_PreObj.DetialsTransaction_PrePF = object;
+        SegmentedControlVC *segmentControlVCObj=(SegmentedControlVC *)segue.destinationViewController;
+        segmentControlVCObj.SegmentControlPF=object;
+    //    DetailsTransaction_Pre *DetailsTransaction_PreObj = (DetailsTransaction_Pre *)segue.destinationViewController;
+      //  DetailsTransaction_PreObj.DetialsTransaction_PrePF = object;
     }
 }
 
@@ -239,14 +246,29 @@
     
     if ([unwindSegue.identifier isEqualToString:@"PostUnwindToTransactionListSegue"]) {
         AddTransaction_Post *AddPostVC = (AddTransaction_Post *)unwindSegue.sourceViewController;
-        NSLog(@"The Parameter 0 are %@",AddPostVC.Parameter0);
+       // NSLog(@"The Parameter 0 are %@",AddPostVC.Parameter0);
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(refreshTable:)
                                                      name:@"refreshTable"
                                                    object:nil];
         [self.tableView reloadData];
     }
-    
+    else if ([unwindSegue.identifier isEqualToString:@"PreUnwindToTransactionListSegue"]){
+        AddTransaction_Pre *addtransactionPre=(AddTransaction_Pre *)unwindSegue.sourceViewController;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshTable:)
+                                                     name:@"refreshTable"
+                                                   object:nil];
+        [self.tableView reloadData];
+    }
+    else if ([unwindSegue.identifier isEqualToString:@"RunUnwindToTransactionListSegue"]){
+        AddTransaction_Run *addtransactionRun=(AddTransaction_Run *)unwindSegue.sourceViewController;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshTable:)
+                                                     name:@"refreshTable"
+                                                   object:nil];
+        [self.tableView reloadData];
+    }
 }
 
 

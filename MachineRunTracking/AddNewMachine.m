@@ -27,6 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // self.navigationController.navigationBar.topItem.title=@"";
     
     [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, 800.0)];
     

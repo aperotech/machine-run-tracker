@@ -18,7 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+   //  self.navigationController.navigationBar.topItem.title=@"";
     
     if (parameterDetailsPF != nil) {
         nameText.text=[parameterDetailsPF objectForKey:@"Name"];

@@ -1,15 +1,15 @@
 //
-//  DetailsPreCell.m
+//  AddPostExtractionCell.m
 //  MachineRunTracking
 //
-//  Created by Akshay Shrirao on 24/04/15.
+//  Created by Akshay Shrirao on 28/04/15.
 //  Copyright (c) 2015 Apero Technologies. All rights reserved.
 //
 
-#import "DetailsPreCell.h"
+#import "AddPostExtractionCell.h"
 
-@implementation DetailsPreCell
-@synthesize parameterLabel,ParameterNameLabel;
+@implementation AddPostExtractionCell
+@synthesize p_1Text;
 - (void)awakeFromNib {
     // Initialization code
 }

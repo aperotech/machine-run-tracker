@@ -50,10 +50,28 @@
    [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
     self.CurrentUser = [PFUser currentUser];
    
-    //[query whereKey:@"Parameter_4" equalTo:@"Akshay"];
+    
+   /* PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+    [query whereKey:@"username" equalTo:self.CurrentUser];
+    [query whereKey:@"usertype" equalTo:@"Standard"];
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        
+        if (!object) {
+            // Did not find any UserStats for the current user
+        } else {
+            // Found UserStats
+          NSArray *array=[object allKeys];
+            
+            NSString *usertype = [array objectForKey:@"Usertype"];
+            
+        }
+        
+        
+    }];*/
     
     
-    self.HeaderArray=[[NSMutableArray alloc]initWithObjects:@"Name",@"Email",@"User Type", nil];
+
+       self.HeaderArray=[[NSMutableArray alloc]initWithObjects:@"Name",@"Email",@"User Type", nil];
     
     
     if (self.CurrentUser) {

@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // self.navigationController.navigationBar.topItem.title=@"";
-    
+    NSLog(@"The Detailsa Pre Is First Time Laod %@",DetialsTransaction_PrePF);
    // NSLog(@"The Pre Loaded");
     if (DetialsTransaction_PrePF !=NULL) {
         Run_noLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_No"];
@@ -80,6 +80,10 @@
 
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+    [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

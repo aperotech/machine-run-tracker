@@ -38,12 +38,12 @@
     if( self.childViewControllers.count <= 0 ){
         
         NSLog(@"self.childViewControllers.count is NOT > 0");
-        [self addChildViewController:segue.destinationViewController];
+        DetailsTransaction_Pre *DetialsTransactionPreObj=(DetailsTransaction_Pre *)segue.destinationViewController;
+        [self addChildViewController:DetialsTransactionPreObj];
+        DetialsTransactionPreObj.DetialsTransaction_PrePF=ContainerControlPF;
         ((UIViewController *)segue.destinationViewController).view.frame = CGRectMake(0,0,self.view.frame.size.width, self.view.frame.size.height);
         [self.view addSubview:((UIViewController *)segue.destinationViewController).view];
         [segue.destinationViewController didMoveToParentViewController:self];
-       /* DetailsTransaction_Pre *DetialsTransactionPreObj=(DetailsTransaction_Pre *)segue.destinationViewController;
-        DetialsTransactionPreObj.DetialsTransaction_PrePF=ContainerControlPF;*/
         
     } else {
         
@@ -60,6 +60,17 @@
             DetailsTransaction_Run *DetailsTransactionRunObj=(DetailsTransaction_Run *)segue.destinationViewController;
             DetailsTransactionRunObj.DetialsTransaction_RunPF=ContainerControlPF;
             [self swapFromViewController:[self.childViewControllers objectAtIndex:0] toViewController:[segue destinationViewController]];
+            [[segue destinationViewController] willMoveToParentViewController:self];
+            
+           /* [self transitionFromViewController:[self.childViewControllers objectAtIndex:0]
+                              toViewController:[segue destinationViewController]
+                                      duration:0.0
+                                       options:UIViewAnimationOptionTransitionNone
+                                    animations:nil
+                                    completion:^(BOOL finished){
+                                        [[segue destinationViewController] didMoveToParentViewController:self];
+                                    }];*/
+            
             
         } else if ([segue.identifier isEqualToString:@"ContainerToDetailsPostExtractionSegue"]){
             DetailsTransaction_Post *DetailsTransactionPostObj=(DetailsTransaction_Post *)segue.destinationViewController;
@@ -69,6 +80,7 @@
         }
         
     }
+
     
 }
 
@@ -90,15 +102,15 @@
 -(void)setPre_ExtractionActive
 {
     [self performSegueWithIdentifier:@"ContainerToDetailsPreExtractionSegue" sender:nil];
-    
+    NSLog(@"Container Method Reach value %@ ",ContainerControlPF);
 }
 
 
 -(void)setRun_ProcessActive
 {
     [self performSegueWithIdentifier:@"ContainerToDetailsRunProcessSegue" sender:nil];
-    [self shouldAutorotate];
-    [self supportedInterfaceOrientations];
+   //[self shouldAutorotate];
+  // [self supportedInterfaceOrientations];
     
 }
 
@@ -108,12 +120,12 @@
 }
 
 
--(BOOL)shouldAutorotate {
+/*-(BOOL)shouldAutorotate {
     return NO;
 }
 -(NSUInteger)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskLandscapeRight;
-}
+}*/
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

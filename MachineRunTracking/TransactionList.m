@@ -150,6 +150,9 @@
 }
 */
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.1f;
+}
 
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
@@ -167,9 +170,9 @@
         // Configure the cell
         cell.backgroundColor=[UIColor grayColor];
         
-        cell.Run_No.text=@"Run_No";
-        cell.Machine_Name.text=@"Machine_Name";
-        cell.Run_Date.text=@"Run_Date";
+        cell.Run_No.text=@"Run No.";
+        cell.Machine_Name.text=@"Machine";
+        cell.Run_Date.text=@"Run Date";
         
         
         return cell;

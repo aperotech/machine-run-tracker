@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
+
 @interface AddTransaction_Basic : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIScrollViewDelegate,UIActivityItemSource>
+
 @property(strong,nonatomic)PFObject *BasicTransactionPF;
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityView;
 @property(strong,nonatomic)IBOutlet UITextField *Run_NoText;

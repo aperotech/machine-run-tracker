@@ -21,16 +21,13 @@
     UIPickerView *MachinePicker;
     UIDatePicker *datePicker;
     UIToolbar *MachinePickerToolbar, *datePickerToolbar;
-    NSString *date, *Machine;
+    NSString *date;
     NSDateFormatter *formatter;
-
-
 }
 
 
-@synthesize BasicTransactionPF;
-@synthesize Run_NoText,Run_DateText,Run_DurationText,Machine_NameText;
-@synthesize activityView;
+@synthesize BasicTransactionPF, Run_NoText,Run_DateText,Run_DurationText,Machine_NameText, activityView;
+
 - (void)viewDidLoad {
     activityView = [[UIActivityIndicatorView alloc]
                     initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -42,10 +39,10 @@
     [super viewDidLoad];
      self.navigationController.navigationBar.topItem.title=@"";
    
-    /*Run_NoText.delegate=self;
-    Run_DateText.delegate=self;
+    /*self.Run_NoText.delegate=self;
+    self.Run_DateText.delegate=self;
     Run_DurationText.delegate=self;
-    Machine_NameText.delegate=self;*/
+    self.Machine_NameText.delegate=self;*/
     // Do any additional setup after loading the view.
    // activityView = [[UIActivityIndicatorView alloc]                                             initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     
@@ -90,8 +87,7 @@
     
     [MachinePicker setBackgroundColor:[UIColor lightTextColor]];
     [MachinePicker setShowsSelectionIndicator:YES];
-    [Machine_NameText setInputView:MachinePicker];
-    [Machine_NameText setInputView:MachinePicker];
+    [self.Machine_NameText setInputView:MachinePicker];
     
     //Creating a toolbar above picker where Done button can be added
     MachinePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 288, 40)];
@@ -104,22 +100,21 @@
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     [barItems addObject:flexSpace];
     
-    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(frequencyPickerDoneClicked)];
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(machinePickerDoneClicked)];
     [barItems addObject:doneBtn];
     
     [MachinePickerToolbar setItems:barItems animated:NO];
-    [Machine_NameText setInputAccessoryView:MachinePickerToolbar];
-    [Machine_NameText setInputAccessoryView:MachinePickerToolbar];
+    [self.Machine_NameText setInputAccessoryView:MachinePickerToolbar];
     
     //Creating date picker for last maintenance date
     formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd MMMM YYYY"];
     
-    datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(16, (Run_DateText.frame.origin.y + 10.0), 288, 162)];
+    datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(16, (self.Run_DateText.frame.origin.y + 10.0), 288, 162)];
     
     [datePicker setDatePickerMode:UIDatePickerModeDate];
     [datePicker setBackgroundColor:[UIColor lightTextColor]];
-    [Run_DateText setInputView:datePicker];
+    [self.Run_DateText setInputView:datePicker];
     
     //Creating a toolbar above Date picker where Done button can be added
     datePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 288, 40)];
@@ -135,9 +130,7 @@
     [dateBarItems addObject:dateDoneBtn];
     
     [datePickerToolbar setItems:dateBarItems animated:YES];
-    [Run_DateText setInputAccessoryView:datePickerToolbar];
-    
-    
+    [self.Run_DateText setInputAccessoryView:datePickerToolbar];
 }
 
 
@@ -162,14 +155,10 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == Run_NoText) {
-        [Machine_NameText becomeFirstResponder];
-    } else if (textField == Machine_NameText) {
-        [Run_DateText becomeFirstResponder];
-    } else if (textField == Run_DateText) {
-        [Run_DurationText becomeFirstResponder];
-    }else if (textField == Run_DurationText) {
-        [Run_DurationText resignFirstResponder];
+    if (textField == self.Run_NoText) {
+        [self.Machine_NameText becomeFirstResponder];
+    } else if (textField == self.Run_DurationText) {
+        [self.Run_DurationText resignFirstResponder];
     }
     
     return YES;
@@ -177,7 +166,7 @@
 
 //Method to disable any user input for the user type text field
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if (textField == Machine_NameText | textField == Machine_NameText) {
+    if (textField == self.Machine_NameText | textField == self.Machine_NameText) {
         return NO;
     }
     return YES;
@@ -203,28 +192,17 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if (self.activeField == Machine_NameText) {
-        Machine_NameText.text = [Machine_NameArray objectAtIndex:row];
-    } else if (self.activeField == Machine_NameText){
-        Machine_NameText.text = [Machine_NameArray objectAtIndex:row];
+    if (self.activeField == self.Machine_NameText) {
+        self.Machine_NameText.text = [Machine_NameArray objectAtIndex:row];
     }
-    Machine = [Machine_NameArray objectAtIndex:row];
 }
 
 //Method to call when Done is clicked on Age picker drop down
-- (void)frequencyPickerDoneClicked {
-    if (self.activeField == Run_DateText) {
-        if ([Machine_NameText.text isEqualToString:@""]) {
-            Machine_NameText.text = [Machine_NameArray objectAtIndex:0];
+- (void)machinePickerDoneClicked {
+    if ([self.Machine_NameText.text isEqualToString:@""]) {
+            self.Machine_NameText.text = [Machine_NameArray objectAtIndex:0];
         }
-        [Run_DateText becomeFirstResponder];
-    }
-    if (self.activeField == Machine_NameText) {
-        if ([Machine_NameText.text isEqualToString:@""]) {
-            Machine_NameText.text = Machine;
-        }
-        [Run_DateText becomeFirstResponder];
-    }
+        [self.Run_DateText becomeFirstResponder];
 }
 
 
@@ -232,9 +210,9 @@
 //Method to call when Done is clicked on Date picker drop down
 - (void)datePickerDoneClicked {
     date = [formatter stringFromDate:datePicker.date];
-    Run_DateText.text = date;
+    self.Run_DateText.text = date;
     
-    [Run_DateText resignFirstResponder];
+    [self.Run_DurationText becomeFirstResponder];
 }
 
 
@@ -246,11 +224,11 @@
 //[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
     
    
-    NSString *Run_no = [Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    NSString *Machine_Name = [Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *Run_Date = [Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *Run_duration = [Run_DurationText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *Machine_Name = [self.Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *Run_Date = [self.Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *Run_duration = [self.Run_DurationText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     
     if ([Run_no length] == 0 ||[Machine_Name length] == 0 ||[Run_Date length] == 0 ||[Run_duration length] == 0) {
@@ -261,10 +239,10 @@
     }
     else{
     PFObject *transactionObj = [PFObject objectWithClassName:@"Transaction"];
-    [transactionObj setObject:Run_NoText.text forKey:@"Run_No"];
-    [transactionObj setObject:Machine_NameText.text forKey:@"Machine_Name"];
-    [transactionObj setObject:Run_DateText.text forKey:@"Run_Date"];
-    [transactionObj setObject:Run_DurationText.text forKey:@"Run_Duration"];
+    [transactionObj setObject:self.Run_NoText.text forKey:@"Run_No"];
+    [transactionObj setObject:self.Machine_NameText.text forKey:@"Machine_Name"];
+    [transactionObj setObject:self.Run_DateText.text forKey:@"Run_Date"];
+    [transactionObj setObject:self.Run_DurationText.text forKey:@"Run_Duration"];
     //  parameterObj[@"New Parameter"]=@"The New String";
     
     

@@ -151,6 +151,7 @@
             break;
         case 1:
             self.navigationItem.title=@"Process Run";
+            
             [self.containerView setRun_ProcessActive];
             [self  supportedInterfaceOrientations];
             [self shouldAutorotate];

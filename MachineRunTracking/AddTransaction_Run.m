@@ -99,10 +99,12 @@
 
     
    // self.title = @"Data Table";
-  //  UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style: UIBarButtonItemStylePlain target:self action:@selector(addORDeleteRows)];[self.navigationItem setLeftBarButtonItem:addButton];
+   //UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style: UIBarButtonItemStylePlain target:self action:@selector(addORDeleteRows)];[self.navigationItem setLeftBarButtonItem:addButton];
+    //self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    //
     [super setEditing:YES animated:YES];
     [aTableView setEditing:YES animated:YES];
-  //  [aTableView reloadData];
+   // [aTableView reloadData];
     // NSLog(@"AddTransaction_Run Loaded!");
     
     // Do any additional setup after loading the view.
@@ -149,8 +151,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     int count = (int)[self.RunProcessArray count];
-   // NSLog(@"The Count Is %d",count);
+    //NSLog(@"The Count Is %d",count);
     if(self.editing) count++;
+   // NSLog(@"The Count++ Is %d",count++);
     return count;
     
 
@@ -168,10 +171,10 @@
         static NSString *CellIdentifier = @"ProcessRunHeaderCellIdentifier";
         
         Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-       
+        
         if (cell == nil) {
             cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-           
+            
             /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
              UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
              valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)
@@ -198,21 +201,21 @@
              }*/
         }
         
-      /*  int count = 0;
-        if(self.editing && indexPath.row != 0)
-            count = 1;
-        
-        if(indexPath.row == ([self.RunProcessArray count]) && self.editing){
-            
-            //   cell.IntervalText.text = @"Interval ";
-            // cell.ParametersText.text = @"Is";
-            // cell.Parameters1Text.text=@"Showing";
-            //cell.Parameters2Text.text=@"Parameters";
-            //cell.Parameters3Text.text=@"Parameters2";
-            // cell.ValueText.text = @"Parameters3";
-            return cell;
-        }
-        */
+        /*  int count = 0;
+         if(self.editing && indexPath.row != 0)
+         count = 1;
+         
+         if(indexPath.row == ([self.RunProcessArray count]) && self.editing){
+         
+         //   cell.IntervalText.text = @"Interval ";
+         // cell.ParametersText.text = @"Is";
+         // cell.Parameters1Text.text=@"Showing";
+         //cell.Parameters2Text.text=@"Parameters";
+         //cell.Parameters3Text.text=@"Parameters2";
+         // cell.ValueText.text = @"Parameters3";
+         return cell;
+         }
+         */
         /*  cell.IntervalText.text = [[self.dataArray objectAtIndex:indexPath.row ]objectForKey:@"Description"];
          cell.ParametersText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
          cell.Parameters1Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Type"];
@@ -236,93 +239,92 @@
         cell.ValueText.text = @"Value";
         // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
-
-    }else{
-    static NSString *CellIdentifier = @"ProcessRunCellIdentifier";
-    
-    Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
-       /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
-            UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
-            valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)
-            valueTextField.borderStyle = UITextBorderStyleRoundedRect;
-            [valueTextField setReturnKeyType:UIReturnKeyDefault];
-            [valueTextField setEnablesReturnKeyAutomatically:YES];
-            [valueTextField setDelegate:self];
-            valueTextField.placeholder=@"P_1";
-valueTextField.backgroundColor=[UIColor grayColor];
-            [cell.contentView addSubview:valueTextField];
-            // don't forget to do [tf release]; if not using ARC
-        }*/
-        /*for (int i=indexPath.row ;i< [self.dataArray count];i++) {
-            UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.scrollView.bounds.origin.x +203,10,88,21)];
-            valueTextField.tag = indexPath.row;
-            [valueTextField borderStyle];
-            valueTextField.backgroundColor =[UIColor grayColor];
-            valueTextField.delegate = self;
-            valueTextField.placeholder=@"Parameters";
-            [cell.contentView addSubview:valueTextField];
+    }else{
+        static NSString *CellIdentifier = @"ProcessRunCellIdentifier";
+        
+        Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             
+            /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
+             UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
+             valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)
+             valueTextField.borderStyle = UITextBorderStyleRoundedRect;
+             [valueTextField setReturnKeyType:UIReturnKeyDefault];
+             [valueTextField setEnablesReturnKeyAutomatically:YES];
+             [valueTextField setDelegate:self];
+             valueTextField.placeholder=@"P_1";
+             valueTextField.backgroundColor=[UIColor grayColor];
+             [cell.contentView addSubview:valueTextField];
+             // don't forget to do [tf release]; if not using ARC
+             }*/
+            /*for (int i=indexPath.row ;i< [self.dataArray count];i++) {
+             UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.scrollView.bounds.origin.x +203,10,88,21)];
+             valueTextField.tag = indexPath.row;
+             [valueTextField borderStyle];
+             valueTextField.backgroundColor =[UIColor grayColor];
+             valueTextField.delegate = self;
+             valueTextField.placeholder=@"Parameters";
+             [cell.contentView addSubview:valueTextField];
+             
+             
+             cell.editingAccessoryType = YES;
+             }*/
+        }
+        
+        int count = 0;
+        if(self.editing && indexPath.row != 0)
+            count = 1;
+        
+        if(indexPath.row == ([self.RunProcessArray count]) && self.editing){
             
-            cell.editingAccessoryType = YES;
-        }*/
-    }
-    
-    int count = 0;
-    if(self.editing && indexPath.row != 0)
-        count = 1;
-    
-    if(indexPath.row == ([self.RunProcessArray count]) && self.editing){
-       
-     //   cell.IntervalText.text = @"Interval ";
-       // cell.ParametersText.text = @"Is";
-       // cell.Parameters1Text.text=@"Showing";
-        //cell.Parameters2Text.text=@"Parameters";
-        //cell.Parameters3Text.text=@"Parameters2";
-       // cell.ValueText.text = @"Parameters3";
-             return cell;
-    }
-    
-  /*  cell.IntervalText.text = [[self.dataArray objectAtIndex:indexPath.row ]objectForKey:@"Description"];
-    cell.ParametersText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
-    cell.Parameters1Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Type"];
-    cell.Parameters2Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Units"];
-    cell.Parameters3Text.text= @"Parameter 3";//[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_4"];
-    cell.ValueText.text = @"Value";//[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Value"];*/
-    
-   /* cell.IntervalText.text = @"Here ";
-    cell.ParametersText.text = @"Is";
-    cell.Parameters1Text.text=@"Showing";
-    cell.Parameters2Text.text=@"Parameters";
-    cell.Parameters3Text.text=@"Parameters2";
-    cell.ValueText.text = @"Parameters3";*/
-    
-    
-   cell.IntervalText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Interval"];
-    cell.ParametersText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_1"];
-    cell.Parameters1Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_2"];
-    cell.Parameters2Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_3"];
-    cell.Parameters3Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_4"];
-    cell.ValueText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Value"];
-   // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    return cell;
+            //   cell.IntervalText.text = @"Interval ";
+            // cell.ParametersText.text = @"Is";
+            // cell.Parameters1Text.text=@"Showing";
+            //cell.Parameters2Text.text=@"Parameters";
+            //cell.Parameters3Text.text=@"Parameters2";
+            // cell.ValueText.text = @"Parameters3";
+            return cell;
+        }
+        
+        /*  cell.IntervalText.text = [[self.dataArray objectAtIndex:indexPath.row ]objectForKey:@"Description"];
+         cell.ParametersText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+         cell.Parameters1Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Type"];
+         cell.Parameters2Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Units"];
+         cell.Parameters3Text.text= @"Parameter 3";//[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_4"];
+         cell.ValueText.text = @"Value";//[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Value"];*/
+        
+        /* cell.IntervalText.text = @"Here ";
+         cell.ParametersText.text = @"Is";
+         cell.Parameters1Text.text=@"Showing";
+         cell.Parameters2Text.text=@"Parameters";
+         cell.Parameters3Text.text=@"Parameters2";
+         cell.ValueText.text = @"Parameters3";*/
+        
+        
+        cell.IntervalText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Interval"];
+        cell.ParametersText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_1"];
+        cell.Parameters1Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_2"];
+        cell.Parameters2Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_3"];
+        cell.Parameters3Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_4"];
+        cell.ValueText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Value"];
+        // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        return cell;
     }
 }
 
-
 - (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   // if (self.editing == YES || !indexPath)
-     //   return UITableViewCellEditingStyleNone;
+    // if (self.editing == YES || !indexPath)
+    //   return UITableViewCellEditingStyleNone;
     
     if (self.editing && indexPath.row == ([self.RunProcessArray count]))
         
         return UITableViewCellEditingStyleInsert;
-   // else
-     //   return UITableViewCellEditingStyleDelete;
+    // else
+    //   return UITableViewCellEditingStyleDelete;
     
     return UITableViewCellEditingStyleNone;
 }
@@ -330,12 +332,12 @@ valueTextField.backgroundColor=[UIColor grayColor];
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle) editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   /* if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
-        [self.dataArray removeObjectAtIndex:indexPath.row];
-        [aTableView reloadData];
-    }*/
-     if (editingStyle == UITableViewCellEditingStyleInsert)
+    /* if (editingStyle == UITableViewCellEditingStyleDelete)
+     {
+     [self.dataArray removeObjectAtIndex:indexPath.row];
+     [aTableView reloadData];
+     }*/
+    if (editingStyle == UITableViewCellEditingStyleInsert)
     {
         [self.RunProcessArray insertObject:@"new Value" atIndex:[self.RunProcessArray count]];
         [aTableView reloadData];
@@ -356,7 +358,7 @@ valueTextField.backgroundColor=[UIColor grayColor];
         
     }}
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+/*-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat sectionHeaderHeight = 40;
     //Change as per your table header hight
     if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0)
@@ -367,7 +369,7 @@ valueTextField.backgroundColor=[UIColor grayColor];
     {
         scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
     }
-}
+}*/
 
 
 - (IBAction)Cancel:(id)sender {
@@ -566,15 +568,17 @@ valueTextField.backgroundColor=[UIColor grayColor];
    // UITableView *table = (UITableView *)[[cell superview] superview];
    // NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
   //  self.activeField =textField;
-  
-    UITableViewCell *cell;
     
+   
     
-        // Load resources for iOS 7 or later
-    cell = (UITableViewCell *) [[[[textField superview]superview ] superview]superview];
-        // TextField -> UITableVieCellContentView -> (in iOS 7!)ScrollView -> Cell!
-    
-    [aTableView scrollToRowAtIndexPath:[aTableView indexPathForCell:cell] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    if (aTableView.contentOffset.y != 0)
+   {
+        [UIView animateWithDuration:0.0 delay:0.5 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+        } completion:^(BOOL finished) {
+            UITableViewCell *cell = (UITableViewCell*) [[[textField superview] superview] superview];
+            [aTableView scrollToRowAtIndexPath:[aTableView indexPathForCell:cell] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }];
+    }
     
 }
 
@@ -585,10 +589,10 @@ valueTextField.backgroundColor=[UIColor grayColor];
 //Methods to take care of UIScrollView when keyboard appears
 - (void)registerForKeyboardNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasShown:)
+                                             selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillBeHidden:)
+                                             selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification object:nil];
 }
 
@@ -601,9 +605,33 @@ valueTextField.backgroundColor=[UIColor grayColor];
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
 }
+- (void)keyboardWillShow:(NSNotification *)note {
+    NSDictionary *userInfo = note.userInfo;
+    NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    CGRect keyboardFrameEnd = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    keyboardFrameEnd = [self.view convertRect:keyboardFrameEnd fromView:nil];
+    
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
+       self.view.frame = CGRectMake(0, 0, keyboardFrameEnd.size.width, keyboardFrameEnd.origin.y);
+    } completion:nil];
+}
+- (void)keyboardWillHide:(NSNotification *)note {
+    NSDictionary *userInfo = note.userInfo;
+    NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    CGRect keyboardFrameEnd = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    keyboardFrameEnd = [self.view convertRect:keyboardFrameEnd fromView:nil];
+    
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
+        self.view.frame = CGRectMake(0, 0, keyboardFrameEnd.size.width, keyboardFrameEnd.origin.y);
+    } completion:nil];
+}
 
 // Called when the UIKeyboardDidShowNotification is sent.
-- (void)keyboardWasShown:(NSNotification*)aNotification {
+/*- (void)keyboardWasShown:(NSNotification*)aNotification {
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
@@ -618,14 +646,15 @@ valueTextField.backgroundColor=[UIColor grayColor];
         CGPoint scrollPoint = CGPointMake(0.0, (self.activeField.frame.origin.y-kbSize.height));
         [aTableView setContentOffset:scrollPoint animated:YES];
     }
-}
+    
+}*/
 
 // Called when the UIKeyboardWillHideNotification is sent
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+/*- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     aTableView.contentInset = contentInsets;
     aTableView.scrollIndicatorInsets = contentInsets;
-}
+}*/
 
 /*- (void)viewDidUnload {
     [self setInterval:nil];

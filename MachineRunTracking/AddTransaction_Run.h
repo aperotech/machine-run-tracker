@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *RunProcessArray;
 
-//- (void)addORDeleteRows;
+- (void)addORDeleteRows;
 @property(strong,nonatomic) UIRefreshControl *refreshControl;
 @property (weak,nonatomic)IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;
@@ -28,4 +28,7 @@
 @property(nonatomic,strong)NSString *Parameter4;
 @property(nonatomic,strong)NSString *Value;
 @property(nonatomic,strong)NSString *LastInsertedTransactionNo;
+
+//- (void)addORDeleteRows;
+
 @end

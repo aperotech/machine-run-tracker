@@ -22,7 +22,7 @@
 @synthesize SegmentControlPF;
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.navigationItem.title=@"Pre-extraction";
+     self.navigationItem.title=@"Pre-Extraction";
    // [self.containerView setPre_ExtractionActive];
    // self.containerView.ContainerControlPF=SegmentControlPF;
         // self.navigationController.navigationBar.topItem.title=@"";
@@ -145,7 +145,7 @@
     
     switch (self.segmentedControl.selectedSegmentIndex ) {
         case 0:
-            self.navigationItem.title=@"Pre-extraction";
+            self.navigationItem.title=@"Pre-Extraction";
             [self.containerView setPre_ExtractionActive];
             
             break;
@@ -157,7 +157,7 @@
             [self shouldAutorotate];
             break;
         case 2:
-            self.navigationItem.title=@"Post-extraction";
+            self.navigationItem.title=@"Post-Extraction";
             [self.containerView setPost_ExtractionActive];
             break;
         

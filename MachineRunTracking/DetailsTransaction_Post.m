@@ -77,6 +77,10 @@
     
 
 }
+-(void)viewDidAppear:(BOOL)animated{
+    NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+    [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+}
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

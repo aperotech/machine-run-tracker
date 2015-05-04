@@ -212,6 +212,7 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="App Login" id="p7w-yl-9HN"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="loginButton" destination="tM8-Dy-AvF" id="Bhx-Er-di8"/>
                         <outlet property="passwordText" destination="RUK-p4-vFf" id="nO8-Ce-Zsl"/>
@@ -300,7 +301,7 @@
                                     <rect key="frame" x="224" y="217" width="125" height="125"/>
                                 </variation>
                                 <connections>
-                                    <segue destination="UP7-3T-8Gr" kind="show" identifier="MainMenuToUserListSegue" id="nvs-eF-TNA"/>
+                                    <action selector="UserButtonClick:" destination="FQy-Bd-ulw" eventType="touchUpInside" id="3ix-bV-zIV"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CGb-SK-HWk">
@@ -436,18 +437,21 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="MachineButton" destination="adv-U3-tUL" id="VnX-Aw-dgS"/>
                         <outlet property="ParametersButton" destination="CGb-SK-HWk" id="Ja6-A0-neK"/>
                         <outlet property="TransactionsButton" destination="ODC-vD-AmK" id="diV-0d-LtE"/>
                         <outlet property="UserButton" destination="gxz-3T-fq7" id="vIH-e4-q10"/>
-                        <segue destination="f1h-xo-BWT" kind="unwind" identifier="unwindToLoginSegue" unwindAction="unwindToMainMenu:" id="Kc3-e4-67g"/>
+                        <segue destination="33D-FX-hhU" kind="show" identifier="StandardUserMainMenuToUserDetailsSegue" id="F97-oo-XWG"/>
+                        <segue destination="UP7-3T-8Gr" kind="show" identifier="MainMenuToUserListSegue" id="BQH-7S-xRC"/>
+                        <segue destination="f1h-xo-BWT" kind="unwind" identifier="unwindToLoginSegue" unwindAction="unwindToMainMenu:" id="lKy-wp-Vhj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V3x-TT-Z8k" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="f1h-xo-BWT" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-2815.5" y="457.5"/>
+            <point key="canvasLocation" x="-2816" y="447"/>
         </scene>
         <!--Transaction List-->
         <scene sceneID="5bO-Ha-ZMw">
@@ -732,6 +736,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ign-FH-uga" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1072,6 +1077,7 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Transaction - Pre-extraction" id="kkV-HZ-0d1"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="MachineNameLabel" destination="xPH-c5-2s4" id="zff-Ei-MdU"/>
                         <outlet property="RunDateLabel" destination="ayg-SY-0bf" id="zVX-sB-JIn"/>
@@ -1552,6 +1558,7 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Transaction - Post-extraction" id="lsf-cm-VIb"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="MachineNameLabel" destination="pCy-fz-s4B" id="qQw-u8-llf"/>
                         <outlet property="RunDateLabel" destination="3JL-Mq-QSC" id="y9o-Xg-xHP"/>
@@ -1819,6 +1826,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="Machine_NameText" destination="c1N-dY-ucZ" id="Sjy-VU-hK3"/>
                         <outlet property="Run_DateText" destination="H4H-w7-b3Y" id="eph-GZ-LSw"/>
@@ -1876,7 +1884,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DJh-J1-1wf" id="bFJ-h9-8oZ">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" directionalLockEnabled="YES" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JEw-Ph-6hk">
+                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" directionalLockEnabled="YES" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JEw-Ph-6hk">
                                                     <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Interval" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DmK-R0-zFC">
@@ -1956,7 +1964,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xyV-Bn-tVb" id="9qX-tz-WLT">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNh-iO-bdq">
+                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNh-iO-bdq">
                                                     <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Interval" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Nrc-bd-rbB">
@@ -2178,6 +2186,7 @@
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OPk-Yi-sgg"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="oyw-7c-KUj"/>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="xGE-ek-t2H" id="rtD-W4-LEv"/>
                         <segue destination="dkD-Cx-NTg" kind="unwind" identifier="PostUnwindToTransactionListSegue" unwindAction="unwindToTransactionListViewController:" id="OgC-GQ-DDb"/>
@@ -2309,6 +2318,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Forward" id="YVT-fN-RGi"/>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="8eF-5U-jzh" id="XPk-N3-fEU"/>
                         <segue destination="n7M-xh-KKU" kind="presentation" identifier="Pre_ExtractionToRunExtractionSegue" id="wv7-Lz-3xH"/>
@@ -3228,6 +3238,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xI4-Fd-krv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3536,6 +3547,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I9h-6V-eFD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3726,6 +3738,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Add Parameter" id="Lmc-eP-eS1"/>
                     <nil key="simulatedTopBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="descriptionText" destination="bxR-4p-cd1" id="WCu-B4-BSx"/>
                         <outlet property="nameText" destination="uZO-4S-z2b" id="cT7-bs-If3"/>
@@ -3996,6 +4009,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="descriptionText" destination="E3e-uH-HRh" id="aJc-i4-bIn"/>
                         <outlet property="nameText" destination="s2M-hG-ODP" id="anh-hq-1Wn"/>
@@ -4292,6 +4306,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Add Machine" id="XFs-2j-IXE"/>
                     <nil key="simulatedTopBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="capacityText" destination="t9C-Vg-aD3" id="T4T-cg-8qQ"/>
                         <outlet property="codeText" destination="79Q-jh-FAF" id="93M-DA-ap3"/>
@@ -4781,6 +4796,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="capacityText" destination="Wec-jp-Qiv" id="60t-mf-MuZ"/>
                         <outlet property="codeText" destination="vvc-tP-R9L" id="YJZ-om-3OU"/>
@@ -5147,10 +5163,11 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VPw-yF-Jwe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2097" y="-306"/>
+            <point key="canvasLocation" x="-2131" y="-390"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pr9-pP-VT1">
@@ -5195,4 +5212,7 @@
             <point key="canvasLocation" x="-3479" y="2568"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="F97-oo-XWG"/>
+    </inferredMetricsTieBreakers>
 </document>

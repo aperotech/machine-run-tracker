@@ -35,7 +35,7 @@
         self.paginationEnabled = NO;
         
         // The number of objects to show per page
-       // self.objectsPerPage = 5;
+        //self.objectsPerPage = 10;
     }
     return self;
 }
@@ -95,6 +95,7 @@
 {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+   
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
     /*    if ([self.objects count] == 0) {

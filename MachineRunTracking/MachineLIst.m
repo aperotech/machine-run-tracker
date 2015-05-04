@@ -225,8 +225,9 @@ UILabel *headerLabel4 = [[UILabel alloc] initWithFrame:
         cell.nameLabel.text=[object objectForKey:@"Machine_Name"];
         cell.locationLabel.text=[object objectForKey:@"Location"];
         cell.capacityLabel.text=[object objectForKey:@"Capacity"];
+         NSLog(@"The MAchine Are %@",object);
         return cell;
-    
+       
     }
     
 }

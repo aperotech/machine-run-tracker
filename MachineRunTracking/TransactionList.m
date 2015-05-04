@@ -36,10 +36,10 @@
         self.pullToRefreshEnabled = YES;
         
         // Whether the built-in pagination is enabled
-        self.paginationEnabled = YES;
+        self.paginationEnabled = NO;
         
         // The number of objects to show per page
-        //   self.objectsPerPage = 15;
+         // self.objectsPerPage = 5;
     }
     return self;
 }
@@ -63,6 +63,7 @@
         if (!object) {
             NSLog(@"Not An Admin User");
             self.navigationItem.rightBarButtonItem.enabled=FALSE;
+            
             self.PermissionFlag = FALSE;
             // Did not find any UserStats for the current user
         } else {
@@ -103,6 +104,7 @@
 {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+  //  query.limit=5;
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
     /*    if ([self.objects count] == 0) {

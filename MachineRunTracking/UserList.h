@@ -11,7 +11,7 @@
 #import <ParseUI/ParseUI.h>
 @interface UserList :PFQueryTableViewController
 
-
+@property BOOL *PermissionFlag;
 @property (nonatomic,strong)NSMutableArray *HeaderArray;
 @property (nonatomic, strong) PFUser * CurrentUser;
 

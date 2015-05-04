@@ -51,23 +51,22 @@
     self.CurrentUser = [PFUser currentUser];
    
     
-   /* PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    [query whereKey:@"username" equalTo:self.CurrentUser];
-    [query whereKey:@"usertype" equalTo:@"Standard"];
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"username" equalTo:[[PFUser currentUser]username]];
+    [query whereKey:@"usertype" equalTo:@"Admin"];
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
         if (!object) {
+            NSLog(@"Not An Admin User");
+            self.navigationItem.rightBarButtonItem.enabled=FALSE;
+            self.PermissionFlag = FALSE;
             // Did not find any UserStats for the current user
         } else {
+            self.PermissionFlag = TRUE;
+            NSLog(@"The Transaction Currenet User Is %@ ",object );
             // Found UserStats
-          NSArray *array=[object allKeys];
-            
-            NSString *usertype = [array objectForKey:@"Usertype"];
-            
+            //  int highScore = [[object objectForKey:@"highScore"] intValue];
         }
-        
-        
-    }];*/
+    }];
     
     
 
@@ -170,17 +169,23 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Remove the row from data model
+    if (self.PermissionFlag == FALSE) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission Denied !!"
+                                                            message:@"You don't have permission to delete User. "
+                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    }else if(self.PermissionFlag == TRUE){
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
     
        /* [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             [self refreshTable:nil];
         }];*/
+   
     
     
-    
-    self.CurrentUser = [PFUser currentUser];
+   // self.CurrentUser = [PFUser currentUser];
     PFQuery *query = [PFUser query];
-    [query whereKey:@"username" notEqualTo:self.CurrentUser];
+    [query whereKey:@"username" notEqualTo:[[PFUser currentUser]username]];
    // [query orderByAscending:FF_USER_NOMECOGNOME];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (error) {
@@ -193,14 +198,14 @@
             for (PFObject *object in objects) {
                 
                 [NewUserArray addObject:object];
-                
+                [tableView reloadData];
             }
             
-            [tableView reloadData];
+            
         }
     }];
 
-    
+     }
     
 }
 

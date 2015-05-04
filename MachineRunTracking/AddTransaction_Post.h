@@ -21,4 +21,7 @@
 @property(nonatomic,strong)IBOutlet UITableView *tableView;
 @property(nonatomic,strong)NSString *LastInsertedTransactionNo;
 -(IBAction)SaveAndExit:(id)sender;
+
+@property(nonatomic,strong)NSArray *postExtractionArray;
+@property(nonatomic,strong)NSMutableArray *GetValuesFromTextFieldArray;
 @end

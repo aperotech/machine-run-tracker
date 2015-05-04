@@ -44,6 +44,7 @@
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process_run"];
+   // [query1 selectKeys:@[@"Name"]];
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
       //  NSLog(@"all types: %ld",(long)objects.count);
@@ -58,6 +59,8 @@
             else {
                // [aTableView reloadData];
                // self.dataArray = [[NSMutableArray alloc] initWithObjects:@"Tiger",@"Leopard",@"Snow Leopard",@"Lion",nil];
+              //  self.runPalceholderArray=[[NSArray alloc]initWithArray:objects];
+              //  NSLog(@"the run process placeholder is %@",self.runPalceholderArray);
                 self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
                // NSLog(@"The Data Array Is %@",self.dataArray);
               // self.refreshControl = [[UIRefreshControl alloc]init];
@@ -66,6 +69,7 @@
               
                 PFQuery *query2 = [PFQuery queryWithClassName:@"Run_Process"];
                 [query2 whereKey:@"Parameter_4" equalTo:@"Akshay"];
+              //   [query2 selectKeys:@[@"Name"]];
                 [query2 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                     // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                   //  NSLog(@"all types: %ld",(long)objects.count);
@@ -79,25 +83,40 @@
                         }
                         else {
                             [aTableView reloadData];
-                            
-                            self.RunProcessArray=[[NSMutableArray alloc]initWithArray:objects];
-                        //    NSLog(@"The  self.PostExtractionArray Is %@", self.RunProcessArray);
                             self.refreshControl = [[UIRefreshControl alloc]init];
                             [self.aTableView addSubview:self.refreshControl];
                             [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+                            self.RunProcessArray=[[NSMutableArray alloc]initWithArray:objects];
+                        //    NSLog(@"The  self.PostExtractionArray Is %@", self.RunProcessArray);
+                            
                             //   NSLog(@"objectArray %@",objects);
                         }
                       
                         }
                    
                     }];
-               
+                //[aTableView reloadData];
+                
                }
           }
        
     }];
 
-    
+  /*  PFQuery *query2 = [PFQuery queryWithClassName:@"Parameters"];
+    [query2 selectKeys:@[@"Name"]];
+    [query2 whereKey:@"Type" equalTo:@"Process_Run"];
+    [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
+        // iterate through the objects array, which contains PFObjects for each Student
+        if (!objectsPF) {
+            // Did not find any UserStats for the current user
+        } else {
+            // Found UserStats
+            //self.preExtractionArray=[objectsPF allKeys];
+            self.runPalceholderArray=[[NSArray alloc]initWithArray:objectsPF ];
+            NSLog(@"The Run Placeholder Extraction.... %@",self.runPalceholderArray);
+        }
+    }];
+*/
    // self.title = @"Data Table";
    //UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style: UIBarButtonItemStylePlain target:self action:@selector(addORDeleteRows)];[self.navigationItem setLeftBarButtonItem:addButton];
     //self.navigationItem.leftBarButtonItem = self.editButtonItem;
@@ -280,12 +299,20 @@
         
         if(indexPath.row == ([self.RunProcessArray count]) && self.editing){
             
-            //   cell.IntervalText.text = @"Interval ";
-            // cell.ParametersText.text = @"Is";
-            // cell.Parameters1Text.text=@"Showing";
-            //cell.Parameters2Text.text=@"Parameters";
-            //cell.Parameters3Text.text=@"Parameters2";
-            // cell.ValueText.text = @"Parameters3";
+            cell.IntervalText.placeholder = @"Interval";
+            cell.ParametersText.placeholder = @"Parameter_1";
+            cell.Parameters1Text.placeholder=@"Parameter_2";
+            cell.Parameters2Text.placeholder=@"Parameter_3";
+            cell.Parameters3Text.placeholder=@"Parameter_4";
+            cell.ValueText.placeholder = @"Value";
+
+            
+              /* cell.IntervalText.placeholder = [[self.runPalceholderArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+             cell.ParametersText.placeholder = [[self.runPalceholderArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+             cell.Parameters1Text.placeholder=[[self.runPalceholderArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+            cell.Parameters2Text.placeholder=[[self.runPalceholderArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+            cell.Parameters3Text.placeholder=[[self.runPalceholderArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+             cell.ValueText.placeholder = [[self.runPalceholderArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];*/
             return cell;
         }
         

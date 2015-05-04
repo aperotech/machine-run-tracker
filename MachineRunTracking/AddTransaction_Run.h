@@ -29,6 +29,10 @@
 @property(nonatomic,strong)NSString *Value;
 @property(nonatomic,strong)NSString *LastInsertedTransactionNo;
 
+@property(nonatomic,strong)NSArray *runPalceholderArray;
+@property(nonatomic,strong)NSMutableArray *GetValuesFromTextFieldArray;
+
+
 //- (void)addORDeleteRows;
 
 @end

@@ -31,7 +31,7 @@
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
    
     [query1 whereKey:@"Type" equalTo:@"Pre_Extraction"];
-    
+
    
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
      
@@ -44,12 +44,30 @@
                 NSLog(@"None found");
             }
             else {
-               
-               
+                
+                self.preExtractionArray=[[NSArray alloc]initWithArray:objects];
+             //   self.preExtractionArray=[NSArray arrayWithArray:objects];
+              //  NSMutableArray *PreArray=[objects allkeys];
+              //  NSLog(@"The Pre_Extraction Array IS %@",self.preExtractionArray);
                 [self.tableView reloadData];
-              
+                
             }
             
+        }
+    }];
+    
+      PFQuery *query2 = [PFQuery queryWithClassName:@"Parameters"];
+    [query2 selectKeys:@[@"Name"]];
+    [query2 whereKey:@"Type" equalTo:@"Pre_Extraction"];
+    [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
+        // iterate through the objects array, which contains PFObjects for each Student
+        if (!objectsPF) {
+            // Did not find any UserStats for the current user
+        } else {
+            // Found UserStats
+            //self.preExtractionArray=[objectsPF allKeys];
+            self.preExtractionArray=[[NSArray alloc]initWithArray:objectsPF ];
+            NSLog(@"The Pre Extraction.... %@",self.preExtractionArray);
         }
     }];
     
@@ -73,7 +91,7 @@
         
     }];
   
-
+    self.GetValuesFromTextFieldArray=[[NSMutableArray alloc]init];
    }
 
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
@@ -123,18 +141,22 @@
     
        cell.p_1Text.tag=indexPath.row;
     // Configure the cell...
-    if (indexPath.row==0) {
-        cell.p_1Text.placeholder=@"Parameter_1";
+    for (int i=-1;i<indexPath.row;i++) {
+        cell.p_1Text.placeholder=[[self.preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+
+    }
+   /* if (indexPath.row==0) {
+        cell.p_1Text.placeholder=[[self.preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
     }
     if (indexPath.row==1) {
-        cell.p_1Text.placeholder=@"Parameter_2";
+        cell.p_1Text.placeholder=[[self.preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
     }
     if (indexPath.row==2) {
-        cell.p_1Text.placeholder=@"Parameter_3";
+        cell.p_1Text.placeholder=[[self.preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
     }
     if (indexPath.row==3) {
         cell.p_1Text.placeholder=@"Parameter_4";
-    }
+    }*/
     return cell;
 }
 
@@ -179,7 +201,12 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     UITableView *table = (UITableView *)[[cell superview] superview];
     NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
     
-    if (textField.tag==0) {
+    for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
+        [self.GetValuesFromTextFieldArray addObject:textField.text];
+        NSLog(@"the IndexPathe Array Is %@",self.GetValuesFromTextFieldArray);
+    }
+    
+  /*  if (textField.tag==0) {
         self.Parameter0=textField.text;
       //  NSLog(@"Parameter0 %@",self.Parameter0);
  
@@ -202,13 +229,19 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
       //  NSLog(@"Parameter3 %@",self.Parameter3);
         
         
-    }
+    }*/
   
     
-     //  NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
-   }
-
-
+       NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
+   
+ NSLog(@"the IndexPathe Array Is...... %@",self.GetValuesFromTextFieldArray);
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    NSLog(@"Working!!!");
+    [textField resignFirstResponder];
+    return YES;
+    
+}
 
 
 -(IBAction)SaveAndForward:(id)sender {
@@ -230,13 +263,13 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     }
     else {*/
         
-      //  [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+        [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
         if (parameterAdd_PrePF != nil) {
-       [self updateParameters];
+    //  [self updateParameters];
         }
         else {
-        [self saveParameters];
+      //  [self saveParameters];
         }
     //}
     
@@ -249,10 +282,10 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
      if([NewParameter save]) {
    //  NSLog(@"Successfully Created");
      PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
-     ParameterValue[@"Parameter_1"] = self.Parameter0;
-     ParameterValue[@"Parameter_2"] = self.Parameter1;
-     ParameterValue[@"Parameter_3"] = self.Parameter2;
-     ParameterValue[@"Parameter_4"] = self.Parameter3;
+     ParameterValue[@"Parameter_1"] = [self.GetValuesFromTextFieldArray objectAtIndex:0];
+     ParameterValue[@"Parameter_2"] = [self.GetValuesFromTextFieldArray objectAtIndex:1];
+     ParameterValue[@"Parameter_3"] = [self.GetValuesFromTextFieldArray objectAtIndex:2];
+    // ParameterValue[@"Parameter_4"] = self.Parameter3;
      ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
      
      [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -344,10 +377,10 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 }
 #pragma mark - UITextFieldDelegate method implementation
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
+/*-(BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
     return YES;
-}
+}*/
 
 
 

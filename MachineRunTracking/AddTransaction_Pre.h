@@ -36,6 +36,8 @@
 @property(nonatomic,strong)NSString *Parameter3;
 
 @property(nonatomic,strong)NSArray *placeholderArray;
+@property(nonatomic,strong)NSArray *preExtractionArray;
+@property(nonatomic,strong)NSMutableArray *GetValuesFromTextFieldArray;
 
 @property(nonatomic,strong)NSString *LastInsertedTransactionNo;
 

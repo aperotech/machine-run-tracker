@@ -18,7 +18,7 @@
 @property(strong,nonatomic)PFObject *DetialsTransaction_PrePF;
 
 @property (strong,nonatomic)NSArray *runArrayPre;
-
+@property(nonatomic,strong)NSArray *preExtractionArray;
 
 @property(nonatomic)NSInteger ObjectCount;
 @end

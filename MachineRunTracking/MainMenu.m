@@ -44,9 +44,19 @@
     [PFUser logOut];
    // [self.navigationController popViewControllerAnimated:YES];
     // this will now be nil
-     [self performSegueWithIdentifier:@"unwindToLoginSegue" sender:self];
+   //  [self performSegueWithIdentifier:@"unwindToLoginSegue" sender:self];
+    
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main"
+                                                         bundle:nil];
+    ViewController *add =
+    [storyboard instantiateViewControllerWithIdentifier:@"viewControllerIdentifier"];
+    
+    [self presentViewController:add
+                       animated:YES
+                     completion:nil];
     //[self dismissViewControllerAnimated:YES completion:nil];
    // [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
     //NSLog(@"Successfully Logout ");
     }
 

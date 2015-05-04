@@ -9,5 +9,5 @@
 #import <ParseUI/ParseUI.h>
 
 @interface MachineLIst : PFQueryTableViewController
-
+@property BOOL *PermissionFlag;
 @end

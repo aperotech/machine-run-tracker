@@ -7,7 +7,8 @@
 //
 
 #import <ParseUI/ParseUI.h>
-
+#import <Parse/Parse.h>
 @interface TransactionList : PFQueryTableViewController
-
+@property (nonatomic, strong) PFUser * CurrentUser;
+@property BOOL *PermissionFlag;
 @end

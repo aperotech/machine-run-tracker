@@ -18,6 +18,7 @@
 @property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
 @property (strong,nonatomic)NSArray *runArrayPost;
 
+@property(nonatomic,strong)NSArray *PostExtractionArray;
 
 @property(nonatomic)NSInteger ObjectCount;
 

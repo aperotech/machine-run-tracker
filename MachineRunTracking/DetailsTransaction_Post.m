@@ -30,6 +30,7 @@
     }
     // Do any additional setup after loading the view.
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
+     [query1 selectKeys:@[@"Name"]];
     [query1 whereKey:@"Type" equalTo:@"Post_Extraction"];
    // NSLog(@"The Query For Post_Extraction %@",query1);
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -44,6 +45,7 @@
                 NSLog(@"None found");
             }
             else {
+                self.PostExtractionArray=[[NSArray alloc]initWithArray:objects];
                 [self.tableView reloadData];
             }
             //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
@@ -112,31 +114,31 @@
     if (indexPath.row==0) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_1"];
         [[self.runArrayPost objectAtIndex:0]objectForKey:@"Parameter_1"];
-        cell.ParameterNameLabel.text=@"Parameter_1 :";
+        cell.ParameterNameLabel.text=[[self.PostExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
         //NSLog(@"Index Path Row 0 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==1) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_2"];
         [[self.runArrayPost objectAtIndex:0]objectForKey:@"Parameter_2"];
-        cell.ParameterNameLabel.text=@"Parameter_2 :";
+        cell.ParameterNameLabel.text=[[self.PostExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
         //NSLog(@"Index Path Row 1 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==2) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_3"];
         [[self.runArrayPost objectAtIndex:0]objectForKey:@"Parameter_3"];
-        cell.ParameterNameLabel.text=@"Parameter_3 :";
+        cell.ParameterNameLabel.text=[[self.PostExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
        // NSLog(@"Index Path Row 2 %@",cell.parameterLabel.text);
     }
     if (indexPath.row==3) {
         cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_4"];
         [[self.runArrayPost objectAtIndex:0 ]objectForKey:@"Parameter_4"];
-        cell.ParameterNameLabel.text=@"Parameter_4 :";
+        cell.ParameterNameLabel.text=[[self.PostExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
        // NSLog(@"Index Path Row 3 %@",cell.parameterLabel.text);
     }
     // cell.textLabel.tag=indexPath.row;
     // Configure the cell...
     
-    
+        
     return cell;
 }
 

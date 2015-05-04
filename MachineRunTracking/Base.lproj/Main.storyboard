@@ -20,12 +20,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lJS-gi-4Sy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3517" y="-306"/>
+            <point key="canvasLocation" x="-3637" y="-338"/>
         </scene>
         <!--App Login-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="viewControllerIdentifier" id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -222,7 +222,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2816" y="-306"/>
+            <point key="canvasLocation" x="-2876" y="-338"/>
         </scene>
         <!--Main Menu-->
         <scene sceneID="7ET-4j-nBV">
@@ -445,11 +445,9 @@
                         <outlet property="UserButton" destination="gxz-3T-fq7" id="vIH-e4-q10"/>
                         <segue destination="33D-FX-hhU" kind="show" identifier="StandardUserMainMenuToUserDetailsSegue" id="F97-oo-XWG"/>
                         <segue destination="UP7-3T-8Gr" kind="show" identifier="MainMenuToUserListSegue" id="BQH-7S-xRC"/>
-                        <segue destination="f1h-xo-BWT" kind="unwind" identifier="unwindToLoginSegue" unwindAction="unwindToMainMenu:" id="lKy-wp-Vhj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V3x-TT-Z8k" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="f1h-xo-BWT" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-2816" y="447"/>
         </scene>
@@ -457,10 +455,10 @@
         <scene sceneID="5bO-Ha-ZMw">
             <objects>
                 <tableViewController id="ZxU-n2-Kc0" customClass="TransactionList" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="6P1-ub-Lvf">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6P1-ub-Lvf">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransactionListHeaderCellIdentifier" id="lPH-E9-euK" customClass="TransactionListCell">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -5185,7 +5183,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XEO-cl-kV3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3517" y="458"/>
+            <point key="canvasLocation" x="-3517" y="447"/>
         </scene>
         <!--Container View Controller-->
         <scene sceneID="fM2-zD-QM4">

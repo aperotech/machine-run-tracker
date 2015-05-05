@@ -37,6 +37,30 @@
  //   self.datePicker=[[UIDatePicker alloc] init];//frames are just for demo
  //   [lastMaintanceDate setInputView:self.datePicker];
     
+    PFQuery *query=[PFQuery queryWithClassName:@"Machine"];
+    
+    [query orderByDescending:@"Code"];
+    
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        
+        if (!object) {
+            // Did not find any UserStats for the current user
+        } else {
+                       
+            NSString *LastInsertedMachineNo = [object objectForKey:@"Code"];
+            NSString *numbers = [LastInsertedMachineNo stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]];
+            int value = [numbers intValue];
+            
+            NSString *MachineNo=[NSString stringWithFormat:@"M%03i",value+1];
+            self.codeText.text=MachineNo;
+            self.codeText.enabled=FALSE;
+            
+        }
+        
+        
+    }];
+
+    
     //Initialize frequency picker
     frequency = [NSArray arrayWithObjects:@"Daily",@"Weekly", @"Monthly", @"Quarterly", @"Semi-Annually", @"Annually", nil];
     

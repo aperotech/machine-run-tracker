@@ -34,7 +34,7 @@
         self.pullToRefreshEnabled = YES;
         
         // Whether the built-in pagination is enabled
-        self.paginationEnabled = YES;
+        self.paginationEnabled = NO;
         
         // The number of objects to show per page
      //   self.objectsPerPage = 15;
@@ -56,13 +56,13 @@
     [query whereKey:@"usertype" equalTo:@"Admin"];
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
         if (!object) {
-            NSLog(@"Not An Admin User");
+            //NSLog(@"Not An Admin User");
             self.navigationItem.rightBarButtonItem.enabled=FALSE;
             self.PermissionFlag = FALSE;
             // Did not find any UserStats for the current user
         } else {
             self.PermissionFlag = TRUE;
-            NSLog(@"The Transaction Currenet User Is %@ ",object );
+            //NSLog(@"The Transaction Currenet User Is %@ ",object );
             // Found UserStats
             //  int highScore = [[object objectForKey:@"highScore"] intValue];
         }
@@ -117,9 +117,20 @@
     return query;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 0.1f;
+    return 36.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *CellIdentifier1 = @"UserListHeaderCellIdentifier";
+    UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+    self.tableView.separatorColor = [UIColor lightGrayColor];
+    cell.backgroundColor=[UIColor grayColor];
+    return cell;
 }
 
 
@@ -130,38 +141,20 @@
 // and the imageView being the imageKey in the object.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     
-    
-    if(indexPath.row==0){
-     static NSString *CellIdentifier1 = @"UserListHeaderCellIdentifier";
-        
-        UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-        self.tableView.separatorColor = [UIColor lightGrayColor];
-        if (cell == nil) {
-            cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
-        }
-        cell.backgroundColor=[UIColor grayColor];
-        cell.userNameLabel.text= [self.HeaderArray objectAtIndex:0];
-        cell.userEmailLabel.text=[self.HeaderArray objectAtIndex:1];
-        cell.userTypeLabel.text=[self.HeaderArray objectAtIndex:2];
-        return cell;
-    }else {
-    static NSString *CellIdentifier = @"UserListCellIdentifier";
+        static NSString *CellIdentifier = @"UserListCellIdentifier";
    
         UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-       
         self.tableView.separatorColor = [UIColor lightGrayColor];
-        if (cell == nil) {
-            cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        }
+    
+    if (cell == nil) {
+        cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
         
         cell.userNameLabel.text=[object objectForKey:@"username"];
         cell.userEmailLabel.text=[object objectForKey:@"email"];
         cell.userTypeLabel.text=[object objectForKey:@"usertype"];
         return cell;
-
-    }
-    
 }
 
 
@@ -174,7 +167,7 @@
                                                             message:@"You don't have permission to delete User. "
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
-    }else if(self.PermissionFlag == TRUE){
+    } else if(self.PermissionFlag == TRUE){
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
     
        /* [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -193,7 +186,7 @@
             
         } else {
             
-            NSLog(@"%@", objects);
+            //NSLog(@"%@", objects);
             NewUserArray = [[NSMutableArray alloc] init];
             for (PFObject *object in objects) {
                 

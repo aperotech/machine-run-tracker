@@ -50,6 +50,33 @@
    // [activityView startAnimating];
    // [self.view addSubview:activityView];
     
+    PFQuery *query=[PFQuery queryWithClassName:@"Transaction"];
+   
+    [query orderByDescending:@"Run_No"];
+    
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        
+        if (!object) {
+            // Did not find any UserStats for the current user
+        } else {
+            //NSLog(@"The First Transaction Is %@",object);
+            // Found UserStats
+           // self.placeholderArray=[object allKeys];
+            
+           NSString *LastInsertedRunNo = [object objectForKey:@"Run_No"];
+            NSString *numbers = [LastInsertedRunNo stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]];
+            int value = [numbers intValue];
+            
+            NSString *runNo=[NSString stringWithFormat:@"R%04i",value+1];
+            self.Run_NoText.text=runNo;
+            self.Run_NoText.enabled=FALSE;
+           
+        }
+        
+        
+    }];
+
+    
     PFQuery *query1 = [PFQuery queryWithClassName:@"Machine"];
     
    [query1 selectKeys:@[@"Machine_Name"]];
@@ -64,7 +91,7 @@
              Machine_NameArray = [NSMutableArray arrayWithCapacity:objects.count]; // make an array to hold the cities
             for(PFObject* obj in objects) {
                 [Machine_NameArray addObject:[obj objectForKey:@"Machine_Name"]];
-                NSLog(@"Machine Array Is %@",Machine_NameArray);
+              //  NSLog(@"Machine Array Is %@",Machine_NameArray);
             }
             //[activityView stopAnimating];
         }

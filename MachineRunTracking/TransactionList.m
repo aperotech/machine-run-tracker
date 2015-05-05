@@ -103,6 +103,7 @@
 - (PFQuery *)queryForTable
 {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+    [query orderByAscending:@"Run_No"];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
   //  query.limit=5;
     // If no objects are loaded in memory, we look to the cache first to fill the table

@@ -107,78 +107,25 @@
     return query;
 }
 
-/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
- {
- return 40.0f;
- }
- - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
- 
- UIView *sectionHeaderView = [[UIView alloc] initWithFrame:
- CGRectMake(0, 0, self.tableView.frame.size.width, 40.0)];
- sectionHeaderView.backgroundColor = [UIColor grayColor];
- 
- UILabel *headerLabel = [[UILabel alloc] initWithFrame:
- CGRectMake(19, 11, sectionHeaderView.frame.size.width, 25.0)];
- 
- headerLabel.backgroundColor = [UIColor clearColor];
- headerLabel.textAlignment = NSTextAlignmentLeft;
- [headerLabel setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
- headerLabel.text = @"Name";
- [sectionHeaderView addSubview:headerLabel];
- 
- UILabel *headerLabel1 = [[UILabel alloc] initWithFrame:
- CGRectMake(122,11, sectionHeaderView.frame.size.width, 25.0)];
- 
- headerLabel1.backgroundColor = [UIColor clearColor];
- headerLabel1.textAlignment = NSTextAlignmentLeft;
- [headerLabel1 setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
- headerLabel1.text = @"Type";
- [sectionHeaderView addSubview:headerLabel1];
- 
- UILabel *headerLabel3 = [[UILabel alloc] initWithFrame:
- CGRectMake(216,11, sectionHeaderView.frame.size.width, 25.0)];
- 
- headerLabel3.backgroundColor = [UIColor clearColor];
- headerLabel3.textAlignment = NSTextAlignmentLeft;
- [headerLabel3 setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
- headerLabel3.text = @"Units";
- [sectionHeaderView addSubview:headerLabel3];
- 
- 
- 
- 
- 
- 
- return sectionHeaderView;
- 
- }*/
- 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 0.1f;
+    return 36.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *CellIdentifier1 = @"ParameterListHeaderCellIdentifier";
+    ParameterListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+    self.tableView.separatorColor = [UIColor lightGrayColor];
+    cell.backgroundColor=[UIColor grayColor];
+    return cell;
 }
 
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object
-{
-    if (indexPath.row==0) {
-        static NSString *simpleTableIdentifier1 = @"ParameterListHeaderCellIdentifier";
-        
-        ParameterListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier1];
-        if (cell == nil) {
-            cell = [[ParameterListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier1];
-        }
-        
-        // Configure the cell
-        cell.backgroundColor=[UIColor grayColor];
-      //  [cell.parameterName setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
-        //[cell.parameterType setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
-       // [cell.parameterUnits setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
-        cell.parameterName.text=@"Name";
-        cell.parameterType.text=@"Type";
-        cell.parameterUnits.text=@"Units";
-        return cell;
-    } else {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
         static NSString *simpleTableIdentifier = @"ParameterListCellIdentifier";
         
         ParameterListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -191,9 +138,7 @@
         cell.parameterType.text=[object objectForKey:@"Type"];
         cell.parameterUnits.text=[object objectForKey:@"Units"];
         
-        return cell;
-    }
- 
+        return cell; 
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

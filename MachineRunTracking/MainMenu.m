@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UserDetails.h"
 #import "UserList.h"
+
 @implementation MainMenu
 
 @synthesize UserButton,ParametersButton,TransactionsButton,MachineButton;
@@ -27,20 +28,19 @@
     MachineButton.layer.borderWidth=1.0f;
     MachineButton.layer.borderColor=[[UIColor blackColor]CGColor];
     
+    [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
+    self.CurrentUser = [PFUser currentUser];
    
    // StandardUserMainMenuToUserDetailsSegue
-    
-    
-    
-    
-    
-     }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (IBAction)logout:(id)sender {
-     PFUser *currentUser = [PFUser currentUser];
+    //PFUser *currentUser = [PFUser currentUser];
     [PFUser logOut];
    // [self.navigationController popViewControllerAnimated:YES];
     // this will now be nil
@@ -49,7 +49,7 @@
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main"
                                                          bundle:nil];
     ViewController *add =
-    [storyboard instantiateViewControllerWithIdentifier:@"viewControllerIdentifier"];
+    [storyboard instantiateViewControllerWithIdentifier:@"UserLoginView"];
     
     [self presentViewController:add
                        animated:YES
@@ -61,8 +61,6 @@
     }
 
 -(IBAction)UserButtonClick:(id)sender{
-    [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
-    self.CurrentUser = [PFUser currentUser];
     
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" equalTo:[[PFUser currentUser]username]];
@@ -71,7 +69,7 @@
         if (!object) {
             
             self.PermissionFlag = TRUE;
-            NSLog(@"The Transaction Currenet User Is %@ ",object );
+            //NSLog(@"The Transaction Currenet User Is %@ ",object );
             [self performSegueWithIdentifier:@"MainMenuToUserListSegue" sender:self];
             // Did not find any UserStats for the current user
         } else {
@@ -83,8 +81,6 @@
          
         }
     }];
-
-
 }
 
  #pragma mark - Navigation
@@ -95,17 +91,13 @@
  // Pass the selected object to the new view controller.
      
      if ([segue.identifier isEqualToString:@"StandardUserMainMenuToUserDetailsSegue"]) {
-        
-         
          UserDetails *userdetailsObj = (UserDetails *)segue.destinationViewController;
          userdetailsObj.UpdateObjPF = self.MainMenuObjPF;
      }
-     if ([segue.identifier isEqualToString:@"MainMenuToUserListSegue"]) {
-         
-         
+     /*if ([segue.identifier isEqualToString:@"MainMenuToUserListSegue"]) {
          UserList *userListObj = (UserList *)segue.destinationViewController;
         // userdetailsObj.UpdateObjPF = self.MainMenuObjPF;
-     }
+     }*/
 
      
  }

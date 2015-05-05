@@ -56,7 +56,7 @@
                      completion:nil];
     //[self dismissViewControllerAnimated:YES completion:nil];
    // [self.navigationController popViewControllerAnimated:YES];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+   // [self.navigationController popToRootViewControllerAnimated:YES];
     //NSLog(@"Successfully Logout ");
     }
 

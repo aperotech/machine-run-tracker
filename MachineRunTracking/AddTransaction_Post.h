@@ -23,5 +23,5 @@
 -(IBAction)SaveAndExit:(id)sender;
 
 @property(nonatomic,strong)NSArray *postExtractionArray;
-@property(nonatomic,strong)NSMutableArray *GetValuesFromTextFieldArray;
+@property(nonatomic,strong)NSMutableArray *GetValuesFromPostTextFieldArray;
 @end

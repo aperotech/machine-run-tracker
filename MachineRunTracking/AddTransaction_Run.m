@@ -117,10 +117,11 @@
         }
     }];
 */
-   // self.title = @"Data Table";
-   //UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style: UIBarButtonItemStylePlain target:self action:@selector(addORDeleteRows)];[self.navigationItem setLeftBarButtonItem:addButton];
-    //self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    //
+    
+ //   self.navigationController.navigationBar.topItem.title = @"Data Table";
+ /*  UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style: UIBarButtonItemStylePlain target:self action:@selector(addORDeleteRows)];[self.navigationItem setLeftBarButtonItem:addButton];
+    self.navigationItem.leftBarButtonItem= self.editButtonItem;*/
+    
     [super setEditing:YES animated:YES];
     [aTableView setEditing:YES animated:YES];
    // [aTableView reloadData];
@@ -194,8 +195,11 @@
         if (cell == nil) {
             cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             
-            /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
-             UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
+             for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
+              
+                 
+              
+            /* UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 +10 * i , 10,94,21)]; // 10 px padding between each view
              valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)
              valueTextField.borderStyle = UITextBorderStyleRoundedRect;
              [valueTextField setReturnKeyType:UIReturnKeyDefault];
@@ -203,9 +207,10 @@
              [valueTextField setDelegate:self];
              valueTextField.placeholder=@"P_1";
              valueTextField.backgroundColor=[UIColor grayColor];
-             [cell.contentView addSubview:valueTextField];
+             [self.scrollView addSubview:valueTextField];*/
+               //  [cell.contentView addSubview:self.scrollView];
              // don't forget to do [tf release]; if not using ARC
-             }*/
+             }
             /*for (int i=indexPath.row ;i< [self.dataArray count];i++) {
              UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.scrollView.bounds.origin.x +203,10,88,21)];
              valueTextField.tag = indexPath.row;
@@ -267,25 +272,25 @@
         if (cell == nil) {
             cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             
-            /* for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
+           /*  for (int i = indexPath.row ; i < 15; i++) {
              UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(8 + 102 * i , 10,94,21)]; // 10 px padding between each view
              valueTextField.tag = i + 1; // tag it for future reference (+1 because tag is 0 by default which might create problems)
              valueTextField.borderStyle = UITextBorderStyleRoundedRect;
              [valueTextField setReturnKeyType:UIReturnKeyDefault];
              [valueTextField setEnablesReturnKeyAutomatically:YES];
              [valueTextField setDelegate:self];
-             valueTextField.placeholder=@"P_1";
+             valueTextField.placeholder=@"P_!_Add";
              valueTextField.backgroundColor=[UIColor grayColor];
              [cell.contentView addSubview:valueTextField];
              // don't forget to do [tf release]; if not using ARC
              }*/
-            /*for (int i=indexPath.row ;i< [self.dataArray count];i++) {
+          /*  for (int i=indexPath.row ;i< 15;i++) {
              UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.scrollView.bounds.origin.x +203,10,88,21)];
              valueTextField.tag = indexPath.row;
              [valueTextField borderStyle];
              valueTextField.backgroundColor =[UIColor grayColor];
              valueTextField.delegate = self;
-             valueTextField.placeholder=@"Parameters";
+             valueTextField.placeholder=@"P_!_Add";
              [cell.contentView addSubview:valueTextField];
              
              
@@ -385,7 +390,7 @@
         
     }}
 
-/*-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat sectionHeaderHeight = 40;
     //Change as per your table header hight
     if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0)
@@ -396,7 +401,7 @@
     {
         scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
     }
-}*/
+}
 
 
 - (IBAction)Cancel:(id)sender {
@@ -419,7 +424,13 @@
     UITableView *table = (UITableView *)[[cell superview] superview];
     NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
     
-    if (textField.tag==0) {
+    for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
+        [self.GetValuesFromRunTextFieldArray addObject:textField.text];
+        NSLog(@"the IndexPathe Array Is %@",self.GetValuesFromRunTextFieldArray);
+    }
+
+    
+    /*if (textField.tag==0) {
         self.Interval=textField.text;
      //   NSLog(@"Interval %@",self.Interval);
       }
@@ -438,7 +449,7 @@
     if (textField.tag==4) {
         self.Value=textField.text;
       //  NSLog(@"Value %@",self.Value);
-    }
+    }*/
      NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
     
     
@@ -446,13 +457,13 @@
 -(IBAction)SaveAndForward:(id)sender {
    
    
-  //  [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+   [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
     
     if (self.parameterAdd_RunPF != nil) {
-        [self updateParameters];
+      // [self updateParameters];
     }
     else {
-        [self saveParameters];
+        //[self saveParameters];
     }
 
 }
@@ -469,12 +480,11 @@
     if([NewParameter save]) {
         //  NSLog(@"Successfully Created");
         PFObject *ParameterValue = [PFObject objectWithClassName:@"Run_Process"];
-        ParameterValue[@"Interval"] = self.Interval;
-        ParameterValue[@"Parameter_1"] = self.Parameter1;
-        ParameterValue[@"Parameter_2"] = self.Parameter2;
-        ParameterValue[@"Parameter_3"] = self.Parameter3;
-        ParameterValue[@"Parameter_4"] = @"Akshay";
-        ParameterValue[@"Value"] = self.Value;
+        ParameterValue[@"Interval"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:0];
+        ParameterValue[@"Parameter_1"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:1];        ParameterValue[@"Parameter_2"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:2];
+        ParameterValue[@"Parameter_3"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:3];
+        ParameterValue[@"Parameter_4"] =[self.GetValuesFromRunTextFieldArray objectAtIndex:4];
+        ParameterValue[@"Value"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:5];
         ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
         
         

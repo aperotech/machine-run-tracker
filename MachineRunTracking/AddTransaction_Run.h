@@ -30,7 +30,7 @@
 @property(nonatomic,strong)NSString *LastInsertedTransactionNo;
 
 @property(nonatomic,strong)NSArray *runPalceholderArray;
-@property(nonatomic,strong)NSMutableArray *GetValuesFromTextFieldArray;
+@property(nonatomic,strong)NSMutableArray *GetValuesFromRunTextFieldArray;
 
 
 //- (void)addORDeleteRows;

@@ -79,7 +79,7 @@
             
         }
     }];
-    
+    self.GetValuesFromPostTextFieldArray=[[NSMutableArray alloc]init];
 }
 
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
@@ -126,30 +126,7 @@
     
     
     
-   /* if (indexPath.row==0) {
-        cell.p_1Text.placeholder=@"Parameter_1";
-    }
-    if (indexPath.row==1) {
-        cell.p_1Text.placeholder=@"Parameter_2";
-    }
-    if (indexPath.row==2) {
-        cell.p_1Text.placeholder=@"Parameter_3";
-    }
-    if (indexPath.row==3) {
-        cell.p_1Text.placeholder=@"Parameter_4";
-    }*/
-    
-
-    // cell.p_1Text.text = @"New Parameter";
-    /* for (int i=0; i<self.ObjectCount;i++) {
-     if (indexPath.row == i) {
-     
-     UITextField *parameterTextField = (UITextField *)[cell viewWithTag:i];
-     parameterTextField.placeholder = @"Parameter";
-     }
-     
-     }*/
-    return cell;
+      return cell;
 }
 
 
@@ -162,9 +139,10 @@
     UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
     UITableView *table = (UITableView *)[[cell superview] superview];
     NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
+    
     for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
-        [self.GetValuesFromTextFieldArray addObject:textField.text];
-        NSLog(@"the IndexPathe Array Is %@",self.GetValuesFromTextFieldArray);
+        [self.GetValuesFromPostTextFieldArray addObject:textField.text];
+        NSLog(@"the IndexPathe Array Is %@",self.GetValuesFromPostTextFieldArray);
     }
    /* if (textField.tag==0) {
         self.Parameter0=textField.text;
@@ -192,7 +170,7 @@
     }
     */
     
-   // NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
+    NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
 }
 
 
@@ -234,10 +212,10 @@
     if([NewParameter save]) {
         //  NSLog(@"Successfully Created");
         PFObject *ParameterValue = [PFObject objectWithClassName:@"Post_Extraction"];
-        ParameterValue[@"Parameter_1"] = [self.GetValuesFromTextFieldArray objectAtIndex:0];
-        ParameterValue[@"Parameter_2"] = [self.GetValuesFromTextFieldArray objectAtIndex:1];
-        ParameterValue[@"Parameter_3"] = [self.GetValuesFromTextFieldArray objectAtIndex:2];
-        ParameterValue[@"Parameter_4"] = [self.GetValuesFromTextFieldArray objectAtIndex:3];
+        ParameterValue[@"Parameter_1"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:0];
+        ParameterValue[@"Parameter_2"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:1];
+        ParameterValue[@"Parameter_3"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:2];
+        ParameterValue[@"Parameter_4"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:3];
         ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {

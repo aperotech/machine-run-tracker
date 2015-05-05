@@ -221,10 +221,10 @@
 }*/
 
 - (IBAction)SaveAndForword:(id)sender {
-//[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
     
    
-NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+/*NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [self.Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *Run_Date = [self.Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -270,7 +270,7 @@ NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSChar
         }
         
     }];
-    }
+    }*/
 }
 
 - (IBAction)Cancel:(id)sender {

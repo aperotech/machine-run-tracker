@@ -263,13 +263,13 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     }
     else {*/
         
-      //  [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+      [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
         if (parameterAdd_PrePF != nil) {
-      [self updateParameters];
+     // [self updateParameters];
         }
         else {
-        [self saveParameters];
+      //  [self saveParameters];
         }
     //}
     

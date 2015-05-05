@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Process_RunCell : UITableViewCell
+@interface Process_RunCell : UITableViewCell<UIScrollViewDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
 
 
 

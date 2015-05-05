@@ -27,7 +27,6 @@
    // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
     
     
-   
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
    
     [query1 whereKey:@"Type" equalTo:@"Pre_Extraction"];
@@ -67,7 +66,7 @@
             // Found UserStats
             //self.preExtractionArray=[objectsPF allKeys];
             self.preExtractionArray=[[NSArray alloc]initWithArray:objectsPF ];
-            NSLog(@"The Pre Extraction.... %@",self.preExtractionArray);
+          //  NSLog(@"The Pre Extraction.... %@",self.preExtractionArray);
         }
     }];
     
@@ -203,7 +202,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
         [self.GetValuesFromTextFieldArray addObject:textField.text];
-        NSLog(@"the IndexPathe Array Is %@",self.GetValuesFromTextFieldArray);
+       // NSLog(@"the IndexPathe Array Is %@",self.GetValuesFromTextFieldArray);
     }
     
   /*  if (textField.tag==0) {
@@ -234,7 +233,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
        NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
    
- NSLog(@"the IndexPathe Array Is...... %@",self.GetValuesFromTextFieldArray);
+// NSLog(@"the IndexPathe Array Is...... %@",self.GetValuesFromTextFieldArray);
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     NSLog(@"Working!!!");

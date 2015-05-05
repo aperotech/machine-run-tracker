@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
@@ -1958,56 +1958,6 @@
                                             <subviews>
                                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" directionalLockEnabled="YES" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNh-iO-bdq">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                                    <subviews>
-                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Interval" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Nrc-bd-rbB">
-                                                            <rect key="frame" x="8" y="7" width="56" height="30"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="n7M-xh-KKU" id="RGs-Gk-3Yb"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Parameter 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qdo-Ff-aR3">
-                                                            <rect key="frame" x="72" y="7" width="94" height="30"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="n7M-xh-KKU" id="9fc-6j-gHG"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Parameter 3" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YIC-w7-GHU">
-                                                            <rect key="frame" x="276" y="7" width="94" height="30"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="n7M-xh-KKU" id="vuZ-Ue-bBO"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Value" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8o3-VJ-jzq">
-                                                            <rect key="frame" x="480" y="7" width="94" height="30"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="n7M-xh-KKU" id="xYL-kX-psU"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Parameter 4" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Zn-qY-geg">
-                                                            <rect key="frame" x="378" y="7" width="94" height="30"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="n7M-xh-KKU" id="QE0-Us-oiG"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Parameter 2" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vmr-Jb-mv4">
-                                                            <rect key="frame" x="174" y="7" width="94" height="30"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="n7M-xh-KKU" id="Wij-Ak-7E0"/>
-                                                            </connections>
-                                                        </textField>
-                                                    </subviews>
                                                     <connections>
                                                         <outlet property="delegate" destination="n7M-xh-KKU" id="vlU-Ls-Vft"/>
                                                     </connections>
@@ -2021,12 +1971,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="IntervalText" destination="Nrc-bd-rbB" id="9tB-FW-352"/>
-                                            <outlet property="Parameters1Text" destination="Qdo-Ff-aR3" id="ygu-kL-vQX"/>
-                                            <outlet property="Parameters2Text" destination="vmr-Jb-mv4" id="oyZ-76-K6o"/>
-                                            <outlet property="Parameters3Text" destination="YIC-w7-GHU" id="Sy8-uY-Cfy"/>
-                                            <outlet property="ParametersText" destination="6Zn-qY-geg" id="Id1-OB-hZ5"/>
-                                            <outlet property="ValueText" destination="8o3-VJ-jzq" id="C9u-x1-3PV"/>
                                             <outlet property="scrollView" destination="bNh-iO-bdq" id="LHR-hJ-6lc"/>
                                         </connections>
                                     </tableViewCell>

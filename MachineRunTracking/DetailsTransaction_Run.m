@@ -107,33 +107,18 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 0.1f;
+    return 36.0f;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row==0) {
-        static NSString *simpleTableIdentifier = @"DetailsPostExtractionHeaderCellIdentifier";
-        
-        DetailsProcessRunCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-        
-        if (cell == nil) {
-            cell = [[DetailsProcessRunCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
-           
-        }
- cell.backgroundColor=[UIColor grayColor];
-        cell.IntervalText.text = @"Interval";
-        cell.ParametersText.text = @"Parameter_1";
-        cell.Parameters1Text.text=@"Parameter_2";
-        cell.Parameters2Text.text=@"Parameter_3";
-        cell.Parameters3Text.text=@"Parameter_4";
-        cell.ValueText.text = @"Value";
-        // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        return cell;
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *CellIdentifier1 = @"DetailsPostExtractionHeaderCellIdentifier";
+    DetailsProcessRunCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+    self.tableView.separatorColor = [UIColor lightGrayColor];
+    cell.backgroundColor=[UIColor grayColor];
+    return cell;
+}
 
-    }
-    else{
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *simpleTableIdentifier = @"DetailsPostExtractionCellIdentifier";
     
     DetailsProcessRunCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -173,7 +158,6 @@
         cell.Parameters3Text.text=[[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Parameter_4"];
         cell.ValueText.text = [[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Value"];
     return cell;
-    }
 }
 
 

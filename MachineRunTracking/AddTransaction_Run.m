@@ -39,7 +39,7 @@
         
     }];
    // NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
-
+    self.GetValuesFromRunTextFieldArray=[[NSMutableArray alloc]init];
     
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
@@ -167,6 +167,15 @@
         [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStyleDone];
     }
 }*/
+
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscapeRight;
+}
+
+-(BOOL)shouldAutorotate {
+    return NO;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
@@ -184,73 +193,48 @@
     if(self.editing) count++;
    // NSLog(@"The Count++ Is %d",count++);
     return count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 36.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *CellIdentifier1 = @"ProcessRunHeaderCellIdentifier";
+     Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     
-
-}
-
--(NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskLandscapeRight;
-}
-
--(BOOL)shouldAutorotate {
-    return NO;
-}
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row==0) {
-        static NSString *CellIdentifier = @"ProcessRunHeaderCellIdentifier";
+    
+    aTableView.separatorColor = [UIColor lightGrayColor];
+    
+    if (cell != nil) {
+        cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
         
-        Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
-        if (cell != nil) {
-            cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            
-             for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
-             
+        for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
+           
             UITextField *valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
             CGRect frameText=CGRectMake(valueTextField.frame.origin.x+102*i, 10, 94, 21);
             
-                 [valueTextField setFrame:frameText];
-                 valueTextField.tag = i + 1;
-                valueTextField.borderStyle = UITextBorderStyleRoundedRect;
-                 [valueTextField setReturnKeyType:UIReturnKeyDefault];
-                 [valueTextField setEnablesReturnKeyAutomatically:YES];
-                 [valueTextField setDelegate:self];
-                 valueTextField.placeholder=@"P_1";
-                 valueTextField.backgroundColor=[UIColor grayColor];
-             
-                 [cell.contentView addSubview:valueTextField];
-               
-             }
+            [valueTextField setFrame:frameText];
+            valueTextField.tag = i + 1;
+            valueTextField.borderStyle = UITextBorderStyleNone;
+            [valueTextField setReturnKeyType:UIReturnKeyDefault];
+            valueTextField.enabled =FALSE;
+            
+            [valueTextField setEnablesReturnKeyAutomatically:YES];
+            [valueTextField setDelegate:self];
+            valueTextField.text=[self.RunProcessArray objectAtIndex:i];
+           // valueTextField.backgroundColor=[UIColor grayColor];
+            cell.backgroundColor=[UIColor grayColor];
+            [cell.contentView addSubview:valueTextField];
+            
         }
-        
-        /*  int count = 0;
-         if(self.editing && indexPath.row != 0)
-         count = 1;
-         
-         if(indexPath.row == ([self.RunProcessArray count]) && self.editing){
-         
-         //   cell.IntervalText.text = @"Interval ";
-         // cell.ParametersText.text = @"Is";
-         // cell.Parameters1Text.text=@"Showing";
-         //cell.Parameters2Text.text=@"Parameters";
-         //cell.Parameters3Text.text=@"Parameters2";
-         // cell.ValueText.text = @"Parameters3";
-         return cell;
-         }*/
-         
-        
-        cell.backgroundColor=[UIColor grayColor];
-        cell.IntervalText.text = @"Interval";
-        cell.ParametersText.text = @"Parameter_1";
-        cell.Parameters1Text.text=@"Parameter_2";
-        cell.Parameters2Text.text=@"Parameter_3";
-        cell.Parameters3Text.text=@"Parameter_4";
-        cell.ValueText.text = @"Value";
-        // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        return cell;
-        
-    }else
-    {
+    }
+
+    
+    return cell;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+   
         static NSString *CellIdentifier = @"ProcessRunCellIdentifier";
         
         Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -259,7 +243,7 @@
            
             cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             
-            for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
+            for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
                
                 UITextField *valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
                 
@@ -273,45 +257,39 @@
                 [valueTextField setReturnKeyType:UIReturnKeyDefault];
                 [valueTextField setEnablesReturnKeyAutomatically:YES];
                 [valueTextField setDelegate:self];
-                valueTextField.placeholder=@"P_!_Add";
-                valueTextField.backgroundColor=[UIColor grayColor];
+                valueTextField.text=[self.RunProcessArray objectAtIndex:i];
+                //valueTextField.backgroundColor=[UIColor grayColor];
             
                 [cell.contentView addSubview:valueTextField];
              
              }
+           // return cell;
         }
         
         int count = 0;
         if(self.editing && indexPath.row != 0)
             count = 1;
         
-        if(indexPath.row == ([self.dataArray count]) && self.editing){
-            for (int i = indexPath.row ; i < [self.dataArray count]; i++) {
+        if(indexPath.row == ([self.RunProcessArray count]) && self.editing){
+            for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
             UITextField *valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
             
             CGRect frameText=CGRectMake(valueTextField.frame.origin.x+102*i, 10, 94, 21);
             
             [valueTextField setFrame:frameText];
             
-            valueTextField.tag = i + 1;
+            valueTextField.tag =  i+1;
             
             valueTextField.borderStyle = UITextBorderStyleRoundedRect;
             [valueTextField setReturnKeyType:UIReturnKeyDefault];
             [valueTextField setEnablesReturnKeyAutomatically:YES];
             [valueTextField setDelegate:self];
-            valueTextField.placeholder=@"P_!_Add";
-            valueTextField.backgroundColor=[UIColor grayColor];
+            valueTextField.placeholder=[self.RunProcessArray objectAtIndex:i];
+          //  valueTextField.backgroundColor=[UIColor grayColor];
             
             [cell.contentView addSubview:valueTextField];
             }
             
-          /*  cell.IntervalText.placeholder = @"Interval";
-            cell.ParametersText.placeholder = @"Parameter_1";
-            cell.Parameters1Text.placeholder=@"Parameter_2";
-            cell.Parameters2Text.placeholder=@"Parameter_3";
-            cell.Parameters3Text.placeholder=@"Parameter_4";
-            cell.ValueText.placeholder = @"Value";*/
-
             
               /* cell.IntervalText.placeholder = [[self.runPalceholderArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
              cell.ParametersText.placeholder = [[self.runPalceholderArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
@@ -322,12 +300,7 @@
             return cell;
         }
         
-        /*  cell.IntervalText.text = [[self.dataArray objectAtIndex:indexPath.row ]objectForKey:@"Description"];
-         cell.ParametersText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
-         cell.Parameters1Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Type"];
-         cell.Parameters2Text.text=[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Units"];
-         cell.Parameters3Text.text= @"Parameter 3";//[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Parameter_4"];
-         cell.ValueText.text = @"Value";//[[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Value"];*/
+    
         
        
         
@@ -340,7 +313,7 @@
         cell.ValueText.text = [[self.RunProcessArray objectAtIndex:indexPath.row ]objectForKey:@"Value"];*/
         // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
-    }
+   // }
 }
 /*- (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation{
     NSArray *newArray= [[NSArray alloc]initWithArray:self.RunProcessArray];
@@ -357,7 +330,7 @@
 }*/
 - (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-     if (self.editing == NO || !indexPath)
+     if (self.editing == NO || !indexPath )
        return UITableViewCellEditingStyleNone;
     
     if (self.editing && indexPath.row == ([self.dataArray count]))
@@ -425,13 +398,18 @@
 }*/
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    UITableViewCell *cell = (UITableViewCell *)[[[textField superview]superview ] superview];
+    UITableViewCell *cell = (UITableViewCell *)[[textField superview ] superview];
     UITableView *table = (UITableView *)[[cell superview] superview];
     NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
-    
+   
     for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
-        [self.GetValuesFromRunTextFieldArray addObject:textField.text];
-        NSLog(@"the IndexPathe Array Is %@",self.GetValuesFromRunTextFieldArray);
+        
+        if (textField.tag==i) {
+            [self.GetValuesFromRunTextFieldArray addObject:textField.text];
+            NSLog(@"TextField Tag= %ld and textfied index path .row =%ld",i,textFieldIndexPath.row);
+            NSLog(@"the IndexPathe Array Is %@",self.GetValuesFromRunTextFieldArray);
+            
+        }
     }
 
     
@@ -459,6 +437,7 @@
     
     
 }
+
 -(IBAction)SaveAndForward:(id)sender {
    
    
@@ -487,9 +466,9 @@
         PFObject *ParameterValue = [PFObject objectWithClassName:@"Run_Process"];
         ParameterValue[@"Interval"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:0];
         ParameterValue[@"Parameter_1"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:1];        ParameterValue[@"Parameter_2"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:2];
-        ParameterValue[@"Parameter_3"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:3];
-        ParameterValue[@"Parameter_4"] =[self.GetValuesFromRunTextFieldArray objectAtIndex:4];
-        ParameterValue[@"Value"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:5];
+     //   ParameterValue[@"Parameter_3"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:3];
+       // ParameterValue[@"Parameter_4"] =[self.GetValuesFromRunTextFieldArray objectAtIndex:4];
+       // ParameterValue[@"Value"] = [self.GetValuesFromRunTextFieldArray objectAtIndex:5];
         ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
         
         

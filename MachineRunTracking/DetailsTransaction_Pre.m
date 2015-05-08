@@ -49,7 +49,7 @@
             }
             else {
                 self.preExtractionArray=[[NSArray alloc]initWithArray:objects];
-                NSLog(@"self.pre extractuion array %@",self.preExtractionArray);
+                
                 [self.tableView reloadData];
                 }
             
@@ -59,7 +59,7 @@
 
     PFQuery *query2 = [PFQuery queryWithClassName:@"Pre_Extraction"];
     [query2 whereKey:@"Run_No" equalTo:Run_noLabel.text];
-   
+   // NSLog(@"The Query For loade objecs %@",query2);
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         [self.activityIndicatorView startAnimating];
         
@@ -71,9 +71,9 @@
                 NSLog(@"None found");
             }
             else {
-              ;
+              //  NSLog(@"The Objecds Are %@",runArray);
                 self.runArrayPre=[[NSArray alloc]initWithArray:runArray];
-                NSLog(@"The RunArray Pre Are %@",self.runArrayPre);
+               // NSLog(@"The RunArray Pre Are %@",self.runArrayPre);
                 [self.tableView reloadData];
             }
            

@@ -24,4 +24,5 @@
 
 @property(nonatomic,strong)NSArray *postExtractionArray;
 @property(nonatomic,strong)NSMutableArray *GetValuesFromPostTextFieldArray;
+@property(nonatomic,strong)NSMutableArray *RunProcessArray;
 @end

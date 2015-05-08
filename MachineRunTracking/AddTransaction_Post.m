@@ -51,6 +51,14 @@
             // Found UserStats
             //self.preExtractionArray=[objectsPF allKeys];
             self.postExtractionArray=[[NSArray alloc]initWithArray:objectsPF ];
+            self.RunProcessArray=[[NSMutableArray alloc]init];
+            
+            for (int i=0;i<[self.postExtractionArray count];i++) {
+                NSString *newString=[[objectsPF objectAtIndex:i]valueForKey:@"Name"];
+                [self.RunProcessArray addObject:newString];
+                
+            }
+
             NSLog(@"The Post Extraction.... %@",self.postExtractionArray);
         }
     }];
@@ -212,10 +220,14 @@
     if([NewParameter save]) {
         //  NSLog(@"Successfully Created");
         PFObject *ParameterValue = [PFObject objectWithClassName:@"Post_Extraction"];
-        ParameterValue[@"Parameter_1"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:0];
-        ParameterValue[@"Parameter_2"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:1];
-        ParameterValue[@"Parameter_3"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:2];
-        ParameterValue[@"Parameter_4"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:3];
+        for (int i=0;i<[self.RunProcessArray count];i++) {
+            NSString *newPara=[self.RunProcessArray objectAtIndex:i];
+            ParameterValue[newPara]=[self.GetValuesFromPostTextFieldArray objectAtIndex:i];
+        }
+       // ParameterValue[@"Parameter_1"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:0];
+       // ParameterValue[@"Parameter_2"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:1];
+       // ParameterValue[@"Parameter_3"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:2];
+       // ParameterValue[@"Parameter_4"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:3];
         ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {

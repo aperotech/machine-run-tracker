@@ -15,12 +15,13 @@
 #import "AddTransaction_Pre.h"
 #import "AddTransaction_Run.h"
 #import <Parse/Parse.h>
+#import "AppDelegate.h"
 @interface TransactionList ()
 
 @end
 
 @implementation TransactionList
-
+@synthesize activityIndicatorView;
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     //self = [super initWithClassName:@"User"];
@@ -46,6 +47,10 @@
 
 - (void)viewDidLoad
 {
+    
+    activityIndicatorView.center = self.view.center;
+    
+    [activityIndicatorView startAnimating];
     [super viewDidLoad];
    // self.navigationController.navigationBar.topItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
@@ -82,7 +87,7 @@
                                                object:nil];
 }
 - (void)refreshTable:(NSNotification *) notification
-{
+{//[activityIndicatorView stopAnimating];
     // Reload the recipes
     [self loadObjects];
 }
@@ -105,6 +110,7 @@
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     [query orderByAscending:@"Run_No"];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    [activityIndicatorView stopAnimating];
   //  query.limit=5;
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.

@@ -46,7 +46,7 @@
 {
     [super viewDidLoad];
   //   self.navigationController.navigationBar.topItem.title=@"";
-    
+    [self.activityIndicatorView startAnimating];
    [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
     self.CurrentUser = [PFUser currentUser];
    
@@ -88,13 +88,14 @@
 - (void)refreshTable:(NSNotification *) notification
 {
     // Reload the recipes
-   
+    //[self.activityIndicatorView startAnimating];
     [self loadObjects];
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    [self.activityIndicatorView stopAnimating];
     // Release any retained subviews of the main view.
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
 }
@@ -114,6 +115,7 @@
     
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    [self.activityIndicatorView stopAnimating];
     return query;
 }
 

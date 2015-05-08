@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface DetailsTransaction_Pre : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface DetailsTransaction_Pre : UIViewController<UITableViewDataSource,UITableViewDelegate,UIActivityItemSource>
 @property (weak,nonatomic)IBOutlet UISegmentedControl *segmentedControl;
 @property (weak, nonatomic) IBOutlet UILabel *RunDurationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *RunDateLabel;
@@ -19,6 +19,6 @@
 
 @property (strong,nonatomic)NSArray *runArrayPre;
 @property(nonatomic,strong)NSArray *preExtractionArray;
-
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property(nonatomic)NSInteger ObjectCount;
 @end

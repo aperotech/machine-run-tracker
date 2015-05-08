@@ -9,6 +9,7 @@
 #import "AddUser.h"
 #import <Parse/Parse.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <Foundation/NSRegularExpression.h>
 #define k_KEYBOARD_OFFSET 80.0
 
 @implementation AddUser {
@@ -87,12 +88,16 @@
     return YES;
 }
 
+
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 -(IBAction)save:(id)sender {
+    [self.activityIndicatorView startAnimating];
    /* PFObject *newUser = [PFObject objectWithClassName:@"user"];
     [newUser setObject:userNameText.text forKey:@"Name"];
     [newUser setObject:passwordText.text forKey:@"Password"];
@@ -109,6 +114,7 @@
                                                             message:@"You have to enter a username, password, and email"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
+        [self.activityIndicatorView stopAnimating];
     }
     else {
         PFUser *newUser = [PFUser user];
@@ -127,7 +133,7 @@
             }
             else {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                
+                [self.activityIndicatorView stopAnimating];
                 // Dismiss the controller
                 //[self dismissViewControllerAnimated:YES completion:nil];
                [self dismissViewControllerAnimated:YES completion:nil];
@@ -143,13 +149,47 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
+/*- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range      replacementString:(NSString *)string
+{
+    if (!string.length)
+        return YES;
+    
+    if (textField == self.userNameText)
+    {
+        NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        NSString *expression = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
+        NSRegularExpression *regex = [ NSRegularExpressionregularExpressionWithPattern:expression
+                                                                              options:NSRegularExpressionCaseInsensitive
+                                                                                error:nil];
+        NSUInteger numberOfMatches = [regex numberOfMatchesInString:newString
+                                                            options:0
+                                                              range:NSMakeRange(0, [newString length])];
+        if (numberOfMatches == 0)
+            return NO;        
+    }
+    return YES;
+}
+*/
+/*- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    if (textField.text.length >= 20 && range.length == 0)
+        return NO;
+    // Only characters in the NSCharacterSet you choose will insertable.
+    NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"] invertedSet];
+    NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+    
+    return [string isEqualToString:filtered];
+    
+}
+*/
+
 //Method to disable any user input for the user type text field
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+/*- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if (textField == self.userTypeText) {
         return NO;
     }
     return YES;
-}
+}*/
 
 #pragma mark- UIPicker View
 /*- (void)attachPickerToTextField: (UITextField*) textField :(UIPickerView*) picker {

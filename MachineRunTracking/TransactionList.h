@@ -8,7 +8,9 @@
 
 #import <ParseUI/ParseUI.h>
 #import <Parse/Parse.h>
-@interface TransactionList : PFQueryTableViewController
+@interface TransactionList : PFQueryTableViewController<UIActivityItemSource>
 @property (nonatomic, strong) PFUser * CurrentUser;
 @property BOOL *PermissionFlag;
+
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @end

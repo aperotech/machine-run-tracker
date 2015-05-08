@@ -18,4 +18,5 @@
 @property (nonatomic, strong) PFObject *MainMenuObjPF;
 @property (nonatomic, strong) PFUser * CurrentUser;
 -(IBAction)UserButtonClick:(id)sender;
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddNewMachine : UIViewController<UITextFieldDelegate, UIScrollViewDelegate, UIBarPositioningDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface AddNewMachine : UIViewController<UITextFieldDelegate, UIScrollViewDelegate, UIBarPositioningDelegate, UIPickerViewDelegate, UIPickerViewDataSource,UIActivityItemSource>
 
 - (IBAction)save:(id)sender;
 - (IBAction)cancel:(id)sender;
@@ -23,4 +23,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *capacityText;
 @property (weak, nonatomic) IBOutlet UITextField *maintanceFrequencyText;
 @property (weak, nonatomic) IBOutlet UITextField *lastMaintanceDate;
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
+
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface DetailsTransaction_Post : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface DetailsTransaction_Post : UIViewController<UITableViewDelegate,UITableViewDataSource,UIActivityItemSource>
 @property (weak, nonatomic) IBOutlet UILabel *RunDurationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *RunDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *MachineNameLabel;
@@ -21,6 +21,6 @@
 @property(nonatomic,strong)NSArray *PostExtractionArray;
 
 @property(nonatomic)NSInteger ObjectCount;
-
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
 @end

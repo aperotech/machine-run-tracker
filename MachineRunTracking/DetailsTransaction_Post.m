@@ -18,6 +18,7 @@
 @synthesize DetialsTransaction_PostPF;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.activityIndicatorView startAnimating];
   //  NSLog(@"The Post Loaded");
      //self.navigationController.navigationBar.topItem.title=@"";
      self.navigationController.navigationItem.title=@"Post-extraction";
@@ -48,6 +49,7 @@
                 self.PostExtractionArray=[[NSArray alloc]initWithArray:objects];
                 [self.tableView reloadData];
             }
+            [self.activityIndicatorView stopAnimating];
             //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
         }
     }];

@@ -15,9 +15,10 @@
 @implementation MainMenu
 
 @synthesize UserButton,ParametersButton,TransactionsButton,MachineButton;
-
+@synthesize activityIndicatorView;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [activityIndicatorView startAnimating];
     self.navigationItem.rightBarButtonItem.enabled=YES;
     UserButton.layer.borderWidth=1.0f;
     UserButton.layer.borderColor=[[UIColor blackColor]CGColor];
@@ -30,7 +31,7 @@
     
     [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
     self.CurrentUser = [PFUser currentUser];
-   
+    [activityIndicatorView stopAnimating];
    // StandardUserMainMenuToUserDetailsSegue
 }
 

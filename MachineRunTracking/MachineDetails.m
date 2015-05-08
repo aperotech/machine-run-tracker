@@ -23,7 +23,7 @@
 }
 
 @synthesize codeText,nameText,descriptionText,trackingFrequencyText,locationText,capacityText,maintanceFrequencyText,lastMaintanceDate, MachineDetailsPF, scrollView;
-
+@synthesize activityIndicatorView;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // self.navigationController.navigationBar.topItem.title=@"";
@@ -182,7 +182,7 @@
 }
 
 - (IBAction)UpdateButton:(id)sender {
-    
+    [activityIndicatorView startAnimating];
     NSString *code = [codeText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *name = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *description = [descriptionText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -233,6 +233,7 @@
     [NewMachine saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
              [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+            [activityIndicatorView stopAnimating];
             [self.navigationController popViewControllerAnimated:YES];
         } else {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -271,12 +272,14 @@
             [UpdateMachine saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
                      [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                    [activityIndicatorView stopAnimating];
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                         message:[error.userInfo objectForKey:@"error"]
                                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                     [alertView show];
+                    [activityIndicatorView stopAnimating];
                 }
             }];
         }

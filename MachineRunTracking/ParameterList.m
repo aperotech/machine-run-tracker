@@ -42,7 +42,7 @@
 
 
 - (void)viewDidLoad
-{
+{[self.activityIndicatorView startAnimating];
     [super viewDidLoad];
     
     PFQuery *query = [PFUser query];
@@ -95,7 +95,7 @@
 {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-   
+    [self.activityIndicatorView stopAnimating];
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
     /*    if ([self.objects count] == 0) {

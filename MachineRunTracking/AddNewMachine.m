@@ -24,11 +24,11 @@
 
 
 @synthesize codeText,nameText,descriptionText,trackingFrequencyText,locationText,capacityText,maintanceFrequencyText,lastMaintanceDate, scrollView;
-
+@synthesize activityIndicatorView;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // self.navigationController.navigationBar.topItem.title=@"";
-    
+    [activityIndicatorView startAnimating];
     [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, 800.0)];
     
     // Do any additional setup after loading the view.
@@ -54,7 +54,7 @@
             NSString *MachineNo=[NSString stringWithFormat:@"M%03i",value+1];
             self.codeText.text=MachineNo;
             self.codeText.enabled=FALSE;
-            
+            [activityIndicatorView stopAnimating];
         }
         
         
@@ -253,6 +253,7 @@
 
 
 - (IBAction)save:(id)sender {
+    [activityIndicatorView startAnimating];
     // Create PFObject with recipe information
     PFObject *machineObj = [PFObject objectWithClassName:@"Machine"];
     [machineObj setObject:codeText.text forKey:@"Code"];
@@ -276,7 +277,7 @@
             
             // Notify table view to reload the Machine from Parse cloud
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-            
+            [activityIndicatorView stopAnimating];
             // Dismiss the controller
             [self dismissViewControllerAnimated:YES completion:nil];
             //[self.navigationController popViewControllerAnimated:YES];

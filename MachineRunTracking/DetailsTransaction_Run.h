@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface DetailsTransaction_Run : UIViewController
+@interface DetailsTransaction_Run : UIViewController<UIScrollViewDelegate,UITextFieldDelegate,UIActivityItemSource>
 @property (weak, nonatomic) IBOutlet UILabel *MachineNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *RunDurationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *RunDateLabel;
@@ -18,4 +18,10 @@
 @property (weak ,nonatomic) IBOutlet UITableView *tableView;
 @property(nonatomic)NSInteger ObjectCount;
 @property (strong,nonatomic)NSArray *runArrayRun;
+
+@property(nonatomic,strong)NSMutableArray *GetValuesFromRunTextFieldArray;
+@property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, strong) NSMutableArray *RunProcessArray;
+@property (strong, nonatomic) IBOutlet UITextField * valueTextField;
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @end

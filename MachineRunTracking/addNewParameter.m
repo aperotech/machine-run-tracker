@@ -124,6 +124,7 @@
 }
 
 - (IBAction)save:(id)sender {
+    [self.activityIndicatorView startAnimating];
     // Create PFObject with recipe information
     PFObject *parameterObj = [PFObject objectWithClassName:@"Parameters"];
     [parameterObj setObject:nameText.text forKey:@"Name"];
@@ -144,7 +145,7 @@
             
             // Notify table view to reload the Machine from Parse cloud
              [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-            
+            [self.activityIndicatorView stopAnimating];
             // Dismiss the controller
             [self dismissViewControllerAnimated:YES completion:nil];
             

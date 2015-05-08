@@ -21,23 +21,24 @@
 @synthesize DetialsTransaction_PrePF;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // self.navigationController.navigationBar.topItem.title=@"";
+   
+    [self.activityIndicatorView startAnimating];
+    
     NSLog(@"The Detailsa Pre Is First Time Laod %@",DetialsTransaction_PrePF);
-   // NSLog(@"The Pre Loaded");
+   
     if (DetialsTransaction_PrePF !=NULL) {
         Run_noLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_No"];
         RunDateLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_Date"];
         RunDurationLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_Duration"];
         MachineNameLabel.text=[DetialsTransaction_PrePF objectForKey:@"Machine_Name"];
     }
-    // Do any additional setup after loading the view.
+   
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 selectKeys:@[@"Name"]];
     [query1 whereKey:@"Type" equalTo:@"Pre_Extraction"];
-   // NSLog(@"The Query For Pre_Extraction %@",query1);
+   
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-       // NSLog(@"all types1: %ld",(long)objects.count);
+       
         self.ObjectCount=objects.count;
         if(error){
             NSLog(@"Error!");
@@ -48,19 +49,20 @@
             }
             else {
                 self.preExtractionArray=[[NSArray alloc]initWithArray:objects];
+                NSLog(@"self.pre extractuion array %@",self.preExtractionArray);
                 [self.tableView reloadData];
                 }
-            //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+            
         }
+        [self.activityIndicatorView stopAnimating];
     }];
 
     PFQuery *query2 = [PFQuery queryWithClassName:@"Pre_Extraction"];
     [query2 whereKey:@"Run_No" equalTo:Run_noLabel.text];
-   // NSLog(@"The Query For loade objecs %@",query2);
+   
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
-        // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-       // NSLog(@"all types2: %ld",(long)runArray.count);
-        //self.ObjectCount=runArray.count;
+        [self.activityIndicatorView startAnimating];
+        
         if(error){
             NSLog(@"Error!");
         }
@@ -69,15 +71,16 @@
                 NSLog(@"None found");
             }
             else {
-              //  NSLog(@"The Objecds Are %@",runArray);
+              ;
                 self.runArrayPre=[[NSArray alloc]initWithArray:runArray];
-               // NSLog(@"The RunArray Pre Are %@",self.runArrayPre);
+                NSLog(@"The RunArray Pre Are %@",self.runArrayPre);
                 [self.tableView reloadData];
             }
-            //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+           
         }
+        [self.activityIndicatorView stopAnimating];
     }];
-  //  [self.tableView reloadData];
+  
 
 }
 

@@ -31,6 +31,7 @@
 }
 
 -(IBAction)Login:(id)sender{
+    [self.activityIndicatorView startAnimating];
     NSString *email = [userEmailText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = [passwordText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
@@ -39,6 +40,7 @@
                                                             message:@"You have to enter a Email and password"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
+        [self.activityIndicatorView stopAnimating];
     }
     else {
         PFQuery *query = [PFUser query];
@@ -56,6 +58,7 @@
                         [alertView show];
                     }
                     else {
+                        [self.activityIndicatorView stopAnimating];
                         [self performSegueWithIdentifier:@"LoginToMainMenuSegue" sender:self];
                     }
                 }];
@@ -68,6 +71,7 @@
                         [alertView show];
                     }
                     else {
+                        [self.activityIndicatorView stopAnimating];
                         [self performSegueWithIdentifier:@"LoginToMainMenuSegue" sender:self];
                     }
                 }];

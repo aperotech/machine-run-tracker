@@ -74,7 +74,7 @@
 }
 
 - (IBAction)UpdateButton:(id)sender {
-    
+    [self.activityIndicatorView startAnimating];
     NSString *title = [self.userNameUpdateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
      NSString *email = [self.userEmailUpdateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
      NSString *pass = [self.OldPassText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -118,6 +118,7 @@
     [NewUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
              [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+            [self.activityIndicatorView stopAnimating];
             [self.navigationController popViewControllerAnimated:YES];
         } else {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -153,6 +154,7 @@
             [UpdateUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
                      [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                    [self.activityIndicatorView stopAnimating];
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"

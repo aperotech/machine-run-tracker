@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<UIActivityItemSource>
 @property(nonatomic,strong)IBOutlet UITextField *userEmailText;
 @property(nonatomic,strong)IBOutlet UITextField *passwordText;
 @property(nonatomic,strong)IBOutlet UIButton *loginButton;
 -(IBAction)Login:(id)sender;
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @end
 

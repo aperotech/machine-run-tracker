@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import <Parse/Parse.h>
-@interface UserDetails : ViewController<UITextFieldDelegate,UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface UserDetails : ViewController<UITextFieldDelegate,UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate,UIActivityItemSource>
 
 @property (nonatomic,strong)IBOutlet UIScrollView *scrollView;
 
@@ -21,6 +21,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *ReTypePassText;
 @property (weak, nonatomic) IBOutlet UIButton *UpdateButton;
 @property (strong,nonatomic)UITextField *activeField;
-
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 -(IBAction)UpdateButton:(id)sender;
 @end

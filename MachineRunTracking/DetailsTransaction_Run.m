@@ -15,12 +15,12 @@
 @end
 
 @implementation DetailsTransaction_Run
-@synthesize DetialsTransaction_RunPF;
+@synthesize DetialsTransaction_RunPF,valueTextField;
 - (void)viewDidLoad {
     [super viewDidLoad];
-  //  NSLog(@"The Run Loaded");
-    // Do any additional setup after loading the view.
-   //  self.navigationController.navigationBar.topItem.title=@"";
+    
+    [self.activityIndicatorView startAnimating];
+  
      self.navigationController.navigationItem.title=@"Process Run";
     if (DetialsTransaction_RunPF !=NULL) {
         self.RunNoLabel.text=[DetialsTransaction_RunPF objectForKey:@"Run_No"];
@@ -28,14 +28,12 @@
         self.RunDurationLabel.text=[DetialsTransaction_RunPF objectForKey:@"Run_Duration"];
         self.MachineNameLabel.text=[DetialsTransaction_RunPF objectForKey:@"Machine_Name"];
     }
-    // Do any additional setup after loading the view.
+    
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process_run"];
-   // NSLog(@"The Query For RunProcess %@",query1);
+   
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-        //NSLog(@"all types: %ld",(long)objects.count);
-        //self.ObjectCount=objects.count;
+       
         if(error){
             NSLog(@"Error!");
         }
@@ -44,18 +42,28 @@
                 NSLog(@"None found1");
             }
             else {
-                [self.tableView reloadData];
+                
+                self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
+                
+                self.RunProcessArray=[[NSMutableArray alloc]init];
+                self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
+                for (int i=0;i<[self.dataArray count];i++)
+                {
+                    NSString *newString=[[objects objectAtIndex:i]valueForKey:@"Name"];
+                    [self.RunProcessArray addObject:newString];
+                }
+                [self.activityIndicatorView stopAnimating];
             }
-            //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                [self.tableView reloadData];
+            
         }
     }];
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Run_Process"];
     [query2 whereKey:@"Run_No" equalTo:self.RunNoLabel.text];
-   // NSLog(@"The Query For loade objecs %@",query2);
+   
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
-        // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-       // NSLog(@"all types: %ld",(long)runArray.count);
+        
         self.ObjectCount=runArray.count;
         if(error){
             NSLog(@"Error!");
@@ -65,12 +73,12 @@
                 NSLog(@"None found2");
             }
             else {
-            //    NSLog(@"The Objecds Are %@",runArray);
+            
                 self.runArrayRun=[[NSArray alloc]initWithArray:runArray];
-             //   NSLog(@"The RunArray Pre Are %@",self.runArrayRun);
+             
                 [self.tableView reloadData];
             }
-            //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+            
         }
     }];
 
@@ -101,8 +109,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{// NSLog(@"The No Of ROws %ld",self.ObjectCount);
-    // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+{
     return self.ObjectCount + 1 ;
 }
 
@@ -115,6 +122,35 @@
     DetailsProcessRunCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     self.tableView.separatorColor = [UIColor lightGrayColor];
     cell.backgroundColor=[UIColor grayColor];
+    
+    if (cell != nil) {
+        cell = [[DetailsProcessRunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
+        
+        for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
+            
+            valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
+            CGRect frameText=CGRectMake(valueTextField.frame.origin.x+102*i, 10, 94, 21);
+            
+            [valueTextField setFrame:frameText];
+            valueTextField.tag = i + 1;
+            valueTextField.borderStyle = UITextBorderStyleNone;
+            [valueTextField setReturnKeyType:UIReturnKeyDefault];
+            valueTextField.enabled =FALSE;
+            
+            [valueTextField setEnablesReturnKeyAutomatically:YES];
+            [valueTextField setDelegate:self];
+            valueTextField.text=[self.RunProcessArray objectAtIndex:i];
+            // valueTextField.backgroundColor=[UIColor grayColor];
+            cell.backgroundColor=[UIColor grayColor];
+            [cell.contentView addSubview:valueTextField];
+            
+        }
+    }
+    
+
+    
+    
+    
     return cell;
 }
 
@@ -123,44 +159,82 @@
     
     DetailsProcessRunCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
-    if (cell == nil) {
+    if (cell != nil)
+    {
+        
+        cell = [[DetailsProcessRunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        
+        for (int i = 0 ; i < [self.RunProcessArray count]; i++)
+        {
+            
+            valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
+            
+            CGRect frameText=CGRectMake(valueTextField.frame.origin.x+102*i, 10, 94, 21);
+            
+            [valueTextField setFrame:frameText];
+            
+            valueTextField.tag = i+1 ;
+            
+            valueTextField.borderStyle = UITextBorderStyleRoundedRect;
+            [valueTextField setReturnKeyType:UIReturnKeyDefault];
+            [valueTextField setEnablesReturnKeyAutomatically:YES];
+            [valueTextField setDelegate:self];
+           // valueTextField.placeholder=[self.RunProcessArray objectAtIndex:i];
+            
+            // if (self.sectionCount>= 1 && indexPath.row!=self.sectionCount )
+            if (indexPath.row>=0 && i>=0)
+            {
+                // NSLog(@"self.GetValuesFromRunTextFieldArray,self.GetValuesFromRunTextFieldArray);
+                for (int j=0;j<[self.RunProcessArray count];j++)
+                {
+                    if (valueTextField.tag==j+1 )
+                    {
+                        //NSLog(@"valueTextField.tag %ld",valueTextField.tag);
+                        
+                        valueTextField.text=[self.RunProcessArray objectAtIndex:i];
+                        // NSLog(@"valueTextField.text %@",valueTextField.text);
+                    }
+                }
+            }
+            
+            [cell.contentView addSubview:valueTextField];
+            
+        }
+        
+        //return cell;
+    }
+
+    
+    
+    
+    
+    
+    /* if (cell == nil) {
         cell = [[DetailsProcessRunCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
       //  cell.backgroundColor=[UIColor grayColor];
     }
-    //cell.parameterLabel.tag=indexPath.row;
-   /* if (indexPath.row==0) {
-        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_1"];
-        [[self.runArrayRun objectAtIndex:0]objectForKey:@"Parameter_1"];
-        NSLog(@"Index Path Row 0 %@",cell.parameterLabel.text);
-    }
-    if (indexPath.row==1) {
-        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_2"];
-        [[self.runArrayRun objectAtIndex:0]objectForKey:@"Parameter_2"];
-        NSLog(@"Index Path Row 1 %@",cell.parameterLabel.text);
-    }
-    if (indexPath.row==2) {
-        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_3"];
-        [[self.runArrayRun objectAtIndex:0]objectForKey:@"Parameter_3"];
-        NSLog(@"Index Path Row 2 %@",cell.parameterLabel.text);
-    }
-    if (indexPath.row==3) {
-        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_4"];
-        [[self.runArrayPost objectAtIndex:0 ]objectForKey:@"Parameter_4"];
-        NSLog(@"Index Path Row 3 %@",cell.parameterLabel.text);
-    }*/
-    // cell.textLabel.tag=indexPath.row;
-    // Configure the cell...
     
         cell.IntervalText.text = [[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Interval"];
         cell.ParametersText.text = [[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Parameter_1"];
         cell.Parameters1Text.text=[[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Parameter_2"];
         cell.Parameters2Text.text=[[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Parameter_3"];
         cell.Parameters3Text.text=[[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Parameter_4"];
-        cell.ValueText.text = [[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Value"];
+        cell.ValueText.text = [[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Value"];*/
     return cell;
 }
 
-
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat sectionHeaderHeight = 40;
+    //Change as per your table header hight
+    if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0)
+    {
+        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
+        
+    } else if (scrollView.contentOffset.y>=sectionHeaderHeight)
+    {
+        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+    }
+}
 
 
 - (void)didReceiveMemoryWarning {

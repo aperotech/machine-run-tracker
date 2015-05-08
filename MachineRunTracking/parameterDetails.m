@@ -45,7 +45,7 @@
 }
 
 - (IBAction)UpdateButton:(id)sender {
-    
+    [self.activityIndicatorView startAnimating];
     NSString *name = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *description = [descriptionText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -87,11 +87,13 @@
         if (succeeded) {
              [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
             [self.navigationController popViewControllerAnimated:YES];
+            [self.activityIndicatorView stopAnimating];
         } else {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                 message:[error.userInfo objectForKey:@"error"]
                                                                delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
+            [self.activityIndicatorView stopAnimating];
         }
     }];
     
@@ -104,6 +106,7 @@
     [query getObjectInBackgroundWithId:[parameterDetailsPF objectId] block:^(PFObject *UpdateParameter, NSError *error) {
         
         if (error) {
+            [self.activityIndicatorView stopAnimating];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                 message:[error.userInfo objectForKey:@"error"]
                                                                delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -120,6 +123,7 @@
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
                      [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                    [self.activityIndicatorView stopAnimating];
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"

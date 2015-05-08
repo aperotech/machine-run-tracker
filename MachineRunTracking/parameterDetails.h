@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface parameterDetails : UIViewController<UIScrollViewDelegate,UITextFieldDelegate>
+@interface parameterDetails : UIViewController<UIScrollViewDelegate,UITextFieldDelegate,UIActivityItemSource>
 @property(strong,nonatomic)PFObject *parameterDetailsPF;
-
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 - (IBAction)UpdateButton:(id)sender;
 //- (IBAction)cancel:(id)sender;
 

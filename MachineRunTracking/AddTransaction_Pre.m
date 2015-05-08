@@ -17,12 +17,13 @@
 
 @implementation AddTransaction_Pre
 @synthesize tableView,parameterAdd_PrePF;
+@synthesize activityIndicatorView;
 //@synthesize SegmentedLocationVCObj;
 - (void)viewDidLoad {
     [super viewDidLoad];
    // [self setupViewControllers];
   
-    
+    [activityIndicatorView startAnimating ];
     // Do any additional setup after loading the view.
    // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
     
@@ -66,6 +67,13 @@
             // Found UserStats
             //self.preExtractionArray=[objectsPF allKeys];
             self.preExtractionArray=[[NSArray alloc]initWithArray:objectsPF ];
+            self.RunProcessArray=[[NSMutableArray alloc]init];
+            
+            for (int i=0;i<[self.preExtractionArray count];i++) {
+                NSString *newString=[[objectsPF objectAtIndex:i]valueForKey:@"Name"];
+                [self.RunProcessArray addObject:newString];
+                [activityIndicatorView stopAnimating];
+            }
           //  NSLog(@"The Pre Extraction.... %@",self.preExtractionArray);
         }
     }];
@@ -156,6 +164,7 @@
     if (indexPath.row==3) {
         cell.p_1Text.placeholder=@"Parameter_4";
     }*/
+    
     return cell;
 }
 
@@ -276,14 +285,22 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 
 - (void)saveParameters
 {
+    [activityIndicatorView startAnimating];
       PFObject *NewParameter=[PFObject  objectWithClassName:@"Pre_Extraction" ];
      
      if([NewParameter save]) {
    //  NSLog(@"Successfully Created");
      PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
-     ParameterValue[@"Parameter_1"] = [self.GetValuesFromTextFieldArray objectAtIndex:0];
-     ParameterValue[@"Parameter_2"] = [self.GetValuesFromTextFieldArray objectAtIndex:1];
-     ParameterValue[@"Parameter_3"] = [self.GetValuesFromTextFieldArray objectAtIndex:2];
+         
+         for (int i=0;i<[self.RunProcessArray count];i++) {
+             NSString *newPara=[self.RunProcessArray objectAtIndex:i];
+             ParameterValue[newPara]=[self.GetValuesFromTextFieldArray objectAtIndex:i];
+         }
+
+         
+    // ParameterValue[@"Parameter_1"] = [self.GetValuesFromTextFieldArray objectAtIndex:0];
+   //  ParameterValue[@"Parameter_2"] = [self.GetValuesFromTextFieldArray objectAtIndex:1];
+   //  ParameterValue[@"Parameter_3"] = [self.GetValuesFromTextFieldArray objectAtIndex:2];
     // ParameterValue[@"Parameter_4"] = self.Parameter3;
      ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
      
@@ -291,6 +308,7 @@ UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
      if (succeeded) {
      [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
     // [self.navigationController popViewControllerAnimated:YES];
+         [activityIndicatorView stopAnimating];
          [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
     // NSLog(@"The object has been saved");
      // The object has been saved.

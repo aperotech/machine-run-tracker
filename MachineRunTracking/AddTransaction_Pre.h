@@ -18,10 +18,13 @@
 
 
 
-@interface AddTransaction_Pre : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate>
+@interface AddTransaction_Pre : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate,UIActivityItemSource>
 {
     BOOL Pre_extractionFlag;
 }
+
+
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property(strong,nonatomic)PFObject *parameterAdd_PrePF;
 @property (weak,nonatomic) IBOutlet UITextField *ParameterText;
 @property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;
@@ -38,7 +41,7 @@
 @property(nonatomic,strong)NSArray *placeholderArray;
 @property(nonatomic,strong)NSArray *preExtractionArray;
 @property(nonatomic,strong)NSMutableArray *GetValuesFromTextFieldArray;
-
+@property(nonatomic,strong)NSMutableArray *RunProcessArray;
 @property(nonatomic,strong)NSString *LastInsertedTransactionNo;
 
 @end

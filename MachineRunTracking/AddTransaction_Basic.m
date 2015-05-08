@@ -26,19 +26,15 @@
 }
 
 
-@synthesize BasicTransactionPF, Run_NoText,Run_DateText,Run_DurationText,Machine_NameText, activityView;
+@synthesize BasicTransactionPF, Run_NoText,Run_DateText,Run_DurationText,Machine_NameText,activityIndicatorView;
 
 - (void)viewDidLoad {
-    activityView = [[UIActivityIndicatorView alloc]
-                    initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
-    activityView.center=self.view.center;
-    [activityView stopAnimating];
-    
-    [self.view addSubview:activityView];
+   
     [super viewDidLoad];
      self.navigationController.navigationBar.topItem.title=@"";
-   
+    activityIndicatorView.hidden=YES;
+    [activityIndicatorView startAnimating];
+    
     /*self.Run_NoText.delegate=self;
     self.Run_DateText.delegate=self;
     Run_DurationText.delegate=self;
@@ -70,7 +66,8 @@
             NSString *runNo=[NSString stringWithFormat:@"R%04i",value+1];
             self.Run_NoText.text=runNo;
             self.Run_NoText.enabled=FALSE;
-           
+            [activityIndicatorView stopAnimating];
+           // [activityView stopAnimating];
         }
         
         
@@ -183,6 +180,7 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == self.Run_NoText) {
+        //[activityView startAnimating];
         [self.Machine_NameText becomeFirstResponder];
     } else if (textField == self.Run_DurationText) {
         [self.Run_DurationText resignFirstResponder];
@@ -202,7 +200,9 @@
 #pragma mark - Picker delegate methods
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    
     return 1;
+   
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
@@ -221,6 +221,7 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     if (self.activeField == self.Machine_NameText) {
         self.Machine_NameText.text = [Machine_NameArray objectAtIndex:row];
+      
     }
 }
 
@@ -228,6 +229,7 @@
 - (void)machinePickerDoneClicked {
     if ([self.Machine_NameText.text isEqualToString:@""]) {
             self.Machine_NameText.text = [Machine_NameArray objectAtIndex:0];
+        
         }
         [self.Run_DateText becomeFirstResponder];
 }
@@ -249,7 +251,8 @@
 
 - (IBAction)SaveAndForword:(id)sender {
 [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
-    
+    activityIndicatorView.hidden=NO;
+    [activityIndicatorView startAnimating];
    
 /*NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
@@ -285,8 +288,9 @@
             // Notify table view to reload the Machine from Parse cloud
           //  [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
             NSLog(@"Successfull Saved Transaction");
-              [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
-            [activityView stopAnimating];
+            [activityIndicatorView stopAnimating];
+              //[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+            
             // Dismiss the controller
            // [self.navigationController popViewControllerAnimated:YES];
             

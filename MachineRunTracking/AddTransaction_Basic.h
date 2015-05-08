@@ -12,7 +12,7 @@
 @interface AddTransaction_Basic : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIScrollViewDelegate,UIActivityItemSource>
 
 @property(strong,nonatomic)PFObject *BasicTransactionPF;
-@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityView;
+@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property(strong,nonatomic)IBOutlet UITextField *Run_NoText;
 @property(strong,nonatomic)IBOutlet UITextField *Machine_NameText;
 @property(strong,nonatomic)IBOutlet UITextField *Run_DateText;

@@ -41,12 +41,12 @@
             self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
         }
     }];
-    // NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
+    
     self.GetValuesFromRunTextFieldArray=[[NSMutableArray alloc]init];
     self.NewValuesArray=[[NSMutableArray alloc]init];
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
-    [query1 whereKey:@"Type" equalTo:@"Process_run"];
+    [query1 whereKey:@"Type" equalTo:@"Process Run"];
     // [query1 selectKeys:@[@"Name"]];
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         
@@ -56,6 +56,10 @@
         else {
             if (objects.count == 0) {
                 NSLog(@"None found");
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No Parameters Found"
+                                                                    message:[error.userInfo objectForKey:@"error"]
+                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
             }
             else {
                 
@@ -96,7 +100,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //NSLog(@"Row Delegate -  %d rows", self.sectionCount);
+    
     return self.sectionCount;
 }
 
@@ -185,6 +189,7 @@
             valueTextField.borderStyle = UITextBorderStyleRoundedRect;
             [valueTextField setReturnKeyType:UIReturnKeyDefault];
             [valueTextField setEnablesReturnKeyAutomatically:YES];
+            [valueTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
             [valueTextField setDelegate:self];
             valueTextField.placeholder=[self.RunProcessArray objectAtIndex:i];
             
@@ -218,15 +223,14 @@
     [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
 }
 
-
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [self.GetValuesFromRunTextFieldArray addObject:textField.text];
 }
 
 -(IBAction)SaveAndForward:(id)sender {
-    // [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+     [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
     
-    /* if (self.parameterAdd_RunPF != nil) {
+/*if (self.parameterAdd_RunPF != nil) {
      [self updateParameters];
      }
      else {
@@ -243,8 +247,6 @@
         
         PFObject *ParameterValue = [PFObject objectWithClassName:@"Run_Process"];
         
-        //NSLog(@"run process array count %ld",self.RunProcessArray.count);
-        //NSLog(@"the section Count %d and run process array count = %ld",self.sectionCount,self.RunProcessArray.count);
         
         NSString *parameterColumn;
         NSUInteger tag, tagCount;
@@ -256,7 +258,7 @@
             tag = ((self.sectionCount - 1) * self.RunProcessArray.count + x +1);
             parameterColumn = [self.RunProcessArray objectAtIndex:x];
             ParameterValue[parameterColumn] = [self.GetValuesFromRunTextFieldArray objectAtIndex:(tag-1)];
-            NSLog(@"Added value %@ to tag %lu in Parse",[self.GetValuesFromRunTextFieldArray objectAtIndex:(tag-1)], tag);
+           
             x++;
             tagCount--;
         }
@@ -267,17 +269,15 @@
             if (succeeded) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                 [activityIndicatorView stopAnimating];
-                // [self.navigationController popViewControllerAnimated:YES];
-                // [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
-                NSLog(@"The object has been saved");
-                // The object has been saved.
+               
+                   // The object has been saved.
             } else {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                     message:[error.userInfo objectForKey:@"error"]
                                                                    delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
                 
-                NSLog(@"here was a problem, check error.description");
+               
                 // There was a problem, check error.description
             }
         }];

@@ -19,6 +19,8 @@
 
 @property (strong,nonatomic)NSArray *runArrayPre;
 @property(nonatomic,strong)NSArray *preExtractionArray;
+@property (nonatomic ,strong)NSMutableArray *RunProcessArray;
+
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property(nonatomic)NSInteger ObjectCount;
 @end

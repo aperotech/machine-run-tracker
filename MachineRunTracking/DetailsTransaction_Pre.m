@@ -24,7 +24,7 @@
    
     [self.activityIndicatorView startAnimating];
     
-    NSLog(@"The Detailsa Pre Is First Time Laod %@",DetialsTransaction_PrePF);
+   
    
     if (DetialsTransaction_PrePF !=NULL) {
         Run_noLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_No"];
@@ -35,7 +35,7 @@
    
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 selectKeys:@[@"Name"]];
-    [query1 whereKey:@"Type" equalTo:@"Pre_Extraction"];
+    [query1 whereKey:@"Type" equalTo:@"Pre-Extraction"];
    
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
        
@@ -46,10 +46,21 @@
         else {
             if (objects.count == 0) {
                 NSLog(@"None found");
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No Parameters For Pre Extraction"
+                                                                    message:[error.userInfo objectForKey:@"error"]
+                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
             }
             else {
                 self.preExtractionArray=[[NSArray alloc]initWithArray:objects];
+               
+                self.RunProcessArray=[[NSMutableArray alloc]init];
                 
+                for (int i=0;i<[self.preExtractionArray count];i++) {
+                    NSString *newString=[[objects objectAtIndex:i]valueForKey:@"Name"];
+                    [self.RunProcessArray addObject:newString];
+
+                }
                 [self.tableView reloadData];
                 }
             
@@ -59,7 +70,7 @@
 
     PFQuery *query2 = [PFQuery queryWithClassName:@"Pre_Extraction"];
     [query2 whereKey:@"Run_No" equalTo:Run_noLabel.text];
-   // NSLog(@"The Query For loade objecs %@",query2);
+  
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         [self.activityIndicatorView startAnimating];
         
@@ -71,9 +82,8 @@
                 NSLog(@"None found");
             }
             else {
-              //  NSLog(@"The Objecds Are %@",runArray);
-                self.runArrayPre=[[NSArray alloc]initWithArray:runArray];
-               // NSLog(@"The RunArray Pre Are %@",self.runArrayPre);
+                    self.runArrayPre=[[NSArray alloc]initWithArray:runArray];
+
                 [self.tableView reloadData];
             }
            
@@ -95,8 +105,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{ //NSLog(@"The No Of ROws %ld",self.ObjectCount);
-    // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+{ 
     return self.ObjectCount ;
 }
 
@@ -116,33 +125,16 @@
     }
     cell.parameterLabel.tag=indexPath.row;
     
-    
-    if (indexPath.row==0) {
-        cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:0]objectForKey:@"Parameter_1"];
-        cell.ParameterNameLabel.text=[[self.preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
-       // NSLog(@"Index Path Row 0 %@",cell.parameterLabel.text);
+    for (int i=0; i<self.RunProcessArray.count;i++) {
+        if (indexPath.row==i) {
+            
+            cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];
+        
+          cell.ParameterNameLabel.text=[self.RunProcessArray objectAtIndex:i];
+        
+        }
+        
     }
-    if (indexPath.row==1) {
-        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_2"];
-        [[self.runArrayPre objectAtIndex:0]objectForKey:@"Parameter_2"];
-        cell.ParameterNameLabel.text=[[self.preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
-       // NSLog(@"Index Path Row 1 %@",cell.parameterLabel.text);
-    }
-    if (indexPath.row==2) {
-        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_3"];
-        [[self.runArrayPre objectAtIndex:0]objectForKey:@"Parameter_3"];
-        cell.ParameterNameLabel.text=[[self.preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
-       // NSLog(@"Index Path Row 2 %@",cell.parameterLabel.text);
-    }
-    if (indexPath.row==3) {
-        cell.parameterLabel.text=//[[PFObject objectWithClassName:@"Pre_Extraction"] objectForKey:@"Parameter_4"];
-        [[self.runArrayPre objectAtIndex:0 ]objectForKey:@"Parameter_4"];
-        cell.ParameterNameLabel.text=[[self.preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
-      //  NSLog(@"Index Path Row 3 %@",cell.parameterLabel.text);
-    }
-   // cell.textLabel.tag=indexPath.row;
-    // Configure the cell...
-    
     
     return cell;
 }

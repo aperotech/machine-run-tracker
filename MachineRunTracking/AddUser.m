@@ -150,38 +150,28 @@
 }
 
 
-/*- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range      replacementString:(NSString *)string
-{
-    if (!string.length)
-        return YES;
-    
-    if (textField == self.userNameText)
-    {
-        NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
-        NSString *expression = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
-        NSRegularExpression *regex = [ NSRegularExpressionregularExpressionWithPattern:expression
-                                                                              options:NSRegularExpressionCaseInsensitive
-                                                                                error:nil];
-        NSUInteger numberOfMatches = [regex numberOfMatchesInString:newString
-                                                            options:0
-                                                              range:NSMakeRange(0, [newString length])];
-        if (numberOfMatches == 0)
-            return NO;        
-    }
-    return YES;
-}
-*/
-/*- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     if (textField.text.length >= 20 && range.length == 0)
         return NO;
     // Only characters in the NSCharacterSet you choose will insertable.
-    NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"] invertedSet];
-    NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
-    
-    return [string isEqualToString:filtered];
-    
+    if (textField.tag==1) {
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    }
+    if (textField.tag==3) {
+//NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_@."] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    }
+  
+    return YES;
 }
-*/
+
 
 //Method to disable any user input for the user type text field
 /*- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

@@ -33,18 +33,6 @@
     [super viewDidLoad];
      self.navigationController.navigationBar.topItem.title=@"";
     activityIndicatorView.hidden=YES;
-    [activityIndicatorView startAnimating];
-    
-    /*self.Run_NoText.delegate=self;
-    self.Run_DateText.delegate=self;
-    Run_DurationText.delegate=self;
-    self.Machine_NameText.delegate=self;*/
-    // Do any additional setup after loading the view.
-   // activityView = [[UIActivityIndicatorView alloc]                                             initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
-  //  activityView.center=self.view.center;
-   // [activityView startAnimating];
-   // [self.view addSubview:activityView];
     
     PFQuery *query=[PFQuery queryWithClassName:@"Transaction"];
    
@@ -55,7 +43,6 @@
         if (!object) {
             // Did not find any UserStats for the current user
         } else {
-            //NSLog(@"The First Transaction Is %@",object);
             // Found UserStats
            // self.placeholderArray=[object allKeys];
             
@@ -78,33 +65,26 @@
     
    [query1 selectKeys:@[@"Machine_Name"]];
     
-    // NSLog(@"The Query For Pre_Extraction %@",query1);
-    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-        //   NSLog(@"all types: %ld",(long)objects.count);
-       // self.ObjectCount=objects.count;
+     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        
         if(!error){
             
              Machine_NameArray = [NSMutableArray arrayWithCapacity:objects.count]; // make an array to hold the cities
             for(PFObject* obj in objects) {
                 [Machine_NameArray addObject:[obj objectForKey:@"Machine_Name"]];
-              //  NSLog(@"Machine Array Is %@",Machine_NameArray);
+              
             }
-            //[activityView stopAnimating];
+            
         }
         else {
             NSLog(@"Error: %@ %@", error, [error userInfo]);
-            
-           
-            
+          
         }
     }];
     
     //Initialize frequency picker
    // frequency = [NSArray arrayWithObjects:@"Daily",@"Weekly", @"Monthly", @"Quarterly", @"Semi-Annually", @"Annually", nil];
 
-    
-    
     MachinePicker = [[UIPickerView alloc] initWithFrame:CGRectMake(16, Run_DurationText.frame.origin.y, 288, 120)];
     MachinePicker.delegate = self;
     MachinePicker.dataSource = self;
@@ -139,6 +119,7 @@
     [datePicker setDatePickerMode:UIDatePickerModeDate];
     [datePicker setBackgroundColor:[UIColor lightTextColor]];
     [self.Run_DateText setInputView:datePicker];
+    
     
     //Creating a toolbar above Date picker where Done button can be added
     datePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 288, 40)];
@@ -194,8 +175,15 @@
     if (textField == self.Machine_NameText | textField == self.Machine_NameText) {
         return NO;
     }
-    return YES;
-}
+    if ([textField isEqual:self.Run_DurationText]) {
+            //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+            NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789.:"] invertedSet];
+            NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+            
+            return [string isEqualToString:filtered];
+        }
+        return YES;
+   }
 
 #pragma mark - Picker delegate methods
 
@@ -250,11 +238,11 @@
 }*/
 
 - (IBAction)SaveAndForword:(id)sender {
-[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+//[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
     activityIndicatorView.hidden=NO;
     [activityIndicatorView startAnimating];
    
-/*NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [self.Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *Run_Date = [self.Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -281,31 +269,21 @@
         
         
         if (!error) {
-            // Show success message
-            // UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Complete" message:@"Successfully saved the Parameters" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            //  [alert show];
-            
-            // Notify table view to reload the Machine from Parse cloud
-          //  [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-            NSLog(@"Successfull Saved Transaction");
+          
             [activityIndicatorView stopAnimating];
-              //[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
-            
-            // Dismiss the controller
-           // [self.navigationController popViewControllerAnimated:YES];
-            
-        } else {
+              [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+            } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             
         }
         
     }];
-    }*/
+    }
 }
 
 - (IBAction)Cancel:(id)sender {
-    //[self.navigationController popViewControllerAnimated:YES];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)viewDidUnload {

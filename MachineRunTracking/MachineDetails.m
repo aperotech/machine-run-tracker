@@ -126,6 +126,30 @@
     if (textField == self.trackingFrequencyText | textField == self.maintanceFrequencyText) {
         return NO;
     }
+    
+    if (textField.text.length >= 20 && range.length == 0)
+        return NO;
+    // Only characters in the NSCharacterSet you choose will insertable.
+    if ([textField isEqual:self.nameText]) {
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    }else if ([textField isEqual:locationText]) {
+        //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    }else if ([textField isEqual:self.capacityText]){
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789."] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+        
+        
+    }
+    
     return YES;
 }
 

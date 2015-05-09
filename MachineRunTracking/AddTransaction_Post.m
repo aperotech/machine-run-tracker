@@ -31,9 +31,9 @@
             // Did not find any UserStats for the current user
         } else {
             // Found UserStats
-          //  NSLog(@"The Objec ts0 %@",object);
+          
             self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
-           // NSLog(@"The String Is To Be %@",self.LastInsertedTransactionNo);
+           
         }
         
         
@@ -42,7 +42,7 @@
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Parameters"];
     [query2 selectKeys:@[@"Name"]];
-    [query2 whereKey:@"Type" equalTo:@"Post_Extraction"];
+    [query2 whereKey:@"Type" equalTo:@"Post-Extraction"];
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
         // iterate through the objects array, which contains PFObjects for each Student
         if (!objectsPF) {
@@ -59,7 +59,6 @@
                 
             }
 
-            NSLog(@"The Post Extraction.... %@",self.postExtractionArray);
         }
     }];
     
@@ -68,9 +67,9 @@
     // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
-    [query1 whereKey:@"Type" equalTo:@"Post_Extraction"];
+    [query1 whereKey:@"Type" equalTo:@"Post-Extraction"];
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-       // NSLog(@"all types1: %ld",(unsigned long)objects.count);
+       
         self.ObjectCount=objects.count;
         if(error){
             NSLog(@"Error!");
@@ -78,11 +77,15 @@
         else {
             if (objects.count == 0) {
                 NSLog(@"None found");
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No Parameters Found"
+                                                                    message:[error.userInfo objectForKey:@"error"]
+                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
             }
             else {
                  [self.tableView reloadData];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                //   NSLog(@"objectArray1 %@",objects);
+                
             }
             
         }
@@ -90,13 +93,17 @@
     self.GetValuesFromPostTextFieldArray=[[NSMutableArray alloc]init];
 }
 
+- (void)refreshTable {
+    //TODO: refresh your data
+        [self.tableView reloadData];
+}
+
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
 }
 
 - (IBAction)Cancel:(id)sender {
-    //[self.navigationController popViewControllerAnimated:YES];
-   // [self dismissViewControllerAnimated:YES completion:nil];
+    
     [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -105,7 +112,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //return self.ObjectCount;
+    
     return self.ObjectCount;
 }
 
@@ -115,34 +122,18 @@
     AddPostExtractionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     if (cell == nil) {
         cell = [[AddPostExtractionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
-        // cell.p_1Text.text = @"New Parameter";
-       /* UITextField *valueTextField = [[UITextField alloc] initWithFrame:CGRectMake(150,12,300,26)];
-        valueTextField.tag = indexPath.row;
-        [valueTextField borderStyle];
-        valueTextField.backgroundColor =[UIColor grayColor];
-        valueTextField.delegate = self;
-        valueTextField.placeholder=@"Parameters";
-        [cell.contentView addSubview:valueTextField];*/
-        // [valueTextField release];
-        // cell.
+       
     }
     cell.p_1Text.tag=indexPath.row;
     for (int i=-1;i<indexPath.row;i++) {
         cell.p_1Text.placeholder=[[self.postExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
         
     }
-    
-    
-    
+ 
       return cell;
 }
 
 
-/*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    // NSLog(@"text Field index path %ld ,%@ ",indexPath.row,cell);
-}*/
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
     UITableView *table = (UITableView *)[[cell superview] superview];
@@ -150,35 +141,10 @@
     
     for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
         [self.GetValuesFromPostTextFieldArray addObject:textField.text];
-        NSLog(@"the IndexPathe Array Is %@",self.GetValuesFromPostTextFieldArray);
+       
     }
-   /* if (textField.tag==0) {
-        self.Parameter0=textField.text;
-      //  NSLog(@"Parameter0 %@",self.Parameter0);
-        
-        
-    }
-    if (textField.tag==1) {
-        self.Parameter1=textField.text;
-       // NSLog(@"Parameter1 %@",self.Parameter1);
-        
-        
-    }
-    if (textField.tag==2) {
-        self.Parameter2=textField.text;
-      //  NSLog(@"Parameter2 %@",self.Parameter2);
-        
-        
-    }
-    if (textField.tag==3) {
-        self.Parameter3=textField.text;
-       // NSLog(@"Parameter2 %@",self.Parameter3);
-        
-        
-    }
-    */
     
-    NSLog(@"Pre Row %ld just finished editing with the value %@  tag is %ld",(long)textFieldIndexPath.row,textField.text ,(long)textField.tag);
+   
 }
 
 
@@ -186,20 +152,6 @@
 
 -(IBAction)SaveAndExit:(id)sender {
    
-    /* NSString *name = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-     
-     NSString *description = [descriptionText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-     NSString *type = [typeText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-     NSString *Units = [unitsText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-     
-     
-     if ([name length] == 0 ||[description length] == 0 ||[type length] == 0 ||[Units length] == 0) {
-     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-     message:@"You must enter details"
-     delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-     [alertView show];
-     }
-     else {*/
     
     
     
@@ -209,16 +161,17 @@
     else {
         [self saveParameters];
     }
-    //}
+    
     
 }
 
 - (void)saveParameters
 {
+    
     PFObject *NewParameter=[PFObject  objectWithClassName:@"Post_Extraction" ];
     
     if([NewParameter save]) {
-        //  NSLog(@"Successfully Created");
+        
         PFObject *ParameterValue = [PFObject objectWithClassName:@"Post_Extraction"];
         for (int i=0;i<[self.RunProcessArray count];i++) {
             NSString *newPara=[self.RunProcessArray objectAtIndex:i];
@@ -232,53 +185,21 @@
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                // [self.navigationController popViewControllerAnimated:YES];
-              ////  [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
-               // [self performSegueWithIdentifier:@"UnwindToTransactionListSegue" sender:self];
-                NSLog(@"The object has been saved");
                 [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
 
-                
-                // The object has been saved.
             } else {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                     message:[error.userInfo objectForKey:@"error"]
                                                                    delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
                 
-               // NSLog(@"here was a problem, check error.description");
-                // There was a problem, check error.description
+              
             }
         }];
         
         //  class created;
         
     }
-    /* PFObject *NewParameter = [PFObject objectWithClassName:@"Pre_Extraction"];
-     
-     
-     [NewParameter setObject:self.Parameter0 forKey:@"Parameter_1"];
-     [NewParameter setObject:self.Parameter1 forKey:@"Parameter_2"];
-     [NewParameter setObject:self.Parameter2 forKey:@"Parameter_3"];
-     [NewParameter setObject:self.Parameter0 forKey:@"Parameter_4"];
-     
-     
-     
-     
-     //  NewMachine[@"Machine"] = [PFUser currentUser];
-     
-     [NewParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-     if (succeeded) {
-     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-     [self.navigationController popViewControllerAnimated:YES];
-     } else {
-     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-     message:[error.userInfo objectForKey:@"error"]
-     delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-     [alertView show];
-     }
-     }];
-     */
 }
 
 - (void)updateParameters
@@ -306,7 +227,7 @@
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                    [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
+                    [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue"  sender:self];
                     
                    // [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
                     //  [self.navigationController popViewControllerAnimated:YES];

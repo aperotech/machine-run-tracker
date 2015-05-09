@@ -30,7 +30,7 @@
     }
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
-    [query1 whereKey:@"Type" equalTo:@"Process_run"];
+    [query1 whereKey:@"Type" equalTo:@"Process Run"];
    
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
        
@@ -184,15 +184,13 @@
             // if (self.sectionCount>= 1 && indexPath.row!=self.sectionCount )
             if (indexPath.row>=0 && i>=0)
             {
-                // NSLog(@"self.GetValuesFromRunTextFieldArray,self.GetValuesFromRunTextFieldArray);
+                
                 for (int j=0;j<[self.RunProcessArray count];j++)
                 {
                     if (valueTextField.tag==j+1 )
                     {
-                        //NSLog(@"valueTextField.tag %ld",valueTextField.tag);
-                        
-                        valueTextField.text=[self.RunProcessArray objectAtIndex:i];
-                        // NSLog(@"valueTextField.text %@",valueTextField.text);
+                         valueTextField.text=[[self.runArrayRun objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];;
+                        ;
                     }
                 }
             }
@@ -200,26 +198,8 @@
             [cell.contentView addSubview:valueTextField];
             
         }
-        
         //return cell;
     }
-
-    
-    
-    
-    
-    
-    /* if (cell == nil) {
-        cell = [[DetailsProcessRunCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
-      //  cell.backgroundColor=[UIColor grayColor];
-    }
-    
-        cell.IntervalText.text = [[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Interval"];
-        cell.ParametersText.text = [[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Parameter_1"];
-        cell.Parameters1Text.text=[[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Parameter_2"];
-        cell.Parameters2Text.text=[[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Parameter_3"];
-        cell.Parameters3Text.text=[[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Parameter_4"];
-        cell.ValueText.text = [[self.runArrayRun objectAtIndex:0 ]objectForKey:@"Value"];*/
     return cell;
 }
 

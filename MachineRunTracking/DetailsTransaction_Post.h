@@ -19,7 +19,7 @@
 @property (strong,nonatomic)NSArray *runArrayPost;
 
 @property(nonatomic,strong)NSArray *PostExtractionArray;
-
+@property(nonatomic ,strong)NSMutableArray *RunProcessArray;
 @property(nonatomic)NSInteger ObjectCount;
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 

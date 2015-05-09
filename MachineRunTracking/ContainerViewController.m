@@ -37,7 +37,7 @@
     
     if( self.childViewControllers.count <= 0 ){
         
-        NSLog(@"self.childViewControllers.count is NOT > 0");
+       
         DetailsTransaction_Pre *DetialsTransactionPreObj=(DetailsTransaction_Pre *)segue.destinationViewController;
         [self addChildViewController:DetialsTransactionPreObj];
         DetialsTransactionPreObj.DetialsTransaction_PrePF=ContainerControlPF;
@@ -102,7 +102,7 @@
 -(void)setPre_ExtractionActive
 {
     [self performSegueWithIdentifier:@"ContainerToDetailsPreExtractionSegue" sender:nil];
-    NSLog(@"Container Method Reach value %@ ",ContainerControlPF);
+   
 }
 
 

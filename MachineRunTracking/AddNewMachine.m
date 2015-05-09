@@ -196,6 +196,30 @@
     if (textField == self.trackingFrequencyText | textField == self.maintanceFrequencyText) {
         return NO;
     }
+    
+    if (textField.text.length >= 20 && range.length == 0)
+        return NO;
+    // Only characters in the NSCharacterSet you choose will insertable.
+    if ([textField isEqual:self.nameText]) {
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    }else if ([textField isEqual:locationText]) {
+        //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    }else if ([textField isEqual:self.capacityText]){
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789."] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    
+    
+    }
+    
     return YES;
 }
 
@@ -291,6 +315,9 @@
     }];
 }
 
+
+
+
 - (IBAction)cancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
     //[self.navigationController popViewControllerAnimated:YES];
@@ -364,36 +391,6 @@
 }
 
 
-/*- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    
-    self.scrollView.contentOffset = CGPointMake(0, textField.frame.origin.y);
-}*/
-
-
-/*
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    [self animateTextField:textField up:YES];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    [self animateTextField:textField up:NO];
-}
-
--(void)animateTextField:(UITextField*)textField up:(BOOL)up
-{
-    const int movementDistance = -125; // tweak as needed
-    const float movementDuration = 0.3f; // tweak as needed
-    
-    int movement = (up ? movementDistance : -movementDistance);
-    
-    [UIView beginAnimations: @"animateTextField" context: nil];
-    [UIScrollView setAnimationBeginsFromCurrentState: YES];
-    [UIScrollView setAnimationDuration: movementDuration];
-    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    [UIScrollView commitAnimations];
-}*/
 
 
 /*

@@ -616,6 +616,7 @@
 				TargetAttributes = {
 					04461CA31AD3913700CBC80A = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 82UKQ2A6DD;
 					};
 					04461CBC1AD3913700CBC80A = {
 						CreatedOnToolsVersion = 6.1;
@@ -826,6 +827,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/MachineRunTracking",
@@ -842,6 +844,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/MachineRunTracking",

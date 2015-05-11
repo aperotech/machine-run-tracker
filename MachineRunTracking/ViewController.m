@@ -45,6 +45,15 @@
     return YES;
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == self.userEmailText) {
+        [self.passwordText becomeFirstResponder];
+    } else if (textField == self.passwordText) {
+        [self.passwordText resignFirstResponder];
+    }
+    return YES;
+}
+
 
 
 -(IBAction)Login:(id)sender{

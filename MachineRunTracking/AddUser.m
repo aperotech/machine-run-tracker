@@ -19,6 +19,7 @@
 }
 
 @synthesize userEmailText, userNameText, userTypeText, passwordText, scrollView;
+@dynamic activityIndicatorView;
 
 - (void)viewDidLoad {
     
@@ -84,7 +85,6 @@
     } else if (textField == self.passwordText) {
         [self.passwordText resignFirstResponder];
     }
-    
     return YES;
 }
 
@@ -124,7 +124,7 @@
         newUser[@"usertype"]=type;
       //  newUser.usertype = type;
         
-        [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        /*[newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (error) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                     message:[error.userInfo objectForKey:@"error"]
@@ -139,7 +139,7 @@
                [self dismissViewControllerAnimated:YES completion:nil];
                //[self.navigationController popViewControllerAnimated:YES];
             }
-        }];
+        }];*/
     }
 }
 

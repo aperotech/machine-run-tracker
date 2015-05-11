@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
@@ -118,7 +118,7 @@
                                     <constraint firstAttribute="width" constant="280" id="wQx-4v-zKj"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next"/>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="1Cu-Vn-xp3"/>
@@ -133,6 +133,9 @@
                                 <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                     <rect key="frame" x="260" y="194" width="280" height="30"/>
                                 </variation>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Plt-S4-xdl"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RUK-p4-vFf">
                                 <rect key="frame" x="160" y="239" width="280" height="30"/>
@@ -141,7 +144,7 @@
                                     <constraint firstAttribute="width" constant="280" id="WfG-9G-42F"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" secureTextEntry="YES"/>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="ADM-Ep-Q3y"/>
@@ -156,9 +159,12 @@
                                 <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                     <rect key="frame" x="260" y="244" width="280" height="30"/>
                                 </variation>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="IML-iV-php"/>
+                                </connections>
                             </textField>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="I3n-eH-n4e">
-                                <rect key="frame" x="283" y="323" width="20" height="20"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="I3n-eH-n4e">
+                                <rect key="frame" x="341" y="297" width="20" height="20"/>
                                 <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
                         </subviews>
@@ -166,6 +172,7 @@
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="tM8-Dy-AvF" secondAttribute="centerX" id="0b5-5g-wvR"/>
                             <constraint firstAttribute="trailing" secondItem="1CW-rd-PAm" secondAttribute="trailing" constant="20" id="1xB-zI-Bsn"/>
+                            <constraint firstItem="I3n-eH-n4e" firstAttribute="leading" secondItem="tM8-Dy-AvF" secondAttribute="trailing" constant="15" id="31M-aJ-Y32"/>
                             <constraint firstItem="1CW-rd-PAm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="719-BY-2cj"/>
                             <constraint firstItem="1CW-rd-PAm" firstAttribute="top" secondItem="S6s-Tv-Qfg" secondAttribute="bottom" constant="20" id="9Ad-9X-zIy"/>
                             <constraint firstAttribute="centerX" secondItem="1CW-rd-PAm" secondAttribute="centerX" id="BFP-fW-mdM"/>
@@ -175,6 +182,7 @@
                             <constraint firstAttribute="trailing" secondItem="RUK-p4-vFf" secondAttribute="trailing" constant="20" id="IoL-0Q-39c"/>
                             <constraint firstItem="1CW-rd-PAm" firstAttribute="top" secondItem="S6s-Tv-Qfg" secondAttribute="bottom" constant="20" id="LOz-vg-S9a"/>
                             <constraint firstItem="S6s-Tv-Qfg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="T89-TU-Pdr"/>
+                            <constraint firstItem="tM8-Dy-AvF" firstAttribute="centerY" secondItem="I3n-eH-n4e" secondAttribute="centerY" id="Yiy-qn-yOD"/>
                             <constraint firstAttribute="trailing" secondItem="S6s-Tv-Qfg" secondAttribute="trailing" constant="20" id="eWu-rx-KjT"/>
                             <constraint firstItem="f8h-El-Y7q" firstAttribute="top" secondItem="1CW-rd-PAm" secondAttribute="bottom" constant="20" id="f7U-lZ-wLX"/>
                             <constraint firstItem="RUK-p4-vFf" firstAttribute="top" secondItem="f8h-El-Y7q" secondAttribute="bottom" constant="20" id="feF-ep-utX"/>
@@ -2688,13 +2696,14 @@
                                             <outlet property="delegate" destination="ynK-1P-ang" id="u0d-0m-Wci"/>
                                         </connections>
                                     </textField>
-                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Oeb-g5-Vcg">
-                                        <rect key="frame" x="265" y="228" width="20" height="20"/>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Oeb-g5-Vcg">
+                                        <rect key="frame" x="290" y="230" width="20" height="20"/>
                                         <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </activityIndicatorView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="gqe-d3-tVL" secondAttribute="trailing" constant="60" id="5Kw-3y-AlP"/>
+                                    <constraint firstItem="Oeb-g5-Vcg" firstAttribute="top" secondItem="gqe-d3-tVL" secondAttribute="bottom" constant="10" id="5x3-mX-gds"/>
                                     <constraint firstItem="j3z-zV-FrA" firstAttribute="centerX" secondItem="gqe-d3-tVL" secondAttribute="centerX" id="JQW-Xy-oaY"/>
                                     <constraint firstItem="ag8-Ul-HS5" firstAttribute="top" secondItem="AUs-Sm-6TO" secondAttribute="top" constant="40" id="PWf-8W-fdy"/>
                                     <constraint firstAttribute="bottom" secondItem="gqe-d3-tVL" secondAttribute="bottom" id="Qgp-Gk-ViO"/>
@@ -2704,6 +2713,7 @@
                                     <constraint firstItem="gqe-d3-tVL" firstAttribute="top" secondItem="j3z-zV-FrA" secondAttribute="bottom" constant="20" id="dGk-Dv-LrK"/>
                                     <constraint firstAttribute="bottom" secondItem="gqe-d3-tVL" secondAttribute="bottom" constant="316" id="dc6-Et-cFj"/>
                                     <constraint firstAttribute="trailing" secondItem="gqe-d3-tVL" secondAttribute="trailing" constant="50" id="dwL-8M-vEh"/>
+                                    <constraint firstItem="Oeb-g5-Vcg" firstAttribute="centerX" secondItem="gqe-d3-tVL" secondAttribute="centerX" id="k1E-XP-ZiQ"/>
                                     <constraint firstItem="Z2A-t6-2jz" firstAttribute="centerX" secondItem="ag8-Ul-HS5" secondAttribute="centerX" id="lYX-DJ-rVX"/>
                                     <constraint firstAttribute="trailing" secondItem="gqe-d3-tVL" secondAttribute="trailing" id="naz-dQ-6gG"/>
                                     <constraint firstAttribute="centerX" secondItem="ag8-Ul-HS5" secondAttribute="centerX" id="ona-3x-UJm"/>

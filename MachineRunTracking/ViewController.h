@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController<UIActivityItemSource>
+@interface ViewController : UIViewController<UITextFieldDelegate>
+
 @property(nonatomic,strong)IBOutlet UITextField *userEmailText;
 @property(nonatomic,strong)IBOutlet UITextField *passwordText;
 @property(nonatomic,strong)IBOutlet UIButton *loginButton;

@@ -11,13 +11,12 @@
 #import "UserDetails.h"
 #import <Parse/Parse.h>
 
-@implementation UserList
-{
+@implementation UserList {
     NSMutableArray *NewUserArray;
 }
-//MainMenuToUserListSegue
-//userListTouserDetailsSegue
-//userListToAddUserSegue
+
+//@dynamic activityIndicatorView;
+
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -25,10 +24,10 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         // The className to query on
-        self.parseClassName = @"_User";
+        self.parseClassName = @"User";
         
         // The key of the PFObject to display in the label of the default cell style
-        self.textKey = @"User Name";
+        //self.textKey = @"User Name";
         
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
@@ -45,13 +44,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  //   self.navigationController.navigationBar.topItem.title=@"";
-    [self.activityIndicatorView startAnimating];
-   [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
-    self.CurrentUser = [PFUser currentUser];
-   
+    //self.navigationController.navigationBar.topItem.title=@"";
+    //[self.activityIndicatorView startAnimating];
+    //[[PFUser currentUser] fetchInBackgroundWithBlock:nil];
+    //self.CurrentUser = [PFUser currentUser];
     
-    PFQuery *query = [PFUser query];
+    /*PFQuery *query = [PFUser query];
     [query whereKey:@"username" equalTo:[[PFUser currentUser]username]];
     [query whereKey:@"usertype" equalTo:@"Admin"];
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
@@ -68,11 +66,6 @@
         }
     }];
     
-    
-
-       self.HeaderArray=[[NSMutableArray alloc]initWithObjects:@"Name",@"Email",@"User Type", nil];
-    
-    
     if (self.CurrentUser) {
     //    NSLog(@"Current user: %@", currentUser.username);
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -82,7 +75,13 @@
    }
    else {
         [self performSegueWithIdentifier:@"userListToAddUserSegue" sender:self];
-    }
+    }*/
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self refreshTable:nil];
 }
 
 - (void)refreshTable:(NSNotification *) notification
@@ -95,7 +94,7 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    [self.activityIndicatorView stopAnimating];
+    //[self.activityIndicatorView stopAnimating];
     // Release any retained subviews of the main view.
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
 }
@@ -115,7 +114,7 @@
     
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    [self.activityIndicatorView stopAnimating];
+    //[self.activityIndicatorView stopAnimating];
     return query;
 }
 
@@ -129,9 +128,12 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *CellIdentifier1 = @"UserListHeaderCellIdentifier";
-    UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-    self.tableView.separatorColor = [UIColor lightGrayColor];
-    cell.backgroundColor=[UIColor grayColor];
+    UserListCell  *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+    
+    //UIView *cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+    //[cellView addSubview:cell.contentView];
+    [self.tableView setSeparatorColor:[UIColor lightGrayColor]];
+    cell.backgroundColor=[UIColor lightGrayColor];
     return cell;
 }
 
@@ -153,17 +155,40 @@
         cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
         
-        cell.userNameLabel.text=[object objectForKey:@"username"];
+        cell.userNameLabel.text=[object objectForKey:@"name"];
         cell.userEmailLabel.text=[object objectForKey:@"email"];
-        cell.userTypeLabel.text=[object objectForKey:@"usertype"];
+        cell.userTypeLabel.text=[object objectForKey:@"userType"];
         return cell;
 }
 
 
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Remove the row from data model
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    PFObject *object = [self.objects objectAtIndex:indexPath.row];
+    NSString *currentUser = [[NSUserDefaults standardUserDefaults] objectForKey:@"userEmail"];
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        if ([object[@"email"] isEqualToString:currentUser]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
+                                                                message:@"You cannot delete your own record"
+                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+            [tableView setEditing:FALSE];
+        } else {
+            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded == TRUE) {
+                    [self refreshTable:nil];
+                } else {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"User could not be deleted"
+                                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                }
+            }];
+        }
+    }
+}
+    /* Remove the row from data model
     if (self.PermissionFlag == FALSE) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission Denied !!"
                                                             message:@"You don't have permission to delete User. "
@@ -172,12 +197,9 @@
     } else if(self.PermissionFlag == TRUE){
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
     
-       /* [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             [self refreshTable:nil];
-        }];*/
-   
-    
-    
+        }];
    // self.CurrentUser = [PFUser currentUser];
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" notEqualTo:[[PFUser currentUser]username]];
@@ -195,66 +217,14 @@
                 [NewUserArray addObject:object];
                 [tableView reloadData];
             }
-            
-            
         }
     }];
+     }*/
 
-     }
-    
-}
-
-- (void) objectsDidLoad:(NSError *)error
-{
+- (void) objectsDidLoad:(NSError *)error {
     [super objectsDidLoad:error];
     [error localizedDescription];
-   
 }
-/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 40.0f;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
-    UIView *sectionHeaderView = [[UIView alloc] initWithFrame:
-                                 CGRectMake(0, 0, self.tableView.frame.size.width, 40.0)];
-    sectionHeaderView.backgroundColor = [UIColor grayColor];
-    
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:
-                            CGRectMake(19, 11, sectionHeaderView.frame.size.width, 25.0)];
-    
-    headerLabel.backgroundColor = [UIColor clearColor];
-    headerLabel.textAlignment = NSTextAlignmentLeft;
-    [headerLabel setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
-    headerLabel.text = @"Name";
-    [sectionHeaderView addSubview:headerLabel];
-    
-    UILabel *headerLabel1 = [[UILabel alloc] initWithFrame:
-                             CGRectMake(122,11, sectionHeaderView.frame.size.width, 25.0)];
-    
-    headerLabel1.backgroundColor = [UIColor clearColor];
-    headerLabel1.textAlignment = NSTextAlignmentLeft;
-    [headerLabel1 setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
-    headerLabel1.text = @"Type";
-    [sectionHeaderView addSubview:headerLabel1];
-    
-    UILabel *headerLabel3 = [[UILabel alloc] initWithFrame:
-                             CGRectMake(193,11, sectionHeaderView.frame.size.width, 25.0)];
-    
-    headerLabel3.backgroundColor = [UIColor clearColor];
-    headerLabel3.textAlignment = NSTextAlignmentLeft;
-    [headerLabel3 setFont:[UIFont fontWithName:@"Verdana" size:17.0]];
-    headerLabel3.text = @"Email Address";
-    [sectionHeaderView addSubview:headerLabel3];
-    
-    
-    
-    
-    
-    
-    return sectionHeaderView;
-    
-}*/
 
 
 #pragma mark - UITableViewDelegate
@@ -263,28 +233,20 @@
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"userListTouserDetailsSegue"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        PFObject *object = [self.objects objectAtIndex:indexPath.row ];
+        PFObject *object = [self.objects objectAtIndex:indexPath.row];
         
-        UserDetails *userdetailsObj = (UserDetails *)segue.destinationViewController;
-        userdetailsObj.UpdateObjPF = object;
+        UserDetails *selectedUser = segue.destinationViewController;
+        selectedUser.userObject = object;
     }
 }
-- (IBAction)logout:(id)sender {
-    [PFUser logOut];
- //   PFUser *currentUser = [PFUser currentUser];
-   [self.navigationController popViewControllerAnimated:YES];
-}
 
-- (void)didReceiveMemoryWarning
-{
+
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 @end

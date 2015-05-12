@@ -8,7 +8,6 @@
 
 #import <ParseUI/ParseUI.h>
 
-@interface MachineLIst : PFQueryTableViewController<UIActivityItemSource>
-@property BOOL *PermissionFlag;
-@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@interface MachineLIst : PFQueryTableViewController
+
 @end

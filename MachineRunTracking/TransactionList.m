@@ -16,12 +16,17 @@
 #import "AddTransaction_Run.h"
 #import <Parse/Parse.h>
 #import "AppDelegate.h"
+
 @interface TransactionList ()
 
 @end
 
-@implementation TransactionList
+@implementation TransactionList {
+    NSString *userType;
+}
+
 @synthesize activityIndicatorView;
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     //self = [super initWithClassName:@"User"];
@@ -45,47 +50,16 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    
-    activityIndicatorView.center = self.view.center;
-    
-    [activityIndicatorView startAnimating];
+- (void)viewDidLoad {
     [super viewDidLoad];
-   // self.navigationController.navigationBar.topItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
-    // self.navigationController.navigationBar.topItem.title=@"";
-    // self.navigationController.navigationBar.backItem.title=@"";
-    [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
-    self.CurrentUser = [PFUser currentUser];
-
+    userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
-    
-    PFQuery *query = [PFUser query];
-   [query whereKey:@"username" equalTo:[[PFUser currentUser]username]];
-    [query whereKey:@"usertype" equalTo:@"Admin"];
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
-        if (!object) {
-            NSLog(@"Not An Admin User");
-            self.navigationItem.rightBarButtonItem.enabled=FALSE;
-            
-            self.PermissionFlag = FALSE;
-            // Did not find any UserStats for the current user
-        } else {
-           self.PermissionFlag = TRUE;
-            NSLog(@"The Transaction Currenet User Is %@ ",object );
-            // Found UserStats
-          //  int highScore = [[object objectForKey:@"highScore"] intValue];
-        }
-    }];
-    
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshTable:)
-                                                 name:@"refreshTable"
-                                               object:nil];
+    if ([userType isEqualToString:@"Standard"]) {
+        self.navigationItem.rightBarButtonItem.enabled = FALSE;
+    }
 }
+
 - (void)refreshTable:(NSNotification *) notification
 {//[activityIndicatorView stopAnimating];
     // Reload the recipes
@@ -158,22 +132,31 @@
         return cell;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Remove the row from data model
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    PFObject *object = [self.objects objectAtIndex:indexPath.row];
     
-        if (self.PermissionFlag == FALSE) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission Denied !!"
-                                                                message:@"You don't have permission to delete Transaction. "
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        if ([userType isEqualToString:@"Standard"]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
+                                                                message:@"You do not have delete rights"
                                                                delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
-    }else if(self.PermissionFlag == TRUE){
-    PFObject *object = [self.objects objectAtIndex:indexPath.row];
-    [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        [self refreshTable:nil];
-    }];
+            [tableView setEditing:FALSE];
+        } else {
+            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded == TRUE) {
+                    [self refreshTable:nil];
+                } else {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Transaction could not be deleted"
+                                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                }
+            }];
+        }
     }
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }

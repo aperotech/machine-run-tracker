@@ -7,36 +7,38 @@
 //
 
 #import "AppDelegate.h"
-
 #import <Parse/Parse.h>
+
 @interface AppDelegate ()
 
 @end
 
-@implementation AppDelegate
-
+@implementation AppDelegate {
+    BOOL isLoggedIn;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-// [Parse enableLocalDatastore];
+    //[Parse enableLocalDatastore];
     
     [Parse setApplicationId:@"43wSxnz4xNJGXMK315P7KuJVaMliO5PxYW9qjCiy"
                 clientKey:@"X3RMRsDfqZQ5GL13sfRzUY5OzSo8cYf5vpp7J6Az"];
-     isLoggedIn=0;
-    PFUser *currentUser = [PFUser currentUser];
-       // [self loadObjects];
+    
+    isLoggedIn = [[NSUserDefaults standardUserDefaults] boolForKey:@"userLoggedIn"];
+    
+    //PFUser *currentUser = [PFUser currentUser];
+    //[self loadObjects];
    
-
-    if (currentUser) {
+    /*if (currentUser) {
         NSLog(@"Current user: %@", currentUser.username);
-      //  [self performSegueWithIdentifier:@"NavigationToMainMenuSegue" sender:self];
-    }
-    else {
+        //[self performSegueWithIdentifier:@"NavigationToMainMenuSegue" sender:self];
+    } else {
         isLoggedIn = 1;
       //  [self performSegueWithIdentifier:@"UserLoginView" sender:self];
-    }
-      NSString *storyboardId = isLoggedIn ? @"UserLoginView" : @"NevigateMainMenu";
-     self.window.rootViewController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:storyboardId];
+    }*/
+    
+    NSString *storyboardId = isLoggedIn ? @"NevigateMainMenu":@"UserLoginView";
+    self.window.rootViewController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:storyboardId];
      //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     return YES;
 }

@@ -8,15 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
+
 @interface MainMenu : UIViewController
-- (IBAction)logout:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UIButton *UserButton;
 @property (weak, nonatomic) IBOutlet UIButton *MachineButton;
 @property (weak, nonatomic) IBOutlet UIButton *TransactionsButton;
 @property (weak, nonatomic) IBOutlet UIButton *ParametersButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+
 @property BOOL *PermissionFlag;
-@property (nonatomic, strong) PFObject *MainMenuObjPF;
-@property (nonatomic, strong) PFUser * CurrentUser;
+@property (nonatomic, strong) PFObject *stdUserObject;
+
 -(IBAction)UserButtonClick:(id)sender;
-@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
+- (IBAction)logout:(id)sender;
+
+
 @end

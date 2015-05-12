@@ -6,17 +6,17 @@
 //  Copyright (c) 2015 AperoTechnologies. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "UserList.h"
 
-@interface AddUser : ViewController<UINavigationControllerDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate, UIBarPositioningDelegate>
+@interface AddUser : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate, UIBarPositioningDelegate>
 
-@property (nonatomic,weak) IBOutlet UIScrollView *scrollView;
-@property (weak,nonatomic) IBOutlet UITextField *userNameText;
-@property (weak,nonatomic) IBOutlet UITextField *userTypeText;
-@property (strong,nonatomic) IBOutlet UITextField *passwordText;
-@property (strong,nonatomic) IBOutlet UITextField *userEmailText;
+@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *userTypeField;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UITextField *tempPasswordField;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong,nonatomic)UITextField *activeField;
-@property(nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (IBAction)save:(id)sender;
 - (IBAction)cancel:(id)sender;

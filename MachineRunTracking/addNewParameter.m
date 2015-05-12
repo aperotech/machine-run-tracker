@@ -80,7 +80,6 @@
     return 1;
 }
 
-
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     return parameterType.count;
 }
@@ -100,8 +99,9 @@
         return NO;
     }
     
-    if (textField.text.length >= 20 && range.length == 0)
+    if (textField.text.length >= 40 && range.length == 0)
         return NO;
+    
     // Only characters in the NSCharacterSet you choose will insertable.
     if ([textField isEqual:self.nameText]) {
         NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"] invertedSet];
@@ -140,7 +140,7 @@
 }
 
 - (IBAction)save:(id)sender {
-    [self.activityIndicatorView startAnimating];
+    [self.activityIndicator startAnimating];
     // Create PFObject with recipe information
     PFObject *parameterObj = [PFObject objectWithClassName:@"Parameters"];
     [parameterObj setObject:nameText.text forKey:@"Name"];
@@ -161,7 +161,7 @@
             
             // Notify table view to reload the Machine from Parse cloud
              [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-            [self.activityIndicatorView stopAnimating];
+            [self.activityIndicator stopAnimating];
             // Dismiss the controller
             [self dismissViewControllerAnimated:YES completion:nil];
             

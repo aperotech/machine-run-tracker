@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0415DEB81AD3ECD9001EF623 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 0415DEB71AD3ECD9001EF623 /* User.m */; };
 		042A8AE41AD7D6E60065816D /* MachineLIst.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE31AD7D6E60065816D /* MachineLIst.m */; };
 		042A8AE71AD7D70F0065816D /* AddNewMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE61AD7D70F0065816D /* AddNewMachine.m */; };
 		042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE91AD7D72A0065816D /* MachineDetails.m */; };
@@ -75,8 +74,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0415DEB61AD3ECD9001EF623 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		0415DEB71AD3ECD9001EF623 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		042A8AE21AD7D6E60065816D /* MachineLIst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineLIst.h; sourceTree = "<group>"; };
 		042A8AE31AD7D6E60065816D /* MachineLIst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineLIst.m; sourceTree = "<group>"; };
 		042A8AE51AD7D70F0065816D /* AddNewMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewMachine.h; sourceTree = "<group>"; };
@@ -366,8 +363,6 @@
 				04461D151AD3AE0100CBC80A /* Show User List */,
 				04461D141AD3ADEF00CBC80A /* Add New User */,
 				04461D131AD3ADCC00CBC80A /* User Detail Information */,
-				0415DEB61AD3ECD9001EF623 /* User.h */,
-				0415DEB71AD3ECD9001EF623 /* User.m */,
 			);
 			name = "User Information";
 			sourceTree = "<group>";
@@ -677,7 +672,6 @@
 				A1D01A081AE7CAD300DFD00D /* Process_RunCell.m in Sources */,
 				044DC1861ADB822A002578C2 /* ParameterList.m in Sources */,
 				042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */,
-				0415DEB81AD3ECD9001EF623 /* User.m in Sources */,
 				04461CB01AD3913700CBC80A /* ViewController.m in Sources */,
 				044DC1991ADBCD35002578C2 /* TransactionList.m in Sources */,
 				044DC19F1ADBCD92002578C2 /* AddTransaction_Basic.m in Sources */,

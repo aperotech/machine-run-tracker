@@ -9,13 +9,15 @@
 #import "ViewController.h"
 #import "MainMenu.h"
 #import <Parse/Parse.h>
-//#import "User.h"
+
 @interface ViewController ()
 
 @end
 
 @implementation ViewController
-@synthesize userEmailText,passwordText,loginButton;
+
+@synthesize emailTextField, passwordTextField, loginButton, activityIndicator;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     //PFObject *testObject = [PFObject objectWithClassName:@"User"];
@@ -23,6 +25,11 @@
    // [testObject saveInBackground];
   //  NSLog(@"SuccessFull");
     // Do any additional setup after loading the view, typically from a nib.
+    
+    NSString *existingUser = [[NSUserDefaults standardUserDefaults] stringForKey:@"userEmail"];
+    if (![existingUser isEqualToString:@""]) {
+        self.emailTextField.text = existingUser;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,7 +41,7 @@
     if (textField.text.length >= 20 && range.length == 0)
         return NO;
     // Only characters in the NSCharacterSet you choose will insertable.
-        if (textField ==userEmailText) {
+        if (textField ==emailTextField) {
         //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
         NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_@."] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
@@ -46,20 +53,17 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == self.userEmailText) {
-        [self.passwordText becomeFirstResponder];
-    } else if (textField == self.passwordText) {
-        [self.passwordText resignFirstResponder];
+    if (textField == self.emailTextField) {
+        [self.passwordTextField becomeFirstResponder];
+    } else if (textField == self.passwordTextField) {
+        [self.passwordTextField resignFirstResponder];
     }
     return YES;
 }
 
-
-
--(IBAction)Login:(id)sender{
-    [self.activityIndicatorView startAnimating];
-    NSString *email = [userEmailText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *password = [passwordText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+- (IBAction)Login:(id)sender{
+    NSString *email = [self.emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([email length] == 0 || [password length] == 0)
     {
@@ -67,17 +71,47 @@
                                                             message:@"You have to enter a Email and password"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
-        [self.activityIndicatorView stopAnimating];
-    }
-    else
-    {
-        PFQuery *query = [PFUser query];
+    } else {
+        [self.activityIndicator startAnimating];
+        
+        NSUserDefaults *userData = [NSUserDefaults standardUserDefaults];
+        
+        PFQuery *query = [PFQuery queryWithClassName:@"User"];
+        [query whereKey:@"email" equalTo:self.emailTextField.text];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (objects.count > 0) {
+                PFObject *object = [objects objectAtIndex:0];
+                if ([object[@"password"] isEqualToString:password]) {
+                    //Saving username and email in NSUSerDefaults
+                    [userData setObject:self.emailTextField.text forKey:@"userEmail"];
+                    [userData setObject:object[@"userType"] forKey:@"userType"];
+                    [userData setBool:YES forKey:@"userLoggedIn"];
+                    [self.activityIndicator stopAnimating];
+                    [self performSegueWithIdentifier:@"LoginToMainMenuSegue" sender:self];
+                } else {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Login Error"
+                                                                        message:@"Entered password is incorrect"
+                                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [self.activityIndicator stopAnimating];
+                    [alertView show];
+                }
+            } else {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                    message:[error.userInfo objectForKey:@"error"]
+                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [self.activityIndicator stopAnimating];
+                [alertView show];
+            }
+        }];
+        
+        /*PFQuery *query = [PFUser query];
         [query whereKey:@"email" equalTo:email];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
             if (objects.count > 0) {
                 
                 PFObject *object = [objects objectAtIndex:0];
-                NSString *username = [object objectForKey:@"username"];
+                NSString *password = [object objectForKey:@"password"];
                 [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser* user, NSError* error){
                     if (error) {
                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -107,11 +141,11 @@
             }
             
             
-        }];
+        }];*/
     }
    }
 
-- (IBAction)unwindToMainMenu:(UIStoryboardSegue *)unwindSegue
+/*- (IBAction)unwindToMainMenu:(UIStoryboardSegue *)unwindSegue
 {
     
     if ([unwindSegue.identifier isEqualToString:@"unwindToLoginSegue"]) {
@@ -120,6 +154,6 @@
     }
 
     
-}
+}*/
 
 @end

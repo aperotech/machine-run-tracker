@@ -10,11 +10,14 @@
 #import <Parse/Parse.h>
 #import "ParameterListCell.h"
 #import "parameterDetails.h"
+
 @interface ParameterList ()
 
 @end
 
-@implementation ParameterList
+@implementation ParameterList {
+    NSString *userType;
+}
 
 - (id)initWithCoder:(NSCoder *)aCoder
 {
@@ -26,7 +29,7 @@
         self.parseClassName = @"Parameters";
         
         // The key of the PFObject to display in the label of the default cell style
-        self.textKey = @"Name";
+        //self.textKey = @"Name";
         
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
@@ -41,35 +44,19 @@
 }
 
 
-- (void)viewDidLoad
-{[self.activityIndicatorView startAnimating];
+- (void)viewDidLoad {
     [super viewDidLoad];
     
-    PFQuery *query = [PFUser query];
-    [query whereKey:@"username" equalTo:[[PFUser currentUser]username]];
-    [query whereKey:@"usertype" equalTo:@"Admin"];
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
-        if (!object) {
-            NSLog(@"Not An Admin User");
-            self.navigationItem.rightBarButtonItem.enabled=FALSE;
-            self.PermissionFlag = FALSE;
-            // Did not find any UserStats for the current user
-        } else {
-            self.PermissionFlag = TRUE;
-            NSLog(@"The Transaction Currenet User Is %@ ",object );
-            // Found UserStats
-            //  int highScore = [[object objectForKey:@"highScore"] intValue];
-        }
-    }];
+    userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
+    
+    if ([userType isEqualToString:@"Standard"]) {
+        self.navigationItem.rightBarButtonItem.enabled = FALSE;
+    }
+}
 
-    
-    
-    
-   //  self.navigationController.navigationBar.topItem.title=@"";
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshTable:)
-                                                 name:@"refreshTable"
-                                               object:nil];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self refreshTable:nil];
 }
 
 - (void)refreshTable:(NSNotification *) notification
@@ -95,7 +82,6 @@
 {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    [self.activityIndicatorView stopAnimating];
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
     /*    if ([self.objects count] == 0) {
@@ -141,21 +127,31 @@
         return cell; 
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Remove the row from data model
-    if (self.PermissionFlag == FALSE) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission Denied !!"
-                                                            message:@"You don't have permission to delete Parameter. "
-                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    }else if(self.PermissionFlag == TRUE){
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
-    [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        [self refreshTable:nil];
-    }];
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        if ([userType isEqualToString:@"Standard"]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
+                                                                message:@"You do not have delete rights"
+                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+            [tableView setEditing:FALSE];
+        } else {
+            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded == TRUE) {
+                    [self refreshTable:nil];
+                } else {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Parameter could not be deleted"
+                                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                }
+            }];
+        }
     }
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
@@ -166,8 +162,8 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         PFObject *object = [self.objects objectAtIndex:indexPath.row];
         
-        parameterDetails *ParameterDetailsObj = (parameterDetails *)segue.destinationViewController;
-        ParameterDetailsObj.parameterDetailsPF = object;
+        parameterDetails *selectedParameter = segue.destinationViewController;
+        selectedParameter.parameterObject = object;
     }
 }
 

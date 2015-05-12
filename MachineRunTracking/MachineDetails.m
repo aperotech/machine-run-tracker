@@ -22,33 +22,23 @@
     NSDateFormatter *formatter;
 }
 
-@synthesize codeText,nameText,descriptionText,trackingFrequencyText,locationText,capacityText,maintanceFrequencyText,lastMaintanceDate, MachineDetailsPF, scrollView;
-@synthesize activityIndicatorView;
+@synthesize codeText,nameText,descriptionText,trackingFrequencyText,locationText,capacityText,maintanceFrequencyText,lastMaintanceDate, machineObject, scrollView, activityIndicator;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // self.navigationController.navigationBar.topItem.title=@"";
     
-    codeText.delegate=self;
-    nameText.delegate=self;
-    descriptionText.delegate=self;
-    trackingFrequencyText.delegate=self;
-    locationText.delegate=self;
-    capacityText.delegate=self;
-    maintanceFrequencyText.delegate=self;
-    lastMaintanceDate.delegate=self;
-    
-    if (MachineDetailsPF != nil) {
-    codeText.text=[MachineDetailsPF objectForKey:@"Code"];
-    nameText.text=[MachineDetailsPF objectForKey:@"Machine_Name"];
-    descriptionText.text=[MachineDetailsPF objectForKey:@"Description"];
-    trackingFrequencyText.text=[MachineDetailsPF objectForKey:@"Tracking_Frequency"];
-    locationText.text=[MachineDetailsPF objectForKey:@"Location"];
-    capacityText.text=[MachineDetailsPF objectForKey:@"Capacity"];
-    maintanceFrequencyText.text=[MachineDetailsPF objectForKey:@"Maintenance"];
-    lastMaintanceDate.text=[MachineDetailsPF objectForKey:@"LastMaintain_Date"];
+    if (machineObject != nil) {
+    codeText.text=[machineObject objectForKey:@"Code"];
+    nameText.text=[machineObject objectForKey:@"Machine_Name"];
+    descriptionText.text=[machineObject objectForKey:@"Description"];
+    trackingFrequencyText.text=[machineObject objectForKey:@"Tracking_Frequency"];
+    locationText.text=[machineObject objectForKey:@"Location"];
+    capacityText.text=[machineObject objectForKey:@"Capacity"];
+    maintanceFrequencyText.text=[machineObject objectForKey:@"Maintenance"];
+    lastMaintanceDate.text=[machineObject objectForKey:@"LastMaintain_Date"];
     }
     
-    // Do any additional setup after loading the view.
     //Initialize frequency picker
     frequency = [NSArray arrayWithObjects:@"Daily",@"Weekly", @"Monthly", @"Quarterly", @"Semi-Annually", @"Annually", nil];
     
@@ -127,7 +117,7 @@
         return NO;
     }
     
-    if (textField.text.length >= 20 && range.length == 0)
+    if (textField.text.length >= 40 && range.length == 0)
         return NO;
     // Only characters in the NSCharacterSet you choose will insertable.
     if ([textField isEqual:self.nameText]) {
@@ -137,19 +127,16 @@
         return [string isEqualToString:filtered];
     }else if ([textField isEqual:locationText]) {
         //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"] invertedSet];
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
         
         return [string isEqualToString:filtered];
     }else if ([textField isEqual:self.capacityText]){
-        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789."] invertedSet];
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789. "] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
         
         return [string isEqualToString:filtered];
-        
-        
     }
-    
     return YES;
 }
 
@@ -164,7 +151,6 @@
 }
 
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    
     return [frequency objectAtIndex:row];
 }
 
@@ -184,13 +170,17 @@
 //Method to call when Done is clicked on Age picker drop down
 - (void)frequencyPickerDoneClicked {
     if (self.activeField == self.trackingFrequencyText) {
-        if ([self.trackingFrequencyText.text isEqualToString:@""]) {
+        if ([self.trackingFrequencyText.text isEqualToString:[machineObject objectForKey:@"Tracking_Frequency"]] && freq==NULL) {
             self.trackingFrequencyText.text = [frequency objectAtIndex:0];
+        } else {
+            self.trackingFrequencyText.text = freq;
         }
         [self.capacityText becomeFirstResponder];
     }
     if (self.activeField == self.maintanceFrequencyText) {
-        if ([self.maintanceFrequencyText.text isEqualToString:@""]) {
+        if ([self.maintanceFrequencyText.text isEqualToString:[machineObject objectForKey:@"Maintenance"]] && freq == NULL) {
+            self.maintanceFrequencyText.text = [frequency objectAtIndex:0];
+        } else {
             self.maintanceFrequencyText.text = freq;
         }
         [self.lastMaintanceDate becomeFirstResponder];
@@ -206,7 +196,7 @@
 }
 
 - (IBAction)UpdateButton:(id)sender {
-    [activityIndicatorView startAnimating];
+    [activityIndicator startAnimating];
     NSString *code = [codeText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *name = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *description = [descriptionText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -226,7 +216,7 @@
         
         
             
-            if (MachineDetailsPF != nil) {
+            if (machineObject != nil) {
                 [self updateNote];
             }
             else {
@@ -257,7 +247,7 @@
     [NewMachine saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
              [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-            [activityIndicatorView stopAnimating];
+            [activityIndicator stopAnimating];
             [self.navigationController popViewControllerAnimated:YES];
         } else {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -275,7 +265,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Machine"];
     
     // Retrieve the object by id
-    [query getObjectInBackgroundWithId:[MachineDetailsPF objectId] block:^(PFObject *UpdateMachine, NSError *error) {
+    [query getObjectInBackgroundWithId:[machineObject objectId] block:^(PFObject *UpdateMachine, NSError *error) {
         
         if (error) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -296,14 +286,14 @@
             [UpdateMachine saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
                      [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                    [activityIndicatorView stopAnimating];
+                    [activityIndicator stopAnimating];
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                         message:[error.userInfo objectForKey:@"error"]
                                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                     [alertView show];
-                    [activityIndicatorView stopAnimating];
+                    [activityIndicator stopAnimating];
                 }
             }];
         }

@@ -10,11 +10,14 @@
 #import "MachineListCell.h"
 #import "MachineDetails.h"
 #import <Parse/Parse.h>
+
 @interface MachineLIst ()
 
 @end
 
-@implementation MachineLIst
+@implementation MachineLIst {
+    NSString *userType;
+}
 
 - (id)initWithCoder:(NSCoder *)aCoder
 {
@@ -26,7 +29,7 @@
         self.parseClassName = @"Machine";
         
         // The key of the PFObject to display in the label of the default cell style
-        self.textKey = @"Code";
+        //self.textKey = @"Code";
         
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
@@ -44,35 +47,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //[self.activityIndicatorView startAnimating];
-   // self.navigationController.navigationBar.topItem.title=@"";
-   /* [[PFUser currentUser] fetchInBackgroundWithBlock:nil];
-    PFUser *currentUser = [PFUser currentUser];
-    PFQuery *query = [PFQuery queryWithClassName:@"_User"];
-    [query whereKey:@"username" equalTo:currentUser];
-    [query whereKey:@"usertype" hasPrefix:@"Standard"];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        
-        if (objects!=NULL) {
-                     //The find succeeded.
-                      NSLog(@"Successfully retrieved %ld locations.", objects.count);
-                    //Do something with the found objects
-            
-            NSString *theusers = [objects valueForKey:@"usertype"];
-            
-                        NSLog(@"The Users %@", theusers);
-            NSLog(@"The Objects %@", objects);
-                    for (PFObject *object in objects) {
-                          NSLog(@"The Type %@", object);
-                  }
-                 } else {
-                     self.navigationItem.rightBarButtonItem.enabled=FALSE;
-
-                       // Log details of the failure
-                       NSLog(@"Error: %@ %@", error, [error userInfo]);
-                   }
-    }];*/
-    PFQuery *query = [PFUser query];
+    
+    userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
+    
+    if ([userType isEqualToString:@"Standard"]) {
+        self.navigationItem.rightBarButtonItem.enabled = FALSE;
+    }
+    
+    /*PFQuery *query = [PFUser query];
     [query whereKey:@"username" equalTo:[[PFUser currentUser]username]];
     [query whereKey:@"usertype" equalTo:@"Admin"];
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
@@ -93,18 +75,22 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshTable:)
                                                  name:@"refreshTable"
-                                               object:nil];
+                                               object:nil];*/
 }
 
-- (void)refreshTable:(NSNotification *) notification
-{
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self refreshTable:nil];
+}
+
+- (void)refreshTable:(NSNotification *) notification {
     // Reload the recipes
     [self loadObjects];
 }
 
 
-- (void)viewDidUnload
-{
+- (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
@@ -120,7 +106,7 @@
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
      [query orderByAscending:@"Code"];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    [self.activityIndicatorView stopAnimating];
+    //[self.activityIndicatorView stopAnimating];
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
     /*    if ([self.objects count] == 0) {
@@ -168,11 +154,32 @@
         return cell;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Remove the row from data model
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    PFObject *object = [self.objects objectAtIndex:indexPath.row];
     
-    if (self.PermissionFlag == FALSE) {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        if ([userType isEqualToString:@"Standard"]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
+                                                                message:@"You do not have delete rights"
+                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+            [tableView setEditing:FALSE];
+        } else {
+            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded == TRUE) {
+                    [self refreshTable:nil];
+                } else {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Machine could not be deleted"
+                                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                }
+            }];
+        }
+    }
+}
+
+  /*if (self.PermissionFlag == FALSE) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission Denied !!"
                                                             message:@"You don't have permission to delete Machine. "
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -182,8 +189,8 @@
     [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         [self refreshTable:nil];
     }];
-    }
-}
+    }*/
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
@@ -194,8 +201,8 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         PFObject *object = [self.objects objectAtIndex:indexPath.row];
         
-        MachineDetails *MachinDetailsObj = (MachineDetails *)segue.destinationViewController;
-        MachinDetailsObj.MachineDetailsPF = object;
+        MachineDetails *selectedMachine = segue.destinationViewController;
+        selectedMachine.machineObject = object;
     }
 }
 

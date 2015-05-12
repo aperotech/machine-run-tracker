@@ -95,6 +95,7 @@
 {
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
+
 -(NSUInteger)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskLandscapeRight;
 }
@@ -146,11 +147,6 @@
             
         }
     }
-    
-
-    
-    
-    
     return cell;
 }
 

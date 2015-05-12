@@ -9,13 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
-@interface UserList :PFQueryTableViewController<UIActivityItemSource>
 
-@property BOOL *PermissionFlag;
-@property (nonatomic,strong)NSMutableArray *HeaderArray;
-@property (nonatomic, strong) PFUser * CurrentUser;
-@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
-
+@interface UserList :PFQueryTableViewController
 
 @end
 

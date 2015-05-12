@@ -18,18 +18,20 @@
     UIPickerView *frequencyPicker;
     UIDatePicker *datePicker;
     UIToolbar *frequencyPickerToolbar, *datePickerToolbar;
-    NSString *date, *freq;
+    NSString *date, *freq, *LastInsertedMachineNo, *numbers, *MachineNo;
+    int value;
     NSDateFormatter *formatter;
 }
 
 
-@synthesize codeText,nameText,descriptionText,trackingFrequencyText,locationText,capacityText,maintanceFrequencyText,lastMaintanceDate, scrollView;
-@synthesize activityIndicatorView;
+@synthesize codeText,nameText,descriptionText,trackingFrequencyText,locationText,capacityText,maintanceFrequencyText,lastMaintanceDate, scrollView, activityIndicator;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // self.navigationController.navigationBar.topItem.title=@"";
-    [activityIndicatorView startAnimating];
     [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, 800.0)];
+    
+    self.codeText.enabled = FALSE;
     
     // Do any additional setup after loading the view.
     
@@ -42,24 +44,25 @@
     [query orderByDescending:@"Code"];
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        [self.activityIndicator startAnimating];
         
         if (!object) {
-            // Did not find any UserStats for the current user
+            value = 1;
+            MachineNo=[NSString stringWithFormat:@"M%03i",value];
+            [self.activityIndicator stopAnimating];
+            self.codeText.text=MachineNo;
         } else {
                        
-            NSString *LastInsertedMachineNo = [object objectForKey:@"Code"];
-            NSString *numbers = [LastInsertedMachineNo stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]];
-            int value = [numbers intValue];
+            LastInsertedMachineNo = [object objectForKey:@"Code"];
+            numbers = [LastInsertedMachineNo stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]];
+            value = [numbers intValue];
             
-            NSString *MachineNo=[NSString stringWithFormat:@"M%03i",value+1];
+            MachineNo=[NSString stringWithFormat:@"M%03i",value+1];
+            [self.activityIndicator stopAnimating];
             self.codeText.text=MachineNo;
-            self.codeText.enabled=FALSE;
-            [activityIndicatorView stopAnimating];
+            //[activityIndicator stopAnimating];
         }
-        
-        
     }];
-
     
     //Initialize frequency picker
     frequency = [NSArray arrayWithObjects:@"Daily",@"Weekly", @"Monthly", @"Quarterly", @"Semi-Annually", @"Annually", nil];
@@ -197,7 +200,7 @@
         return NO;
     }
     
-    if (textField.text.length >= 20 && range.length == 0)
+    if (textField.text.length >= 40 && range.length == 0)
         return NO;
     // Only characters in the NSCharacterSet you choose will insertable.
     if ([textField isEqual:self.nameText]) {
@@ -207,12 +210,12 @@
         return [string isEqualToString:filtered];
     }else if ([textField isEqual:locationText]) {
         //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"] invertedSet];
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
         
         return [string isEqualToString:filtered];
     }else if ([textField isEqual:self.capacityText]){
-        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789."] invertedSet];
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789. "] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
         
         return [string isEqualToString:filtered];
@@ -277,7 +280,7 @@
 
 
 - (IBAction)save:(id)sender {
-    [activityIndicatorView startAnimating];
+    [activityIndicator startAnimating];
     // Create PFObject with recipe information
     PFObject *machineObj = [PFObject objectWithClassName:@"Machine"];
     [machineObj setObject:codeText.text forKey:@"Code"];
@@ -301,7 +304,7 @@
             
             // Notify table view to reload the Machine from Parse cloud
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-            [activityIndicatorView stopAnimating];
+            [activityIndicator stopAnimating];
             // Dismiss the controller
             [self dismissViewControllerAnimated:YES completion:nil];
             //[self.navigationController popViewControllerAnimated:YES];
@@ -314,9 +317,6 @@
         
     }];
 }
-
-
-
 
 - (IBAction)cancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];

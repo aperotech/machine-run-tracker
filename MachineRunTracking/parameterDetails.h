@@ -8,15 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface parameterDetails : UIViewController<UIScrollViewDelegate,UITextFieldDelegate,UIActivityItemSource>
-@property(strong,nonatomic)PFObject *parameterDetailsPF;
-@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
+
+@interface parameterDetails : UIViewController<UIScrollViewDelegate,UITextFieldDelegate>
+
 - (IBAction)UpdateButton:(id)sender;
-//- (IBAction)cancel:(id)sender;
 
 @property (strong,nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *nameText;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionText;
 @property (weak, nonatomic) IBOutlet UITextField *typeText;
 @property (weak, nonatomic) IBOutlet UITextField *unitsText;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+@property(strong,nonatomic)PFObject *parameterObject;
+
 @end

@@ -14,23 +14,17 @@
 
 @implementation parameterDetails
 
-@synthesize nameText,descriptionText,typeText,unitsText, parameterDetailsPF;
+@synthesize nameText,descriptionText,typeText,unitsText, parameterObject, activityIndicator;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //self.nameText.editing=TRUE;
-   //  self.navigationController.navigationBar.topItem.title=@"";
     
-    if (parameterDetailsPF != nil) {
-        nameText.text=[parameterDetailsPF objectForKey:@"Name"];
-       
-        descriptionText.text=[parameterDetailsPF objectForKey:@"Description"];
-        typeText.text=[parameterDetailsPF objectForKey:@"Type"];
-        unitsText.text=[parameterDetailsPF objectForKey:@"Units"];
-        
+    if (parameterObject != nil) {
+        nameText.text=[parameterObject objectForKey:@"Name"];
+        descriptionText.text=[parameterObject objectForKey:@"Description"];
+        typeText.text=[parameterObject objectForKey:@"Type"];
+        unitsText.text=[parameterObject objectForKey:@"Units"];
     }
-    
-    // Do any additional setup after loading the view.
 }
 
 #pragma mark - Textfield delegate
@@ -41,7 +35,7 @@
         return NO;
     }
     
-    if (textField.text.length >= 20 && range.length == 0)
+    if (textField.text.length >= 40 && range.length == 0)
         return NO;
     // Only characters in the NSCharacterSet you choose will insertable.
      if ([textField isEqual:unitsText]) {
@@ -53,10 +47,6 @@
     }
     return YES;
 }
-
-
-
-
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -71,90 +61,53 @@
 }
 
 - (IBAction)UpdateButton:(id)sender {
-    [self.activityIndicatorView startAnimating];
-    NSString *name = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
     NSString *description = [descriptionText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *type = [typeText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *Units = [unitsText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     
-    if ([name length] == 0 ||[description length] == 0 ||[type length] == 0 ||[Units length] == 0) {
+    if ([description length] == 0 ||[Units length] == 0) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                             message:@"You must enter details"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     }
     else {
-        
-        
-        
-        if (parameterDetailsPF != nil) {
+        if (parameterObject != nil) {
             [self updateNote];
         }
-        else {
-            [self saveNote];
-        }
     }
-    
-}
-
-- (void)saveNote {
-    PFObject *NewParameter = [PFObject objectWithClassName:@"Parameters"];
-    
-    [NewParameter setObject:nameText.text forKey:@"Name"];
-    [NewParameter setObject:descriptionText.text forKey:@"Description"];
-    [NewParameter setObject:typeText.text forKey:@"Type"];
-    [NewParameter setObject:unitsText.text forKey:@"Units"];
-    
-    //  NewMachine[@"Machine"] = [PFUser currentUser];
-    
-    [NewParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded) {
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-            [self.navigationController popViewControllerAnimated:YES];
-            [self.activityIndicatorView stopAnimating];
-        } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-                                                                message:[error.userInfo objectForKey:@"error"]
-                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
-            [self.activityIndicatorView stopAnimating];
-        }
-    }];
-    
 }
 
 - (void)updateNote {
+    [self.activityIndicator startAnimating];
     PFQuery *query = [PFQuery queryWithClassName:@"Parameters"];
     
     // Retrieve the object by id
-    [query getObjectInBackgroundWithId:[parameterDetailsPF objectId] block:^(PFObject *UpdateParameter, NSError *error) {
+    [query getObjectInBackgroundWithId:[parameterObject objectId] block:^(PFObject *UpdateParameter, NSError *error) {
         
         if (error) {
-            [self.activityIndicatorView stopAnimating];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                 message:[error.userInfo objectForKey:@"error"]
                                                                delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [self.activityIndicator stopAnimating];
             [alertView show];
         }
         else {
-            
             [UpdateParameter setObject:nameText.text forKey:@"Name"];
             [UpdateParameter setObject:descriptionText.text forKey:@"Description"];
             [UpdateParameter setObject:typeText.text forKey:@"Type"];
             [UpdateParameter setObject:unitsText.text forKey:@"Units"];
             
-            
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
                      [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                    [self.activityIndicatorView stopAnimating];
+                    [self.activityIndicator stopAnimating];
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                         message:[error.userInfo objectForKey:@"error"]
                                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [self.activityIndicator stopAnimating];
                     [alertView show];
                 }
             }];

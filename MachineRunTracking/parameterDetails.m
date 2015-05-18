@@ -12,7 +12,9 @@
 
 @end
 
-@implementation parameterDetails
+@implementation parameterDetails {
+    NSString *userType;
+}
 
 @synthesize nameText,descriptionText,typeText,unitsText, parameterObject, activityIndicator;
 
@@ -24,6 +26,14 @@
         descriptionText.text=[parameterObject objectForKey:@"Description"];
         typeText.text=[parameterObject objectForKey:@"Type"];
         unitsText.text=[parameterObject objectForKey:@"Units"];
+    }
+    
+    userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
+    
+    if ([userType isEqualToString:@"Standard"]) {
+        [self.descriptionText setUserInteractionEnabled:FALSE];
+        [self.unitsText setUserInteractionEnabled:FALSE];
+        [self.navigationItem.rightBarButtonItem setEnabled:FALSE];
     }
 }
 

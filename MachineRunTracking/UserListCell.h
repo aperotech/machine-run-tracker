@@ -10,9 +10,8 @@
 #import <Parse/Parse.h>
 
 @interface UserListCell : UITableViewCell
-
-@property(strong,nonatomic) IBOutlet UILabel *userNameLabel;
-@property (strong,nonatomic)IBOutlet UILabel *userTypeLabel;
-@property (strong,nonatomic)IBOutlet UILabel *userEmailLabel;
+@property (weak, nonatomic) IBOutlet UILabel *userEmailLabel;
+@property (weak, nonatomic) IBOutlet UILabel *userTypeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 
 @end

@@ -23,6 +23,7 @@
 
 @implementation TransactionList {
     NSString *userType;
+    int flag;
 }
 
 @synthesize activityIndicatorView;
@@ -36,7 +37,7 @@
         self.parseClassName = @"Transaction";
         
         // The key of the PFObject to display in the label of the default cell style
-        self.textKey = @"Run_No";
+        //self.textKey = @"Run_No";
         
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
@@ -53,10 +54,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    flag = 0;
+    
     userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
     if ([userType isEqualToString:@"Standard"]) {
         self.navigationItem.rightBarButtonItem.enabled = FALSE;
+        flag = 1;
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self refreshTable:nil];
+    
+    if (self.objects.count == 0){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Transaction List Empty" message:@"You can create a new transaction by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        alert.alertViewStyle = UIAlertViewStyleDefault;
+        
+        [alert show];
     }
 }
 
@@ -84,7 +101,6 @@
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     [query orderByAscending:@"Run_No"];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    [activityIndicatorView stopAnimating];
   //  query.limit=5;
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
@@ -108,9 +124,14 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *CellIdentifier1 = @"TransactionListHeaderCellIdentifier";
     TransactionListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-    self.tableView.separatorColor = [UIColor lightGrayColor];
+    
+    UIView *cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+    cellView.backgroundColor = [UIColor lightGrayColor];
+    [cellView addSubview:cell.contentView];
+    return cellView;
+    /*self.tableView.separatorColor = [UIColor lightGrayColor];
     cell.backgroundColor=[UIColor grayColor];
-    return cell;
+    return cell;*/
 }
 
 // Override to customize the look of a cell representing an object. The default is to display
@@ -132,28 +153,30 @@
         return cell;
 }
 
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (flag == 1) {
+        return NO;
+    }
+    else
+        return YES;
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        if ([userType isEqualToString:@"Standard"]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
-                                                                message:@"You do not have delete rights"
-                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
-            [tableView setEditing:FALSE];
-        } else {
-            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded == TRUE) {
-                    [self refreshTable:nil];
-                } else {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+        [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded == TRUE) {
+                [self refreshTable:nil];
+            } else {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Transaction could not be deleted"
                                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                }
-            }];
-        }
+                [tableView setEditing:FALSE animated:YES];
+                [alertView show];
+            }
+        }];
     }
 }
 

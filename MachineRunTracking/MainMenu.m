@@ -11,27 +11,31 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UserDetails.h"
 #import "UserList.h"
-#import "ViewController.h"
+#import "LoginViewController.h"
 
 @interface MainMenu ()
 
 @end
 
 @implementation MainMenu {
-    NSString *userType, *userEmail;
+    NSString *userType, *userEmail, *userName;
 }
 
-@synthesize UserButton, ParametersButton, TransactionsButton, MachineButton, activityIndicator;
+@synthesize UserButton, ParametersButton, TransactionsButton, MachineButton, activityIndicator, welcomeLabel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     userEmail = [[NSUserDefaults standardUserDefaults] objectForKey:@"userEmail"];
+    userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+    
+    self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome %@", userName];
     
     if ([userType isEqualToString:@"Standard"]) {
         [UserButton setTitle:@"My Details" forState:UIControlStateNormal];
     }
+    
     self.navigationItem.rightBarButtonItem.enabled=YES;
     UserButton.layer.borderWidth=1.0f;
     UserButton.layer.borderColor=[[UIColor blackColor]CGColor];
@@ -59,7 +63,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main"
                                                          bundle:nil];
-    ViewController *add = [storyboard instantiateViewControllerWithIdentifier:@"UserLoginView"];
+    LoginViewController *add = [storyboard instantiateViewControllerWithIdentifier:@"UserLoginView"];
     
     [self presentViewController:add
                        animated:YES
@@ -96,25 +100,6 @@
         }];
     }
 }
-    /*PFQuery *query = [PFUser query];
-    [query whereKey:@"username" equalTo:[[PFUser currentUser]username]];
-    [query whereKey:@"usertype" equalTo:@"Standard"];
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
-        if (!object) {
-            
-            self.PermissionFlag = TRUE;
-            //NSLog(@"The Transaction Currenet User Is %@ ",object );
-            [self performSegueWithIdentifier:@"MainMenuToUserListSegue" sender:self];
-            // Did not find any UserStats for the current user
-        } else {
-           
-            self.stdUserObject=object;
-            self.navigationItem.rightBarButtonItem.enabled=FALSE;
-            self.PermissionFlag = FALSE;
-            [self performSegueWithIdentifier:@"StandardUserMainMenuToUserDetailsSegue" sender:self];
-         
-        }
-    }];*/
 
  #pragma mark - Navigation
  

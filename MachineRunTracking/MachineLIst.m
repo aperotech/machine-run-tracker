@@ -17,6 +17,7 @@
 
 @implementation MachineLIst {
     NSString *userType;
+    int flag;
 }
 
 - (id)initWithCoder:(NSCoder *)aCoder
@@ -44,44 +45,31 @@
 }
 
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
+    
+    flag = 0;
     
     userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
     if ([userType isEqualToString:@"Standard"]) {
         self.navigationItem.rightBarButtonItem.enabled = FALSE;
+        flag = 1;
     }
-    
-    /*PFQuery *query = [PFUser query];
-    [query whereKey:@"username" equalTo:[[PFUser currentUser]username]];
-    [query whereKey:@"usertype" equalTo:@"Admin"];
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
-        if (!object) {
-            NSLog(@"Not An Admin User");
-            self.navigationItem.rightBarButtonItem.enabled=FALSE;
-            self.PermissionFlag = FALSE;
-            // Did not find any UserStats for the current user
-        } else {
-            self.PermissionFlag = TRUE;
-            NSLog(@"The Transaction Currenet User Is %@ ",object );
-            // Found UserStats
-            //  int highScore = [[object objectForKey:@"highScore"] intValue];
-        }
-    }];
-
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshTable:)
-                                                 name:@"refreshTable"
-                                               object:nil];*/
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [self refreshTable:nil];
+    
+    if (self.objects.count == 0){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Machine List Empty" message:@"You can create a new machine by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        alert.alertViewStyle = UIAlertViewStyleDefault;
+        
+        [alert show];
+    }
 }
 
 - (void)refreshTable:(NSNotification *) notification {
@@ -129,9 +117,11 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *CellIdentifier1 = @"MachineListHeaderCellIdentifier";
     MachineListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-    self.tableView.separatorColor = [UIColor lightGrayColor];
-    cell.backgroundColor=[UIColor grayColor];
-    return cell;
+    
+    UIView *cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+    cellView.backgroundColor = [UIColor lightGrayColor];
+    [cellView addSubview:cell.contentView];
+    return cellView;
 }
 
 
@@ -154,28 +144,43 @@
         return cell;
 }
 
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (flag == 1) {
+        return NO;
+    }
+    else
+        return YES;
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        if ([userType isEqualToString:@"Standard"]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
-                                                                message:@"You do not have delete rights"
-                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
-            [tableView setEditing:FALSE];
-        } else {
-            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded == TRUE) {
-                    [self refreshTable:nil];
-                } else {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Machine could not be deleted"
-                                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                }
-            }];
-        }
+        //Check if machine has been used in transaction
+        PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+        [query whereKey:@"Machine_Name" equalTo:object[@"Machine_Name"]];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (objects.count > 0) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
+                                                                    message:@"Machine is being used in a Transaction"
+                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [tableView setEditing:FALSE animated:YES];
+                [alertView show];
+            } else {
+                [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    if (succeeded == TRUE) {
+                        [self refreshTable:nil];
+                    } else {
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                            message:@"Machine could not be deleted"
+                                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        [tableView setEditing:FALSE animated:YES];
+                        [alertView show];
+                    }
+                }];
+            }
+        }];
     }
 }
 

@@ -26,20 +26,11 @@
     
     isLoggedIn = [[NSUserDefaults standardUserDefaults] boolForKey:@"userLoggedIn"];
     
-    //PFUser *currentUser = [PFUser currentUser];
-    //[self loadObjects];
-   
-    /*if (currentUser) {
-        NSLog(@"Current user: %@", currentUser.username);
-        //[self performSegueWithIdentifier:@"NavigationToMainMenuSegue" sender:self];
-    } else {
-        isLoggedIn = 1;
-      //  [self performSegueWithIdentifier:@"UserLoginView" sender:self];
-    }*/
-    
     NSString *storyboardId = isLoggedIn ? @"NevigateMainMenu":@"UserLoginView";
     self.window.rootViewController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:storyboardId];
+    
      //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
     return YES;
 }
 

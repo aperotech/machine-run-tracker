@@ -24,7 +24,6 @@
 @property(nonatomic,strong)NSMutableArray *GetValuesFromRunTextFieldArray;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *RunProcessArray;
-@property (strong, nonatomic) IBOutlet UITextField * valueTextField;
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
 @end

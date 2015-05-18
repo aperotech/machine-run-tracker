@@ -16,9 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *TransactionsButton;
 @property (weak, nonatomic) IBOutlet UIButton *ParametersButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-
-
-@property BOOL *PermissionFlag;
+@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 @property (nonatomic, strong) PFObject *stdUserObject;
 
 -(IBAction)UserButtonClick:(id)sender;

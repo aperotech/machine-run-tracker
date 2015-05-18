@@ -130,9 +130,9 @@
         if (indexPath.row==i) {
             
             cell.parameterLabel.text=[[self.runArrayPost objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];
-            NSLog(@"parameter label ids %@",cell.parameterLabel.text);
+            //NSLog(@"parameter label ids %@",cell.parameterLabel.text);
             cell.ParameterNameLabel.text=[self.RunProcessArray objectAtIndex:i];
-            NSLog(@"parameter name label ids %@",cell.ParameterNameLabel.text);
+            //NSLog(@"parameter name label ids %@",cell.ParameterNameLabel.text);
         }
         
     }

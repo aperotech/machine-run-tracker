@@ -18,7 +18,7 @@
     UIPickerView *frequencyPicker;
     UIDatePicker *datePicker;
     UIToolbar *frequencyPickerToolbar, *datePickerToolbar;
-    NSString *date, *freq;
+    NSString *date, *freq, *userType;
     NSDateFormatter *formatter;
 }
 
@@ -37,6 +37,18 @@
     capacityText.text=[machineObject objectForKey:@"Capacity"];
     maintanceFrequencyText.text=[machineObject objectForKey:@"Maintenance"];
     lastMaintanceDate.text=[machineObject objectForKey:@"LastMaintain_Date"];
+    }
+    
+    userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
+    
+    if ([userType isEqualToString:@"Standard"]) {
+        [self.descriptionText setUserInteractionEnabled:FALSE];
+        [self.trackingFrequencyText setUserInteractionEnabled:FALSE];
+        [self.capacityText setUserInteractionEnabled:FALSE];
+        [self.locationText setUserInteractionEnabled:FALSE];
+        [self.maintanceFrequencyText setUserInteractionEnabled:FALSE];
+        [self.lastMaintanceDate setUserInteractionEnabled:FALSE];
+        [self.navigationItem.rightBarButtonItem setEnabled:FALSE];
     }
     
     //Initialize frequency picker
@@ -76,6 +88,7 @@
     datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(16, (self.lastMaintanceDate.frame.origin.y + 10.0), 288, 162)];
     
     [datePicker setDatePickerMode:UIDatePickerModeDate];
+    [datePicker setMaximumDate:[NSDate date]];
     [datePicker setBackgroundColor:[UIColor lightTextColor]];
     [self.lastMaintanceDate setInputView:datePicker];
     

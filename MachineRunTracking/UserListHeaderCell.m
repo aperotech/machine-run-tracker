@@ -1,16 +1,14 @@
 //
-//  UserListCell.m
+//  UserListHeaderCell.m
 //  MachineRunTracking
 //
-//  Created by Akshay Shrirao on 07/04/15.
-//  Copyright (c) 2015 AperoTechnologies. All rights reserved.
+//  Created by Malay Parekh on 13/05/15.
+//  Copyright (c) 2015 Apero Technologies. All rights reserved.
 //
 
-#import "UserListCell.h"
+#import "UserListHeaderCell.h"
 
-@implementation UserListCell
-
-@synthesize userEmailLabel, userNameLabel, userTypeLabel;
+@implementation UserListHeaderCell
 
 - (void)awakeFromNib {
     // Initialization code
@@ -18,7 +16,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-    
+
     // Configure the view for the selected state
 }
 

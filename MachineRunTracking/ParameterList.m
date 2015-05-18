@@ -17,6 +17,7 @@
 
 @implementation ParameterList {
     NSString *userType;
+    int flag;
 }
 
 - (id)initWithCoder:(NSCoder *)aCoder
@@ -46,17 +47,27 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    flag = 0;
     
     userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
     if ([userType isEqualToString:@"Standard"]) {
         self.navigationItem.rightBarButtonItem.enabled = FALSE;
+        flag = 1;
     }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self refreshTable:nil];
+    
+    if (self.objects.count == 0){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Parameter List Empty" message:@"You can create a new parameter by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        alert.alertViewStyle = UIAlertViewStyleDefault;
+        
+        [alert show];
+    }
 }
 
 - (void)refreshTable:(NSNotification *) notification
@@ -104,9 +115,15 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *CellIdentifier1 = @"ParameterListHeaderCellIdentifier";
     ParameterListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-    self.tableView.separatorColor = [UIColor lightGrayColor];
-    cell.backgroundColor=[UIColor grayColor];
-    return cell;
+    
+    UIView *cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+    cellView.backgroundColor = [UIColor lightGrayColor];
+    [cellView addSubview:cell.contentView];
+    return cellView;
+    
+    //self.tableView.separatorColor = [UIColor lightGrayColor];
+    //cell.backgroundColor=[UIColor grayColor];
+    //return cell;
 }
 
 // Override to customize the look of a cell representing an object. The default is to display
@@ -127,17 +144,28 @@
         return cell; 
 }
 
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (flag == 1) {
+        return NO;
+    }
+    else
+        return YES;
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        if ([userType isEqualToString:@"Standard"]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
-                                                                message:@"You do not have delete rights"
-                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
-            [tableView setEditing:FALSE];
-        } else {
+        PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (objects.count > 0) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
+                                                                    message:@"Parameter is being used in a Transaction"
+                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [tableView setEditing:FALSE animated:YES];
+                [alertView show];
+            } else {
             [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded == TRUE) {
                     [self refreshTable:nil];
@@ -145,10 +173,12 @@
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Parameter could not be deleted"
                                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [tableView setEditing:FALSE animated:YES];
                     [alertView show];
                 }
             }];
         }
+        }];
     }
 }
 

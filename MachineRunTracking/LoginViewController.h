@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController <UITextFieldDelegate>
+@interface LoginViewController : UIViewController <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property(nonatomic,weak)IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (strong,nonatomic) UITextField *activeField;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 -(IBAction)Login:(id)sender;
 

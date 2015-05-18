@@ -6,17 +6,17 @@
 //  Copyright (c) 2015 AperoTechnologies. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "LoginViewController.h"
 #import "MainMenu.h"
 #import <Parse/Parse.h>
 
-@interface ViewController ()
+@interface LoginViewController ()
 
 @end
 
-@implementation ViewController
+@implementation LoginViewController
 
-@synthesize emailTextField, passwordTextField, loginButton, activityIndicator;
+@synthesize emailTextField, passwordTextField, loginButton, activityIndicator, scrollView, activeField;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -35,6 +35,18 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self registerForKeyboardNotifications];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [self deregisterFromKeyboardNotifications];
+    
+    [super viewDidDisappear:animated];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
@@ -61,6 +73,62 @@
     return YES;
 }
 
+//methods to check when a field text is edited, accordingly, adjust keyboard
+// Implementing picker for age text field
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.activeField = textField;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.activeField = textField;
+}
+
+//Methods to take care of UIScrollView when keyboard appears
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)deregisterFromKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidHideNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+    
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    // Your application might not need or want this behavior.
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {
+        CGPoint scrollPoint = CGPointMake(0.0, (self.activeField.frame.origin.y-kbSize.height));
+        [self.scrollView setContentOffset:scrollPoint animated:YES];
+    }
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+}
+
+
 - (IBAction)Login:(id)sender{
     NSString *email = [self.emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -83,7 +151,8 @@
             if (objects.count > 0) {
                 PFObject *object = [objects objectAtIndex:0];
                 if ([object[@"password"] isEqualToString:password]) {
-                    //Saving username and email in NSUSerDefaults
+                    //Saving name, email & login status in NSUSerDefaults
+                    [userData setObject:object[@"name"] forKey:@"userName"];
                     [userData setObject:self.emailTextField.text forKey:@"userEmail"];
                     [userData setObject:object[@"userType"] forKey:@"userType"];
                     [userData setBool:YES forKey:@"userLoggedIn"];
@@ -104,46 +173,8 @@
                 [alertView show];
             }
         }];
-        
-        /*PFQuery *query = [PFUser query];
-        [query whereKey:@"email" equalTo:email];
-        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
-            if (objects.count > 0) {
-                
-                PFObject *object = [objects objectAtIndex:0];
-                NSString *password = [object objectForKey:@"password"];
-                [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser* user, NSError* error){
-                    if (error) {
-                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-                                                                            message:[error.userInfo objectForKey:@"error"]
-                                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                        [alertView show];
-                    }
-                    else {
-                        [self.activityIndicatorView stopAnimating];
-                        [self performSegueWithIdentifier:@"LoginToMainMenuSegue" sender:self];
-                    }
-                }];
-            }else{
-                [PFUser logInWithUsernameInBackground: email password:password block:^(PFUser* user, NSError* error){
-                    if (error) {
-                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-                                                                            message:[error.userInfo objectForKey:@"error"]
-                                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                        [alertView show];
-                    }
-                    else {
-                        [self.activityIndicatorView stopAnimating];
-                        [self performSegueWithIdentifier:@"LoginToMainMenuSegue" sender:self];
-                    }
-                }];
-                
-            }
-            
-            
-        }];*/
     }
-   }
+}
 
 /*- (IBAction)unwindToMainMenu:(UIStoryboardSegue *)unwindSegue
 {

@@ -30,7 +30,7 @@
     typeUser = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
     if ([typeUser isEqualToString:@"Standard"]) {
-        [self.userTypeField setEnabled:FALSE];
+        [self.userTypeField setUserInteractionEnabled:FALSE];
     }
     
     // Check to see if note is not nil, which let's us know that the note

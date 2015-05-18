@@ -101,6 +101,7 @@
     datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(16, (self.lastMaintanceDate.frame.origin.y + 10.0), 288, 162)];
     
     [datePicker setDatePickerMode:UIDatePickerModeDate];
+    [datePicker setMaximumDate:[NSDate date]];
     [datePicker setBackgroundColor:[UIColor lightTextColor]];
     [self.lastMaintanceDate setInputView:datePicker];
     

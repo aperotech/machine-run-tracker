@@ -73,7 +73,13 @@
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
 }
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 #pragma mark - Picker delegate
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
@@ -110,7 +116,7 @@
         return [string isEqualToString:filtered];
     }else if ([textField isEqual:unitsText]) {
         //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"] invertedSet];
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
         
         return [string isEqualToString:filtered];
@@ -143,7 +149,9 @@
     [self.activityIndicator startAnimating];
     // Create PFObject with recipe information
     PFObject *parameterObj = [PFObject objectWithClassName:@"Parameters"];
-    [parameterObj setObject:nameText.text forKey:@"Name"];
+    NSString* string1 = nameText.text;
+    NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+    [parameterObj setObject:string2 forKey:@"Name"];
     [parameterObj setObject:descriptionText.text forKey:@"Description"];
     [parameterObj setObject:typeText.text forKey:@"Type"];
     [parameterObj setObject:unitsText.text forKey:@"Units"];

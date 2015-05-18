@@ -15,9 +15,7 @@
 @end
 
 @implementation DetailsTransaction_Run
-
 @synthesize DetialsTransaction_RunPF,valueTextField;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -148,7 +146,11 @@
             
         }
     }
+    
 
+    
+    
+    
     return cell;
 }
 

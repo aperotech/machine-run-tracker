@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0415DEB81AD3ECD9001EF623 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 0415DEB71AD3ECD9001EF623 /* User.m */; };
 		042A8AE41AD7D6E60065816D /* MachineLIst.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE31AD7D6E60065816D /* MachineLIst.m */; };
 		042A8AE71AD7D70F0065816D /* AddNewMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE61AD7D70F0065816D /* AddNewMachine.m */; };
 		042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A8AE91AD7D72A0065816D /* MachineDetails.m */; };
@@ -20,7 +19,7 @@
 		0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */; };
 		04461CAA1AD3913700CBC80A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CA91AD3913700CBC80A /* main.m */; };
 		04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAC1AD3913700CBC80A /* AppDelegate.m */; };
-		04461CB01AD3913700CBC80A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAF1AD3913700CBC80A /* ViewController.m */; };
+		04461CB01AD3913700CBC80A /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CAF1AD3913700CBC80A /* LoginViewController.m */; };
 		04461CB51AD3913700CBC80A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04461CB41AD3913700CBC80A /* Images.xcassets */; };
 		04461CB81AD3913700CBC80A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04461CB61AD3913700CBC80A /* LaunchScreen.xib */; };
 		04461CC41AD3913700CBC80A /* MachineRunTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04461CC31AD3913700CBC80A /* MachineRunTrackingTests.m */; };
@@ -62,6 +61,9 @@
 		A1A2B0351AE8D7E500A9DA14 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B0331AE8D7CF00A9DA14 /* libsqlite3.dylib */; };
 		A1A2B0361AE8D7E700A9DA14 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B0311AE8D7C500A9DA14 /* libz.dylib */; };
 		A1D01A081AE7CAD300DFD00D /* Process_RunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D01A071AE7CAD300DFD00D /* Process_RunCell.m */; };
+		A1F960FC1B0338FE00B7AE9C /* LoginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F960FB1B0338FE00B7AE9C /* LoginNavigationController.m */; };
+		A1F960FF1B03392100B7AE9C /* MainMenuNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F960FE1B03392100B7AE9C /* MainMenuNavigationController.m */; };
+		A1F961021B035C2500B7AE9C /* UserListHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F961011B035C2500B7AE9C /* UserListHeaderCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,8 +77,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0415DEB61AD3ECD9001EF623 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		0415DEB71AD3ECD9001EF623 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		042A8AE21AD7D6E60065816D /* MachineLIst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineLIst.h; sourceTree = "<group>"; };
 		042A8AE31AD7D6E60065816D /* MachineLIst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MachineLIst.m; sourceTree = "<group>"; };
 		042A8AE51AD7D70F0065816D /* AddNewMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewMachine.h; sourceTree = "<group>"; };
@@ -102,8 +102,8 @@
 		04461CA91AD3913700CBC80A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		04461CAB1AD3913700CBC80A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		04461CAC1AD3913700CBC80A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		04461CAE1AD3913700CBC80A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		04461CAF1AD3913700CBC80A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		04461CAE1AD3913700CBC80A /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		04461CAF1AD3913700CBC80A /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		04461CB41AD3913700CBC80A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		04461CB71AD3913700CBC80A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		04461CBD1AD3913700CBC80A /* MachineRunTrackingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MachineRunTrackingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -168,6 +168,12 @@
 		A1A2B0331AE8D7CF00A9DA14 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		A1D01A061AE7CAD300DFD00D /* Process_RunCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Process_RunCell.h; sourceTree = "<group>"; };
 		A1D01A071AE7CAD300DFD00D /* Process_RunCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Process_RunCell.m; sourceTree = "<group>"; };
+		A1F960FA1B0338FE00B7AE9C /* LoginNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginNavigationController.h; sourceTree = "<group>"; };
+		A1F960FB1B0338FE00B7AE9C /* LoginNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginNavigationController.m; sourceTree = "<group>"; };
+		A1F960FD1B03392100B7AE9C /* MainMenuNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuNavigationController.h; sourceTree = "<group>"; };
+		A1F960FE1B03392100B7AE9C /* MainMenuNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuNavigationController.m; sourceTree = "<group>"; };
+		A1F961001B035C2500B7AE9C /* UserListHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserListHeaderCell.h; sourceTree = "<group>"; };
+		A1F961011B035C2500B7AE9C /* UserListHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserListHeaderCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,43 +210,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		042A8ADB1AD7D54E0065816D /* Manage Machine */ = {
+		042A8ADB1AD7D54E0065816D /* Machines */ = {
 			isa = PBXGroup;
 			children = (
-				042A8ADE1AD7D5860065816D /* Machine Details */,
-				042A8ADD1AD7D5740065816D /* Add New Machine */,
-				042A8ADC1AD7D5680065816D /* Machine List */,
-			);
-			name = "Manage Machine";
-			sourceTree = "<group>";
-		};
-		042A8ADC1AD7D5680065816D /* Machine List */ = {
-			isa = PBXGroup;
-			children = (
+				042A8AE51AD7D70F0065816D /* AddNewMachine.h */,
+				042A8AE61AD7D70F0065816D /* AddNewMachine.m */,
+				042A8AE81AD7D72A0065816D /* MachineDetails.h */,
+				042A8AE91AD7D72A0065816D /* MachineDetails.m */,
 				042A8AE21AD7D6E60065816D /* MachineLIst.h */,
 				042A8AE31AD7D6E60065816D /* MachineLIst.m */,
 				042A8AEB1AD7D88F0065816D /* MachineListCell.h */,
 				042A8AEC1AD7D88F0065816D /* MachineListCell.m */,
 			);
-			name = "Machine List";
-			sourceTree = "<group>";
-		};
-		042A8ADD1AD7D5740065816D /* Add New Machine */ = {
-			isa = PBXGroup;
-			children = (
-				042A8AE51AD7D70F0065816D /* AddNewMachine.h */,
-				042A8AE61AD7D70F0065816D /* AddNewMachine.m */,
-			);
-			name = "Add New Machine";
-			sourceTree = "<group>";
-		};
-		042A8ADE1AD7D5860065816D /* Machine Details */ = {
-			isa = PBXGroup;
-			children = (
-				042A8AE81AD7D72A0065816D /* MachineDetails.h */,
-				042A8AE91AD7D72A0065816D /* MachineDetails.m */,
-			);
-			name = "Machine Details";
+			name = Machines;
 			sourceTree = "<group>";
 		};
 		044069021ADE89A100F2FF6F /* Segment Control */ = {
@@ -277,15 +259,17 @@
 		04461CA61AD3913700CBC80A /* MachineRunTracking */ = {
 			isa = PBXGroup;
 			children = (
-				044DC1931ADBCC9E002578C2 /* Manage Transactions */,
-				044DC1831ADB81C0002578C2 /* Parameter */,
-				042A8ADB1AD7D54E0065816D /* Manage Machine */,
-				04461D191AD3AEBA00CBC80A /* Main Menu */,
-				04461D121AD3ADAF00CBC80A /* User Information */,
-				04461CE61AD3A42F00CBC80A /* Login */,
+				04461CAB1AD3913700CBC80A /* AppDelegate.h */,
+				04461CAC1AD3913700CBC80A /* AppDelegate.m */,
+				04461CE61AD3A42F00CBC80A /* Login & Main Menu */,
+				04461D121AD3ADAF00CBC80A /* Users */,
+				042A8ADB1AD7D54E0065816D /* Machines */,
+				044DC1831ADB81C0002578C2 /* Parameters */,
+				044DC1931ADBCC9E002578C2 /* Transactions */,
 				04461CE41AD3A3FA00CBC80A /* User Interface */,
-				04461CCF1AD3A2A700CBC80A /* Frameworks */,
+				04461CB41AD3913700CBC80A /* Images.xcassets */,
 				04461CA71AD3913700CBC80A /* Supporting Files */,
+				04461CCF1AD3A2A700CBC80A /* Frameworks */,
 			);
 			path = MachineRunTracking;
 			sourceTree = "<group>";
@@ -343,228 +327,110 @@
 			isa = PBXGroup;
 			children = (
 				A120C64C1AF0B21C004DB0D2 /* Main.storyboard */,
-				04461CB41AD3913700CBC80A /* Images.xcassets */,
 				04461CB61AD3913700CBC80A /* LaunchScreen.xib */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
 		};
-		04461CE61AD3A42F00CBC80A /* Login */ = {
+		04461CE61AD3A42F00CBC80A /* Login & Main Menu */ = {
 			isa = PBXGroup;
 			children = (
-				04461CAB1AD3913700CBC80A /* AppDelegate.h */,
-				04461CAC1AD3913700CBC80A /* AppDelegate.m */,
-				04461CAE1AD3913700CBC80A /* ViewController.h */,
-				04461CAF1AD3913700CBC80A /* ViewController.m */,
+				A1F960FA1B0338FE00B7AE9C /* LoginNavigationController.h */,
+				A1F960FB1B0338FE00B7AE9C /* LoginNavigationController.m */,
+				04461CAE1AD3913700CBC80A /* LoginViewController.h */,
+				04461CAF1AD3913700CBC80A /* LoginViewController.m */,
+				04461D161AD3AEB100CBC80A /* MainMenu.h */,
+				04461D171AD3AEB100CBC80A /* MainMenu.m */,
+				A1F960FD1B03392100B7AE9C /* MainMenuNavigationController.h */,
+				A1F960FE1B03392100B7AE9C /* MainMenuNavigationController.m */,
 			);
-			name = Login;
+			name = "Login & Main Menu";
 			sourceTree = "<group>";
 		};
-		04461D121AD3ADAF00CBC80A /* User Information */ = {
-			isa = PBXGroup;
-			children = (
-				04461D151AD3AE0100CBC80A /* Show User List */,
-				04461D141AD3ADEF00CBC80A /* Add New User */,
-				04461D131AD3ADCC00CBC80A /* User Detail Information */,
-				0415DEB61AD3ECD9001EF623 /* User.h */,
-				0415DEB71AD3ECD9001EF623 /* User.m */,
-			);
-			name = "User Information";
-			sourceTree = "<group>";
-		};
-		04461D131AD3ADCC00CBC80A /* User Detail Information */ = {
-			isa = PBXGroup;
-			children = (
-				04461CE71AD3A8F100CBC80A /* UserDetails.h */,
-				04461CE81AD3A8F100CBC80A /* UserDetails.m */,
-			);
-			name = "User Detail Information";
-			sourceTree = "<group>";
-		};
-		04461D141AD3ADEF00CBC80A /* Add New User */ = {
+		04461D121AD3ADAF00CBC80A /* Users */ = {
 			isa = PBXGroup;
 			children = (
 				04461CED1AD3A97B00CBC80A /* AddUser.h */,
 				04461CEE1AD3A97B00CBC80A /* AddUser.m */,
-			);
-			name = "Add New User";
-			sourceTree = "<group>";
-		};
-		04461D151AD3AE0100CBC80A /* Show User List */ = {
-			isa = PBXGroup;
-			children = (
+				04461CE71AD3A8F100CBC80A /* UserDetails.h */,
+				04461CE81AD3A8F100CBC80A /* UserDetails.m */,
 				04461CF01AD3A9C500CBC80A /* UserList.h */,
 				04461CF11AD3A9C500CBC80A /* UserList.m */,
 				04461D1A1AD3B1EF00CBC80A /* UserListCell.h */,
 				04461D1B1AD3B1EF00CBC80A /* UserListCell.m */,
+				A1F961001B035C2500B7AE9C /* UserListHeaderCell.h */,
+				A1F961011B035C2500B7AE9C /* UserListHeaderCell.m */,
 			);
-			name = "Show User List";
+			name = Users;
 			sourceTree = "<group>";
 		};
-		04461D191AD3AEBA00CBC80A /* Main Menu */ = {
+		044DC1831ADB81C0002578C2 /* Parameters */ = {
 			isa = PBXGroup;
 			children = (
-				04461D161AD3AEB100CBC80A /* MainMenu.h */,
-				04461D171AD3AEB100CBC80A /* MainMenu.m */,
-			);
-			name = "Main Menu";
-			sourceTree = "<group>";
-		};
-		044DC1831ADB81C0002578C2 /* Parameter */ = {
-			isa = PBXGroup;
-			children = (
-				044DC18F1ADB82AD002578C2 /* Parameter Details */,
-				044DC18B1ADB827B002578C2 /* Add New Parameter */,
-				044DC1871ADB8232002578C2 /* Parameter List */,
-			);
-			name = Parameter;
-			sourceTree = "<group>";
-		};
-		044DC1871ADB8232002578C2 /* Parameter List */ = {
-			isa = PBXGroup;
-			children = (
+				044DC18C1ADB82A6002578C2 /* addNewParameter.h */,
+				044DC18D1ADB82A6002578C2 /* addNewParameter.m */,
+				044DC1901ADB82CF002578C2 /* parameterDetails.h */,
+				044DC1911ADB82CF002578C2 /* parameterDetails.m */,
 				044DC1841ADB822A002578C2 /* ParameterList.h */,
 				044DC1851ADB822A002578C2 /* ParameterList.m */,
 				044DC1881ADB8276002578C2 /* ParameterListCell.h */,
 				044DC1891ADB8276002578C2 /* ParameterListCell.m */,
 			);
-			name = "Parameter List";
+			name = Parameters;
 			sourceTree = "<group>";
 		};
-		044DC18B1ADB827B002578C2 /* Add New Parameter */ = {
+		044DC1931ADBCC9E002578C2 /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
-				044DC18C1ADB82A6002578C2 /* addNewParameter.h */,
-				044DC18D1ADB82A6002578C2 /* addNewParameter.m */,
-			);
-			name = "Add New Parameter";
-			sourceTree = "<group>";
-		};
-		044DC18F1ADB82AD002578C2 /* Parameter Details */ = {
-			isa = PBXGroup;
-			children = (
-				044DC1901ADB82CF002578C2 /* parameterDetails.h */,
-				044DC1911ADB82CF002578C2 /* parameterDetails.m */,
-			);
-			name = "Parameter Details";
-			sourceTree = "<group>";
-		};
-		044DC1931ADBCC9E002578C2 /* Manage Transactions */ = {
-			isa = PBXGroup;
-			children = (
-				044DC1961ADBCCE1002578C2 /* Transaction Details */,
-				044DC1951ADBCCCB002578C2 /* Add Transactions */,
-				044DC1941ADBCCB7002578C2 /* Transaction List */,
-			);
-			name = "Manage Transactions";
-			sourceTree = "<group>";
-		};
-		044DC1941ADBCCB7002578C2 /* Transaction List */ = {
-			isa = PBXGroup;
-			children = (
+				044DC1951ADBCCCB002578C2 /* Add Transaction */,
+				044DC1961ADBCCE1002578C2 /* View Transaction */,
 				044DC1971ADBCD35002578C2 /* TransactionList.h */,
 				044DC1981ADBCD35002578C2 /* TransactionList.m */,
 				044DC19A1ADBCD57002578C2 /* TransactionListCell.h */,
 				044DC19B1ADBCD57002578C2 /* TransactionListCell.m */,
 			);
-			name = "Transaction List";
+			name = Transactions;
 			sourceTree = "<group>";
 		};
-		044DC1951ADBCCCB002578C2 /* Add Transactions */ = {
+		044DC1951ADBCCCB002578C2 /* Add Transaction */ = {
 			isa = PBXGroup;
 			children = (
-				044DC1BB1ADBF7BD002578C2 /* Basic */,
-				044DC1BA1ADBF792002578C2 /* Pre */,
-				044DC1B91ADBF786002578C2 /* Run */,
-				044DC1B81ADBF77A002578C2 /* Post */,
-			);
-			name = "Add Transactions";
-			sourceTree = "<group>";
-		};
-		044DC1961ADBCCE1002578C2 /* Transaction Details */ = {
-			isa = PBXGroup;
-			children = (
-				044069021ADE89A100F2FF6F /* Segment Control */,
-				044DC1B51ADBF734002578C2 /* Pre */,
-				044DC1B71ADBF75A002578C2 /* Post */,
-				044DC1B61ADBF752002578C2 /* Run */,
-			);
-			name = "Transaction Details";
-			sourceTree = "<group>";
-		};
-		044DC1B51ADBF734002578C2 /* Pre */ = {
-			isa = PBXGroup;
-			children = (
-				044DC1AC1ADBCE7B002578C2 /* DetailsTransaction_Pre.h */,
-				044DC1AD1ADBCE7B002578C2 /* DetailsTransaction_Pre.m */,
-				047CF3911AEA746C00C1DDD8 /* DetailsPreCell.h */,
-				047CF3921AEA746C00C1DDD8 /* DetailsPreCell.m */,
-			);
-			name = Pre;
-			sourceTree = "<group>";
-		};
-		044DC1B61ADBF752002578C2 /* Run */ = {
-			isa = PBXGroup;
-			children = (
-				044DC1AF1ADBCE93002578C2 /* DetailsTransaction_Run.h */,
-				044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */,
-				04418DE11AEE1BEA003DA174 /* DetailsProcessRunCell.h */,
-				04418DE21AEE1BEA003DA174 /* DetailsProcessRunCell.m */,
-			);
-			name = Run;
-			sourceTree = "<group>";
-		};
-		044DC1B71ADBF75A002578C2 /* Post */ = {
-			isa = PBXGroup;
-			children = (
-				044DC1B21ADBCEAF002578C2 /* DetailsTransaction_Post.h */,
-				044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */,
-				04418DDB1AEE05B0003DA174 /* DetailsPostCell.h */,
-				04418DDC1AEE05B0003DA174 /* DetailsPostCell.m */,
-			);
-			name = Post;
-			sourceTree = "<group>";
-		};
-		044DC1B81ADBF77A002578C2 /* Post */ = {
-			isa = PBXGroup;
-			children = (
-				044DC1A91ADBCE49002578C2 /* AddTransaction_Post.h */,
-				044DC1AA1ADBCE49002578C2 /* AddTransaction_Post.m */,
 				045DF3D41AEF9C8400AA40C1 /* AddPostExtractionCell.h */,
 				045DF3D51AEF9C8400AA40C1 /* AddPostExtractionCell.m */,
-			);
-			name = Post;
-			sourceTree = "<group>";
-		};
-		044DC1B91ADBF786002578C2 /* Run */ = {
-			isa = PBXGroup;
-			children = (
+				044DC19D1ADBCD92002578C2 /* AddTransaction_Basic.h */,
+				044DC19E1ADBCD92002578C2 /* AddTransaction_Basic.m */,
+				044DC1A91ADBCE49002578C2 /* AddTransaction_Post.h */,
+				044DC1AA1ADBCE49002578C2 /* AddTransaction_Post.m */,
+				044DC1A31ADBCE10002578C2 /* AddTransaction_Pre.h */,
+				044DC1A41ADBCE10002578C2 /* AddTransaction_Pre.m */,
+				0445C60F1ADD2FEA001434B3 /* AddTransaction_PreCell.h */,
+				0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */,
 				044DC1A61ADBCE31002578C2 /* AddTransaction_Run.h */,
 				044DC1A71ADBCE31002578C2 /* AddTransaction_Run.m */,
 				A1D01A061AE7CAD300DFD00D /* Process_RunCell.h */,
 				A1D01A071AE7CAD300DFD00D /* Process_RunCell.m */,
 			);
-			name = Run;
+			name = "Add Transaction";
 			sourceTree = "<group>";
 		};
-		044DC1BA1ADBF792002578C2 /* Pre */ = {
+		044DC1961ADBCCE1002578C2 /* View Transaction */ = {
 			isa = PBXGroup;
 			children = (
-				044DC1A31ADBCE10002578C2 /* AddTransaction_Pre.h */,
-				044DC1A41ADBCE10002578C2 /* AddTransaction_Pre.m */,
-				0445C60F1ADD2FEA001434B3 /* AddTransaction_PreCell.h */,
-				0445C6101ADD2FEA001434B3 /* AddTransaction_PreCell.m */,
+				04418DDB1AEE05B0003DA174 /* DetailsPostCell.h */,
+				04418DDC1AEE05B0003DA174 /* DetailsPostCell.m */,
+				047CF3911AEA746C00C1DDD8 /* DetailsPreCell.h */,
+				047CF3921AEA746C00C1DDD8 /* DetailsPreCell.m */,
+				04418DE11AEE1BEA003DA174 /* DetailsProcessRunCell.h */,
+				04418DE21AEE1BEA003DA174 /* DetailsProcessRunCell.m */,
+				044DC1B21ADBCEAF002578C2 /* DetailsTransaction_Post.h */,
+				044DC1B31ADBCEAF002578C2 /* DetailsTransaction_Post.m */,
+				044DC1AC1ADBCE7B002578C2 /* DetailsTransaction_Pre.h */,
+				044DC1AD1ADBCE7B002578C2 /* DetailsTransaction_Pre.m */,
+				044DC1AF1ADBCE93002578C2 /* DetailsTransaction_Run.h */,
+				044DC1B01ADBCE93002578C2 /* DetailsTransaction_Run.m */,
+				044069021ADE89A100F2FF6F /* Segment Control */,
 			);
-			name = Pre;
-			sourceTree = "<group>";
-		};
-		044DC1BB1ADBF7BD002578C2 /* Basic */ = {
-			isa = PBXGroup;
-			children = (
-				044DC19D1ADBCD92002578C2 /* AddTransaction_Basic.h */,
-				044DC19E1ADBCD92002578C2 /* AddTransaction_Basic.m */,
-			);
-			name = Basic;
+			name = "View Transaction";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -616,6 +482,7 @@
 				TargetAttributes = {
 					04461CA31AD3913700CBC80A = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 82UKQ2A6DD;
 					};
 					04461CBC1AD3913700CBC80A = {
 						CreatedOnToolsVersion = 6.1;
@@ -671,13 +538,13 @@
 				04461D181AD3AEB100CBC80A /* MainMenu.m in Sources */,
 				042A8AED1AD7D88F0065816D /* MachineListCell.m in Sources */,
 				0445C6111ADD2FEA001434B3 /* AddTransaction_PreCell.m in Sources */,
+				A1F961021B035C2500B7AE9C /* UserListHeaderCell.m in Sources */,
 				04461CEF1AD3A97B00CBC80A /* AddUser.m in Sources */,
 				04418DE01AEE08AD003DA174 /* SegmentedControlVC.m in Sources */,
 				A1D01A081AE7CAD300DFD00D /* Process_RunCell.m in Sources */,
 				044DC1861ADB822A002578C2 /* ParameterList.m in Sources */,
 				042A8AEA1AD7D72A0065816D /* MachineDetails.m in Sources */,
-				0415DEB81AD3ECD9001EF623 /* User.m in Sources */,
-				04461CB01AD3913700CBC80A /* ViewController.m in Sources */,
+				04461CB01AD3913700CBC80A /* LoginViewController.m in Sources */,
 				044DC1991ADBCD35002578C2 /* TransactionList.m in Sources */,
 				044DC19F1ADBCD92002578C2 /* AddTransaction_Basic.m in Sources */,
 				04461CF21AD3A9C500CBC80A /* UserList.m in Sources */,
@@ -685,6 +552,7 @@
 				042A8AE41AD7D6E60065816D /* MachineLIst.m in Sources */,
 				044DC19C1ADBCD57002578C2 /* TransactionListCell.m in Sources */,
 				044DC1AE1ADBCE7B002578C2 /* DetailsTransaction_Pre.m in Sources */,
+				A1F960FC1B0338FE00B7AE9C /* LoginNavigationController.m in Sources */,
 				04461D1C1AD3B1EF00CBC80A /* UserListCell.m in Sources */,
 				04418DDD1AEE05B0003DA174 /* DetailsPostCell.m in Sources */,
 				04418DE61AEE4DEE003DA174 /* ContainerViewController.m in Sources */,
@@ -702,6 +570,7 @@
 				04461CAD1AD3913700CBC80A /* AppDelegate.m in Sources */,
 				044DC1A81ADBCE31002578C2 /* AddTransaction_Run.m in Sources */,
 				04461CAA1AD3913700CBC80A /* main.m in Sources */,
+				A1F960FF1B03392100B7AE9C /* MainMenuNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -826,6 +695,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/MachineRunTracking",
@@ -842,6 +712,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/MachineRunTracking",

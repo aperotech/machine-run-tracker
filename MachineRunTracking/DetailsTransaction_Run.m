@@ -10,12 +10,18 @@
 #import "SegmentedControlVC.h"
 #import "DetailsTransaction_Post.h"
 #import "DetailsProcessRunCell.h"
+
 @interface DetailsTransaction_Run ()
 
 @end
 
-@implementation DetailsTransaction_Run
-@synthesize DetialsTransaction_RunPF,valueTextField;
+@implementation DetailsTransaction_Run {
+    UITextField *valueTextField;
+    UILabel *headerLabel, *valueLabel;
+}
+
+@synthesize DetialsTransaction_RunPF;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -90,11 +96,11 @@
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
 }
 
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
+
 -(NSUInteger)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskLandscapeRight;
 }
@@ -114,44 +120,48 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 36.0f;
+    return 45.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *CellIdentifier1 = @"DetailsPostExtractionHeaderCellIdentifier";
     DetailsProcessRunCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     self.tableView.separatorColor = [UIColor lightGrayColor];
-    cell.backgroundColor=[UIColor grayColor];
+    //cell.backgroundColor=[UIColor lightGrayColor];
     
     if (cell != nil) {
         cell = [[DetailsProcessRunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
+        CGRect frameText;
         
         for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
             
-            valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
-            CGRect frameText=CGRectMake(valueTextField.frame.origin.x+102*i, 10, 94, 21);
+            headerLabel = [[UILabel alloc] init]; // 10 px padding between each view
+            headerLabel.preferredMaxLayoutWidth = 80;
+            headerLabel.numberOfLines = 0;
+            headerLabel.lineBreakMode = NSLineBreakByCharWrapping;
+            headerLabel.textColor = [UIColor whiteColor];
+            headerLabel.font = [UIFont boldSystemFontOfSize:14.0];
             
-            [valueTextField setFrame:frameText];
-            valueTextField.tag = i + 1;
-            valueTextField.borderStyle = UITextBorderStyleNone;
-            [valueTextField setReturnKeyType:UIReturnKeyDefault];
-            valueTextField.enabled =FALSE;
+            if (i == 0) {
+                frameText=CGRectMake(10, 5, 80, 17);
+            } else {
+                frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 5, 80, 17);
+            }
             
-            [valueTextField setEnablesReturnKeyAutomatically:YES];
-            [valueTextField setDelegate:self];
-            valueTextField.text=[self.RunProcessArray objectAtIndex:i];
-            // valueTextField.backgroundColor=[UIColor grayColor];
-            cell.backgroundColor=[UIColor grayColor];
-            [cell.contentView addSubview:valueTextField];
+            [headerLabel setFrame:frameText];
+            headerLabel.tag = i + 1;
             
+            headerLabel.text = [self.RunProcessArray objectAtIndex:i];
+            
+            //headerLabel.backgroundColor = [UIColor clearColor];
+            cell.backgroundColor = [UIColor darkGrayColor];
+            [cell.contentView addSubview:headerLabel];
         }
     }
-    
-
-    
-    
-    
     return cell;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 45.0f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -159,44 +169,38 @@
     
     DetailsProcessRunCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
-    if (cell != nil)
-    {
-        
+    if (cell != nil) {
         cell = [[DetailsProcessRunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        CGRect frameText;
         
-        for (int i = 0 ; i < [self.RunProcessArray count]; i++)
-        {
+        for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
+            valueLabel = [[UILabel alloc] init];
+            valueLabel.preferredMaxLayoutWidth = 80;
+            valueLabel.numberOfLines = 1;
+            valueLabel.lineBreakMode = NSLineBreakByCharWrapping;
+            valueLabel.textColor = [UIColor blackColor];
+            valueLabel.font = [UIFont systemFontOfSize:14.0];
+            valueLabel.textAlignment = NSTextAlignmentCenter;
             
-            valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
+            if (i == 0) {
+                frameText=CGRectMake(10, 14, 80, 17);
+            } else {
+                frameText=CGRectMake(headerLabel.frame.origin.x+100*i, 14, 80, 17);
+            }
             
-            CGRect frameText=CGRectMake(valueTextField.frame.origin.x+102*i, 10, 94, 21);
-            
-            [valueTextField setFrame:frameText];
-            
-            valueTextField.tag = i+1 ;
-            
-            valueTextField.borderStyle = UITextBorderStyleRoundedRect;
-            [valueTextField setReturnKeyType:UIReturnKeyDefault];
-            [valueTextField setEnablesReturnKeyAutomatically:YES];
-            [valueTextField setDelegate:self];
-           // valueTextField.placeholder=[self.RunProcessArray objectAtIndex:i];
+            [valueLabel setFrame:frameText];
+            valueLabel.tag = i+1 ;
             
             // if (self.sectionCount>= 1 && indexPath.row!=self.sectionCount )
-            if (indexPath.row>=0 && i>=0)
-            {
-                
-                for (int j=0;j<[self.RunProcessArray count];j++)
-                {
-                    if (valueTextField.tag==j+1 )
-                    {
-                         valueTextField.text=[[self.runArrayRun objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];;
-                        ;
+            if (indexPath.row>=0 && i>=0) {
+                for (int j=0;j<[self.RunProcessArray count];j++) {
+                    if (valueLabel.tag==j+1 ) {
+                         valueLabel.text=[[self.runArrayRun objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];
                     }
                 }
             }
             
-            [cell.contentView addSubview:valueTextField];
-            
+            [cell.contentView addSubview:valueLabel];
         }
         //return cell;
     }

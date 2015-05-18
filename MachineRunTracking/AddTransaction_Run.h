@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface AddTransaction_Run : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate ,UITextFieldDelegate, UIBarPositioningDelegate,UIActivityItemSource>
+@interface AddTransaction_Run : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate ,UITextFieldDelegate, UIBarPositioningDelegate>
 
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property(strong,nonatomic)PFObject *parameterAdd_RunPF;

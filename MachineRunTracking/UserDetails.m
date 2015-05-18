@@ -9,39 +9,49 @@
 #import "UserDetails.h"
 #define k_KEYBOARD_OFFSET 80.0
 
+@interface UserDetails ()
+
+@end
+
 @implementation UserDetails {
     NSArray *userType;
+    NSString *title, *email, *currentPassword, *newPassword, *newRePassword, *typeUser;
     UIPickerView *userPicker;
     UIToolbar *userPickerToolbar;
 }
 
-@synthesize activeField, scrollView;
+@synthesize nameTextField, userTypeField, emailTextField, currentPasswordField, updatePasswordField, updateRePasswordField, activeField, scrollView, activityIndicator;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, 800.0)];
     
+    typeUser = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
+    
+    if ([typeUser isEqualToString:@"Standard"]) {
+        [self.userTypeField setUserInteractionEnabled:FALSE];
+    }
+    
     // Check to see if note is not nil, which let's us know that the note
     // had already been saved.
-    if (self.UpdateObjPF != nil) {
-        self.userNameUpdateText.text = [self.UpdateObjPF objectForKey:@"username"];
-        self.userEmailUpdateText.text = [self.UpdateObjPF objectForKey:@"email"];
-        self.OldPassText.text=[self.UpdateObjPF objectForKey:@"password"];
-        self.userTypeUpdateText.text=[self.UpdateObjPF objectForKey:@"usertype"];
+    if (self.userObject != nil) {
+        self.nameTextField.text = [self.userObject objectForKey:@"name"];
+        self.emailTextField.text = [self.userObject objectForKey:@"email"];
+        //self.currentPasswordField.text=[self.userObject objectForKey:@"password"];
+        self.userTypeField.text=[self.userObject objectForKey:@"userType"];
     }
-    //NSLog(@"password is %@",self.OldPassText.text);
     
     //Initialize user picker
     userType = [NSArray arrayWithObjects:@"Admin",@"Standard",nil];
     
-    userPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(16, self.userEmailText.frame.origin.y, 288, 120)];
+    userPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(16, self.emailTextField.frame.origin.y, 288, 120)];
     userPicker.delegate = self;
     userPicker.dataSource = self;
     
     [userPicker setBackgroundColor:[UIColor lightTextColor]];
     [userPicker setShowsSelectionIndicator:YES];
-    [self.userTypeUpdateText setInputView:userPicker];
+    [self.userTypeField setInputView:userPicker];
     
     //Creating a toolbar above picker where Done button can be added
     userPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 288, 40)];
@@ -58,7 +68,7 @@
     [barItems addObject:doneBtn];
     
     [userPickerToolbar setItems:barItems animated:YES];
-    [self.userTypeUpdateText setInputAccessoryView:userPickerToolbar];
+    [self.userTypeField setInputAccessoryView:userPickerToolbar];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -74,110 +84,83 @@
 }
 
 - (IBAction)UpdateButton:(id)sender {
-    [self.activityIndicatorView startAnimating];
-    NSString *title = [self.userNameUpdateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-     NSString *email = [self.userEmailUpdateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-     NSString *pass = [self.OldPassText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-     NSString *NewPassword = [self.NewPassText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-     NSString *reEnterPassword = [self.ReTypePassText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    currentPassword = [self.currentPasswordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    newPassword = [self.updatePasswordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    newRePassword = [self.updateRePasswordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    if ([title length] == 0 ||[email length] == 0 ||[pass length] == 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-                                                            message:@"You must enter details"
+    if ([currentPassword length] == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please enter valid current password"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
-    }
-    else {
-        
-        if (self.UpdateObjPF != nil) {
-            if ([NewPassword isEqualToString:reEnterPassword]) {
+    } else if ([newPassword length] == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please enter valid new password"
+                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    } else if ([newRePassword length] == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please re-enter valid new password"
+                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    } else {
+        if ([newPassword isEqualToString:newRePassword]) {
                [self updateNote];
-            }else{
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-                                                                    message:@"Password does not match!"
-                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alertView show];
-            }
-            
-        }
-        else {
-            [self saveNote];
-        }
-    }
-}
-
-- (void)saveNote
-{
-    
-    PFObject *NewUser = [PFObject objectWithClassName:@"_User"];
-    NewUser[@"username"] = self.userNameUpdateText.text;
-    NewUser[@"email"] = self.userEmailUpdateText.text;
-    NewUser[@"password"] = self.NewPassText.text;
-    NewUser[@"User"] = [PFUser currentUser];
-    
-    [NewUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded) {
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-            [self.activityIndicatorView stopAnimating];
-            [self.navigationController popViewControllerAnimated:YES];
         } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-                                                                message:[error.userInfo objectForKey:@"error"]
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"New passwords do not match"
                                                                delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
         }
-    }];
-    
+    }
 }
 
-- (void)updateNote
-{
-    
-    PFQuery *query = [PFQuery queryWithClassName:@"_User"];
+- (void)updateNote {
+    [self.activityIndicator startAnimating];
+    PFQuery *query = [PFQuery queryWithClassName:@"User"];
     
     // Retrieve the object by id
-    [query getObjectInBackgroundWithId:[self.UpdateObjPF objectId] block:^(PFObject *UpdateUser, NSError *error) {
+    [query getObjectInBackgroundWithId:[self.userObject objectId] block:^(PFObject *updateUser, NSError *error) {
         
         if (error) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:[error.userInfo objectForKey:@"error"]
                                                                delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [self.activityIndicator stopAnimating];
             [alertView show];
-        }
-        else {
-        UpdateUser[@"username"] = self.userNameUpdateText.text;
-            UpdateUser[@"email"] = self.userEmailUpdateText.text;
-             UpdateUser[@"usertype"] = self.userTypeUpdateText.text;
-            UpdateUser[@"password"] = self.NewPassText.text;
-            [PFUser requestPasswordResetForEmailInBackground:self.userEmailUpdateText.text];
+        } else {
+            if (![self.userTypeField.text isEqualToString:self.userObject[@"userType"]]) {
+                updateUser[@"userType"] = self.userTypeField.text;
+            }
+            updateUser[@"password"] = self.updatePasswordField.text;
             
-            [UpdateUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [updateUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                    [self.activityIndicatorView stopAnimating];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                    [self.activityIndicator stopAnimating];
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:[error.userInfo objectForKey:@"error"]
                                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [self.activityIndicator stopAnimating];
                     [alertView show];
                 }
             }];
         }
-        
     }];
-    
 }
+
 #pragma mark - UITextFieldDelegate method implementation
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == self.OldPassText) {
-        [self.NewPassText becomeFirstResponder];
-    } else if (textField == self.NewPassText) {
-        [self.ReTypePassText becomeFirstResponder];
-    } else if (textField == self.ReTypePassText) {
-        [self.ReTypePassText resignFirstResponder];
+    if (textField == self.currentPasswordField) {
+        [self.updatePasswordField becomeFirstResponder];
+    } else if (textField == self.updatePasswordField) {
+        [self.updateRePasswordField becomeFirstResponder];
+    } else if (textField == self.updateRePasswordField) {
+        [self.updateRePasswordField resignFirstResponder];
     }
     
     return YES;
@@ -185,7 +168,7 @@
 
 //Method to disable any user input for the user type text field
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if (textField == self.userTypeUpdateText) {
+    if (textField == self.userTypeField) {
         return NO;
     }
     return YES;
@@ -210,15 +193,15 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    self.userTypeUpdateText.text = [userType objectAtIndex:row];
+    self.userTypeField.text = [userType objectAtIndex:row];
 }
 
 //Method to call when Done is clicked on Age picker drop down
 - (void)userPickerDoneClicked {
-    if ([self.userTypeUpdateText.text isEqualToString:@""]) {
-        self.userTypeUpdateText.text = [userType objectAtIndex:0];
+    if ([self.userTypeField.text isEqualToString:@""]) {
+        self.userTypeField.text = [userType objectAtIndex:0];
     }
-    [self.userTypeUpdateText resignFirstResponder];
+    [self.userTypeField resignFirstResponder];
 }
 
 //methods to check when a field text is edited, accordingly, adjust keyboard

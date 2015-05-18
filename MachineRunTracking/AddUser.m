@@ -10,7 +10,10 @@
 #import <Parse/Parse.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <Foundation/NSRegularExpression.h>
-#define k_KEYBOARD_OFFSET 80.0
+
+@interface AddUser ()
+
+@end
 
 @implementation AddUser {
     NSArray *userType;
@@ -18,7 +21,7 @@
     UIToolbar *userPickerToolbar;
 }
 
-@synthesize userEmailText, userNameText, userTypeText, passwordText, scrollView;
+@synthesize emailTextField, nameTextField, userTypeField, tempPasswordField, scrollView, activeField, activityIndicator;
 
 - (void)viewDidLoad {
     
@@ -30,13 +33,13 @@
     //Initialize user picker
     userType = [NSArray arrayWithObjects:@"Admin",@"Standard",nil];
     
-    userPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(16, self.userEmailText.frame.origin.y, 288, 120)];
+    userPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(16, self.emailTextField.frame.origin.y, 288, 120)];
     userPicker.delegate = self;
     userPicker.dataSource = self;
     
     [userPicker setBackgroundColor:[UIColor lightTextColor]];
     [userPicker setShowsSelectionIndicator:YES];
-    [self.userTypeText setInputView:userPicker];
+    [self.userTypeField setInputView:userPicker];
     
     //Creating a toolbar above picker where Done button can be added
     userPickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 288, 40)];
@@ -53,7 +56,7 @@
     [barItems addObject:doneBtn];
     
     [userPickerToolbar setItems:barItems animated:YES];
-    [self.userTypeText setInputAccessoryView:userPickerToolbar];
+    [self.userTypeField setInputAccessoryView:userPickerToolbar];
 
 }
 
@@ -77,19 +80,15 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == self.userNameText) {
-        [self.userTypeText becomeFirstResponder];
-    } else if (textField == self.userEmailText) {
-        [self.passwordText becomeFirstResponder];
-    } else if (textField == self.passwordText) {
-        [self.passwordText resignFirstResponder];
+    if (textField == self.nameTextField) {
+        [self.userTypeField becomeFirstResponder];
+    } else if (textField == self.emailTextField) {
+        [self.tempPasswordField becomeFirstResponder];
+    } else if (textField == self.tempPasswordField) {
+        [self.tempPasswordField resignFirstResponder];
     }
-    
     return YES;
 }
-
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -97,27 +96,50 @@
 }
 
 -(IBAction)save:(id)sender {
-    [self.activityIndicatorView startAnimating];
    /* PFObject *newUser = [PFObject objectWithClassName:@"user"];
-    [newUser setObject:userNameText.text forKey:@"Name"];
-    [newUser setObject:passwordText.text forKey:@"Password"];
-    [newUser setObject:userTypeText.text forKey:@"User_type"];
-    [newUser setObject:userEmailText.text forKey:@"User_Email"];
+    [newUser setObject:nameTextField.text forKey:@"Name"];
+    [newUser setObject:tempPasswordField.text forKey:@"Password"];
+    [newUser setObject:userTypeField.text forKey:@"User_type"];
+    [newUser setObject:emailTextField.text forKey:@"User_Email"];
     [newUser saveInBackground];*/
-    NSString *username = [userNameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *password = [passwordText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *email = [userEmailText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *type = [userTypeText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *username = [nameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *password = [tempPasswordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *email = [emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *type = [userTypeField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([username length] == 0 || [password length] == 0 || [email length] == 0 ||[type length] == 0) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                             message:@"You have to enter a username, password, and email"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
-        [self.activityIndicatorView stopAnimating];
-    }
-    else {
-        PFUser *newUser = [PFUser user];
+    } else {
+        [self.activityIndicator startAnimating];
+        PFObject *newUser = [PFObject objectWithClassName:@"User"];
+        newUser[@"name"] = self.nameTextField.text;
+        newUser[@"email"] = self.emailTextField.text;
+        newUser[@"password"] = self.tempPasswordField.text;
+        newUser[@"userType"] = self.userTypeField.text;
+        
+        //Save newly created user to Parse
+        [newUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (!error) {
+                // Notify table view to reload the user list from Parse cloud
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                [self.activityIndicator stopAnimating];
+                
+                // Dismiss the controller
+                //[self.navigationController popViewControllerAnimated:YES];
+                
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self.activityIndicator stopAnimating];
+                [alert show];
+            }
+            [self dismissViewControllerAnimated:YES completion:nil];
+            
+        }];
+        
+        /*PFUser *newUser = [PFUser user];
         newUser.username = username;
         newUser.password = password;
         newUser.email = email;
@@ -133,13 +155,13 @@
             }
             else {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                [self.activityIndicatorView stopAnimating];
+                [self.activityIndicator stopAnimating];
                 // Dismiss the controller
                 //[self dismissViewControllerAnimated:YES completion:nil];
                [self dismissViewControllerAnimated:YES completion:nil];
                //[self.navigationController popViewControllerAnimated:YES];
             }
-        }];
+        }];*/
     }
 }
 
@@ -149,11 +171,11 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
-
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    if (textField.text.length >= 20 && range.length == 0)
+    
+    if ((textField.text.length >= 40 && range.length == 0) | (textField == self.userTypeField))
         return NO;
+    
     // Only characters in the NSCharacterSet you choose will insertable.
     if (textField.tag==1) {
         NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"] invertedSet];
@@ -161,48 +183,22 @@
         
         return [string isEqualToString:filtered];
     }
+    
     if (textField.tag==3) {
-//NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+        //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
         NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_@."] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
         
         return [string isEqualToString:filtered];
     }
-  
     return YES;
 }
-
-
-//Method to disable any user input for the user type text field
-/*- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if (textField == self.userTypeText) {
-        return NO;
-    }
-    return YES;
-}*/
-
-#pragma mark- UIPicker View
-/*- (void)attachPickerToTextField: (UITextField*) textField :(UIPickerView*) picker {
-    picker.delegate = self;
-    picker.dataSource = self;
-    textField.delegate = self;
-    textField.inputView = picker;
-}
-
--(void)loadItemData {
-    self.pickerArray  = [[NSArray alloc] initWithArray:self.myArray];
- 
-    self.picker = [[UIPickerView alloc] initWithFrame:CGRectZero];
-    
-    [self attachPickerToTextField:self.userTypeText :self.picker];
-}*/
 
 #pragma mark - Picker delegate methods
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     return 1;
 }
-
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     return userType.count;
@@ -218,27 +214,19 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    self.userTypeText.text = [userType objectAtIndex:row];
+    self.userTypeField.text = [userType objectAtIndex:row];
    
     //[[self view] endEditing:YES];
 }
 
 //Method to call when Done is clicked on Age picker drop down
 - (void)userPickerDoneClicked {
-    if ([self.userTypeText.text isEqualToString:@""]) {
-        self.userTypeText.text = [userType objectAtIndex:0];
+    if ([self.userTypeField.text isEqualToString:@""]) {
+        self.userTypeField.text = [userType objectAtIndex:0];
     }
-    [self.userTypeText resignFirstResponder];
-    [self.userEmailText becomeFirstResponder];
+    [self.userTypeField resignFirstResponder];
+    [self.emailTextField becomeFirstResponder];
 }
-
-/*#pragma mark - Keyboard delegate stuff
-
-// let tapping on the background (off the input field) close the thing
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [userTypeText resignFirstResponder];
-    
-}*/
 
 //methods to check when a field text is edited, accordingly, adjust keyboard
 // Implementing picker for age text field
@@ -294,42 +282,5 @@
     self.scrollView.contentInset = contentInsets;
     self.scrollView.scrollIndicatorInsets = contentInsets;
 }
-
-
-/*- (void)textFieldDidBeginEditing:(UITextField *)textField {
- 
- self.scrollView.contentOffset = CGPointMake(0, textField.frame.origin.y);
- }*/
-
-/*#pragma mark - UITextFieldDelegate method implementation
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
-    return YES;
-}
-
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    [self animateTextField:textField up:YES];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    [self animateTextField:textField up:NO];
-}
-
--(void)animateTextField:(UITextField*)textField up:(BOOL)up
-{
-    const int movementDistance = -30; // tweak as needed
-    const float movementDuration = 0.3f; // tweak as needed
-    
-    int movement = (up ? movementDistance : -movementDistance);
-    
-    [UIView beginAnimations: @"animateTextField" context: nil];
-    [UIScrollView setAnimationBeginsFromCurrentState: YES];
-    [UIScrollView setAnimationDuration: movementDuration];
-    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    [UIScrollView commitAnimations];
-}*/
 
 @end

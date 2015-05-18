@@ -11,26 +11,29 @@
 #import "DetailsTransaction_Post.h"
 #import "DetailsTransaction_Run.h"
 #import "SegmentedControlVC.h"
+
 @interface DetailsTransaction_Pre ()
 
 @end
 
-@implementation DetailsTransaction_Pre
-@synthesize Run_noLabel,RunDateLabel,RunDurationLabel,MachineNameLabel;
+@implementation DetailsTransaction_Pre {
+    NSArray *runArrayPre, *preExtractionArray;
+    NSMutableArray *RunProcessArray;
+    NSInteger ObjectCount;
+}
 
-@synthesize DetialsTransaction_PrePF;
+@synthesize Run_noLabel,RunDateLabel,RunDurationLabel,MachineNameLabel, preTransobject, activityIndicator;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
    
-    [self.activityIndicatorView startAnimating];
-    
+    [self.activityIndicator startAnimating];
    
-   
-    if (DetialsTransaction_PrePF !=NULL) {
-        Run_noLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_No"];
-        RunDateLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_Date"];
-        RunDurationLabel.text=[DetialsTransaction_PrePF objectForKey:@"Run_Duration"];
-        MachineNameLabel.text=[DetialsTransaction_PrePF objectForKey:@"Machine_Name"];
+    if (preTransobject !=NULL) {
+        Run_noLabel.text=[preTransobject objectForKey:@"Run_No"];
+        RunDateLabel.text=[preTransobject objectForKey:@"Run_Date"];
+        RunDurationLabel.text=[preTransobject objectForKey:@"Run_Duration"];
+        MachineNameLabel.text=[preTransobject objectForKey:@"Machine_Name"];
     }
    
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
@@ -39,7 +42,7 @@
    
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
        
-        self.ObjectCount=objects.count;
+        ObjectCount=objects.count;
         if(error){
             NSLog(@"Error!");
         }
@@ -52,27 +55,27 @@
                 [alertView show];
             }
             else {
-                self.preExtractionArray=[[NSArray alloc]initWithArray:objects];
+                preExtractionArray=[[NSArray alloc]initWithArray:objects];
                
-                self.RunProcessArray=[[NSMutableArray alloc]init];
+                RunProcessArray=[[NSMutableArray alloc]init];
                 
-                for (int i=0;i<[self.preExtractionArray count];i++) {
+                for (int i=0;i<[preExtractionArray count];i++) {
                     NSString *newString=[[objects objectAtIndex:i]valueForKey:@"Name"];
-                    [self.RunProcessArray addObject:newString];
+                    [RunProcessArray addObject:newString];
 
                 }
                 [self.tableView reloadData];
                 }
             
         }
-        [self.activityIndicatorView stopAnimating];
+        [self.activityIndicator stopAnimating];
     }];
 
     PFQuery *query2 = [PFQuery queryWithClassName:@"Pre_Extraction"];
     [query2 whereKey:@"Run_No" equalTo:Run_noLabel.text];
   
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
-        [self.activityIndicatorView startAnimating];
+        [self.activityIndicator startAnimating];
         
         if(error){
             NSLog(@"Error!");
@@ -82,13 +85,13 @@
                 NSLog(@"None found");
             }
             else {
-                    self.runArrayPre=[[NSArray alloc]initWithArray:runArray];
+                    runArrayPre=[[NSArray alloc]initWithArray:runArray];
 
                 [self.tableView reloadData];
             }
            
         }
-        [self.activityIndicatorView stopAnimating];
+        [self.activityIndicator stopAnimating];
     }];
   
 
@@ -106,7 +109,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 { 
-    return self.ObjectCount ;
+    return ObjectCount ;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -125,12 +128,12 @@
     }
     cell.parameterLabel.tag=indexPath.row;
     
-    for (int i=0; i<self.RunProcessArray.count;i++) {
+    for (int i=0; i<RunProcessArray.count;i++) {
         if (indexPath.row==i) {
             
-            cell.parameterLabel.text=[[self.runArrayPre objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];
+            cell.parameterLabel.text=[[runArrayPre objectAtIndex:0]objectForKey:[RunProcessArray objectAtIndex:i]];
         
-          cell.ParameterNameLabel.text=[self.RunProcessArray objectAtIndex:i];
+          cell.ParameterNameLabel.text=[RunProcessArray objectAtIndex:i];
         
         }
         
@@ -138,10 +141,6 @@
     
     return cell;
 }
-
-
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -159,11 +158,11 @@
       //  PFObject *object = [self.objects objectAtIndex:indexPath.row];
         
         DetailsTransaction_Run *DetailsTransaction_RunObj = (DetailsTransaction_Run *)segue.destinationViewController;
-        DetailsTransaction_RunObj.DetialsTransaction_RunPF = DetialsTransaction_PrePF;
+        DetailsTransaction_RunObj.DetialsTransaction_RunPF = preTransobject;
     }
     else if ([segue.identifier isEqualToString:@"DetailsTransactionPreToPostSegue"]){
         DetailsTransaction_Post *DetailsTransaction_PostObj=(DetailsTransaction_Post *)segue.destinationViewController;
-        DetailsTransaction_PostObj.DetialsTransaction_PostPF=DetialsTransaction_PrePF;
+        DetailsTransaction_PostObj.DetialsTransaction_PostPF=preTransobject;
     }
     
 }

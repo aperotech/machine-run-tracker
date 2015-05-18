@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-@interface DetailsTransaction_Post : UIViewController<UITableViewDelegate,UITableViewDataSource,UIActivityItemSource>
+
+@interface DetailsTransaction_Post : UIViewController<UITableViewDelegate,UITableViewDataSource>
+
 @property (weak, nonatomic) IBOutlet UILabel *RunDurationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *RunDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *MachineNameLabel;

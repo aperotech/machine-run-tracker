@@ -216,6 +216,7 @@
          [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
     
      } else {
+         NSLog(@"error here");
      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
      message:[error.userInfo objectForKey:@"error"]
      delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

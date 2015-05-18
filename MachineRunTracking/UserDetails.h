@@ -6,21 +6,24 @@
 //  Copyright (c) 2015 AperoTechnologies. All rights reserved.
 //
 
-#import "ViewController.h"
+#import <UIKit/UIKit.h>
+#import "UserList.h"
 #import <Parse/Parse.h>
-@interface UserDetails : ViewController<UITextFieldDelegate,UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate,UIActivityItemSource>
 
-@property (nonatomic,strong)IBOutlet UIScrollView *scrollView;
+@interface UserDetails : UIViewController <UITextFieldDelegate,UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
-@property (nonatomic, strong) PFObject *UpdateObjPF;
-@property (weak, nonatomic) IBOutlet UITextField *userNameUpdateText;
-@property (weak, nonatomic) IBOutlet UITextField *userTypeUpdateText;
-@property (weak, nonatomic) IBOutlet UITextField *userEmailUpdateText;
-@property (weak, nonatomic) IBOutlet UITextField *OldPassText;
-@property (weak, nonatomic) IBOutlet UITextField *NewPassText;
-@property (weak, nonatomic) IBOutlet UITextField *ReTypePassText;
-@property (weak, nonatomic) IBOutlet UIButton *UpdateButton;
-@property (strong,nonatomic)UITextField *activeField;
-@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *userTypeField;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UITextField *currentPasswordField;
+@property (weak, nonatomic) IBOutlet UITextField *updatePasswordField;
+@property (weak, nonatomic) IBOutlet UITextField *updateRePasswordField;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) UITextField *activeField;
+
+@property (nonatomic, strong) PFObject *userObject;
+
 -(IBAction)UpdateButton:(id)sender;
+
 @end

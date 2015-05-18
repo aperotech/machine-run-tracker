@@ -40,7 +40,7 @@
        
         DetailsTransaction_Pre *DetialsTransactionPreObj=(DetailsTransaction_Pre *)segue.destinationViewController;
         [self addChildViewController:DetialsTransactionPreObj];
-        DetialsTransactionPreObj.DetialsTransaction_PrePF=ContainerControlPF;
+        DetialsTransactionPreObj.preTransobject = ContainerControlPF;
         ((UIViewController *)segue.destinationViewController).view.frame = CGRectMake(0,0,self.view.frame.size.width, self.view.frame.size.height);
         [self.view addSubview:((UIViewController *)segue.destinationViewController).view];
         [segue.destinationViewController didMoveToParentViewController:self];
@@ -53,7 +53,7 @@
         
         if([segue.identifier isEqualToString:@"ContainerToDetailsPreExtractionSegue"]){
             DetailsTransaction_Pre *DetialsTransactionPreObj=(DetailsTransaction_Pre *)segue.destinationViewController;
-        DetialsTransactionPreObj.DetialsTransaction_PrePF=ContainerControlPF;
+        DetialsTransactionPreObj.preTransobject = ContainerControlPF;
             [self swapFromViewController:[self.childViewControllers objectAtIndex:0] toViewController:[segue destinationViewController]];
             
         } else if ([segue.identifier isEqualToString:@"ContainerToDetailsRunProcessSegue"]){

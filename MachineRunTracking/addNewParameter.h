@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface addNewParameter : UIViewController<UITextFieldDelegate,UIScrollViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate, UIBarPositioningDelegate,UIActivityItemSource>
+@interface addNewParameter : UIViewController<UITextFieldDelegate,UIScrollViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate, UIBarPositioningDelegate>
 
 - (IBAction)save:(id)sender;
 - (IBAction)cancel:(id)sender;
@@ -19,8 +19,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *typeText;
 @property (weak, nonatomic) IBOutlet UITextField *unitsText;
 @property (strong,nonatomic) UITextField *activeField;
-@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
-
-@property(nonatomic,weak) NSArray *myArray;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end

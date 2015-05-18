@@ -36,7 +36,13 @@
         [self.navigationItem.rightBarButtonItem setEnabled:FALSE];
     }
 }
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 #pragma mark - Textfield delegate
 
 //Method to disable any user input for the user type text field

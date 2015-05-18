@@ -121,8 +121,13 @@
     [datePickerToolbar setItems:dateBarItems animated:YES];
     [self.lastMaintanceDate setInputAccessoryView:datePickerToolbar];
 }
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
-/*- (void)keyboardWillShow:(NSNotification *)notification
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}/*- (void)keyboardWillShow:(NSNotification *)notification
 {
     if(self.datePickerToolbar == nil) {
         self.datePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 400, 320, 44)] ;

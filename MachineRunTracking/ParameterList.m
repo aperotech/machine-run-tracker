@@ -84,11 +84,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+- (BOOL)shouldAutorotate {
+    return NO;
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 - (PFQuery *)queryForTable
 {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
@@ -137,7 +139,9 @@
         }
         
         // Configure the cell
-        cell.parameterName.text=[object objectForKey:@"Name"];
+    NSString* string1 = [object objectForKey:@"Name"];
+    NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+    cell.parameterName.text=string2;
         cell.parameterType.text=[object objectForKey:@"Type"];
         cell.parameterUnits.text=[object objectForKey:@"Units"];
         

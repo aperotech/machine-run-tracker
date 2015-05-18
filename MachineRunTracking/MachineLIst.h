@@ -9,5 +9,4 @@
 #import <ParseUI/ParseUI.h>
 
 @interface MachineLIst : PFQueryTableViewController
-
 @end

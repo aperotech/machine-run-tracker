@@ -156,7 +156,13 @@
     
     [super viewDidDisappear:animated];
 }
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 #pragma mark - Textfield delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -239,11 +245,11 @@
 }*/
 
 - (IBAction)SaveAndForword:(id)sender {
-//[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
     activityIndicatorView.hidden=NO;
     [activityIndicatorView startAnimating];
    
-NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+/*NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [self.Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *Run_Date = [self.Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -280,7 +286,7 @@ NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSChar
         }
         
     }];
-    }
+    }*/
 }
 
 - (IBAction)Cancel:(id)sender {

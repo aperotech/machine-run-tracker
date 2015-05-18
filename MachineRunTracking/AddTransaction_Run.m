@@ -64,12 +64,15 @@
             else {
                 
                 self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
-                
+                self.headerArray=[[NSMutableArray alloc]init];
                 self.RunProcessArray=[[NSMutableArray alloc]init];
                 self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
                 for (int i=0;i<[self.dataArray count];i++) {
                     NSString *newString=[[objects objectAtIndex:i]valueForKey:@"Name"];
-                    [self.RunProcessArray addObject:newString];
+                    [self.headerArray addObject:newString];
+                    NSString *units=[[objects objectAtIndex:i]valueForKey:@"Units"];
+                    NSString *PlaceholderString=[newString stringByAppendingFormat:@"(%@)",units];
+                    [self.RunProcessArray addObject:PlaceholderString];
                     [activityIndicatorView stopAnimating];
                 }
                 
@@ -132,7 +135,8 @@
             
             [valueTextField setEnablesReturnKeyAutomatically:YES];
             [valueTextField setDelegate:self];
-            valueTextField.text=[self.RunProcessArray objectAtIndex:i];
+            valueTextField.text=[self.headerArray objectAtIndex:i];
+            
             // valueTextField.backgroundColor=[UIColor grayColor];
             cell.backgroundColor=[UIColor grayColor];
             [cell.contentView addSubview:valueTextField];
@@ -158,11 +162,11 @@
 }
 
 - (void)addRow:(id)sender {
-    if (self.sectionCount>=1) {
+/*if (self.sectionCount>=1) {
         if (self.parameterAdd_RunPF != nil) {
             [self updateParameters];
         } else [self saveParameters];
-    }
+    }*/
     self.sectionCount=self.sectionCount+1;
     
     [aTableView reloadData];
@@ -209,18 +213,41 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat sectionHeaderHeight = 40;
+   // CGFloat sectionFooterHeight= 40;
     //Change as per your table header hight
     if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
         scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
     } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
         scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
     }
+   
 }
 
 - (IBAction)Cancel:(id)sender {
     //[self.navigationController popViewControllerAnimated:YES];
     // [self dismissViewControllerAnimated:YES completion:nil];
-    [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+    
+    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNo block:^(PFObject *object, NSError *error) {
+        if (!object) {
+            NSLog(@"The getFirstObject request failed.");
+        } else {
+            NSLog(@"Successfully retrieved the object.");
+            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded && !error) {
+                    NSLog(@"Transaction deleted from Parse");
+                        [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
+                } else {
+                    NSLog(@"error: %@", error);
+                }
+            }];
+        }
+    }];
+
+    
+    
+
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {

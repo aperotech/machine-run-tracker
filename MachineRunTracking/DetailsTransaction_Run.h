@@ -25,5 +25,5 @@
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *RunProcessArray;
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
-
+@property(nonatomic,strong) NSMutableArray *valueArray;
 @end

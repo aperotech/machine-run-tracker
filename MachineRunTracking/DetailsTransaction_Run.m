@@ -34,7 +34,7 @@
         self.RunDurationLabel.text=[DetialsTransaction_RunPF objectForKey:@"Run_Duration"];
         self.MachineNameLabel.text=[DetialsTransaction_RunPF objectForKey:@"Machine_Name"];
     }
-    
+    self.valueArray=[[NSMutableArray alloc]init];
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
    
@@ -55,12 +55,19 @@
                 self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
                 for (int i=0;i<[self.dataArray count];i++)
                 {
+                //    NSLog(@"The Data Array IS %@",self.dataArray);
                     NSString *newString=[[objects objectAtIndex:i]valueForKey:@"Name"];
                     [self.RunProcessArray addObject:newString];
+
+                   
                 }
+                
                 [self.activityIndicatorView stopAnimating];
             }
-                [self.tableView reloadData];
+                                NSLog(@"The Run Process Array Is %@",self.RunProcessArray);
+            NSLog(@"run Process Array Count %ld",[self.RunProcessArray count]);
+            
+            [self.tableView reloadData];
             
         }
     }];
@@ -81,16 +88,31 @@
             else {
             
                 self.runArrayRun=[[NSArray alloc]initWithArray:runArray];
-             
+                NSLog(@"The RunArrayRun Is %@",self.runArrayRun);
+
+/*for (int i=0; i<self.runArrayRun.count;i++) {
+                    NSString *newString=[self.runArrayRun objectAtIndex:i ];
+                    [self.valueArray addObject:newString];
+                    NSLog(@"the Value Array is %@",self.valueArray);
+                }
+  */              //[self.valueArray addObject:<#(id)#>]
+                
+                
+//NSLog(@"run Array Count %ld",[self.runArrayRun count]);
                 [self.tableView reloadData];
             }
             
         }
     }];
-
-    
+   // [self getData];
 }
-
+/*-(void)getData{
+    for (int j=0;j<self.RunProcessArray.count;j++) {
+        NSString *new=[self.RunProcessArray objectAtIndex:j];
+        self.valueArray=[self.runArrayRun valueForKey:new];
+    }
+    NSLog(@"Value Array Is %@",self.valueArray);
+}*/
 -(void)viewDidAppear:(BOOL)animated{
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
@@ -116,7 +138,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.ObjectCount + 1 ;
+    return self.ObjectCount ;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -124,6 +146,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+//[self getData];
     NSString *CellIdentifier1 = @"DetailsPostExtractionHeaderCellIdentifier";
     DetailsProcessRunCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     self.tableView.separatorColor = [UIColor lightGrayColor];
@@ -192,12 +215,17 @@
             valueLabel.tag = i+1 ;
             
             // if (self.sectionCount>= 1 && indexPath.row!=self.sectionCount )
+//for (int k=0;k<[self.runArrayRun count];k++) {
             if (indexPath.row>=0 && i>=0) {
+                
+              //
                 for (int j=0;j<[self.RunProcessArray count];j++) {
+                
                     if (valueLabel.tag==j+1 ) {
-                         valueLabel.text=[[self.runArrayRun objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];
+                         valueLabel.text=[[self.runArrayRun objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:j]];
                     }
                 }
+//}
             }
             
             [cell.contentView addSubview:valueLabel];

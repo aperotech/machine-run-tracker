@@ -51,7 +51,13 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 - (IBAction)logout:(id)sender {
     //PFUser *currentUser = [PFUser currentUser];
     //[PFUser logOut];

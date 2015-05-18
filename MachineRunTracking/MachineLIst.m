@@ -84,9 +84,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
 }
 
 - (PFQuery *)queryForTable
@@ -117,10 +120,30 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *CellIdentifier1 = @"MachineListHeaderCellIdentifier";
     MachineListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+    if (cell == nil) {
+        cell = [[MachineListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
+    }
     
+    // Configure the cell
+    cell.backgroundColor=[UIColor lightGrayColor];
+
     UIView *cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+    
     cellView.backgroundColor = [UIColor lightGrayColor];
+    //[cell addSubview:cellView];
+    cell.codeLabel.text=@"Code";
+    cell.nameLabel.text=@"Name";
+    cell.locationLabel.text=@"Location";
+    cell.capacityLabel.text=@"Capacity";
+    
+//[cell addSubview:cellView];
+//[cell addSubview:cellView];
+    
     [cellView addSubview:cell.contentView];
+    
+
+    
+    
     return cellView;
 }
 
@@ -148,8 +171,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     if (flag == 1) {
         return NO;
-    }
-    else
+    } else
         return YES;
 }
 

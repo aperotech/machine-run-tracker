@@ -36,7 +36,7 @@
 @property(nonatomic,strong)NSMutableArray *GetValuesFromRunTextFieldArray;
 @property(nonatomic,strong)NSMutableArray *NewValuesArray;
 @property(nonatomic,strong)NSMutableArray *FinalValuesArray;
-
+@property(nonatomic,strong)NSMutableArray *headerArray;
 //- (void)addORDeleteRows;
 
 @end

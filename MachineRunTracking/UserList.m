@@ -76,6 +76,15 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }*/
 
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
+
+
 // Override to customize what kind of query to perform on the class. The default is to query for
 // all objects ordered by createdAt descending.
 - (PFQuery *)queryForTable {

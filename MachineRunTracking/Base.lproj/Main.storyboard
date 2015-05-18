@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
@@ -2804,6 +2804,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Add User" id="tws-an-nuQ"/>
                     <nil key="simulatedTopBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="Oeb-g5-Vcg" id="eCe-ua-OSr"/>
                         <outlet property="emailTextField" destination="j3z-zV-FrA" id="pLr-yw-guB"/>
@@ -3135,6 +3136,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="CiR-jz-Bgx" id="Pi8-5V-I09"/>
                         <outlet property="currentPasswordField" destination="chx-bq-puo" id="JVI-v7-sUh"/>
@@ -3154,12 +3156,12 @@
         <scene sceneID="086-4X-LGa">
             <objects>
                 <tableViewController id="J4Y-ZE-f4a" customClass="MachineLIst" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="45" sectionHeaderHeight="10" sectionFooterHeight="10" id="dfQ-Cf-Stl">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dfQ-Cf-Stl">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MachineListHeaderCellIdentifier" id="WS4-Sj-vtd" customClass="MachineListCell">
+                            <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MachineListHeaderCellIdentifier" id="WS4-Sj-vtd" customClass="MachineListCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WS4-Sj-vtd" id="JLb-Cc-GZF">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -3187,32 +3189,6 @@
                                                 <mask key="constraints">
                                                     <include reference="kXX-aq-NNv"/>
                                                     <exclude reference="pI7-iR-hlH"/>
-                                                </mask>
-                                            </variation>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NGV-RS-hEG">
-                                            <rect key="frame" x="220" y="12" width="100" height="20"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="18" id="Yzk-Wk-VTr"/>
-                                                <constraint firstAttribute="width" constant="60" id="slU-bK-hZd">
-                                                    <variation key="heightClass=regular-widthClass=compact" constant="70"/>
-                                                </constraint>
-                                                <constraint firstAttribute="width" constant="100" id="x2c-u3-SzC"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="Yzk-Wk-VTr"/>
-                                                    <exclude reference="slU-bK-hZd"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="heightClass=regular-widthClass=compact">
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                                <mask key="constraints">
-                                                    <include reference="slU-bK-hZd"/>
-                                                    <exclude reference="x2c-u3-SzC"/>
                                                 </mask>
                                             </variation>
                                         </label>
@@ -3266,6 +3242,32 @@
                                                 </mask>
                                             </variation>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NGV-RS-hEG">
+                                            <rect key="frame" x="220" y="12" width="100" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="18" id="Yzk-Wk-VTr"/>
+                                                <constraint firstAttribute="width" constant="60" id="slU-bK-hZd">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="70"/>
+                                                </constraint>
+                                                <constraint firstAttribute="width" constant="100" id="x2c-u3-SzC"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Yzk-Wk-VTr"/>
+                                                    <exclude reference="slU-bK-hZd"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                <mask key="constraints">
+                                                    <include reference="slU-bK-hZd"/>
+                                                    <exclude reference="x2c-u3-SzC"/>
+                                                </mask>
+                                            </variation>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="centerY" secondItem="Qwz-If-2yu" secondAttribute="centerY" id="0zm-El-jAT"/>
@@ -3302,6 +3304,9 @@
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                                </accessibility>
                                 <connections>
                                     <outlet property="capacityLabel" destination="HTq-uq-8hd" id="HHw-Hh-mYb"/>
                                     <outlet property="codeLabel" destination="Qwz-If-2yu" id="TI6-iu-8Oe"/>

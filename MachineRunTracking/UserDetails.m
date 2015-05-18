@@ -82,6 +82,13 @@
     
     [super viewDidDisappear:animated];
 }
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 
 - (IBAction)UpdateButton:(id)sender {
     currentPassword = [self.currentPasswordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

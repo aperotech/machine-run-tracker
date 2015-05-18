@@ -100,7 +100,13 @@
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
 }
 
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;

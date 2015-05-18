@@ -106,7 +106,13 @@
     return UIBarPositionTopAttached;
 }
 
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 
 - (void)refreshTable {
     //TODO: refresh your data
@@ -116,7 +122,26 @@
 
 - (IBAction)Cancel:(id)sender {
     
-     [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
+  //
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+    
+    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNo block:^(PFObject *object, NSError *error) {
+        if (!object) {
+            NSLog(@"The getFirstObject request failed.");
+        } else {
+            NSLog(@"Successfully retrieved the object.");
+            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded && !error) {
+                    NSLog(@"Transaction deleted from Parse");
+                    [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
+                } else {
+                    NSLog(@"error: %@", error);
+                }
+            }];
+        }
+    }];
+
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -181,15 +206,15 @@
     
     
     
-//[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
-        if (parameterAdd_PrePF != nil) {
+/*if (parameterAdd_PrePF != nil) {
       [self updateParameters];
         }
         else {
       [self saveParameters];
         }
-        
+        */
 }
 
 - (void)saveParameters

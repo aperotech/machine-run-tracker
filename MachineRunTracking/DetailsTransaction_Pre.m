@@ -96,7 +96,13 @@
   
 
 }
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 -(void)viewDidAppear:(BOOL)animated{
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];

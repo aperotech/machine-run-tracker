@@ -108,7 +108,13 @@
     [datePickerToolbar setItems:dateBarItems animated:YES];
     [self.lastMaintanceDate setInputAccessoryView:datePickerToolbar];
 }
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 #pragma mark - Textfield delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

@@ -91,10 +91,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
+
 
 - (PFQuery *)queryForTable
 {
@@ -112,7 +109,13 @@
     
     return query;
 }
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }

@@ -49,6 +49,15 @@
     [super viewDidDisappear:animated];
 }
 
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
+
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     if (textField.text.length >= 20 && range.length == 0)
         return NO;

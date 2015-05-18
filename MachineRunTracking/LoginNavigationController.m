@@ -24,13 +24,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*- (BOOL)shouldAutorotate {
+- (BOOL)shouldAutorotate {
  return NO;
  }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft);
- }*/
+ return UIInterfaceOrientationPortrait;
+ }
 
 /*
 #pragma mark - Navigation

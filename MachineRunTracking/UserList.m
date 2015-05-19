@@ -68,14 +68,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
 }
 
-/*- (BOOL)shouldAutorotate {
-    return NO;
-}*/
-
-/*- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}*/
-
 - (BOOL)shouldAutorotate {
     return NO;
 }
@@ -83,7 +75,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return UIInterfaceOrientationPortrait;
 }
-
 
 // Override to customize what kind of query to perform on the class. The default is to query for
 // all objects ordered by createdAt descending.
@@ -102,15 +93,75 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UserListHeaderCell *cell = (UserListHeaderCell *)[tableView dequeueReusableCellWithIdentifier:@"UserListHeaderCell"];
     
-    UIView *cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
-    cellView.backgroundColor = [UIColor lightGrayColor];
-    [cellView addSubview:cell.nameLabel];
-    //[cellView addSubview:cell.emailLabel];
-    //[cellView addSubview:cell.userTypeLabel];
-    [cellView addSubview:cell.contentView];
-    return cellView;
+     NSString *CellIdentifier1=@"UserListHeaderCell";
+    
+    UserListHeaderCell *cell = (UserListHeaderCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+    if (cell == nil) {
+        cell = [[UserListHeaderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
+       
+
+    
+    }
+
+//    CGRect frameText;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        self.cellView = [[UIView alloc] init];//WithFrame:cell.contentView.bounds];
+        self.cellView.backgroundColor = [UIColor lightGrayColor];
+         [self.cellView addSubview:cell.contentView];
+    
+    }
+    else
+    {
+        self.cellView = [[UIView alloc] init];//WithFrame:cell.contentView.bounds];
+        self.cellView.backgroundColor = [UIColor lightGrayColor];
+
+        
+        UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(20,11,160,20)];
+        
+        nameLabel.text=@"Name";
+        nameLabel.preferredMaxLayoutWidth = 160;
+        nameLabel.numberOfLines = 0;
+        nameLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        nameLabel.textColor = [UIColor blackColor];
+        nameLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        
+        [self.cellView addSubview:nameLabel];
+        
+        UILabel *emailAddress = [[UILabel alloc]initWithFrame:CGRectMake(110,11,240,20)];
+        emailAddress.text=@"Email Address";
+        emailAddress.preferredMaxLayoutWidth = 240;
+        emailAddress.numberOfLines = 0;
+        emailAddress.lineBreakMode = NSLineBreakByCharWrapping;
+        emailAddress.textColor = [UIColor blackColor];
+        emailAddress.font = [UIFont boldSystemFontOfSize:14.0];
+        [emailAddress sizeToFit];
+        [self.cellView addSubview:emailAddress];
+        
+        UILabel *userType = [[UILabel alloc]initWithFrame:CGRectMake(230,11,80,20)];
+        userType.text=@"User Type";
+        userType.preferredMaxLayoutWidth = 80;
+        userType.numberOfLines = 0;
+        userType.lineBreakMode = NSLineBreakByCharWrapping;
+        userType.textColor = [UIColor blackColor];
+        userType.font = [UIFont boldSystemFontOfSize:14.0];
+        [userType sizeToFit];
+        
+        [self.cellView addSubview:userType];
+    [self.cellView addSubview:cell.contentView];
+    }
+   // cell.nameLabel.text=@"Name";
+    //cell.emailLabel.text=@"Email Address";
+    //cell.userTypeLabel.text=@"User Type";
+
+//[cellView addSubview:cell.emailLabel];
+//[cellView addSubview:cell.userTypeLabel];
+    //[cell addSubview:cellView];
+    
+    
+    return self.cellView;
 }
 
 

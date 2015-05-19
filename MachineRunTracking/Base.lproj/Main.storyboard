@@ -2174,7 +2174,6 @@
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="YlQ-sJ-qA2">
                                             <connections>
                                                 <action selector="Cancel:" destination="n7M-xh-KKU" id="3NY-e9-dMZ"/>
-                                                <segue destination="o7Z-zR-oVB" kind="unwind" unwindAction="unwindToTransactionListViewController:" id="tdz-Vv-0pP"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Next" id="Bnd-JI-SDd">
@@ -2329,6 +2328,7 @@
                         <outlet property="activityIndicatorView" destination="VEg-tB-L0u" id="Oct-Z8-2ag"/>
                         <outlet property="scrollView" destination="UaO-ZV-Dve" id="hmB-ar-kpq"/>
                         <segue destination="0DX-Le-gpT" kind="presentation" identifier="Run_ProcessToPost_ExtractionSegue" id="rpl-PL-ucm"/>
+                        <segue destination="o7Z-zR-oVB" kind="unwind" unwindAction="unwindToTransactionListViewController:" id="ob1-mv-3eu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NtZ-Dg-fEV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2355,7 +2355,6 @@
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="7R2-03-Hxh">
                                             <connections>
                                                 <action selector="Cancel:" destination="0DX-Le-gpT" id="eNO-hj-Fs1"/>
-                                                <segue destination="dkD-Cx-NTg" kind="unwind" unwindAction="unwindToTransactionListViewController:" id="MA7-rQ-bzN"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="dag-Ov-JgQ">
@@ -2481,7 +2480,6 @@
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Tci-ta-72b">
                                             <connections>
                                                 <action selector="Cancel:" destination="fwB-hf-z9B" id="cv5-3C-Lk2"/>
-                                                <segue destination="fIn-B7-UJA" kind="unwind" unwindAction="unwindToTransactionListViewController:" id="OpO-TH-vBn"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Next" id="Njz-Tg-PKw">
@@ -2593,6 +2591,7 @@
                         <outlet property="activityIndicatorView" destination="h4I-Jb-GKS" id="QtZ-9d-H8k"/>
                         <outlet property="tableView" destination="8eF-5U-jzh" id="XPk-N3-fEU"/>
                         <segue destination="n7M-xh-KKU" kind="presentation" identifier="Pre_ExtractionToRunExtractionSegue" id="b83-ar-RXf"/>
+                        <segue destination="fIn-B7-UJA" kind="unwind" unwindAction="unwindToTransactionListViewController:" id="q33-j6-kqn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BTU-s6-Re3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3156,10 +3155,10 @@
         <scene sceneID="086-4X-LGa">
             <objects>
                 <tableViewController id="J4Y-ZE-f4a" customClass="MachineLIst" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dfQ-Cf-Stl">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="dfQ-Cf-Stl">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MachineListHeaderCellIdentifier" id="WS4-Sj-vtd" customClass="MachineListCell">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -5101,6 +5100,10 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RBB-PJ-3f9" id="Od1-SD-ZI2">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B1i-DG-0ns">
+                                            <rect key="frame" x="0.0" y="114" width="600" height="45"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="63" translatesAutoresizingMaskIntoConstraints="NO" id="vVD-Pv-MyF">
                                             <rect key="frame" x="460" y="11" width="80" height="20"/>
                                             <constraints>

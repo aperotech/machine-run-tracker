@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>45CAB7DA-0E87-49C9-A53B-1DDAC5714B9D</string>
 	<key>IDESourceControlProjectName</key>
-	<string>MachineRunTracking</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>740E12768B2A2E0677F9407944A19E760D187E50</key>
 		<string>https://github.com/aperotech/machine-run-tracker.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>MachineRunTracking.xcodeproj</string>
+	<string>MachineRunTracking.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>740E12768B2A2E0677F9407944A19E760D187E50</key>

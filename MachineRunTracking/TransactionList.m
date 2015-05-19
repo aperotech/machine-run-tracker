@@ -54,14 +54,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    flag = 0;
+   // flag = 0;
     
-    userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
+   // userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
-    if ([userType isEqualToString:@"Standard"]) {
-        self.navigationItem.rightBarButtonItem.enabled = FALSE;
-        flag = 1;
-    }
+   // if ([userType isEqualToString:@"Standard"]) {
+//self.navigationItem.rightBarButtonItem.enabled = FALSE;
+//flag = 1;
+//}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -128,9 +128,53 @@
     NSString *CellIdentifier1 = @"TransactionListHeaderCellIdentifier";
     TransactionListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     
-    UIView *cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
-    cellView.backgroundColor = [UIColor lightGrayColor];
-    [cellView addSubview:cell.contentView];
+   
+    UIView *cellView;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+        cellView.backgroundColor = [UIColor lightGrayColor];
+        [cellView addSubview:cell.contentView];
+    }
+    else
+    {
+        cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+        cellView.backgroundColor = [UIColor lightGrayColor];
+        UILabel *runNoLabel = [[UILabel alloc]initWithFrame:CGRectMake(10,12,80,20)];
+        
+        runNoLabel.text=@"Run No";
+        runNoLabel.preferredMaxLayoutWidth = 80;
+        runNoLabel.numberOfLines = 0;
+        runNoLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        runNoLabel.textColor = [UIColor blackColor];
+        runNoLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        
+        [cellView addSubview:runNoLabel];
+        
+        UILabel *machineNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(75,12,140,20)];
+        machineNameLabel.text=@"Machine";
+        machineNameLabel.preferredMaxLayoutWidth = 140;
+        machineNameLabel.numberOfLines = 0;
+        machineNameLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        machineNameLabel.textColor = [UIColor blackColor];
+        machineNameLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [machineNameLabel sizeToFit];
+        [cellView addSubview:machineNameLabel];
+        
+        UILabel *runDateLabel = [[UILabel alloc]initWithFrame:CGRectMake(190,12,160,20)];
+        runDateLabel.text=@"Run Date";
+        runDateLabel.preferredMaxLayoutWidth = 160;
+        runDateLabel.numberOfLines = 0;
+        runDateLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        runDateLabel.textColor = [UIColor blackColor];
+        runDateLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [runDateLabel sizeToFit];
+        
+        [cellView addSubview:runDateLabel];
+        [cellView addSubview:cell.contentView];
+    
+    }
+    
     return cellView;
     /*self.tableView.separatorColor = [UIColor lightGrayColor];
     cell.backgroundColor=[UIColor grayColor];
@@ -158,10 +202,10 @@
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (flag == 1) {
-        return NO;
-    }
-    else
+//if (flag == 1) {
+   //     return NO;
+   // }
+//else
         return YES;
 }
 

@@ -118,9 +118,53 @@
     NSString *CellIdentifier1 = @"ParameterListHeaderCellIdentifier";
     ParameterListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     
-    UIView *cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
-    cellView.backgroundColor = [UIColor lightGrayColor];
-    [cellView addSubview:cell.contentView];
+    
+    UIView *cellView;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        cellView = [[UIView alloc] init];
+        cellView.backgroundColor = [UIColor lightGrayColor];
+        [cellView addSubview:cell.contentView];
+    }
+    else
+    {
+        cellView = [[UIView alloc] init];
+        cellView.backgroundColor = [UIColor lightGrayColor];
+        UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(10,12,160,20)];
+        
+        nameLabel.text=@"Name";
+        nameLabel.preferredMaxLayoutWidth = 160;
+        nameLabel.numberOfLines = 0;
+        nameLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        nameLabel.textColor = [UIColor blackColor];
+        nameLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        
+        [cellView addSubview:nameLabel];
+        
+        UILabel *typeLabel = [[UILabel alloc]initWithFrame:CGRectMake(100,12,140,20)];
+        typeLabel.text=@"Type";
+        typeLabel.preferredMaxLayoutWidth = 140;
+        typeLabel.numberOfLines = 0;
+        typeLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        typeLabel.textColor = [UIColor blackColor];
+        typeLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [typeLabel sizeToFit];
+        [cellView addSubview:typeLabel];
+        
+        UILabel *unitsLabel = [[UILabel alloc]initWithFrame:CGRectMake(210,12,100,20)];
+        unitsLabel.text=@"Units";
+        unitsLabel.preferredMaxLayoutWidth = 100;
+        unitsLabel.numberOfLines = 0;
+        unitsLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        unitsLabel.textColor = [UIColor blackColor];
+        unitsLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [unitsLabel sizeToFit];
+        
+        [cellView addSubview:unitsLabel];
+        [cellView addSubview:cell.contentView];
+    
+    
+    }
     return cellView;
     
     //self.tableView.separatorColor = [UIColor lightGrayColor];
@@ -140,8 +184,8 @@
         
         // Configure the cell
     NSString* string1 = [object objectForKey:@"Name"];
-    NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-    cell.parameterName.text=string2;
+  //  NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+    cell.parameterName.text=string1;
         cell.parameterType.text=[object objectForKey:@"Type"];
         cell.parameterUnits.text=[object objectForKey:@"Units"];
         
@@ -152,8 +196,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     if (flag == 1) {
         return NO;
-    }
-    else
+    } else
         return YES;
 }
 

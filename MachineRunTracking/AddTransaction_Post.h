@@ -20,6 +20,7 @@
 @property(nonatomic,strong)NSString *Parameter3;
 @property(nonatomic,strong)IBOutlet UITableView *tableView;
 @property(nonatomic,strong)NSString *LastInsertedTransactionNo;
+@property(nonatomic,strong)NSString *LastInsertedTransactionNoObjectId;
 -(IBAction)SaveAndExit:(id)sender;
 
 @property(nonatomic,strong)NSArray *postExtractionArray;

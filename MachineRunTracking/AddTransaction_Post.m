@@ -33,7 +33,7 @@
             // Found UserStats
           
             self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
-           
+            self.LastInsertedTransactionNoObjectId=[object objectId];
         }
         
         
@@ -114,7 +114,7 @@
     
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     
-    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNo block:^(PFObject *object, NSError *error) {
+    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNoObjectId block:^(PFObject *object, NSError *error) {
         if (!object) {
             NSLog(@"The getFirstObject request failed.");
         } else {

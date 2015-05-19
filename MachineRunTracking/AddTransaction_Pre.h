@@ -36,10 +36,11 @@
 @property(nonatomic,strong)NSString *Parameter2;
 @property(nonatomic,strong)NSString *Parameter3;
 
-@property(nonatomic,strong)NSArray *placeholderArray;
+//(nonatomic,strong)NSArray *placeholderArray;
 @property(nonatomic,strong)NSArray *preExtractionArray;
 @property(nonatomic,strong)NSMutableArray *GetValuesFromTextFieldArray;
 @property(nonatomic,strong)NSMutableArray *RunProcessArray;
 @property(nonatomic,strong)NSString *LastInsertedTransactionNo;
+@property(nonatomic,strong)NSString *LastInsertedTransactionNoObjectId;
 
 @end

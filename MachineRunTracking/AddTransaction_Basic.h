@@ -22,7 +22,7 @@
 @property (strong, nonatomic) IBOutlet UITextField * activeField;
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 
-@property(nonatomic,strong)NSArray *placeholderArray;
+//@property(nonatomic,strong)NSArray *placeholderArray;
 
 //- (IBAction)dismissKeyboard:(id)sender;
 @end

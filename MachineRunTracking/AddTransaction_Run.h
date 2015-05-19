@@ -31,6 +31,7 @@
 @property(nonatomic,strong)NSString *Parameter4;
 @property(nonatomic,strong)NSString *Value;
 @property(nonatomic,strong)NSString *LastInsertedTransactionNo;
+@property(nonatomic,strong)NSString *LastInsertedTransactionNoObjectID;
 
 @property(nonatomic,strong)NSArray *runPalceholderArray;
 @property(nonatomic,strong)NSMutableArray *GetValuesFromRunTextFieldArray;

@@ -90,10 +90,11 @@
             // Did not find any UserStats for the current user
         } else {
             // Found UserStats
-            self.placeholderArray=[object allKeys];
+//self.placeholderArray=[object allKeys];
         
             self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
-       
+            self.LastInsertedTransactionNoObjectId=[object objectId];
+            NSLog(@"name %@ and object id %@",self.LastInsertedTransactionNo,self.LastInsertedTransactionNoObjectId);
         }
         
         
@@ -126,15 +127,16 @@
     
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     
-    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNo block:^(PFObject *object, NSError *error) {
+    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNoObjectId block:^(PFObject *object, NSError *error) {
         if (!object) {
             NSLog(@"The getFirstObject request failed.");
         } else {
-            NSLog(@"Successfully retrieved the object.");
+          //  NSLog(@"Successfully retrieved the object.");
             [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded && !error) {
                     NSLog(@"Transaction deleted from Parse");
                     [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
+//[self dismissViewControllerAnimated:YES completion:nil];
                 } else {
                     NSLog(@"error: %@", error);
                 }
@@ -206,15 +208,14 @@
     
     
     
-[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+//[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
-/*if (parameterAdd_PrePF != nil) {
+if (parameterAdd_PrePF != nil) {
       [self updateParameters];
         }
         else {
       [self saveParameters];
         }
-        */
 }
 
 - (void)saveParameters
@@ -249,6 +250,7 @@
 
     // There was a problem, check error.description
      }
+         
      }];
      
      //  class created;

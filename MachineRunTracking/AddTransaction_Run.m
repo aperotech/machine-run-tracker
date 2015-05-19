@@ -39,6 +39,7 @@
             // Did not find any UserStats for the current user
         } else {
             self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
+            self.LastInsertedTransactionNoObjectID=[object objectId];
         }
     }];
     
@@ -119,7 +120,7 @@
     
     aTableView.separatorColor = [UIColor lightGrayColor];
     
-    if (cell != nil) {
+  /*  if (cell != nil) {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
         
         for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
@@ -141,7 +142,35 @@
             cell.backgroundColor=[UIColor grayColor];
             [cell.contentView addSubview:valueTextField];
         }
+    }*/
+    if (cell != nil) {
+        cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
+        CGRect frameText;
+        
+        for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
+            
+            valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
+
+            valueTextField.textColor = [UIColor whiteColor];
+            valueTextField.font = [UIFont boldSystemFontOfSize:14.0];
+            
+            if (i == 0) {
+                frameText=CGRectMake(10, 5, 80, 17);
+            } else {
+                frameText=CGRectMake(valueTextField.frame.origin.x+105*i, 5, 80, 17);
+            }
+            
+            [valueTextField setFrame:frameText];
+            valueTextField.tag = i + 1;
+            
+            valueTextField.text = [self.headerArray objectAtIndex:i];
+        
+            //headerLabel.backgroundColor = [UIColor clearColor];
+            cell.backgroundColor = [UIColor darkGrayColor];
+            [cell.contentView addSubview:valueTextField];
+        }
     }
+
     [activityIndicatorView stopAnimating];
     return cell;
 }
@@ -162,11 +191,11 @@
 }
 
 - (void)addRow:(id)sender {
-/*if (self.sectionCount>=1) {
+if (self.sectionCount>=1) {
         if (self.parameterAdd_RunPF != nil) {
             [self updateParameters];
         } else [self saveParameters];
-    }*/
+    }
     self.sectionCount=self.sectionCount+1;
     
     [aTableView reloadData];
@@ -177,7 +206,7 @@
     
     Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    if (cell != nil)
+/*if (cell != nil)
     {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
@@ -206,6 +235,45 @@
             }
             [cell.contentView addSubview:valueTextField];
         }
+    }*/
+    if (cell != nil) {
+        cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        CGRect frameText;
+        for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
+            valueTextField = [[UITextField alloc] init];
+           // valueLabel.preferredMaxLayoutWidth = 80;
+          //  valueLabel.numberOfLines = 1;
+          //  valueLabel.lineBreakMode = NSLineBreakByCharWrapping;
+            valueTextField.textColor = [UIColor blackColor];
+            valueTextField.font = [UIFont systemFontOfSize:14.0];
+            valueTextField.textAlignment = NSTextAlignmentCenter;
+            
+            if (i == 0) {
+                frameText=CGRectMake(10, 14, 80, 17);
+            } else {
+                frameText=CGRectMake(valueTextField.frame.origin.x+100*i, 14, 80, 17);
+            }
+            
+            [valueTextField setFrame:frameText];
+            valueTextField.tag = (indexPath.row * self.RunProcessArray.count)+i+1;
+            
+            valueTextField.borderStyle = UITextBorderStyleRoundedRect;
+            [valueTextField setReturnKeyType:UIReturnKeyDefault];
+            
+            [valueTextField setEnablesReturnKeyAutomatically:YES];
+            [valueTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
+            [valueTextField setDelegate:self];
+            valueTextField.placeholder=[self.RunProcessArray objectAtIndex:i];
+            
+            if (count > 0 && ((self.sectionCount - indexPath.row) >1)) {
+                for (int j=0;j<self.GetValuesFromRunTextFieldArray.count;j++) {
+                    if (valueTextField.tag==j+1) {
+                        valueTextField.text=[self.GetValuesFromRunTextFieldArray objectAtIndex:j];
+                    }
+                }
+            }
+         [cell.contentView addSubview:valueTextField];
+        }
     }
     count++;
     return cell;
@@ -229,7 +297,7 @@
     
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     
-    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNo block:^(PFObject *object, NSError *error) {
+    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNoObjectID block:^(PFObject *object, NSError *error) {
         if (!object) {
             NSLog(@"The getFirstObject request failed.");
         } else {
@@ -279,11 +347,11 @@
         NSUInteger tag, tagCount;
         int x=0;
         
-        tagCount = self.RunProcessArray.count;
+        tagCount = self.headerArray.count;
         
         while (tagCount > 0) {
-            tag = ((self.sectionCount - 1) * self.RunProcessArray.count + x +1);
-            parameterColumn = [self.RunProcessArray objectAtIndex:x];
+            tag = ((self.sectionCount - 1) * self.headerArray.count + x +1);
+            parameterColumn = [self.headerArray objectAtIndex:x];
             ParameterValue[parameterColumn] = [self.GetValuesFromRunTextFieldArray objectAtIndex:(tag-1)];
            
             x++;
@@ -296,8 +364,7 @@
             if (succeeded) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                 [activityIndicatorView stopAnimating];
-               
-                   // The object has been saved.
+                                  // The object has been saved.
             } else {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                     message:[error.userInfo objectForKey:@"error"]

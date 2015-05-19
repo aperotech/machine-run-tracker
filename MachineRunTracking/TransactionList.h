@@ -11,8 +11,6 @@
 
 @interface TransactionList : PFQueryTableViewController
 
-@property (nonatomic, strong) PFUser * CurrentUser;
-@property BOOL *PermissionFlag;
-
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
+
 @end

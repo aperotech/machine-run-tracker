@@ -18,6 +18,8 @@
 @implementation ParameterList {
     NSString *userType;
     int flag;
+    UIView *cellView;
+    UILabel *nameLabel, *typeLabel, *unitsLabel;
 }
 
 - (id)initWithCoder:(NSCoder *)aCoder
@@ -77,8 +79,7 @@
 }
 
 
-- (void)viewDidUnload
-{
+- (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
@@ -91,17 +92,11 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return UIInterfaceOrientationPortrait;
 }
-- (PFQuery *)queryForTable
-{
+
+- (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+    [query orderByAscending:@"Type"];
     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    // If no objects are loaded in memory, we look to the cache first to fill the table
-    // and then subsequently do a query against the network.
-    /*    if ([self.objects count] == 0) {
-     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-     }*/
-    
-    //    [query orderByAscending:@"name"];
     
     return query;
 }
@@ -118,58 +113,41 @@
     NSString *CellIdentifier1 = @"ParameterListHeaderCellIdentifier";
     ParameterListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     
-    
-    UIView *cellView;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         cellView = [[UIView alloc] init];
         cellView.backgroundColor = [UIColor lightGrayColor];
         [cellView addSubview:cell.contentView];
-    }
-    else
-    {
+    } else {
         cellView = [[UIView alloc] init];
         cellView.backgroundColor = [UIColor lightGrayColor];
-        UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(10,12,160,20)];
         
-        nameLabel.text=@"Name";
-        nameLabel.preferredMaxLayoutWidth = 160;
-        nameLabel.numberOfLines = 0;
-        nameLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(10,11,80,17)];
+        nameLabel.text = @"Name";
+        nameLabel.preferredMaxLayoutWidth = 80;
+        nameLabel.numberOfLines = 1;
         nameLabel.textColor = [UIColor blackColor];
         nameLabel.font = [UIFont boldSystemFontOfSize:14.0];
-        
         [cellView addSubview:nameLabel];
         
-        UILabel *typeLabel = [[UILabel alloc]initWithFrame:CGRectMake(100,12,140,20)];
-        typeLabel.text=@"Type";
-        typeLabel.preferredMaxLayoutWidth = 140;
-        typeLabel.numberOfLines = 0;
-        typeLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        typeLabel = [[UILabel alloc]initWithFrame:CGRectMake(100,11,105,17)];
+        typeLabel.text = @"Type";
+        typeLabel.preferredMaxLayoutWidth = 105;
+        typeLabel.numberOfLines = 1;
         typeLabel.textColor = [UIColor blackColor];
         typeLabel.font = [UIFont boldSystemFontOfSize:14.0];
-        [typeLabel sizeToFit];
         [cellView addSubview:typeLabel];
         
-        UILabel *unitsLabel = [[UILabel alloc]initWithFrame:CGRectMake(210,12,100,20)];
-        unitsLabel.text=@"Units";
-        unitsLabel.preferredMaxLayoutWidth = 100;
-        unitsLabel.numberOfLines = 0;
-        unitsLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        unitsLabel = [[UILabel alloc]initWithFrame:CGRectMake(215,11,60,17)];
+        unitsLabel.text = @"Units";
+        unitsLabel.preferredMaxLayoutWidth = 60;
+        unitsLabel.numberOfLines = 1;
         unitsLabel.textColor = [UIColor blackColor];
         unitsLabel.font = [UIFont boldSystemFontOfSize:14.0];
-        [unitsLabel sizeToFit];
-        
         [cellView addSubview:unitsLabel];
+        
         [cellView addSubview:cell.contentView];
-    
-    
     }
     return cellView;
-    
-    //self.tableView.separatorColor = [UIColor lightGrayColor];
-    //cell.backgroundColor=[UIColor grayColor];
-    //return cell;
 }
 
 // Override to customize the look of a cell representing an object. The default is to display
@@ -202,9 +180,20 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
+    NSString *parameterType = object[@"Type"];
+    NSString *className;
+    
+    if ([parameterType isEqualToString:@"Pre-Extraction"]) {
+        className = @"Pre_Extraction";
+    } else if ([parameterType isEqualToString:@"Process Run"]) {
+        className = @"Run_Process";
+    } else if ([parameterType isEqualToString:@"Post-Extraction"]) {
+        className = @"Post_Extraction";
+    }
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+        PFQuery *query = [PFQuery queryWithClassName:className];
+        [query whereKeyExists:object[@"Name"]];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (objects.count > 0) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"

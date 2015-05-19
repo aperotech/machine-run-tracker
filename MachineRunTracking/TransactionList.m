@@ -24,6 +24,8 @@
 @implementation TransactionList {
     NSString *userType;
     int flag;
+    UIView *cellView;
+    UILabel *runNoLabel, *machineNameLabel, *runDateLabel;
 }
 
 @synthesize activityIndicatorView;
@@ -54,18 +56,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-   // flag = 0;
+    // flag = 0;
+    // userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
-   // userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
-    
-   // if ([userType isEqualToString:@"Standard"]) {
-//self.navigationItem.rightBarButtonItem.enabled = FALSE;
-//flag = 1;
-//}
+    // if ([userType isEqualToString:@"Standard"]) {
+    //self.navigationItem.rightBarButtonItem.enabled = FALSE;
+    //flag = 1;
+    //}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
     [self refreshTable:nil];
     
     if (self.objects.count == 0){
@@ -77,21 +79,18 @@
     }
 }
 
-- (void)refreshTable:(NSNotification *) notification
-{//[activityIndicatorView stopAnimating];
+- (void)refreshTable:(NSNotification *) notification {
+    //[activityIndicatorView stopAnimating];
     // Reload the recipes
     [self loadObjects];
 }
 
 
-- (void)viewDidUnload
-{
+- (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
 }
-
-
 
 - (PFQuery *)queryForTable
 {
@@ -116,6 +115,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return UIInterfaceOrientationPortrait;
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -128,63 +128,46 @@
     NSString *CellIdentifier1 = @"TransactionListHeaderCellIdentifier";
     TransactionListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     
-   
-    UIView *cellView;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
         cellView.backgroundColor = [UIColor lightGrayColor];
         [cellView addSubview:cell.contentView];
-    }
-    else
-    {
+    } else {
         cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
         cellView.backgroundColor = [UIColor lightGrayColor];
-        UILabel *runNoLabel = [[UILabel alloc]initWithFrame:CGRectMake(10,12,80,20)];
         
-        runNoLabel.text=@"Run No";
-        runNoLabel.preferredMaxLayoutWidth = 80;
-        runNoLabel.numberOfLines = 0;
-        runNoLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        runNoLabel = [[UILabel alloc]initWithFrame:CGRectMake(10,11,61,17)];
+        runNoLabel.text=@"Run #";
+        runNoLabel.preferredMaxLayoutWidth = 61;
+        runNoLabel.numberOfLines = 1;
         runNoLabel.textColor = [UIColor blackColor];
         runNoLabel.font = [UIFont boldSystemFontOfSize:14.0];
-        
         [cellView addSubview:runNoLabel];
         
-        UILabel *machineNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(75,12,140,20)];
+        machineNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(81,11,100,17)];
         machineNameLabel.text=@"Machine";
-        machineNameLabel.preferredMaxLayoutWidth = 140;
-        machineNameLabel.numberOfLines = 0;
-        machineNameLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        machineNameLabel.preferredMaxLayoutWidth = 100;
+        machineNameLabel.numberOfLines = 1;
         machineNameLabel.textColor = [UIColor blackColor];
         machineNameLabel.font = [UIFont boldSystemFontOfSize:14.0];
-        [machineNameLabel sizeToFit];
         [cellView addSubview:machineNameLabel];
         
-        UILabel *runDateLabel = [[UILabel alloc]initWithFrame:CGRectMake(190,12,160,20)];
+        runDateLabel = [[UILabel alloc]initWithFrame:CGRectMake(191,11,110,17)];
         runDateLabel.text=@"Run Date";
-        runDateLabel.preferredMaxLayoutWidth = 160;
-        runDateLabel.numberOfLines = 0;
-        runDateLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        runDateLabel.preferredMaxLayoutWidth = 110;
+        runDateLabel.numberOfLines = 1;
         runDateLabel.textColor = [UIColor blackColor];
         runDateLabel.font = [UIFont boldSystemFontOfSize:14.0];
-        [runDateLabel sizeToFit];
-        
         [cellView addSubview:runDateLabel];
+        
         [cellView addSubview:cell.contentView];
-    
     }
-    
     return cellView;
-    /*self.tableView.separatorColor = [UIColor lightGrayColor];
-    cell.backgroundColor=[UIColor grayColor];
-    return cell;*/
 }
 
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
         static NSString *simpleTableIdentifier = @"TransactionListCellIdentifier";
         
         TransactionListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -251,11 +234,9 @@
     }
 }
 
-- (void) objectsDidLoad:(NSError *)error
-{
+- (void) objectsDidLoad:(NSError *)error {
     [super objectsDidLoad:error];
     [error localizedDescription];
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -263,12 +244,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-- (IBAction)unwindToTransactionListViewController:(UIStoryboardSegue *)unwindSegue
-{
-    
+- (IBAction)unwindToTransactionListViewController:(UIStoryboardSegue *)unwindSegue {
     if ([unwindSegue.identifier isEqualToString:@"PostUnwindToTransactionListSegue"]) {
-        AddTransaction_Post *AddPostVC = (AddTransaction_Post *)unwindSegue.sourceViewController;
+        //AddTransaction_Post *AddPostVC = (AddTransaction_Post *)unwindSegue.sourceViewController;
        // NSLog(@"The Parameter 0 are %@",AddPostVC.Parameter0);
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(refreshTable:)
@@ -277,7 +255,7 @@
         [self.tableView reloadData];
     }
     else if ([unwindSegue.identifier isEqualToString:@"PreUnwindToTransactionListSegue"]){
-        AddTransaction_Pre *addtransactionPre=(AddTransaction_Pre *)unwindSegue.sourceViewController;
+        //AddTransaction_Pre *addtransactionPre=(AddTransaction_Pre *)unwindSegue.sourceViewController;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(refreshTable:)
                                                      name:@"refreshTable"
@@ -285,7 +263,7 @@
         [self.tableView reloadData];
     }
     else if ([unwindSegue.identifier isEqualToString:@"RunUnwindToTransactionListSegue"]){
-        AddTransaction_Run *addtransactionRun=(AddTransaction_Run *)unwindSegue.sourceViewController;
+        //AddTransaction_Run *addtransactionRun=(AddTransaction_Run *)unwindSegue.sourceViewController;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(refreshTable:)
                                                      name:@"refreshTable"
@@ -293,11 +271,6 @@
         [self.tableView reloadData];
     }
 }
-
-
-
-
-
 
 /*
 #pragma mark - Navigation

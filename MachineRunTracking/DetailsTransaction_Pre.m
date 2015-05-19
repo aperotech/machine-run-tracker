@@ -39,6 +39,7 @@
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 selectKeys:@[@"Name"]];
     [query1 whereKey:@"Type" equalTo:@"Pre-Extraction"];
+    query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
    
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
        
@@ -73,6 +74,7 @@
 
     PFQuery *query2 = [PFQuery queryWithClassName:@"Pre_Extraction"];
     [query2 whereKey:@"Run_No" equalTo:Run_noLabel.text];
+    query2.cachePolicy = kPFCachePolicyCacheThenNetwork;
   
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         [self.activityIndicator startAnimating];
@@ -103,19 +105,18 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return UIInterfaceOrientationPortrait;
 }
+
 -(void)viewDidAppear:(BOOL)animated{
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{ 
-    return ObjectCount ;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section { 
+    return ObjectCount;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -139,7 +140,7 @@
             
             cell.parameterLabel.text=[[runArrayPre objectAtIndex:0]objectForKey:[RunProcessArray objectAtIndex:i]];
         
-          cell.ParameterNameLabel.text=[RunProcessArray objectAtIndex:i];
+          cell.ParameterNameLabel.text = [NSString stringWithFormat:@"%@ :",[RunProcessArray objectAtIndex:i]];
         
         }
         

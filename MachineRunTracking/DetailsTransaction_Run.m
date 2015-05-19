@@ -42,6 +42,7 @@
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
+    query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (error) {
@@ -50,26 +51,27 @@
             for (int i=0; i < objects.count ;i++) {
                 [RunProcessArray addObject:[[objects objectAtIndex:i]valueForKey:@"Name"]];
             }
+            [self.tableView reloadData];
             [self.activityIndicatorView stopAnimating];
         }
-     NSLog(@"The Objects Array  Is %@",objects);
     }];
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Run_Process"];
     [query2 whereKey:@"Run_No" equalTo:self.RunNoLabel.text];
+    query2.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         if(error){
             NSLog(@"Error!");
         } else {
             runArrayRun = runArray;
-        
         }
        
     }];
 }
 
-- (void)viewDidAppear:(BOOL)animated{
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
     

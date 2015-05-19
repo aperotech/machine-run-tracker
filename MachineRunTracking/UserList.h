@@ -11,7 +11,6 @@
 #import <ParseUI/ParseUI.h>
 
 @interface UserList :PFQueryTableViewController
-@property(nonatomic,strong) UIView *cellView;
 
 @end
 

@@ -121,13 +121,7 @@
     [datePickerToolbar setItems:dateBarItems animated:YES];
     [self.lastMaintanceDate setInputAccessoryView:datePickerToolbar];
 }
-- (BOOL)shouldAutorotate {
-    return NO;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return UIInterfaceOrientationPortrait;
-}/*- (void)keyboardWillShow:(NSNotification *)notification
+/*- (void)keyboardWillShow:(NSNotification *)notification
 {
     if(self.datePickerToolbar == nil) {
         self.datePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 400, 320, 44)] ;
@@ -180,7 +174,13 @@
     
     [super viewDidDisappear:animated];
 }
+- (BOOL)shouldAutorotate {
+    return NO;
+}
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return UIInterfaceOrientationPortrait;
+}
 #pragma mark - Textfield delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

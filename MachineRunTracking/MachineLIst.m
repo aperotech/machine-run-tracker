@@ -91,7 +91,9 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return UIInterfaceOrientationPortrait;
 }
-
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationPortrait;
+}
 - (PFQuery *)queryForTable
 {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
@@ -125,25 +127,77 @@
     }
     
     // Configure the cell
-    cell.backgroundColor=[UIColor lightGrayColor];
-
-    UIView *cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+    //cell.backgroundColor=[UIColor lightGrayColor];
+    UIView *cellView;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        cellView = [[UIView alloc] init];
+        cellView.backgroundColor = [UIColor lightGrayColor];
+         [cellView addSubview:cell.contentView];
+    }
+    else
+    {
+   
+        cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+        cellView.backgroundColor = [UIColor lightGrayColor];
+        
+        
+        UILabel *codeLabel = [[UILabel alloc]initWithFrame:CGRectMake(10,12,50,20)];
+        
+        codeLabel.text=@"Code";
+        codeLabel.preferredMaxLayoutWidth = 50;
+        codeLabel.numberOfLines = 0;
+        codeLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        codeLabel.textColor = [UIColor blackColor];
+        codeLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        
+        [cellView addSubview:codeLabel];
+        
+        UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(60,12,110,20)];
+        nameLabel.text=@"Name";
+        nameLabel.preferredMaxLayoutWidth = 110;
+        nameLabel.numberOfLines = 0;
+        nameLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        nameLabel.textColor = [UIColor blackColor];
+        nameLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [cellView addSubview:nameLabel];
+        
+        UILabel *LocationLabel = [[UILabel alloc]initWithFrame:CGRectMake(150,12,100,20)];
+        LocationLabel.text=@"Location";
+        LocationLabel.preferredMaxLayoutWidth = 100;
+        LocationLabel.numberOfLines = 0;
+        LocationLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        LocationLabel.textColor = [UIColor blackColor];
+        LocationLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [LocationLabel sizeToFit];
+        
+        [cellView addSubview:LocationLabel];
+        
+        UILabel *capacityLabel = [[UILabel alloc]initWithFrame:CGRectMake(230,12,100,20)];
+        capacityLabel.text=@"Capacity";
+        capacityLabel.preferredMaxLayoutWidth = 100;
+        capacityLabel.numberOfLines = 0;
+        capacityLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        capacityLabel.textColor = [UIColor blackColor];
+        capacityLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [capacityLabel sizeToFit];
+        
+        [cellView addSubview:capacityLabel];
+        
+        [cellView addSubview:cell.contentView];
+    }
     
-    cellView.backgroundColor = [UIColor lightGrayColor];
     //[cell addSubview:cellView];
-    cell.codeLabel.text=@"Code";
-    cell.nameLabel.text=@"Name";
-    cell.locationLabel.text=@"Location";
-    cell.capacityLabel.text=@"Capacity";
+//cell.codeLabel.text=@"Code";
+//cell.nameLabel.text=@"Name";
+//cell.locationLabel.text=@"Location";
+//cell.capacityLabel.text=@"Capacity";
     
 //[cell addSubview:cellView];
 //[cell addSubview:cellView];
-    
-    [cellView addSubview:cell.contentView];
     
 
-    
-    
+   // [cell addSubview:cellView];
     return cellView;
 }
 
@@ -171,7 +225,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     if (flag == 1) {
         return NO;
-    } else
+    }   else
         return YES;
 }
 

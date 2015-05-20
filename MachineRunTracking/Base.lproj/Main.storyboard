@@ -468,7 +468,8 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Main Menu" id="Sq6-P1-i67">
-                        <barButtonItem key="rightBarButtonItem" title="Logout" id="rqp-9C-qao">
+                        <barButtonItem key="rightBarButtonItem" image="LogoutBarButton" id="rqp-9C-qao">
+                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="logout:" destination="FQy-Bd-ulw" id="T95-NR-Ojz"/>
                             </connections>
@@ -5529,7 +5530,10 @@
             <point key="canvasLocation" x="-2909" y="2568"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="LogoutBarButton" width="22" height="22"/>
+    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="A2O-yX-5no"/>
+        <segue reference="F97-oo-XWG"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -61,6 +61,12 @@
 		A1A2B0351AE8D7E500A9DA14 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B0331AE8D7CF00A9DA14 /* libsqlite3.dylib */; };
 		A1A2B0361AE8D7E700A9DA14 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A2B0311AE8D7C500A9DA14 /* libz.dylib */; };
 		A1D01A081AE7CAD300DFD00D /* Process_RunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D01A071AE7CAD300DFD00D /* Process_RunCell.m */; };
+		A1E702261B0C6B8800770A0F /* Logout@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1E702231B0C6B8800770A0F /* Logout@1x.png */; };
+		A1E702271B0C6B8800770A0F /* Logout@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1E702241B0C6B8800770A0F /* Logout@2x.png */; };
+		A1E702281B0C6B8800770A0F /* Logout@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1E702251B0C6B8800770A0F /* Logout@3x.png */; };
+		A1E702321B0C73EA00770A0F /* Add.png in Resources */ = {isa = PBXBuildFile; fileRef = A1E7022F1B0C73EA00770A0F /* Add.png */; };
+		A1E702331B0C73EA00770A0F /* Add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1E702301B0C73EA00770A0F /* Add@2x.png */; };
+		A1E702341B0C73EA00770A0F /* Add@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1E702311B0C73EA00770A0F /* Add@3x.png */; };
 		A1F960FC1B0338FE00B7AE9C /* LoginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F960FB1B0338FE00B7AE9C /* LoginNavigationController.m */; };
 		A1F960FF1B03392100B7AE9C /* MainMenuNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F960FE1B03392100B7AE9C /* MainMenuNavigationController.m */; };
 		A1F961021B035C2500B7AE9C /* UserListHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F961011B035C2500B7AE9C /* UserListHeaderCell.m */; };
@@ -168,6 +174,12 @@
 		A1A2B0331AE8D7CF00A9DA14 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		A1D01A061AE7CAD300DFD00D /* Process_RunCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Process_RunCell.h; sourceTree = "<group>"; };
 		A1D01A071AE7CAD300DFD00D /* Process_RunCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Process_RunCell.m; sourceTree = "<group>"; };
+		A1E702231B0C6B8800770A0F /* Logout@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logout@1x.png"; sourceTree = "<group>"; };
+		A1E702241B0C6B8800770A0F /* Logout@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logout@2x.png"; sourceTree = "<group>"; };
+		A1E702251B0C6B8800770A0F /* Logout@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logout@3x.png"; sourceTree = "<group>"; };
+		A1E7022F1B0C73EA00770A0F /* Add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Add.png; sourceTree = "<group>"; };
+		A1E702301B0C73EA00770A0F /* Add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Add@2x.png"; sourceTree = "<group>"; };
+		A1E702311B0C73EA00770A0F /* Add@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Add@3x.png"; sourceTree = "<group>"; };
 		A1F960FA1B0338FE00B7AE9C /* LoginNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginNavigationController.h; sourceTree = "<group>"; };
 		A1F960FB1B0338FE00B7AE9C /* LoginNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginNavigationController.m; sourceTree = "<group>"; };
 		A1F960FD1B03392100B7AE9C /* MainMenuNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuNavigationController.h; sourceTree = "<group>"; };
@@ -268,6 +280,7 @@
 				044DC1931ADBCC9E002578C2 /* Transactions */,
 				04461CE41AD3A3FA00CBC80A /* User Interface */,
 				04461CB41AD3913700CBC80A /* Images.xcassets */,
+				A1E7021C1B0C67BA00770A0F /* Images */,
 				04461CA71AD3913700CBC80A /* Supporting Files */,
 				04461CCF1AD3A2A700CBC80A /* Frameworks */,
 			);
@@ -433,6 +446,19 @@
 			name = "View Transaction";
 			sourceTree = "<group>";
 		};
+		A1E7021C1B0C67BA00770A0F /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				A1E7022F1B0C73EA00770A0F /* Add.png */,
+				A1E702301B0C73EA00770A0F /* Add@2x.png */,
+				A1E702311B0C73EA00770A0F /* Add@3x.png */,
+				A1E702231B0C6B8800770A0F /* Logout@1x.png */,
+				A1E702241B0C6B8800770A0F /* Logout@2x.png */,
+				A1E702251B0C6B8800770A0F /* Logout@3x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -514,9 +540,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1E702341B0C73EA00770A0F /* Add@3x.png in Resources */,
+				A1E702331B0C73EA00770A0F /* Add@2x.png in Resources */,
 				A120C64E1AF0B21C004DB0D2 /* Main.storyboard in Resources */,
+				A1E702281B0C6B8800770A0F /* Logout@3x.png in Resources */,
+				A1E702321B0C73EA00770A0F /* Add.png in Resources */,
 				04461CB81AD3913700CBC80A /* LaunchScreen.xib in Resources */,
 				04461CB51AD3913700CBC80A /* Images.xcassets in Resources */,
+				A1E702261B0C6B8800770A0F /* Logout@1x.png in Resources */,
+				A1E702271B0C6B8800770A0F /* Logout@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

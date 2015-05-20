@@ -176,16 +176,17 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 50.0f;
+    return 40.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    UIView *footerView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
+    UIView *footerView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
     UIButton *addRow=[UIButton buttonWithType:UIButtonTypeCustom];
-    [addRow setTitle:@"Add New Row" forState:UIControlStateNormal];
+    addRow.frame = CGRectMake(5, 5, 30, 30);
+    [addRow setImage:[UIImage imageNamed:@"AddRowButton"] forState:UIControlStateNormal];
     [addRow addTarget:self action:@selector(addRow:) forControlEvents:UIControlEventTouchUpInside];
-    [addRow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];//set the color this is may be different for iOS 7
-    addRow.frame=CGRectMake(0, 0, 130, 30); //set some large width to ur title
+    //[addRow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];//set the color this is may be different for iOS 7
+     //set some large width to ur title
     [footerView addSubview:addRow];
     return footerView;
 }

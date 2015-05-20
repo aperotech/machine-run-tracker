@@ -247,8 +247,8 @@ if (parameterAdd_PrePF != nil) {
       PFObject *NewParameter=[PFObject objectWithClassName:@"Pre_Extraction"];
      
      if([NewParameter save]) {
-   
-     PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
+         
+              PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
          
          for (int i=0;i<[RunProcessArray count];i++) {
              NSString *newPara=[RunProcessArray objectAtIndex:i];

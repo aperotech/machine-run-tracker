@@ -22,6 +22,7 @@
     UIDatePicker *datePicker;
     UIToolbar *MachinePickerToolbar, *datePickerToolbar;
     NSString *date;
+    int value;
     NSDateFormatter *formatter;
 }
 
@@ -41,6 +42,10 @@
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         
         if (!object) {
+            value=1;
+             NSString *runNo=[NSString stringWithFormat:@"R%04i",value];
+            self.Run_NoText=runNo;
+            self.Run_NoText.enabled=FALSE;
             // Did not find any UserStats for the current user
         } else {
             // Found UserStats
@@ -48,7 +53,7 @@
             
            NSString *LastInsertedRunNo = [object objectForKey:@"Run_No"];
             NSString *numbers = [LastInsertedRunNo stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]];
-            int value = [numbers intValue];
+             value = [numbers intValue];
             
             NSString *runNo=[NSString stringWithFormat:@"R%04i",value+1];
             self.Run_NoText.text=runNo;

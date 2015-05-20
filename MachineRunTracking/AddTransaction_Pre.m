@@ -7,7 +7,7 @@
 //
 
 #import "AddTransaction_Pre.h"
-
+#import "AddTransaction_Run.h"
 #import "AddTransaction_PreCell.h"
 #import <Parse/Parse.h>
 @interface AddTransaction_Pre ()
@@ -122,29 +122,50 @@
 }
 
 - (IBAction)Cancel:(id)sender {
-    
-  //
-    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                    message:@"Do want to cancel transaction?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"No"
+                                          otherButtonTitles:@"Yes", nil];
+    [alert show];
+ }
+
+-(void)DeleteTransaction{
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
-    
-    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNoObjectId block:^(PFObject *object, NSError *error) {
-        if (!object) {
-            NSLog(@"The getFirstObject request failed.");
+    [query whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            // Do something with the found objects
+            for (PFObject *object in objects) {
+                [object deleteInBackground];
+                
+            }
+           
         } else {
-          //  NSLog(@"Successfully retrieved the object.");
-            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded && !error) {
-                    NSLog(@"Transaction deleted from Parse");
-                    [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
-//[self dismissViewControllerAnimated:YES completion:nil];
-                } else {
-                    NSLog(@"error: %@", error);
-                }
-            }];
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+            // [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
         }
     }];
 
 }
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch(buttonIndex) {
+        case 0:
+            break;
+        case 1:
+            [self DeleteTransaction];
+            
+            [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
+            
+            break;
+    }
+}
+
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -221,7 +242,7 @@ if (parameterAdd_PrePF != nil) {
 - (void)saveParameters
 {
     [activityIndicatorView startAnimating];
-      PFObject *NewParameter=[PFObject  objectWithClassName:@"Pre_Extraction" ];
+      PFObject *NewParameter=[PFObject objectWithClassName:@"Pre_Extraction"];
      
      if([NewParameter save]) {
    
@@ -309,6 +330,11 @@ if (parameterAdd_PrePF != nil) {
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+  /*  if ([[segue identifier] isEqualToString:@"Pre_ExtractionToRunExtractionSegue"])
+    {
+        AddTransaction_Run *addVC = (AddTransaction_Run *)segue.destinationViewController;
+    }*/
+    
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }

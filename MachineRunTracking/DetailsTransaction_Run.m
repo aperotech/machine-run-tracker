@@ -65,8 +65,10 @@
             NSLog(@"Error!");
         } else {
             runArrayRun = runArray;
+        //[[NSArray alloc]initWithArray:runArray];
+//[self.tableView reloadData];
         }
-       
+NSLog(@"the run array run is %@",runArrayRun);
     }];
 }
 
@@ -116,8 +118,8 @@
             
             headerLabel = [[UILabel alloc] init]; // 10 px padding between each view
             headerLabel.preferredMaxLayoutWidth = 80;
-            headerLabel.numberOfLines = 0;
-            headerLabel.lineBreakMode = NSLineBreakByCharWrapping;
+            headerLabel.numberOfLines = 1;
+            headerLabel.lineBreakMode = NSLineBreakByWordWrapping;
             headerLabel.textColor = [UIColor whiteColor];
             headerLabel.font = [UIFont boldSystemFontOfSize:14.0];
             
@@ -154,7 +156,7 @@
         for (int i = 0 ; i < [RunProcessArray count]; i++) {
             valueLabel = [[UILabel alloc] init];
             valueLabel.preferredMaxLayoutWidth = 80;
-            valueLabel.numberOfLines = 1;
+            valueLabel.numberOfLines = 0;
             valueLabel.lineBreakMode = NSLineBreakByCharWrapping;
             valueLabel.textColor = [UIColor blackColor];
             valueLabel.font = [UIFont systemFontOfSize:14.0];
@@ -163,17 +165,14 @@
             if (i == 0) {
                 frameText=CGRectMake(10, 14, 80, 17);
             } else {
-                frameText=CGRectMake(headerLabel.frame.origin.x+100*i, 14, 80, 17);
+                frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 14, 80, 17);
             }
             
             [valueLabel setFrame:frameText];
             valueLabel.tag = (indexPath.row * RunProcessArray.count)+i+1;
-            NSString *values= [[runArrayRun objectAtIndex:indexPath.row]objectForKey:[RunProcessArray objectAtIndex:i]];
-            if ([values isEqualToString:@" "]) {
-              valueLabel.text=@"Not Applicable";
-            }else{
-                valueLabel.text =values;
-            }
+          
+            valueLabel.text =[[runArrayRun objectAtIndex:indexPath.row]objectForKey:[RunProcessArray objectAtIndex:i]];
+//NSLog(@"value label tag is %ld & the Value Text Is %@ & indexpath.row is %ld",valueLabel.tag,valueLabel.text,indexPath.row);
                 [cell.contentView addSubview:valueLabel];
         }
     }

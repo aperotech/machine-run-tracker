@@ -64,7 +64,6 @@
     }
     
 }
-
 /*- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
@@ -90,6 +89,7 @@
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft;
     
 }*/
+
 -(void)viewDidAppear:(BOOL)animated{
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];

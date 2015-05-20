@@ -110,29 +110,72 @@
 }
 
 - (IBAction)Cancel:(id)sender {
-    
-    
-    PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
-    
-    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNoObjectId block:^(PFObject *object, NSError *error) {
-        if (!object) {
-            NSLog(@"The getFirstObject request failed.");
-        } else {
-            NSLog(@"Successfully retrieved the object.");
-            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded && !error) {
-                    NSLog(@"Transaction deleted from Parse");
-    [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
-                } else {
-                    NSLog(@"error: %@", error);
-                }
-            }];
-        }
-    }];
-
-    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                    message:@"Do want to cancel transaction?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"No"
+                                          otherButtonTitles:@"Yes", nil];
+    [alert show];
+  
    
 }
+
+-(void)DeleteTransaction{
+    PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+    [query whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            // Do something with the found objects
+            for (PFObject *object in objects) {
+                [object deleteInBackground];
+                
+            }
+            
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+            // [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
+        }
+    }];
+    
+    PFQuery *query1= [PFQuery queryWithClassName:@"Run_Process"];
+    [query1 whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            // Do something with the found objects
+            for (PFObject *object in objects) {
+                [object deleteInBackground];
+                
+            }
+            
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch(buttonIndex) {
+        case 0:
+            break;
+        case 1:
+            [self DeleteTransaction];
+            
+            [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
+            
+            break;
+    }
+}
+
+
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;

@@ -150,8 +150,8 @@
     // Create PFObject with recipe information
     PFObject *parameterObj = [PFObject objectWithClassName:@"Parameters"];
     NSString* string1 = nameText.text;
-//NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
-    [parameterObj setObject:string1 forKey:@"Name"];
+NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+    [parameterObj setObject:string2 forKey:@"Name"];
     [parameterObj setObject:descriptionText.text forKey:@"Description"];
     [parameterObj setObject:typeText.text forKey:@"Type"];
     [parameterObj setObject:unitsText.text forKey:@"Units"];

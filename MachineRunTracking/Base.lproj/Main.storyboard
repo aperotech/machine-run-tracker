@@ -2105,8 +2105,8 @@
                                             <outlet property="delegate" destination="lMg-ym-jsS" id="hdf-vr-Brp"/>
                                         </connections>
                                     </textField>
-                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="center" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="cPY-qL-VvS">
-                                        <rect key="frame" x="262" y="241" width="20" height="20"/>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="center" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="cPY-qL-VvS">
+                                        <rect key="frame" x="290" y="230" width="20" height="20"/>
                                         <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="color" red="0.0016079409359999999" green="0.5849367177" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
@@ -2117,6 +2117,7 @@
                                 <constraints>
                                     <constraint firstItem="LFk-o4-bgk" firstAttribute="top" secondItem="YBN-mb-4Di" secondAttribute="top" constant="40" id="Bq3-US-sLk"/>
                                     <constraint firstAttribute="width" constant="600" id="JIm-Fx-QzJ"/>
+                                    <constraint firstItem="cPY-qL-VvS" firstAttribute="top" secondItem="vBo-TB-Sjy" secondAttribute="bottom" constant="10" id="Kdl-tt-mGk"/>
                                     <constraint firstAttribute="trailing" secondItem="vBo-TB-Sjy" secondAttribute="trailing" id="LET-D1-KCd"/>
                                     <constraint firstAttribute="centerX" secondItem="c1N-dY-ucZ" secondAttribute="centerX" id="M2Y-vw-EmP"/>
                                     <constraint firstAttribute="centerX" secondItem="LFk-o4-bgk" secondAttribute="centerX" id="YNr-s5-X2q"/>
@@ -2125,6 +2126,7 @@
                                     <constraint firstItem="vBo-TB-Sjy" firstAttribute="top" secondItem="H4H-w7-b3Y" secondAttribute="bottom" constant="20" id="gBV-jl-d1w"/>
                                     <constraint firstItem="LFk-o4-bgk" firstAttribute="top" secondItem="YBN-mb-4Di" secondAttribute="top" constant="20" id="gJb-pT-uVW"/>
                                     <constraint firstAttribute="centerX" secondItem="H4H-w7-b3Y" secondAttribute="centerX" id="m2j-Yh-b1f"/>
+                                    <constraint firstItem="vBo-TB-Sjy" firstAttribute="centerX" secondItem="cPY-qL-VvS" secondAttribute="centerX" id="nKS-RQ-WcT"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="528" id="ogJ-IZ-uAN"/>
                                     <constraint firstAttribute="bottom" secondItem="vBo-TB-Sjy" secondAttribute="bottom" id="opa-ZF-uS3"/>
                                     <constraint firstItem="H4H-w7-b3Y" firstAttribute="top" secondItem="c1N-dY-ucZ" secondAttribute="bottom" constant="20" id="wa0-WQ-gis"/>

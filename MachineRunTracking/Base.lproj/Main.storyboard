@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
@@ -256,7 +256,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="adv-U3-tUL">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="adv-U3-tUL">
                                 <rect key="frame" x="325" y="124" width="125" height="125"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="125" id="6TP-xF-4Gp"/>
@@ -264,8 +264,7 @@
                                     <constraint firstAttribute="width" constant="125" id="YF9-jY-nmm"/>
                                     <constraint firstAttribute="height" constant="125" id="dlT-kr-abg"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <state key="normal" title="Machines">
+                                <state key="normal" image="MachinesButton">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="default">
@@ -290,7 +289,7 @@
                                     <segue destination="J4Y-ZE-f4a" kind="show" identifier="MainMenuToMachineListSegue" id="jEu-iz-J1E"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxz-3T-fq7">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxz-3T-fq7">
                                 <rect key="frame" x="150" y="124" width="125" height="125"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="125" id="0Xj-Av-xCP"/>
@@ -298,8 +297,7 @@
                                     <constraint firstAttribute="height" constant="125" id="WEe-Dd-JDq"/>
                                     <constraint firstAttribute="width" constant="125" id="wJj-Yv-o1w"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <state key="normal" title="Users">
+                                <state key="normal" image="UsersButton">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="default">
@@ -324,7 +322,7 @@
                                     <action selector="UserButtonClick:" destination="FQy-Bd-ulw" eventType="touchUpInside" id="3ix-bV-zIV"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CGb-SK-HWk">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CGb-SK-HWk">
                                 <rect key="frame" x="150" y="289" width="125" height="125"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="125" id="IcC-Dc-d8o"/>
@@ -332,8 +330,7 @@
                                     <constraint firstAttribute="width" constant="125" id="Zax-Xs-m4I"/>
                                     <constraint firstAttribute="height" constant="125" id="zZB-ZU-MoN"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <state key="normal" title="Parameters">
+                                <state key="normal" image="ParametersButton">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="default">
@@ -358,7 +355,7 @@
                                     <segue destination="zra-OM-u0N" kind="show" identifier="MainMenuToParameterListSegue" id="m9P-Nm-OgP"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ODC-vD-AmK">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ODC-vD-AmK">
                                 <rect key="frame" x="325" y="289" width="125" height="125"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="125" id="5pQ-yz-G4R"/>
@@ -366,8 +363,7 @@
                                     <constraint firstAttribute="width" constant="125" id="eN2-Us-uxH"/>
                                     <constraint firstAttribute="width" constant="125" id="qhI-6A-Cbg"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <state key="normal" title="Transactions">
+                                <state key="normal" image="Transactions.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="default">
@@ -1855,15 +1851,15 @@
                                 <exclude reference="Avb-5M-ka3"/>
                                 <exclude reference="Ov7-8u-3T8"/>
                                 <exclude reference="NkS-nM-HVq"/>
+                                <exclude reference="SQM-Fs-X2X"/>
+                                <exclude reference="N3X-FI-Gko"/>
+                                <exclude reference="Ntj-wE-msR"/>
+                                <exclude reference="Wg3-JP-lxk"/>
                                 <exclude reference="8JM-W7-O11"/>
                                 <exclude reference="ZPz-bw-oqW"/>
                                 <exclude reference="pse-uV-snI"/>
                                 <exclude reference="inq-ze-a6n"/>
                                 <exclude reference="keq-Xe-tWx"/>
-                                <exclude reference="SQM-Fs-X2X"/>
-                                <exclude reference="N3X-FI-Gko"/>
-                                <exclude reference="Ntj-wE-msR"/>
-                                <exclude reference="Wg3-JP-lxk"/>
                                 <exclude reference="0zP-nP-ocD"/>
                                 <exclude reference="3PM-5N-VOK"/>
                                 <exclude reference="DMs-NC-yif"/>
@@ -1877,6 +1873,13 @@
                                 <exclude reference="gil-tW-vD8"/>
                                 <exclude reference="4qf-PH-3cT"/>
                                 <include reference="NkS-nM-HVq"/>
+                                <exclude reference="Rx1-pV-Fd0"/>
+                                <include reference="SQM-Fs-X2X"/>
+                                <exclude reference="1pm-cZ-C2U"/>
+                                <exclude reference="LSh-ei-gl0"/>
+                                <include reference="N3X-FI-Gko"/>
+                                <include reference="Ntj-wE-msR"/>
+                                <include reference="Wg3-JP-lxk"/>
                                 <include reference="8JM-W7-O11"/>
                                 <include reference="ZPz-bw-oqW"/>
                                 <exclude reference="h2M-W0-riD"/>
@@ -1885,13 +1888,6 @@
                                 <include reference="inq-ze-a6n"/>
                                 <exclude reference="keq-Xe-tWx"/>
                                 <exclude reference="nf6-We-3gE"/>
-                                <exclude reference="Rx1-pV-Fd0"/>
-                                <include reference="SQM-Fs-X2X"/>
-                                <exclude reference="1pm-cZ-C2U"/>
-                                <exclude reference="LSh-ei-gl0"/>
-                                <include reference="N3X-FI-Gko"/>
-                                <include reference="Ntj-wE-msR"/>
-                                <include reference="Wg3-JP-lxk"/>
                                 <include reference="0zP-nP-ocD"/>
                                 <exclude reference="F4c-7a-pSa"/>
                                 <include reference="3PM-5N-VOK"/>
@@ -5532,6 +5528,10 @@
     </scenes>
     <resources>
         <image name="LogoutBarButton" width="22" height="22"/>
+        <image name="MachinesButton" width="125" height="125"/>
+        <image name="ParametersButton" width="125" height="125"/>
+        <image name="Transactions.png" width="125" height="125"/>
+        <image name="UsersButton" width="125" height="125"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="F97-oo-XWG"/>

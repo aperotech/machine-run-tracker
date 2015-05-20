@@ -112,8 +112,8 @@
     
     return query;
 }
-- (BOOL)shouldAutorotate {
-/*BOOL allowRotation = YES;
+/*- (BOOL)shouldAutorotate {
+BOOL allowRotation = YES;
     
     if ([self isKindOfClass:[self.navigationController class]])
     {
@@ -124,19 +124,28 @@
         allowRotation = YES;
     }
     return allowRotation;
- */
+ 
     return YES;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+}- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     
     if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft){
         return UIInterfaceOrientationPortrait;
     }
     return UIInterfaceOrientationMaskPortrait;
+}*/- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+-(BOOL)shouldAutorotate
+{
+    return NO;
+}
 
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }

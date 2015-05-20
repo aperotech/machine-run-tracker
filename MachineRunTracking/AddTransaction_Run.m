@@ -64,7 +64,7 @@
             }
             else {
                 
-                self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
+//self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
                 self.headerArray=[[NSMutableArray alloc]init];
                 self.RunProcessArray=[[NSMutableArray alloc]init];
                 self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
@@ -155,9 +155,9 @@
             valueTextField.font = [UIFont boldSystemFontOfSize:14.0];
             
             if (i == 0) {
-                frameText=CGRectMake(10, 5, 80, 17);
+                frameText=CGRectMake(10, 5, 100, 17);
             } else {
-                frameText=CGRectMake(valueTextField.frame.origin.x+105*i, 5, 80, 17);
+                frameText=CGRectMake(valueTextField.frame.origin.x+105*i, 5, 100, 17);
             }
             
             [valueTextField setFrame:frameText];
@@ -194,8 +194,11 @@
 if (self.sectionCount>=1) {
         if (self.parameterAdd_RunPF != nil) {
             [self updateParameters];
-        } else [self saveParameters];
+        } else{
+            
+        [self saveParameters];
     }
+}
     self.sectionCount=self.sectionCount+1;
     
     [aTableView reloadData];
@@ -294,28 +297,68 @@ if (self.sectionCount>=1) {
 - (IBAction)Cancel:(id)sender {
     //[self.navigationController popViewControllerAnimated:YES];
     // [self dismissViewControllerAnimated:YES completion:nil];
+//[self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                    message:@"Do want to cancel transaction?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"No"
+                                          otherButtonTitles:@"Yes", nil];
+    [alert show];
     
+   
+}
+
+-(void)DeleteTransaction{
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
-    
-    [query getObjectInBackgroundWithId:self.LastInsertedTransactionNoObjectID block:^(PFObject *object, NSError *error) {
-        if (!object) {
-            NSLog(@"The getFirstObject request failed.");
+    [query whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            // Do something with the found objects
+            for (PFObject *object in objects) {
+                [object deleteInBackground];
+                
+            }
+           
         } else {
-            NSLog(@"Successfully retrieved the object.");
-            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded && !error) {
-                    NSLog(@"Transaction deleted from Parse");
-                        [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
-                } else {
-                    NSLog(@"error: %@", error);
-                }
-            }];
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+            // [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
         }
     }];
-
     
-    
+    PFQuery *query1= [PFQuery queryWithClassName:@"Pre_Extraction"];
+    [query1 whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            // Do something with the found objects
+            for (PFObject *object in objects) {
+                [object deleteInBackground];
+                
+            }
+           
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch(buttonIndex) {
+        case 0:
+            break;
+        case 1:
+            [self DeleteTransaction];
+            
+             [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
+            
+            break;
+    }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {

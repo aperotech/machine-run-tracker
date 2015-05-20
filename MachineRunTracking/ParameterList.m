@@ -162,8 +162,8 @@
         
         // Configure the cell
     NSString* string1 = [object objectForKey:@"Name"];
-  //  NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-    cell.parameterName.text=string1;
+    NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+    cell.parameterName.text=string2;
         cell.parameterType.text=[object objectForKey:@"Type"];
         cell.parameterUnits.text=[object objectForKey:@"Units"];
         
@@ -193,7 +193,9 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         PFQuery *query = [PFQuery queryWithClassName:className];
-        [query whereKeyExists:object[@"Name"]];
+        NSString* string1 = [object objectForKey:@"Name"];
+        NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+        [query whereKeyExists:string2];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (objects.count > 0) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"

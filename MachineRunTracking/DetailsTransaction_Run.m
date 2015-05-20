@@ -22,12 +22,10 @@
     NSArray *runArrayRun;
 }
 
-@synthesize DetialsTransaction_RunPF;
+@synthesize DetialsTransaction_RunPF, activityIndicator;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self.activityIndicatorView startAnimating];
     
     self.navigationController.navigationItem.title=@"Process Run";
     if (DetialsTransaction_RunPF !=NULL) {
@@ -39,6 +37,8 @@
     
     RunProcessArray = [[NSMutableArray alloc]init];
     runArrayRun = [[NSArray alloc]init];
+    
+    [self.activityIndicator startAnimating];
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
@@ -52,7 +52,7 @@
                 [RunProcessArray addObject:[[objects objectAtIndex:i]valueForKey:@"Name"]];
             }
             [self.tableView reloadData];
-            [self.activityIndicatorView stopAnimating];
+            [self.activityIndicator stopAnimating];
         }
     }];
     

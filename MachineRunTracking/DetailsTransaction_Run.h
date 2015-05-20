@@ -18,6 +18,7 @@
 @property(strong,nonatomic)PFObject *DetialsTransaction_RunPF;
 
 @property (weak ,nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
+
 @end

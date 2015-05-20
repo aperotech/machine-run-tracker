@@ -16,12 +16,12 @@
 
 @implementation DetailsTransaction_Post
 
-@synthesize DetialsTransaction_PostPF;
+@synthesize DetialsTransaction_PostPF, activityIndicator;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.activityIndicatorView startAnimating];
-      self.navigationController.navigationItem.title=@"Post-extraction";
+    
+    self.navigationController.navigationItem.title = @"Post-Extraction";
     // Do any additional setup after loading the view.
     if (DetialsTransaction_PostPF !=NULL) {
         self.RunNoLabel.text=[DetialsTransaction_PostPF objectForKey:@"Run_No"];
@@ -29,7 +29,8 @@
         self.RunDurationLabel.text=[DetialsTransaction_PostPF objectForKey:@"Run_Duration"];
         self.MachineNameLabel.text=[DetialsTransaction_PostPF objectForKey:@"Machine_Name"];
     }
-    // Do any additional setup after loading the view.
+    
+    [self.activityIndicator startAnimating];
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
      [query1 selectKeys:@[@"Name"]];
     [query1 whereKey:@"Type" equalTo:@"Post-Extraction"];
@@ -58,16 +59,11 @@
                     NSString *newString=[[objects objectAtIndex:i]valueForKey:@"Name"];
                     [self.RunProcessArray addObject:newString];
                    
-                    //[activityIndicatorView stopAnimating];
-                }
-                
-
-                
-                
-                
+                    //[activityIndicator stopAnimating];
+                }                
                 [self.tableView reloadData];
             }
-            [self.activityIndicatorView stopAnimating];
+            [self.activityIndicator stopAnimating];
             //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
         }
     }];

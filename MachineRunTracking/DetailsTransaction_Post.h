@@ -23,6 +23,7 @@
 @property(nonatomic,strong)NSArray *PostExtractionArray;
 @property(nonatomic ,strong)NSMutableArray *RunProcessArray;
 @property(nonatomic)NSInteger ObjectCount;
-@property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end

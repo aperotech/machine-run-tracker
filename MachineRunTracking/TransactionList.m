@@ -14,6 +14,7 @@
 #import "SegmentedControlVC.h"
 #import "AddTransaction_Pre.h"
 #import "AddTransaction_Run.h"
+#import "MainMenu.h"
 #import <Parse/Parse.h>
 #import "AppDelegate.h"
 
@@ -56,17 +57,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // flag = 0;
-    // userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
+     flag = 0;
+     userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
-    // if ([userType isEqualToString:@"Standard"]) {
+     if ([userType isEqualToString:@"Standard"]) {
     //self.navigationItem.rightBarButtonItem.enabled = FALSE;
-    //flag = 1;
-    //}
+    flag = 1;
+     }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+  
+    NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+[[UIDevice currentDevice] setValue:value forKey:@"orientation"];
 
     [self refreshTable:nil];
     
@@ -109,12 +113,29 @@
     return query;
 }
 - (BOOL)shouldAutorotate {
-    return NO;
+/*BOOL allowRotation = YES;
+    
+    if ([self isKindOfClass:[self.navigationController class]])
+    {
+        allowRotation = NO;
+    }
+    if ([self isKindOfClass:[self.childViewControllers class]])
+    {
+        allowRotation = YES;
+    }
+    return allowRotation;
+ */
+    return YES;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return UIInterfaceOrientationPortrait;
+    
+    if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft){
+        return UIInterfaceOrientationPortrait;
+    }
+    return UIInterfaceOrientationMaskPortrait;
 }
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -185,10 +206,10 @@
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-//if (flag == 1) {
-   //     return NO;
-   // }
-//else
+if (flag == 1) {
+   return NO;
+}
+else
         return YES;
 }
 

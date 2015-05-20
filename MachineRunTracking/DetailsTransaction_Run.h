@@ -18,11 +18,6 @@
 @property(strong,nonatomic)PFObject *DetialsTransaction_RunPF;
 
 @property (weak ,nonatomic) IBOutlet UITableView *tableView;
-@property(nonatomic)NSInteger ObjectCount;
-@property (strong,nonatomic)NSArray *runArrayRun;
 
-@property(nonatomic,strong)NSMutableArray *GetValuesFromRunTextFieldArray;
-@property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) NSMutableArray *RunProcessArray;
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @end

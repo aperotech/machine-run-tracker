@@ -15,7 +15,9 @@
 @end
 
 @implementation DetailsTransaction_Post
+
 @synthesize DetialsTransaction_PostPF;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.activityIndicatorView startAnimating];
@@ -31,6 +33,7 @@
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
      [query1 selectKeys:@[@"Name"]];
     [query1 whereKey:@"Type" equalTo:@"Post-Extraction"];
+    query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
    
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
        
@@ -71,6 +74,7 @@
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Post_Extraction"];
     [query2 whereKey:@"Run_No" equalTo:self.RunNoLabel.text];
+    query2.cachePolicy = kPFCachePolicyCacheThenNetwork;
    
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
        
@@ -91,10 +95,8 @@
             
         }
     }];
-    
-    
-
 }
+
 -(void)viewDidAppear:(BOOL)animated{
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
@@ -107,8 +109,8 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return UIInterfaceOrientationPortrait;
 }
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
@@ -136,13 +138,9 @@
         if (indexPath.row==i) {
             
             cell.parameterLabel.text=[[self.runArrayPost objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];
-            //NSLog(@"parameter label ids %@",cell.parameterLabel.text);
-            cell.ParameterNameLabel.text=[self.RunProcessArray objectAtIndex:i];
-            //NSLog(@"parameter name label ids %@",cell.ParameterNameLabel.text);
+            cell.ParameterNameLabel.text = [NSString stringWithFormat:@"%@ :", [self.RunProcessArray objectAtIndex:i]];
         }
-        
     }
-        
     return cell;
 }
 

@@ -14,10 +14,9 @@
 
 @implementation UserList {
     NSMutableArray *NewUserArray;
+    UIView *cellView;
+    UILabel *nameLabel, *emailLabel, *typeLabel;
 }
-
-//@dynamic activityIndicatorView;
-
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
@@ -93,75 +92,45 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
-     NSString *CellIdentifier1=@"UserListHeaderCell";
+    NSString *CellIdentifier1=@"UserListHeaderCell";
     
     UserListHeaderCell *cell = (UserListHeaderCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-    if (cell == nil) {
-        cell = [[UserListHeaderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
-       
-
     
-    }
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        cellView = [[UIView alloc] init];//WithFrame:cell.contentView.bounds];
+        cellView.backgroundColor = [UIColor lightGrayColor];
+        [cellView addSubview:cell.contentView];
+    } else {
+        cellView = [[UIView alloc] init];//WithFrame:cell.contentView.bounds];
+        cellView.backgroundColor = [UIColor lightGrayColor];
 
-//    CGRect frameText;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        self.cellView = [[UIView alloc] init];//WithFrame:cell.contentView.bounds];
-        self.cellView.backgroundColor = [UIColor lightGrayColor];
-         [self.cellView addSubview:cell.contentView];
-    
-    }
-    else
-    {
-        self.cellView = [[UIView alloc] init];//WithFrame:cell.contentView.bounds];
-        self.cellView.backgroundColor = [UIColor lightGrayColor];
-
-        
-        UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(20,11,160,20)];
-        
-        nameLabel.text=@"Name";
-        nameLabel.preferredMaxLayoutWidth = 160;
-        nameLabel.numberOfLines = 0;
-        nameLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(10,11,90,17)];
+        nameLabel.text = @"Name";
+        nameLabel.preferredMaxLayoutWidth = 90;
+        nameLabel.numberOfLines = 1;
         nameLabel.textColor = [UIColor blackColor];
         nameLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [cellView addSubview:nameLabel];
         
-        [self.cellView addSubview:nameLabel];
+        emailLabel = [[UILabel alloc]initWithFrame:CGRectMake(110,11,110,17)];
+        emailLabel.text = @"Email";
+        emailLabel.preferredMaxLayoutWidth = 110;
+        emailLabel.numberOfLines = 1;
+        emailLabel.textColor = [UIColor blackColor];
+        emailLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [cellView addSubview:emailLabel];
         
-        UILabel *emailAddress = [[UILabel alloc]initWithFrame:CGRectMake(110,11,240,20)];
-        emailAddress.text=@"Email Address";
-        emailAddress.preferredMaxLayoutWidth = 240;
-        emailAddress.numberOfLines = 0;
-        emailAddress.lineBreakMode = NSLineBreakByCharWrapping;
-        emailAddress.textColor = [UIColor blackColor];
-        emailAddress.font = [UIFont boldSystemFontOfSize:14.0];
-        [emailAddress sizeToFit];
-        [self.cellView addSubview:emailAddress];
+        typeLabel = [[UILabel alloc]initWithFrame:CGRectMake(230,11,70,17)];
+        typeLabel.text=@"User Type";
+        typeLabel.preferredMaxLayoutWidth = 70;
+        typeLabel.numberOfLines = 1;
+        typeLabel.textColor = [UIColor blackColor];
+        typeLabel.font = [UIFont boldSystemFontOfSize:14.0];
+        [cellView addSubview:typeLabel];
         
-        UILabel *userType = [[UILabel alloc]initWithFrame:CGRectMake(230,11,80,20)];
-        userType.text=@"User Type";
-        userType.preferredMaxLayoutWidth = 80;
-        userType.numberOfLines = 0;
-        userType.lineBreakMode = NSLineBreakByCharWrapping;
-        userType.textColor = [UIColor blackColor];
-        userType.font = [UIFont boldSystemFontOfSize:14.0];
-        [userType sizeToFit];
-        
-        [self.cellView addSubview:userType];
-    [self.cellView addSubview:cell.contentView];
+        [cellView addSubview:cell.contentView];
     }
-   // cell.nameLabel.text=@"Name";
-    //cell.emailLabel.text=@"Email Address";
-    //cell.userTypeLabel.text=@"User Type";
-
-//[cellView addSubview:cell.emailLabel];
-//[cellView addSubview:cell.userTypeLabel];
-    //[cell addSubview:cellView];
-    
-    
-    return self.cellView;
+    return cellView;
 }
 
 

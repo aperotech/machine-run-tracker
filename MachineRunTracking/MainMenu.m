@@ -58,6 +58,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return UIInterfaceOrientationPortrait;
 }
+
 - (IBAction)logout:(id)sender {
     //PFUser *currentUser = [PFUser currentUser];
     //[PFUser logOut];

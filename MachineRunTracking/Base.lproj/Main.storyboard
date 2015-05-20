@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="YDp-eF-bo5">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
@@ -40,9 +40,6 @@
                                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="I3n-eH-n4e">
                                         <rect key="frame" x="339" y="250" width="20" height="20"/>
                                         <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                            <rect key="frame" x="237" y="250" width="20" height="20"/>
-                                        </variation>
                                     </activityIndicatorView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tM8-Dy-AvF">
                                         <rect key="frame" x="277" y="243" width="47" height="34"/>
@@ -53,9 +50,8 @@
                                         <variation key="widthClass=compact">
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact">
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                            <rect key="frame" x="180" y="244" width="42" height="32"/>
                                         </variation>
                                         <connections>
                                             <action selector="Login:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fXd-yB-DJ1"/>
@@ -865,16 +861,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parameter :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xW1-eT-CRA">
-                                                    <rect key="frame" x="40" y="12" width="87" height="20"/>
+                                                    <rect key="frame" x="40" y="12" width="200" height="20"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" constant="150" id="Bzr-Xc-SLd"/>
                                                         <constraint firstAttribute="width" constant="125" id="HHK-c3-yAo"/>
                                                         <constraint firstAttribute="height" constant="18" id="OT0-kT-Y4J"/>
+                                                        <constraint firstAttribute="width" constant="200" id="h79-kK-wMX"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
+                                                            <exclude reference="Bzr-Xc-SLd"/>
                                                             <exclude reference="HHK-c3-yAo"/>
                                                             <exclude reference="OT0-kT-Y4J"/>
                                                         </mask>
@@ -882,12 +881,14 @@
                                                     <variation key="heightClass=regular-widthClass=compact">
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                         <mask key="constraints">
+                                                            <include reference="Bzr-Xc-SLd"/>
                                                             <include reference="OT0-kT-Y4J"/>
+                                                            <exclude reference="h79-kK-wMX"/>
                                                         </mask>
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zA2-F2-v9X">
-                                                    <rect key="frame" x="147" y="12" width="40" height="20"/>
+                                                    <rect key="frame" x="260" y="12" width="40" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="4C1-cB-PRY"/>
                                                     </constraints>
@@ -1673,27 +1674,32 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parameter :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tak-Ym-9jH">
-                                                    <rect key="frame" x="40" y="12" width="87" height="20"/>
+                                                    <rect key="frame" x="40" y="12" width="200" height="20"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" constant="150" id="blb-1t-qgN"/>
                                                         <constraint firstAttribute="height" constant="18" id="fBx-OC-StW"/>
+                                                        <constraint firstAttribute="width" constant="200" id="nLE-VY-BDe"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
+                                                            <exclude reference="blb-1t-qgN"/>
                                                             <exclude reference="fBx-OC-StW"/>
                                                         </mask>
                                                     </variation>
                                                     <variation key="heightClass=regular-widthClass=compact">
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                         <mask key="constraints">
+                                                            <include reference="blb-1t-qgN"/>
                                                             <include reference="fBx-OC-StW"/>
+                                                            <exclude reference="nLE-VY-BDe"/>
                                                         </mask>
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9cu-th-ki1">
-                                                    <rect key="frame" x="147" y="12" width="40" height="20"/>
+                                                    <rect key="frame" x="260" y="12" width="40" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="toV-gI-zNP"/>
                                                     </constraints>
@@ -1903,11 +1909,24 @@
                             </containerView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="zUt-1L-XdN">
                                 <rect key="frame" x="137" y="84" width="326" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="HLp-dw-C5D"/>
+                                </constraints>
                                 <segments>
                                     <segment title="Pre-Extraction"/>
                                     <segment title="Process Run"/>
                                     <segment title="Post-Extraction"/>
                                 </segments>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="HLp-dw-C5D"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="HLp-dw-C5D"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <action selector="segmentControlChanged:" destination="3Fg-It-BKJ" eventType="valueChanged" id="mAa-3j-iLz"/>
                                 </connections>
@@ -2187,9 +2206,9 @@
                                     <outlet property="delegate" destination="n7M-xh-KKU" id="Bne-Rd-Q28"/>
                                 </connections>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" canCancelContentTouches="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="UaO-ZV-Dve">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" canCancelContentTouches="NO" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="UaO-ZV-Dve">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <activityIndicatorView key="tableFooterView" hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="VEg-tB-L0u">
                                     <rect key="frame" x="0.0" y="110" width="600" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -3155,7 +3174,7 @@
         <scene sceneID="086-4X-LGa">
             <objects>
                 <tableViewController id="J4Y-ZE-f4a" customClass="MachineLIst" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="dfQ-Cf-Stl">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="45" sectionHeaderHeight="10" sectionFooterHeight="10" id="dfQ-Cf-Stl">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>

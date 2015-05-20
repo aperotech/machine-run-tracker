@@ -278,7 +278,9 @@ NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSChar
         if (!error) {
           
             [activityIndicatorView stopAnimating];
-              [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+            
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+            [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
             } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];

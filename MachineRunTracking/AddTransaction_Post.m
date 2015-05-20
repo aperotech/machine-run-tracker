@@ -209,18 +209,30 @@
 
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
-    UITableView *table = (UITableView *)[[cell superview] superview];
-    NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
+//UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
+//UITableView *table = (UITableView *)[[cell superview] superview];
+//NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
     
-    for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
+   // for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
         [self.GetValuesFromPostTextFieldArray addObject:textField.text];
        
-    }
+  //  }
     
    
 }
-
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField.text.length >= 40 && range.length == 0)
+        return NO;
+    
+    // Only characters in the NSCharacterSet you choose will insertable.
+    if ([textField isEqual:textField]) {
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_0123456789:. "] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    }
+    return YES;
+}
 
 
 

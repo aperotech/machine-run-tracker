@@ -864,8 +864,8 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fUU-V6-pl1" id="7pV-EN-9SX">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parameter :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xW1-eT-CRA">
-                                                    <rect key="frame" x="40" y="12" width="200" height="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Parameter :" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xW1-eT-CRA">
+                                                    <rect key="frame" x="40" y="12" width="200" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="150" id="Bzr-Xc-SLd"/>
                                                         <constraint firstAttribute="width" constant="125" id="HHK-c3-yAo"/>
@@ -1685,7 +1685,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zcW-wY-BOM" id="HrU-uX-rxH">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parameter :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tak-Ym-9jH">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parameter :" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tak-Ym-9jH">
                                                     <rect key="frame" x="40" y="12" width="200" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="150" id="blb-1t-qgN"/>
@@ -1854,15 +1854,15 @@
                                 <exclude reference="Avb-5M-ka3"/>
                                 <exclude reference="Ov7-8u-3T8"/>
                                 <exclude reference="NkS-nM-HVq"/>
+                                <exclude reference="SQM-Fs-X2X"/>
+                                <exclude reference="N3X-FI-Gko"/>
+                                <exclude reference="Ntj-wE-msR"/>
+                                <exclude reference="Wg3-JP-lxk"/>
                                 <exclude reference="8JM-W7-O11"/>
                                 <exclude reference="ZPz-bw-oqW"/>
                                 <exclude reference="pse-uV-snI"/>
                                 <exclude reference="inq-ze-a6n"/>
                                 <exclude reference="keq-Xe-tWx"/>
-                                <exclude reference="SQM-Fs-X2X"/>
-                                <exclude reference="N3X-FI-Gko"/>
-                                <exclude reference="Ntj-wE-msR"/>
-                                <exclude reference="Wg3-JP-lxk"/>
                                 <exclude reference="0zP-nP-ocD"/>
                                 <exclude reference="3PM-5N-VOK"/>
                                 <exclude reference="DMs-NC-yif"/>
@@ -1876,6 +1876,13 @@
                                 <exclude reference="gil-tW-vD8"/>
                                 <exclude reference="4qf-PH-3cT"/>
                                 <include reference="NkS-nM-HVq"/>
+                                <exclude reference="Rx1-pV-Fd0"/>
+                                <include reference="SQM-Fs-X2X"/>
+                                <exclude reference="1pm-cZ-C2U"/>
+                                <exclude reference="LSh-ei-gl0"/>
+                                <include reference="N3X-FI-Gko"/>
+                                <include reference="Ntj-wE-msR"/>
+                                <include reference="Wg3-JP-lxk"/>
                                 <include reference="8JM-W7-O11"/>
                                 <include reference="ZPz-bw-oqW"/>
                                 <exclude reference="h2M-W0-riD"/>
@@ -1884,13 +1891,6 @@
                                 <include reference="inq-ze-a6n"/>
                                 <exclude reference="keq-Xe-tWx"/>
                                 <exclude reference="nf6-We-3gE"/>
-                                <exclude reference="Rx1-pV-Fd0"/>
-                                <include reference="SQM-Fs-X2X"/>
-                                <exclude reference="1pm-cZ-C2U"/>
-                                <exclude reference="LSh-ei-gl0"/>
-                                <include reference="N3X-FI-Gko"/>
-                                <include reference="Ntj-wE-msR"/>
-                                <include reference="Wg3-JP-lxk"/>
                                 <include reference="0zP-nP-ocD"/>
                                 <exclude reference="F4c-7a-pSa"/>
                                 <include reference="3PM-5N-VOK"/>

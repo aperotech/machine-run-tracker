@@ -206,18 +206,34 @@
 
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
-    UITableView *table = (UITableView *)[[cell superview] superview];
-    NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
+   // UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
+   // UITableView *table = (UITableView *)[[cell superview] superview];
+//NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
     
-    for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
+//for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
         [self.GetValuesFromTextFieldArray addObject:textField.text];
        
-    }
+//}
   
-   
-
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField.text.length >= 40 && range.length == 0)
+        return NO;
+    
+    // Only characters in the NSCharacterSet you choose will insertable.
+    if ([textField isEqual:textField]) {
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_0123456789:. "] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    }
+    return YES;
+}
+
+
+
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
       [textField resignFirstResponder];
     return YES;
@@ -245,8 +261,8 @@ if (parameterAdd_PrePF != nil) {
       PFObject *NewParameter=[PFObject objectWithClassName:@"Pre_Extraction"];
      
      if([NewParameter save]) {
-   
-     PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
+         
+              PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
          
          for (int i=0;i<[self.RunProcessArray count];i++) {
              NSString *newPara=[self.RunProcessArray objectAtIndex:i];

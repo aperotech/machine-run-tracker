@@ -62,13 +62,13 @@
     
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         if(error){
-            NSLog(@"Error!");
+//NSLog(@"Error!");
         } else {
             runArrayRun = runArray;
         //[[NSArray alloc]initWithArray:runArray];
 //[self.tableView reloadData];
         }
-NSLog(@"the run array run is %@",runArrayRun);
+//NSLog(@"the run array run is %@",runArrayRun);
     }];
 }
 
@@ -118,15 +118,15 @@ NSLog(@"the run array run is %@",runArrayRun);
             
             headerLabel = [[UILabel alloc] init]; // 10 px padding between each view
             headerLabel.preferredMaxLayoutWidth = 80;
-            headerLabel.numberOfLines = 1;
-            headerLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            headerLabel.numberOfLines = 0;
+            headerLabel.lineBreakMode = NSLineBreakByCharWrapping;
             headerLabel.textColor = [UIColor whiteColor];
             headerLabel.font = [UIFont boldSystemFontOfSize:14.0];
             
             if (i == 0) {
-                frameText=CGRectMake(10, 5, 80, 17);
+                frameText=CGRectMake(10, 5, 80, 40);
             } else {
-                frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 5, 80, 17);
+                frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 5, 80, 40);
             }
             
             [headerLabel setFrame:frameText];
@@ -136,6 +136,7 @@ NSLog(@"the run array run is %@",runArrayRun);
             
             //headerLabel.backgroundColor = [UIColor clearColor];
             cell.backgroundColor = [UIColor darkGrayColor];
+           // NSLog(@"self.runprocessarrau count %ld %d",RunProcessArray.count,i);
             [cell.contentView addSubview:headerLabel];
         }
     }
@@ -163,9 +164,9 @@ NSLog(@"the run array run is %@",runArrayRun);
             valueLabel.textAlignment = NSTextAlignmentCenter;
             
             if (i == 0) {
-                frameText=CGRectMake(10, 14, 80, 17);
+                frameText=CGRectMake(10, 14, 40, 40);
             } else {
-                frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 14, 80, 17);
+                frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 14, 80, 40);
             }
             
             [valueLabel setFrame:frameText];
@@ -174,6 +175,7 @@ NSLog(@"the run array run is %@",runArrayRun);
             valueLabel.text =[[runArrayRun objectAtIndex:indexPath.row]objectForKey:[RunProcessArray objectAtIndex:i]];
 //NSLog(@"value label tag is %ld & the Value Text Is %@ & indexpath.row is %ld",valueLabel.tag,valueLabel.text,indexPath.row);
                 [cell.contentView addSubview:valueLabel];
+        
         }
     }
     return cell;

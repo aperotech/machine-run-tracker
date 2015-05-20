@@ -365,6 +365,23 @@ if (self.sectionCount>=1) {
     [self.GetValuesFromRunTextFieldArray addObject:textField.text];
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField.text.length >= 40 && range.length == 0)
+        return NO;
+    
+    // Only characters in the NSCharacterSet you choose will insertable.
+    if ([textField isEqual:textField]) {
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_0123456789:. "] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    }
+    return YES;
+}
+
+
+
+
 -(IBAction)SaveAndForward:(id)sender {
      [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
     

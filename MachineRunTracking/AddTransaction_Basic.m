@@ -250,7 +250,7 @@
 }*/
 
 - (IBAction)SaveAndForword:(id)sender {
-[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+//[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
     activityIndicatorView.hidden=NO;
     [activityIndicatorView startAnimating];
    
@@ -284,8 +284,8 @@ NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSChar
           
             [activityIndicatorView stopAnimating];
             
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-            [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+            // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+            [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:self];
             } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];

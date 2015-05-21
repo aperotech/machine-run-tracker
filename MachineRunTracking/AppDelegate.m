@@ -28,7 +28,7 @@
     
     NSString *storyboardId = isLoggedIn ? @"NevigateMainMenu":@"UserLoginView";
     self.window.rootViewController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:storyboardId];
-    
+    //[self.window makeKeyAndVisible];
      //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     return YES;

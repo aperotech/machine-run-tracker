@@ -275,7 +275,7 @@ if (parameterAdd_PrePF != nil) {
      
      [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
      if (succeeded) {
-     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+    
     
          [activityIndicatorView stopAnimating];
          [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];

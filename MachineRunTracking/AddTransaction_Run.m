@@ -170,7 +170,7 @@ BOOL NextFlag;
     tableFrame.size.width = self.aTableView.contentSize.width; // if you would allow horiz scrolling
     self.aTableView.frame = tableFrame;
     
-    NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", self.aTableView.frame.size.width,  self.aTableView.frame.size.height, self.aTableView.contentSize.width,  self.aTableView.contentSize.height);
+  //  NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", self.aTableView.frame.size.width,  self.aTableView.frame.size.height, self.aTableView.contentSize.width,  self.aTableView.contentSize.height);
     
     self.scrollView.contentSize = self.aTableView.contentSize;
     //[self.scrollView setContentSize:CGSizeMake(self.aTableView.frame.size.width + 50, self.aTableView.frame.size.height)];
@@ -295,8 +295,9 @@ if (self.sectionCount>=1) {
             }
            
         } else {
+            [error userInfo];
             // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
+            //NSLog(@"Error: %@ %@", error, [error userInfo]);
             // [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
         }
     }];
@@ -306,7 +307,7 @@ if (self.sectionCount>=1) {
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
-            NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
             // Do something with the found objects
             for (PFObject *object in objects) {
                 [object deleteInBackground];
@@ -314,17 +315,18 @@ if (self.sectionCount>=1) {
             }
            
         } else {
+            [error userInfo];
             // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        //    NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
     
-    PFQuery *query3= [PFQuery queryWithClassName:@"Run_Process"];
+  /*  PFQuery *query3= [PFQuery queryWithClassName:@"Run_Process"];
     [query3 whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
     [query3 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
-            NSLog(@"Successfully retrieved %ld scores.", objects.count);
+//NSLog(@"Successfully retrieved %ld scores.", objects.count);
             // Do something with the found objects
             for (PFObject *object in objects) {
                 [object deleteInBackground];
@@ -332,10 +334,10 @@ if (self.sectionCount>=1) {
             }
             
         } else {
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
+            [error userInfo];            // Log details of the failure
+           
         }
-    }];
+    }];*/
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -413,12 +415,13 @@ if (self.parameterAdd_RunPF != nil) {
         
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+//[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                 [activityIndicatorView stopAnimating];
                 
                 if (NextFlag == 1) {
                     NSLog(@"Next Flag Is 1");
-                    [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+                
+                [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
                 }
                 // The object has been saved.
             } else {
@@ -557,7 +560,7 @@ if (self.parameterAdd_RunPF != nil) {
 
 
 
-/*
+
  #pragma mark - Navigation
  
  // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -565,6 +568,6 @@ if (self.parameterAdd_RunPF != nil) {
  // Get the new view controller using [segue destinationViewController].
  // Pass the selected object to the new view controller.
  }
- */
+
 
 @end

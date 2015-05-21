@@ -19,10 +19,14 @@
     int count;
 }
 
-@synthesize aTableView,valueTextField;
-@synthesize activityIndicatorView;
+@synthesize aTableView,valueTextField, activityIndicatorView, scrollView;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //NSLog(@"width is %f, height is %f",self.view.frame.size.width, self.view.frame.size.width);
+    //[self.scrollView setContentSize:CGSizeMake(self.aTableView.frame.size.width, self.aTableView.frame.size.height)];
+    //NSLog(@"setting scroll content size: width %f, height %f", self.aTableView.frame.size.width, self.aTableView.frame.size.height);
     
     activityIndicatorView.center = CGPointMake( [UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2);
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -170,6 +174,23 @@
             [cell.contentView addSubview:valueTextField];
         }
     }
+    
+    /*NSLog(@"new scroll content size is width %f, height %f", self.scrollView.contentSize.width, self.scrollView.contentSize.height);
+     
+     //[self.aTableView setFrame:<#(CGRect)#>:CGSizeMake(self.scrollView.contentSize.width, self.aTableView.frame.size.height)];
+     [self.aTableView setFrame:CGRectMake(self.aTableView.frame.origin.x, self.aTableView.frame.origin.y, self.scrollView.bounds.size.width, self.scrollView.bounds.size.height)];
+     [self.aTableView setContentSize:CGSizeMake(self.aTableView.bounds.size.width, self.aTableView.bounds.size.height)];
+     //NSLog(@"table frame size is width %f, height %f", self.scrollView.contentSize.width, self.scrollView.contentSize.height);*/
+    
+    CGRect tableFrame = self.aTableView.frame;
+    tableFrame.size.height = self.aTableView.contentSize.height;
+    tableFrame.size.width = self.aTableView.contentSize.width; // if you would allow horiz scrolling
+    self.aTableView.frame = tableFrame;
+    
+    NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", self.aTableView.frame.size.width,  self.aTableView.frame.size.height, self.aTableView.contentSize.width,  self.aTableView.contentSize.height);
+    
+    self.scrollView.contentSize = self.aTableView.contentSize;
+    //[self.scrollView setContentSize:CGSizeMake(self.aTableView.frame.size.width + 50, self.aTableView.frame.size.height)];
 
     [activityIndicatorView stopAnimating];
     return cell;
@@ -276,14 +297,14 @@ if (self.sectionCount>=1) {
                     }
                 }
             }
-         [cell.contentView addSubview:valueTextField];
+            [cell.contentView addSubview:valueTextField];
         }
     }
     count++;
     return cell;
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+/*-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat sectionHeaderHeight = 40;
    // CGFloat sectionFooterHeight= 40;
     //Change as per your table header hight
@@ -293,7 +314,7 @@ if (self.sectionCount>=1) {
         scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
     }
    
-}
+}*/
 
 - (IBAction)Cancel:(id)sender {
     //[self.navigationController popViewControllerAnimated:YES];
@@ -397,9 +418,9 @@ if (self.sectionCount>=1) {
 - (void)saveParameters
 {
     [activityIndicatorView startAnimating];
-    PFObject *NewParameter=[PFObject  objectWithClassName:@"Run_Process" ];
+    //PFObject *NewParameter=[PFObject  objectWithClassName:@"Run_Process" ];
     
-    if([NewParameter save]) {
+    //if([NewParameter save]) {
         
         PFObject *ParameterValue = [PFObject objectWithClassName:@"Run_Process"];
         
@@ -436,7 +457,7 @@ if (self.sectionCount>=1) {
                 // There was a problem, check error.description
             }
         }];
-    }
+    //}
 }
 
 - (void)updateParameters

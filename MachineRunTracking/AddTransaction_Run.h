@@ -10,6 +10,8 @@
 #import <Parse/Parse.h>
 @interface AddTransaction_Run : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate ,UITextFieldDelegate, UIBarPositioningDelegate>
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property(strong,nonatomic)PFObject *parameterAdd_RunPF;
 @property (nonatomic, strong) IBOutlet UITableView *aTableView;
@@ -17,7 +19,6 @@
 @property (nonatomic, strong) NSMutableArray *RunProcessArray;
 
 @property(strong,nonatomic) UIRefreshControl *refreshControl;
-@property (weak,nonatomic)IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;
 @property (strong, nonatomic) IBOutlet UITextField * activeField;
 @property (strong, nonatomic) IBOutlet UITextField * valueTextField;

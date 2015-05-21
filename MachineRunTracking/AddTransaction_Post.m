@@ -15,13 +15,16 @@
 
 @end
 
-@implementation AddTransaction_Post
+@implementation AddTransaction_Post {
+    int textFieldCount;
+}
+
 @synthesize parameterAdd_PostPF;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // [self setupViewControllers];
-    
+    textFieldCount = 0;
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"createdAt"];
     
@@ -199,6 +202,7 @@
        
     }
     cell.p_1Text.tag=indexPath.row;
+    textFieldCount++;
     for (int i=-1;i<indexPath.row;i++) {
         cell.p_1Text.placeholder=[[self.postExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
         
@@ -207,19 +211,32 @@
       return cell;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    if (textField.tag == textFieldCount-1) {
+        textField.returnKeyType = UIReturnKeyDone;
+    } else {
+        textField.returnKeyType = UIReturnKeyNext;
+    }
+}
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-//UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
-//UITableView *table = (UITableView *)[[cell superview] superview];
-//NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
     
-   // for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
+    if (textField.tag < self.GetValuesFromPostTextFieldArray.count | textField.tag > self.GetValuesFromPostTextFieldArray.count) {
+        [self.GetValuesFromPostTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+    } else  {
         [self.GetValuesFromPostTextFieldArray addObject:textField.text];
-       
-  //  }
-    
-   
+    }
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if (textField.tag == textFieldCount-1) {
+        [textField resignFirstResponder];
+    } else {
+        [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
+    }
+    return YES;
+}
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if (textField.text.length >= 40 && range.length == 0)
         return NO;
@@ -254,9 +271,9 @@
 - (void)saveParameters
 {
     
-    PFObject *NewParameter=[PFObject  objectWithClassName:@"Post_Extraction" ];
+    //PFObject *NewParameter=[PFObject  objectWithClassName:@"Post_Extraction" ];
     
-    if([NewParameter save]) {
+    //if([NewParameter save]) {
         
         PFObject *ParameterValue = [PFObject objectWithClassName:@"Post_Extraction"];
         for (int i=0;i<[self.RunProcessArray count];i++) {
@@ -285,7 +302,7 @@
         
         //  class created;
         
-    }
+    //}
 }
 
 - (void)updateParameters
@@ -325,19 +342,8 @@
                 }
             }];
         }
-        
     }];
-    
 }
-#pragma mark - UITextFieldDelegate method implementation
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
-    return YES;
-}
-
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

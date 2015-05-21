@@ -34,7 +34,7 @@
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
      [query1 selectKeys:@[@"Name"]];
     [query1 whereKey:@"Type" equalTo:@"Post-Extraction"];
-    query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    query1.cachePolicy = kPFCachePolicyNetworkElseCache;
    
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
        
@@ -70,7 +70,7 @@
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Post_Extraction"];
     [query2 whereKey:@"Run_No" equalTo:self.RunNoLabel.text];
-    query2.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    query2.cachePolicy = kPFCachePolicyNetworkElseCache;
    
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
        

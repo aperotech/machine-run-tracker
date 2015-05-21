@@ -209,7 +209,6 @@
     }
 }
 
-
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
     if (textField.tag < GetValuesFromTextFieldArray.count | textField.tag > GetValuesFromTextFieldArray.count) {
@@ -225,31 +224,41 @@
     } else {
         [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
     }
-    
     return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField.text.length >= 40 && range.length == 0)
+        return NO;
     
+    // Only characters in the NSCharacterSet you choose will insertable.
+    if ([textField isEqual:textField]) {
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_0123456789:. "] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        
+        return [string isEqualToString:filtered];
+    }
+    return YES;
 }
 
 -(IBAction)SaveAndForward:(id)sender {
-//[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
-if (parameterAdd_PrePF != nil) {
+/*if (parameterAdd_PrePF != nil) {
       [self updateParameters];
         }
         else {
       [self saveParameters];
-        }
+        }*/
 }
 
 - (void)saveParameters
 {
     [activityIndicatorView startAnimating];
-      PFObject *NewParameter=[PFObject objectWithClassName:@"Pre_Extraction"];
+      //PFObject *NewParameter=[PFObject objectWithClassName:@"Pre_Extraction"];
      
-     if([NewParameter save]) {
-         
-              PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
-         
+     //if([NewParameter save]) {
+         PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
          for (int i=0;i<[RunProcessArray count];i++) {
              NSString *newPara=[RunProcessArray objectAtIndex:i];
              ParameterValue[newPara]=[GetValuesFromTextFieldArray objectAtIndex:i];
@@ -278,7 +287,7 @@ if (parameterAdd_PrePF != nil) {
      
      //  class created;
      
-     }
+     //}
   }
 
 - (void)updateParameters

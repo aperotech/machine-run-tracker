@@ -132,9 +132,16 @@
     cell.parameterLabel.tag=indexPath.row;
     for (int i=0; i<self.RunProcessArray.count;i++) {
         if (indexPath.row==i) {
+            NSString *parameterValue=[[self.runArrayPost objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];
+            if (parameterValue == nil) {
+                cell.parameterLabel.text=@"N/A";
+            }else{
+                cell.parameterLabel.text=parameterValue;
+            }
             
-            cell.parameterLabel.text=[[self.runArrayPost objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];
-            cell.ParameterNameLabel.text = [NSString stringWithFormat:@"%@ :", [self.RunProcessArray objectAtIndex:i]];
+            NSString* string1 =[NSString stringWithFormat:@"%@ :", [self.RunProcessArray objectAtIndex:i]];
+            NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+            cell.ParameterNameLabel.text =string2;
         }
     }
     return cell;

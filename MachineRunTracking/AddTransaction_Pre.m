@@ -144,8 +144,9 @@
             }
            
         } else {
+            [error userInfo];
             // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
+//NSLog(@"Error: %@ %@", error, [error userInfo]);
             // [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
         }
     }];
@@ -206,14 +207,14 @@
 
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-   // UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
-   // UITableView *table = (UITableView *)[[cell superview] superview];
-//NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
+    UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
+   UITableView *table = (UITableView *)[[cell superview] superview];
+NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
     
-//for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
+for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
         [self.GetValuesFromTextFieldArray addObject:textField.text];
        
-//}
+}
   
 }
 

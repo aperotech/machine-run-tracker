@@ -17,6 +17,7 @@
 
 @implementation AddTransaction_Run {
     int count;
+BOOL NextFlag;
 }
 
 @synthesize aTableView,valueTextField;
@@ -24,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    NextFlag=0;
     activityIndicatorView.center = CGPointMake( [UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2);
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate.window addSubview:activityIndicatorView];
@@ -155,9 +157,9 @@
             valueTextField.font = [UIFont boldSystemFontOfSize:14.0];
             
             if (i == 0) {
-                frameText=CGRectMake(10, 5, 100, 17);
+                frameText=CGRectMake(10, 5, 100, 25);
             } else {
-                frameText=CGRectMake(valueTextField.frame.origin.x+105*i, 5, 100, 17);
+                frameText=CGRectMake(valueTextField.frame.origin.x+105*i, 5, 100, 25);
             }
             
             [valueTextField setFrame:frameText];
@@ -252,9 +254,9 @@ if (self.sectionCount>=1) {
             valueTextField.textAlignment = NSTextAlignmentCenter;
             
             if (i == 0) {
-                frameText=CGRectMake(10, 14, 80, 17);
+                frameText=CGRectMake(10, 14, 80, 30);
             } else {
-                frameText=CGRectMake(valueTextField.frame.origin.x+100*i, 14, 80, 17);
+                frameText=CGRectMake(valueTextField.frame.origin.x+100*i, 14, 80, 30);
             }
             
             [valueTextField setFrame:frameText];
@@ -383,14 +385,14 @@ if (self.sectionCount>=1) {
 
 
 -(IBAction)SaveAndForward:(id)sender {
-     [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
     
-/*if (self.parameterAdd_RunPF != nil) {
+    NextFlag=1;
+if (self.parameterAdd_RunPF != nil) {
      [self updateParameters];
      }
      else {
      [self saveParameters];
-     }*/
+     }
 }
 
 - (void)saveParameters
@@ -424,7 +426,11 @@ if (self.sectionCount>=1) {
             if (succeeded) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                 [activityIndicatorView stopAnimating];
-                                  // The object has been saved.
+                
+                if (NextFlag == 1) {
+                    [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+                }
+                // The object has been saved.
             } else {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                     message:[error.userInfo objectForKey:@"error"]

@@ -42,7 +42,7 @@
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
-    query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
+   // query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (error) {
@@ -58,7 +58,7 @@
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Run_Process"];
     [query2 whereKey:@"Run_No" equalTo:self.RunNoLabel.text];
-    query2.cachePolicy = kPFCachePolicyCacheThenNetwork;
+//query2.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         if(error){
@@ -70,6 +70,7 @@
         }
 //NSLog(@"the run array run is %@",runArrayRun);
     }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

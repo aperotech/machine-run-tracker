@@ -44,7 +44,7 @@
         if (!object) {
             value=1;
              NSString *runNo=[NSString stringWithFormat:@"R%04i",value];
-            self.Run_NoText=runNo;
+            self.Run_NoText.text=runNo;
             self.Run_NoText.enabled=FALSE;
             // Did not find any UserStats for the current user
         } else {

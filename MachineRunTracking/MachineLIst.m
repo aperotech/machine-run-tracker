@@ -94,9 +94,9 @@
     return UIInterfaceOrientationPortrait;
 }
 
--(NSUInteger)supportedInterfaceOrientations {
+/*-(NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationPortrait;
-}
+}*/
 
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];

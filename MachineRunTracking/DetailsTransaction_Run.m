@@ -42,7 +42,7 @@
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
-   // query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (error) {
@@ -52,7 +52,7 @@
             for (int i=0; i < objects.count ;i++) {
                 [RunProcessArray addObject:[[objects objectAtIndex:i]valueForKey:@"Name"]];
             }
-            //NSLog(@"count of array is %ld", RunProcessArray.count);
+       
             [self.tableView reloadData];
             [self.activityIndicator stopAnimating];
         }
@@ -60,7 +60,7 @@
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Run_Process"];
     [query2 whereKey:@"Run_No" equalTo:self.RunNoLabel.text];
-//query2.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    query2.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         if(error){
@@ -68,6 +68,7 @@
         } else {
             runArrayRun = runArray;
         }
+       
         [self.tableView reloadData];
     }];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
@@ -122,7 +123,7 @@
             headerLabel = [[UILabel alloc] init]; // 10 px padding between each view
             headerLabel.preferredMaxLayoutWidth = 80;
             headerLabel.numberOfLines = 0;
-            headerLabel.lineBreakMode = NSLineBreakByCharWrapping;
+            headerLabel.lineBreakMode = NSLineBreakByWordWrapping;
             headerLabel.textColor = [UIColor whiteColor];
             headerLabel.font = [UIFont boldSystemFontOfSize:14.0];
             
@@ -135,7 +136,10 @@
             [headerLabel setFrame:frameText];
             headerLabel.tag = i + 1;
             
-            headerLabel.text = [RunProcessArray objectAtIndex:i];
+            NSString* string1 = [RunProcessArray objectAtIndex:i];
+            NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+            
+            headerLabel.text = string2;
             
             //headerLabel.backgroundColor = [UIColor clearColor];
             cell.backgroundColor = [UIColor darkGrayColor];
@@ -161,23 +165,29 @@
             valueLabel = [[UILabel alloc] init];
             valueLabel.preferredMaxLayoutWidth = 80;
             valueLabel.numberOfLines = 0;
-            valueLabel.lineBreakMode = NSLineBreakByCharWrapping;
+            valueLabel.lineBreakMode = NSLineBreakByWordWrapping;
             valueLabel.textColor = [UIColor blackColor];
             valueLabel.font = [UIFont systemFontOfSize:14.0];
             valueLabel.textAlignment = NSTextAlignmentCenter;
             
             if (i == 0) {
                 //NSLog(@"setting value first time");
-                frameText=CGRectMake(10, 14, 40, 40);
+                frameText=CGRectMake(10, 11, 40, 35);
             } else {
                 //NSLog(@"setting value");
-                frameText=CGRectMake(valueLabel.frame.origin.x+100*i, 14, 80, 40);
+                frameText=CGRectMake(valueLabel.frame.origin.x+105*i, 11, 80, 35);
             }
             
             [valueLabel setFrame:frameText];
             valueLabel.tag = (indexPath.row * RunProcessArray.count)+i+1;
           
-            valueLabel.text =[[runArrayRun objectAtIndex:indexPath.row]objectForKey:[RunProcessArray objectAtIndex:i]];
+            NSString *parameterValue=[[runArrayRun objectAtIndex:indexPath.row]objectForKey:[RunProcessArray objectAtIndex:i]];
+            if (parameterValue == nil) {
+            valueLabel.text =@"N/A";
+            }else{
+                valueLabel.text =parameterValue;
+            }
+            
 //NSLog(@"value label tag is %ld & the Value Text Is %@ & indexpath.row is %ld",valueLabel.tag,valueLabel.text,indexPath.row);
                 [cell.contentView addSubview:valueLabel];
         

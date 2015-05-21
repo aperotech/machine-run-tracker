@@ -195,8 +195,11 @@
     textFieldCount++;
     // Configure the cell...
     for (int i=-1;i<indexPath.row;i++) {
-        cell.p_1Text.placeholder=[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+        NSString* string1 =[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
+        NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
 
+      //  NSString *PlaceholderString=
+ cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@"(%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
     }
     
     return cell;
@@ -213,13 +216,22 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
    UITableView *table = (UITableView *)[[cell superview] superview];
-NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
+    NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
     
-for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
-        [self.GetValuesFromTextFieldArray addObject:textField.text];
-       
+    if (textField.tag < GetValuesFromTextFieldArray.count | textField.tag > GetValuesFromTextFieldArray.count) {
+        [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+    } else  {
+        [GetValuesFromTextFieldArray addObject:textField.text];
+    }
 }
-  
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if (textField.tag == textFieldCount-1) {
+        [textField resignFirstResponder];
+    } else {
+        [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
+    }
+    return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -237,14 +249,14 @@ for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
 }
 
 -(IBAction)SaveAndForward:(id)sender {
-[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+//[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
-/*if (parameterAdd_PrePF != nil) {
+if (parameterAdd_PrePF != nil) {
       [self updateParameters];
         }
         else {
       [self saveParameters];
-        }*/
+        }
 }
 
 - (void)saveParameters
@@ -269,7 +281,7 @@ for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
          [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
     
      } else {
-         NSLog(@"error here");
+         //NSLog(@"error here");
      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
      message:[error.userInfo objectForKey:@"error"]
      delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

@@ -25,6 +25,9 @@
     [super viewDidLoad];
     // [self setupViewControllers];
     textFieldCount = 0;
+    self.postExtractionArray=[[NSArray alloc]init];
+    self.RunProcessArray=[[NSMutableArray alloc]init];
+    
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"createdAt"];
     
@@ -53,8 +56,8 @@
         } else {
             // Found UserStats
             //self.preExtractionArray=[objectsPF allKeys];
-            self.postExtractionArray=[[NSArray alloc]initWithArray:objectsPF ];
-            self.RunProcessArray=[[NSMutableArray alloc]init];
+            self.postExtractionArray=objectsPF;
+            
             
             for (int i=0;i<[self.postExtractionArray count];i++) {
                 NSString *newString=[[objectsPF objectAtIndex:i]valueForKey:@"Name"];
@@ -86,6 +89,7 @@
                 [alertView show];
             }
             else {
+                self.postExtractionArray =objects;
                  [self.tableView reloadData];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                 
@@ -204,7 +208,11 @@
     cell.p_1Text.tag=indexPath.row;
     textFieldCount++;
     for (int i=-1;i<indexPath.row;i++) {
-        cell.p_1Text.placeholder=[[self.postExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+
+        NSString* string1 =[[self.postExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
+        NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+
+        cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@"(%@)",[[self.postExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
         
     }
  
@@ -220,6 +228,9 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
+    UITableView *table = (UITableView *)[[cell superview] superview];
+    NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
     
     if (textField.tag < self.GetValuesFromPostTextFieldArray.count | textField.tag > self.GetValuesFromPostTextFieldArray.count) {
         [self.GetValuesFromPostTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
@@ -280,11 +291,9 @@
             NSString *newPara=[self.RunProcessArray objectAtIndex:i];
             ParameterValue[newPara]=[self.GetValuesFromPostTextFieldArray objectAtIndex:i];
         }
-       // ParameterValue[@"Parameter_1"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:0];
-       // ParameterValue[@"Parameter_2"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:1];
-       // ParameterValue[@"Parameter_3"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:2];
-       // ParameterValue[@"Parameter_4"] = [self.GetValuesFromPostTextFieldArray objectAtIndex:3];
+    
         ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
+    
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];

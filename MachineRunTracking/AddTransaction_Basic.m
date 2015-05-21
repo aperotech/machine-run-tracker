@@ -262,6 +262,7 @@ NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSChar
     
     
     if ([Run_no length] == 0 ||[Machine_Name length] == 0 ||[Run_Date length] == 0 ||[Run_duration length] == 0) {
+        [activityIndicatorView stopAnimating];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                             message:@"You must enter details"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -294,7 +295,7 @@ NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSChar
         
     }];
     }
- }
+}
 
 - (IBAction)Cancel:(id)sender {
     

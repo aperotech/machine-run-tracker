@@ -165,15 +165,15 @@ BOOL NextFlag;
      [self.aTableView setContentSize:CGSizeMake(self.aTableView.bounds.size.width, self.aTableView.bounds.size.height)];
      //NSLog(@"table frame size is width %f, height %f", self.scrollView.contentSize.width, self.scrollView.contentSize.height);*/
     
-    CGRect tableFrame = self.aTableView.frame;
-    tableFrame.size.height = self.aTableView.contentSize.height;
-    tableFrame.size.width = self.aTableView.contentSize.width; // if you would allow horiz scrolling
-    self.aTableView.frame = tableFrame;
+    CGRect tableFrame = aTableView.frame;
+    tableFrame.size.height = aTableView.contentSize.height;
+    tableFrame.size.width = aTableView.contentSize.width; // if you would allow horiz scrolling
+    aTableView.frame = tableFrame;
     
-  //  NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", self.aTableView.frame.size.width,  self.aTableView.frame.size.height, self.aTableView.contentSize.width,  self.aTableView.contentSize.height);
+    NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", aTableView.frame.size.width,  aTableView.frame.size.height, aTableView.contentSize.width,  aTableView.contentSize.height);
     
-    self.scrollView.contentSize = self.aTableView.contentSize;
-    //[self.scrollView setContentSize:CGSizeMake(self.aTableView.frame.size.width + 50, self.aTableView.frame.size.height)];
+    scrollView.contentSize = aTableView.contentSize;
+    [scrollView setContentSize:CGSizeMake(aTableView.frame.size.width + 100, aTableView.frame.size.height)];
 
     [activityIndicatorView stopAnimating];
     return cell;
@@ -196,13 +196,15 @@ BOOL NextFlag;
 }
 
 - (void)addRow:(id)sender {
-if (self.sectionCount>=1) {
+    
+    if (self.sectionCount>=1) {
         if (self.parameterAdd_RunPF != nil) {
             [self updateParameters];
         } else{
             
         [self saveParameters];
     }
+   
 }
     self.sectionCount=self.sectionCount+1;
     
@@ -257,13 +259,14 @@ if (self.sectionCount>=1) {
 
 /*-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat sectionHeaderHeight = 40;
-   // CGFloat sectionFooterHeight= 40;
+    CGFloat tableWidth=1000 ;
     //Change as per your table header hight
-    if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
-        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-    } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
-        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+    if (scrollView.contentOffset.y<=sectionHeaderHeight&&self.scrollView.contentOffset.y>=0) {
+        self.scrollView.contentInset = UIEdgeInsetsMake(-self.scrollView.contentOffset.y, 0, 0, 0);
+    } else if (self.scrollView.contentOffset.y>=sectionHeaderHeight) {
+        self.scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
     }
+   
    
 }*/
 
@@ -321,7 +324,7 @@ if (self.sectionCount>=1) {
         }
     }];
     
-  /*  PFQuery *query3= [PFQuery queryWithClassName:@"Run_Process"];
+    PFQuery *query3= [PFQuery queryWithClassName:@"Run_Process"];
     [query3 whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
     [query3 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
@@ -337,7 +340,7 @@ if (self.sectionCount>=1) {
             [error userInfo];            // Log details of the failure
            
         }
-    }];*/
+    }];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

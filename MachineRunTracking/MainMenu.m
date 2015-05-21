@@ -33,18 +33,22 @@
     self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome %@", userName];
     
     if ([userType isEqualToString:@"Standard"]) {
-        [UserButton setTitle:@"My Details" forState:UIControlStateNormal];
+        [UserButton setImage:[UIImage imageNamed:@"UserProfileButton"] forState:UIControlStateNormal];
     }
     
     self.navigationItem.rightBarButtonItem.enabled=YES;
-    UserButton.layer.borderWidth=1.0f;
+    
+    /*UserButton.layer.borderWidth=1.0f;
     UserButton.layer.borderColor=[[UIColor blackColor]CGColor];
+    
     ParametersButton.layer.borderWidth=1.0f;
     ParametersButton.layer.borderColor=[[UIColor blackColor]CGColor];
+    
     TransactionsButton.layer.borderWidth=1.0f;
     TransactionsButton.layer.borderColor=[[UIColor blackColor]CGColor];
+    
     MachineButton.layer.borderWidth=1.0f;
-    MachineButton.layer.borderColor=[[UIColor blackColor]CGColor];
+    MachineButton.layer.borderColor=[[UIColor blackColor]CGColor];*/
 }
 
 - (void)didReceiveMemoryWarning {

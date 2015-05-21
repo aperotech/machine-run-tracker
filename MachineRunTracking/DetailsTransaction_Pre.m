@@ -39,7 +39,7 @@
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 selectKeys:@[@"Name"]];
     [query1 whereKey:@"Type" equalTo:@"Pre-Extraction"];
-    query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    query1.cachePolicy = kPFCachePolicyNetworkElseCache;
    
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
        
@@ -74,7 +74,7 @@
 
     PFQuery *query2 = [PFQuery queryWithClassName:@"Pre_Extraction"];
     [query2 whereKey:@"Run_No" equalTo:Run_noLabel.text];
-    query2.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    query2.cachePolicy = kPFCachePolicyNetworkElseCache;
   
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         [self.activityIndicator startAnimating];

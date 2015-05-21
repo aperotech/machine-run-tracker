@@ -17,30 +17,10 @@
 */
 
 @interface AddTransaction_Pre : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate>
-{
-    BOOL Pre_extractionFlag;
-}
-
 
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property(strong,nonatomic)PFObject *parameterAdd_PrePF;
-@property (weak,nonatomic) IBOutlet UITextField *ParameterText;
-@property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;
-
 @property(strong,nonatomic) UIRefreshControl *refreshControl;
-
-@property(nonatomic)NSInteger ObjectCount;
 @property(nonatomic,strong)IBOutlet UITableView *tableView;
-@property(nonatomic,strong)NSString *Parameter0;
-@property(nonatomic,strong)NSString *Parameter1;
-@property(nonatomic,strong)NSString *Parameter2;
-@property(nonatomic,strong)NSString *Parameter3;
-
-//(nonatomic,strong)NSArray *placeholderArray;
-@property(nonatomic,strong)NSArray *preExtractionArray;
-@property(nonatomic,strong)NSMutableArray *GetValuesFromTextFieldArray;
-@property(nonatomic,strong)NSMutableArray *RunProcessArray;
-@property(nonatomic,strong)NSString *LastInsertedTransactionNo;
-@property(nonatomic,strong)NSString *LastInsertedTransactionNoObjectId;
 
 @end

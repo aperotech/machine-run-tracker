@@ -48,9 +48,11 @@
         if (error) {
             NSLog(@"Error!");
         } else {
+            //NSLog(@"objects count is %ld", objects.count);
             for (int i=0; i < objects.count ;i++) {
                 [RunProcessArray addObject:[[objects objectAtIndex:i]valueForKey:@"Name"]];
             }
+            //NSLog(@"count of array is %ld", RunProcessArray.count);
             [self.tableView reloadData];
             [self.activityIndicator stopAnimating];
         }
@@ -62,13 +64,11 @@
     
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         if(error){
-//NSLog(@"Error!");
+
         } else {
             runArrayRun = runArray;
-        //[[NSArray alloc]initWithArray:runArray];
-//[self.tableView reloadData];
         }
-//NSLog(@"the run array run is %@",runArrayRun);
+        [self.tableView reloadData];
     }];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
 }
@@ -112,8 +112,10 @@
     //cell.backgroundColor=[UIColor lightGrayColor];
     
     if (cell != nil) {
+        //NSLog(@"cell is not nil");
         cell = [[DetailsProcessRunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
         CGRect frameText;
+        //NSLog(@"in view for header %ld", RunProcessArray.count);
         
         for (int i = 0 ; i < [RunProcessArray count]; i++) {
             
@@ -165,9 +167,11 @@
             valueLabel.textAlignment = NSTextAlignmentCenter;
             
             if (i == 0) {
+                //NSLog(@"setting value first time");
                 frameText=CGRectMake(10, 14, 40, 40);
             } else {
-                frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 14, 80, 40);
+                //NSLog(@"setting value");
+                frameText=CGRectMake(valueLabel.frame.origin.x+100*i, 14, 80, 40);
             }
             
             [valueLabel setFrame:frameText];

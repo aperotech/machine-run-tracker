@@ -15,13 +15,24 @@
 
 @end
 
-@implementation AddTransaction_Pre
-@synthesize tableView,parameterAdd_PrePF;
-@synthesize activityIndicatorView;
-//@synthesize SegmentedLocationVCObj;
+@implementation AddTransaction_Pre {
+    NSMutableArray *GetValuesFromTextFieldArray, *RunProcessArray;
+    NSArray *preExtractionArray;
+    int textFieldCount;
+    NSString *Parameter0, *Parameter1, *Parameter2, *Parameter3, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId;
+    NSInteger objectCount;
+}
+
+@synthesize tableView,parameterAdd_PrePF, activityIndicatorView;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
    // [self setupViewControllers];
+    GetValuesFromTextFieldArray = [[NSMutableArray alloc] init];
+    RunProcessArray = [[NSMutableArray alloc]init];
+    preExtractionArray = [[NSArray alloc]init];
+    
+    textFieldCount = 0;
   
     [activityIndicatorView startAnimating ];
     // Do any additional setup after loading the view.
@@ -29,13 +40,11 @@
     
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
-   
     [query1 whereKey:@"Type" equalTo:@"Pre-Extraction"];
 
-   
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
      
-        self.ObjectCount=objects.count;
+        objectCount=objects.count;
         if(error){
             NSLog(@"Error!");
         }
@@ -48,17 +57,14 @@
                 [alertView show];
             }
             else {
-                
-                self.preExtractionArray=[[NSArray alloc]initWithArray:objects];
+                preExtractionArray = objects;
              
                 [self.tableView reloadData];
-                
             }
-            
         }
     }];
     
-      PFQuery *query2 = [PFQuery queryWithClassName:@"Parameters"];
+    PFQuery *query2 = [PFQuery queryWithClassName:@"Parameters"];
     [query2 selectKeys:@[@"Name"]];
     [query2 whereKey:@"Type" equalTo:@"Pre-Extraction"];
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
@@ -67,12 +73,11 @@
             // Did not find any UserStats for the current user
         } else {
             
-            self.preExtractionArray=[[NSArray alloc]initWithArray:objectsPF ];
-            self.RunProcessArray=[[NSMutableArray alloc]init];
+            preExtractionArray = objectsPF;
             
-            for (int i=0;i<[self.preExtractionArray count];i++) {
+            for (int i=0;i<[preExtractionArray count];i++) {
                 NSString *newString=[[objectsPF objectAtIndex:i]valueForKey:@"Name"];
-                [self.RunProcessArray addObject:newString];
+                [RunProcessArray addObject:newString];
                 [activityIndicatorView stopAnimating];
             }
           
@@ -92,15 +97,12 @@
             // Found UserStats
 //self.placeholderArray=[object allKeys];
         
-            self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
-            self.LastInsertedTransactionNoObjectId=[object objectId];
-            NSLog(@"name %@ and object id %@",self.LastInsertedTransactionNo,self.LastInsertedTransactionNoObjectId);
+            LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
+            LastInsertedTransactionNoObjectId=[object objectId];
+            //NSLog(@"name %@ and object id %@",self.LastInsertedTransactionNo,self.LastInsertedTransactionNoObjectId);
         }
-        
-        
     }];
   
-    self.GetValuesFromTextFieldArray=[[NSMutableArray alloc]init];
    }
 
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
@@ -132,11 +134,11 @@
 
 -(void)DeleteTransaction{
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
-    [query whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
-            NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
             // Do something with the found objects
             for (PFObject *object in objects) {
                 [object deleteInBackground];
@@ -150,10 +152,9 @@
             // [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
         }
     }];
-
 }
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch(buttonIndex) {
         case 0:
             break;
@@ -166,16 +167,12 @@
     }
 }
 
-
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.ObjectCount ;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return objectCount ;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -195,16 +192,23 @@
     }
     
        cell.p_1Text.tag=indexPath.row;
+    textFieldCount++;
     // Configure the cell...
     for (int i=-1;i<indexPath.row;i++) {
-        cell.p_1Text.placeholder=[[self.preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+        cell.p_1Text.placeholder=[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"];
 
     }
     
     return cell;
 }
 
-
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    if (textField.tag == textFieldCount-1) {
+        textField.returnKeyType = UIReturnKeyDone;
+    } else {
+        textField.returnKeyType = UIReturnKeyNext;
+    }
+}
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
@@ -232,45 +236,30 @@ for (NSInteger i=textField.tag;i<=textFieldIndexPath.row;i++) {
     return YES;
 }
 
-
-
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-      [textField resignFirstResponder];
-    return YES;
-    
-}
-
-
 -(IBAction)SaveAndForward:(id)sender {
-    
-    
-    
-//[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
         
-if (parameterAdd_PrePF != nil) {
+/*if (parameterAdd_PrePF != nil) {
       [self updateParameters];
         }
         else {
       [self saveParameters];
-        }
+        }*/
 }
 
 - (void)saveParameters
 {
     [activityIndicatorView startAnimating];
-      PFObject *NewParameter=[PFObject objectWithClassName:@"Pre_Extraction"];
+      //PFObject *NewParameter=[PFObject objectWithClassName:@"Pre_Extraction"];
      
-     if([NewParameter save]) {
-         
-              PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
-         
-         for (int i=0;i<[self.RunProcessArray count];i++) {
-             NSString *newPara=[self.RunProcessArray objectAtIndex:i];
-             ParameterValue[newPara]=[self.GetValuesFromTextFieldArray objectAtIndex:i];
+     //if([NewParameter save]) {
+         PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
+         for (int i=0;i<[RunProcessArray count];i++) {
+             NSString *newPara=[RunProcessArray objectAtIndex:i];
+             ParameterValue[newPara]=[GetValuesFromTextFieldArray objectAtIndex:i];
          }
 
-     ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
+     ParameterValue[@"Run_No"]=LastInsertedTransactionNo;
      
      [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
      if (succeeded) {
@@ -293,7 +282,7 @@ if (parameterAdd_PrePF != nil) {
      
      //  class created;
      
-     }
+     //}
   }
 
 - (void)updateParameters
@@ -312,11 +301,11 @@ if (parameterAdd_PrePF != nil) {
         }
         else {
             
-            [UpdateParameter setObject:self.Parameter0 forKey:@"Parameter_1"];
-            [UpdateParameter setObject:self.Parameter1 forKey:@"Parameter_2"];
-            [UpdateParameter setObject:self.Parameter2 forKey:@"Parameter_3"];
-            [UpdateParameter setObject:self.Parameter0 forKey:@"Parameter_4"];
-            [UpdateParameter setObject:self.LastInsertedTransactionNo forKey:@"Run_No"];
+            [UpdateParameter setObject:Parameter0 forKey:@"Parameter_1"];
+            [UpdateParameter setObject:Parameter1 forKey:@"Parameter_2"];
+            [UpdateParameter setObject:Parameter2 forKey:@"Parameter_3"];
+            [UpdateParameter setObject:Parameter0 forKey:@"Parameter_4"];
+            [UpdateParameter setObject:LastInsertedTransactionNo forKey:@"Run_No"];
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {

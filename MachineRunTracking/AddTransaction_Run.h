@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *SaveAndForward;
 @property (strong, nonatomic) IBOutlet UITextField * activeField;
 @property (strong, nonatomic) IBOutlet UITextField * valueTextField;
+@property (strong, nonatomic) IBOutlet UILabel * valueHeaderLabel;
 @property (nonatomic) int sectionCount;
 @property (nonatomic) NSInteger rowIndexCount;
 

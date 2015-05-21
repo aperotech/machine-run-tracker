@@ -44,7 +44,7 @@
         if (!object) {
             value=1;
              NSString *runNo=[NSString stringWithFormat:@"R%04i",value];
-            self.Run_NoText.text=runNo;
+            self.Run_NoText.text = runNo;
             self.Run_NoText.enabled=FALSE;
             // Did not find any UserStats for the current user
         } else {
@@ -254,7 +254,7 @@
     activityIndicatorView.hidden=NO;
     [activityIndicatorView startAnimating];
    
-/*NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [self.Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *Run_Date = [self.Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -293,8 +293,8 @@
         }
         
     }];
-    }*/
-}
+    }
+ }
 
 - (IBAction)Cancel:(id)sender {
     

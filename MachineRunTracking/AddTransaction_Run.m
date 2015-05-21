@@ -20,12 +20,15 @@
 BOOL NextFlag;
 }
 
-@synthesize aTableView,valueTextField, activityIndicatorView, scrollView;
+@synthesize aTableView,valueTextField, activityIndicatorView, scrollView,valueHeaderLabel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     NextFlag=0;
+    //NSLog(@"width is %f, height is %f",self.view.frame.size.width, self.view.frame.size.width);
+    //[self.scrollView setContentSize:CGSizeMake(self.aTableView.frame.size.width, self.aTableView.frame.size.height)];
+    //NSLog(@"setting scroll content size: width %f, height %f", self.aTableView.frame.size.width, self.aTableView.frame.size.height);
+    
     activityIndicatorView.center = CGPointMake( [UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2);
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate.window addSubview:activityIndicatorView];
@@ -74,8 +77,8 @@ BOOL NextFlag;
                     NSString *newString=[[objects objectAtIndex:i]valueForKey:@"Name"];
                     [self.headerArray addObject:newString];
                     NSString *units=[[objects objectAtIndex:i]valueForKey:@"Units"];
-                    NSString *PlaceholderString=[newString stringByAppendingFormat:@"(%@)",units];
-                    [self.RunProcessArray addObject:PlaceholderString];
+                 //   NSString *PlaceholderString=[newString stringByAppendingFormat:@"(%@)",units];
+                    [self.RunProcessArray addObject:units];
                     [activityIndicatorView stopAnimating];
                 }
                 
@@ -111,7 +114,7 @@ BOOL NextFlag;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 36.0f;
+    return 45.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -122,54 +125,36 @@ BOOL NextFlag;
     
     aTableView.separatorColor = [UIColor lightGrayColor];
     
-  /*  if (cell != nil) {
-        cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
-        
-        for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
-            
-            valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
-            CGRect frameText=CGRectMake(valueTextField.frame.origin.x+102*i, 10, 94, 21);
-            
-            [valueTextField setFrame:frameText];
-            valueTextField.tag = i+1;
-            valueTextField.borderStyle = UITextBorderStyleNone;
-            [valueTextField setReturnKeyType:UIReturnKeyDefault];
-            valueTextField.enabled =FALSE;
-            
-            [valueTextField setEnablesReturnKeyAutomatically:YES];
-            [valueTextField setDelegate:self];
-            valueTextField.text=[self.headerArray objectAtIndex:i];
-            
-            // valueTextField.backgroundColor=[UIColor grayColor];
-            cell.backgroundColor=[UIColor grayColor];
-            [cell.contentView addSubview:valueTextField];
-        }
-    }*/
-    if (cell != nil) {
+      if (cell != nil) {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
         CGRect frameText;
         
         for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
             
-            valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
-
-            valueTextField.textColor = [UIColor whiteColor];
-            valueTextField.font = [UIFont boldSystemFontOfSize:14.0];
+            valueHeaderLabel = [[UILabel alloc] init]; // 10 px padding between each view
+            
+             valueHeaderLabel.preferredMaxLayoutWidth = 80;
+             valueHeaderLabel.numberOfLines = 0;
+             valueHeaderLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            valueHeaderLabel.textColor = [UIColor whiteColor];
+            valueHeaderLabel.font = [UIFont boldSystemFontOfSize:14.0];
             
             if (i == 0) {
-                frameText=CGRectMake(10, 5, 100, 25);
+                frameText=CGRectMake(10, 5, 80, 38);
             } else {
-                frameText=CGRectMake(valueTextField.frame.origin.x+105*i, 5, 100, 25);
+                frameText=CGRectMake(valueHeaderLabel.frame.origin.x+105*i, 5, 80, 38);
             }
             
-            [valueTextField setFrame:frameText];
-            valueTextField.tag = i + 1;
+            [valueHeaderLabel setFrame:frameText];
+            valueHeaderLabel.tag = i + 1;
             
-            valueTextField.text = [self.headerArray objectAtIndex:i];
+            NSString* string1 = [self.headerArray objectAtIndex:i];
+            NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+            valueHeaderLabel.text =string2;
         
             //headerLabel.backgroundColor = [UIColor clearColor];
             cell.backgroundColor = [UIColor darkGrayColor];
-            [cell.contentView addSubview:valueTextField];
+            [cell.contentView addSubview:valueHeaderLabel];
         }
     }
     
@@ -228,45 +213,13 @@ if (self.sectionCount>=1) {
     static NSString *CellIdentifier = @"ProcessRunCellIdentifier";
     
     Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-/*if (cell != nil)
-    {
-        cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
-        for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
-            valueTextField = [[UITextField alloc] init]; // 10 px padding between each view
-            
-            CGRect frameText=CGRectMake(valueTextField.frame.origin.x+102*i, 10, 94, 21);
-            
-            [valueTextField setFrame:frameText];
-            
-            valueTextField.tag = (indexPath.row * self.RunProcessArray.count)+i+1;
-            
-            valueTextField.borderStyle = UITextBorderStyleRoundedRect;
-            [valueTextField setReturnKeyType:UIReturnKeyDefault];
-            [valueTextField setEnablesReturnKeyAutomatically:YES];
-            [valueTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
-            [valueTextField setDelegate:self];
-            valueTextField.placeholder=[self.RunProcessArray objectAtIndex:i];
-            
-            if (count > 0 && ((self.sectionCount - indexPath.row) >1)) {
-                for (int j=0;j<self.GetValuesFromRunTextFieldArray.count;j++) {
-                    if (valueTextField.tag==j+1) {
-                        valueTextField.text=[self.GetValuesFromRunTextFieldArray objectAtIndex:j];
-                    }
-                }
-            }
-            [cell.contentView addSubview:valueTextField];
-        }
-    }*/
+
     if (cell != nil) {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         CGRect frameText;
         for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
             valueTextField = [[UITextField alloc] init];
-           // valueLabel.preferredMaxLayoutWidth = 80;
-          //  valueLabel.numberOfLines = 1;
-          //  valueLabel.lineBreakMode = NSLineBreakByCharWrapping;
+           
             valueTextField.textColor = [UIColor blackColor];
             valueTextField.font = [UIFont systemFontOfSize:14.0];
             valueTextField.textAlignment = NSTextAlignmentCenter;
@@ -365,6 +318,24 @@ if (self.sectionCount>=1) {
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
+    
+    PFQuery *query3= [PFQuery queryWithClassName:@"Run_Process"];
+    [query3 whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query3 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            // Do something with the found objects
+            for (PFObject *object in objects) {
+                [object deleteInBackground];
+                
+            }
+            
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -403,7 +374,7 @@ if (self.sectionCount>=1) {
 
 
 -(IBAction)SaveAndForward:(id)sender {
-    
+//[self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
     NextFlag=1;
 if (self.parameterAdd_RunPF != nil) {
      [self updateParameters];
@@ -446,6 +417,7 @@ if (self.parameterAdd_RunPF != nil) {
                 [activityIndicatorView stopAnimating];
                 
                 if (NextFlag == 1) {
+                    NSLog(@"Next Flag Is 1");
                     [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
                 }
                 // The object has been saved.

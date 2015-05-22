@@ -287,6 +287,26 @@
 
 - (IBAction)save:(id)sender {
     [activityIndicator startAnimating];
+
+    NSString *description = [descriptionText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    NSString *machineName = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *trackingFreq = [trackingFrequencyText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *location = [locationText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+     NSString *capacity = [capacityText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+     NSString *maintance = [maintanceFrequencyText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+     NSString *lastdate = [lastMaintanceDate.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    if ([machineName length] == 0 ||[description length] == 0 ||[trackingFreq length] == 0 ||[location length] == 0 ||[capacity length] == 0 ||[maintance length] == 0 ||[lastdate length] == 0) {
+        [self.activityIndicator stopAnimating];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                            message:@"You must enter details"
+                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    }
+   
+    else{
+   
     // Create PFObject with recipe information
     PFObject *machineObj = [PFObject objectWithClassName:@"Machine"];
     [machineObj setObject:codeText.text forKey:@"Code"];
@@ -321,6 +341,7 @@
         }
         
     }];
+    }
 }
 
 - (IBAction)cancel:(id)sender {

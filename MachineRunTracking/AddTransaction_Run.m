@@ -184,7 +184,7 @@
     tableFrame.size.width = self.aTableView.contentSize.width; // if you would allow horiz scrolling
     self.aTableView.frame = tableFrame;
     
-    NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", aTableView.frame.size.width,  aTableView.frame.size.height, aTableView.contentSize.width,  aTableView.contentSize.height);
+    NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", self.aTableView.frame.size.width,  self.aTableView.frame.size.height, self.aTableView.contentSize.width,  self.aTableView.contentSize.height);
     
     self.scrollView.contentSize = self.aTableView.contentSize;
     //[self.scrollView setContentSize:CGSizeMake(self.aTableView.frame.size.width + 50, self.aTableView.frame.size.height)];*/
@@ -210,6 +210,7 @@
 }
 
 - (void)addRow:(id)sender {
+    
     if (self.sectionCount>=1) {
         if (self.parameterAdd_RunPF != nil) {
             [self updateParameters];
@@ -219,7 +220,7 @@
     }
     self.sectionCount=self.sectionCount+1;
     
-    [aTableView reloadData];
+    [self.aTableView reloadData];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -384,6 +385,8 @@
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
+            // The find succeeded.
+            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
             // Do something with the found objects
             for (PFObject *object in objects) {
                 [object deleteInBackground];
@@ -402,6 +405,8 @@
     query3.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query3 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
+            // The find succeeded.
+//NSLog(@"Successfully retrieved %ld scores.", objects.count);
             // Do something with the found objects
             for (PFObject *object in objects) {
                 [object deleteInBackground];
@@ -494,8 +499,7 @@ if (self.parameterAdd_RunPF != nil) {
                 
                 if (NextFlag == 1) {
                     NSLog(@"Next Flag Is 1");
-                
-                [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+                    [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
                 }
                 // The object has been saved.
             } else {
@@ -628,7 +632,7 @@ if (self.parameterAdd_RunPF != nil) {
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
  // Get the new view controller using [segue destinationViewController].
  // Pass the selected object to the new view controller.
- }
+ }*/
 
 
 @end

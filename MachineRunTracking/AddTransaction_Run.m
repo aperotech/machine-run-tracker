@@ -137,25 +137,27 @@
         
         for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
             valueHeaderLabel = [[UILabel alloc] init]; // 10 px padding between each view
-            
-            valueHeaderLabel.preferredMaxLayoutWidth = 80;
+
             valueHeaderLabel.numberOfLines = 0;
             valueHeaderLabel.lineBreakMode = NSLineBreakByWordWrapping;
             valueHeaderLabel.textColor = [UIColor whiteColor];
+            
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+                valueHeaderLabel.preferredMaxLayoutWidth = 100;
                 valueHeaderLabel.font = [UIFont boldSystemFontOfSize:16.0];
                 if (i == 0) {
-                    frameText=CGRectMake(10, 5, 80, 50);
+                    frameText=CGRectMake(10, 5, 100, 50);
                 } else {
-                    frameText=CGRectMake(valueHeaderLabel.frame.origin.x+105*i, 5, 80, 50);
+                    frameText=CGRectMake(valueHeaderLabel.frame.origin.x+130*i, 5, 100, 50);
                 }
             }
             else {
+                valueHeaderLabel.preferredMaxLayoutWidth = 90;
                 valueHeaderLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 if (i == 0) {
-                    frameText=CGRectMake(10, 5, 80, 40);
+                    frameText=CGRectMake(10, 5, 90, 40);
                 } else {
-                    frameText=CGRectMake(valueHeaderLabel.frame.origin.x+105*i, 5, 80, 40);
+                    frameText=CGRectMake(valueHeaderLabel.frame.origin.x+110*i, 5, 90, 40);
                 }
             }
             
@@ -239,14 +241,18 @@
             
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                 valueTextField.font = [UIFont systemFontOfSize:16.0];
+                if (i == 0) {
+                    frameText=CGRectMake(10, 7, 100, 30);
+                } else {
+                    frameText=CGRectMake(valueTextField.frame.origin.x+105*i, 7, 100, 30);
+                }
             } else {
                 valueTextField.font = [UIFont systemFontOfSize:14.0];
-            }
-            
-            if (i == 0) {
-                frameText=CGRectMake(10, 7, 80, 30);
-            } else {
-                frameText=CGRectMake(valueTextField.frame.origin.x+105*i, 7, 80, 30);
+                if (i == 0) {
+                    frameText=CGRectMake(10, 7, 90, 30);
+                } else {
+                    frameText=CGRectMake(valueTextField.frame.origin.x+110*i, 7, 90, 30);
+                }
             }
             
             [valueTextField setFrame:frameText];

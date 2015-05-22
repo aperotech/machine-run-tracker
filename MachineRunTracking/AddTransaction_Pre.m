@@ -18,9 +18,9 @@
 @implementation AddTransaction_Pre {
     NSMutableArray *GetValuesFromTextFieldArray, *RunProcessArray;
     NSArray *preExtractionArray;
-    int textFieldCount;
-    NSString *Parameter0, *Parameter1, *Parameter2, *Parameter3, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId;
+    NSString *Parameter0, *Parameter1, *Parameter2, *Parameter3, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId, *finalText;
     NSInteger objectCount;
+    int bounceFlag, doneFlag;
 }
 
 @synthesize tableView,parameterAdd_PrePF, activityIndicatorView;
@@ -28,17 +28,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
    // [self setupViewControllers];
-    GetValuesFromTextFieldArray = [[NSMutableArray alloc] init];
     RunProcessArray = [[NSMutableArray alloc]init];
     preExtractionArray = [[NSArray alloc]init];
-    
-    textFieldCount = 0;
   
     [activityIndicatorView startAnimating ];
     // Do any additional setup after loading the view.
    // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
     
-    
+    bounceFlag = 0;
+    doneFlag = 0;
+
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Pre-Extraction"];
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
@@ -76,17 +75,16 @@
         } else {
             
             preExtractionArray = objectsPF;
+            GetValuesFromTextFieldArray = [[NSMutableArray alloc] initWithCapacity:objectsPF.count];
             
             for (int i=0;i<[preExtractionArray count];i++) {
                 NSString *newString=[[objectsPF objectAtIndex:i]valueForKey:@"Name"];
                 [RunProcessArray addObject:newString];
+                [GetValuesFromTextFieldArray addObject:[NSNull null]];
                 [activityIndicatorView stopAnimating];
             }
-          
         }
     }];
-    
-    
     
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"createdAt"];
@@ -228,8 +226,7 @@
     return 0.1f;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      static NSString *simpleTableIdentifier = @"Pre_ExtractionCellIdentifier";
     
     AddTransaction_PreCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -237,25 +234,25 @@
     if (cell == nil) {
         cell = [[AddTransaction_PreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
         cell.backgroundColor=[UIColor grayColor];
-        
     }
     
-       cell.p_1Text.tag=indexPath.row;
-    textFieldCount++;
+     cell.p_1Text.tag=indexPath.row;
     // Configure the cell...
-    for (int i=-1;i<indexPath.row;i++) {
         NSString* string1 =[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
         NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
 
       //  NSString *PlaceholderString=
- cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@" (%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
+        if (bounceFlag == 0) {
+            cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@" (%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
+        }
+    if (indexPath.row == (RunProcessArray.count-1)) {
+        bounceFlag = 1;
     }
-    
     return cell;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    if (textField.tag == textFieldCount-1) {
+    if (textField.tag == RunProcessArray.count-1) {
         textField.returnKeyType = UIReturnKeyDone;
     } else {
         textField.returnKeyType = UIReturnKeyNext;
@@ -264,15 +261,20 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
-    if (textField.tag < GetValuesFromTextFieldArray.count | textField.tag > GetValuesFromTextFieldArray.count) {
+    /*if (textField.tag < GetValuesFromTextFieldArray.count | textField.tag > GetValuesFromTextFieldArray.count) {
         [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
     } else  {
-        [GetValuesFromTextFieldArray addObject:textField.text];
+        [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+        NSLog(@"added %@ at %ld",textField.text, (long)textField.tag);
+    }*/
+    if (![textField.text isEqualToString:@""]) {
+        [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+        //NSLog(@"added %@ at %ld",textField.text, (long)textField.tag);
     }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    if (textField.tag == textFieldCount-1) {
+    if (textField.tag == RunProcessArray.count-1) {
         [textField resignFirstResponder];
     } else {
         [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
@@ -281,6 +283,12 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    if (textField.tag == (RunProcessArray.count-1)) {
+        finalText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        doneFlag = 1;
+    }
+    
     if (textField.text.length >= 40 && range.length == 0)
         return NO;
     
@@ -291,18 +299,28 @@
         
         return [string isEqualToString:filtered];
     }
+    
     return YES;
 }
 
 -(IBAction)SaveAndForward:(id)sender {
-//[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
-        
-if (parameterAdd_PrePF != nil) {
-      [self updateParameters];
-        }
-        else {
-      [self saveParameters];
-        }
+    //[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+
+    if (doneFlag == 1) {
+        [GetValuesFromTextFieldArray replaceObjectAtIndex:(RunProcessArray.count-1) withObject:finalText];
+    }
+    
+   if (parameterAdd_PrePF != nil) {
+        [self updateParameters];
+   } else {
+       if([GetValuesFromTextFieldArray containsObject:[NSNull null]]) {
+           //NSLog(@"contains null");
+           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
+                                                               message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+           [alertView show];
+       } else
+           [self saveParameters];
+   }
 }
 
 - (void)saveParameters

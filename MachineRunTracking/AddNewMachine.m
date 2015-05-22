@@ -40,8 +40,8 @@
  //   [lastMaintanceDate setInputView:self.datePicker];
     
     PFQuery *query=[PFQuery queryWithClassName:@"Machine"];
-    
     [query orderByDescending:@"Code"];
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         [self.activityIndicator startAnimating];
@@ -309,7 +309,6 @@
            // [alert show];
             
             // Notify table view to reload the Machine from Parse cloud
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
             [activityIndicator stopAnimating];
             // Dismiss the controller
             [self dismissViewControllerAnimated:YES completion:nil];

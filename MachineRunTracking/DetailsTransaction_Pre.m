@@ -17,7 +17,7 @@
 @end
 
 @implementation DetailsTransaction_Pre {
-    NSArray *runArrayPre, *preExtractionArray;
+    NSArray *runArrayPre, *preExtractionArray, *unitsArray;
     NSMutableArray *RunProcessArray;
     NSInteger ObjectCount;
 }
@@ -95,9 +95,25 @@
         }
         [self.activityIndicator stopAnimating];
     }];
-  
-
+    
+    PFQuery *unitsQuery = [PFQuery queryWithClassName:@"Parameters"];
+    [unitsQuery selectKeys:@[@"Units"]];
+    [unitsQuery whereKey:@"Type" equalTo:@"Pre-Extraction"];
+    unitsQuery.cachePolicy = kPFCachePolicyNetworkElseCache;
+    
+    [unitsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        [self.activityIndicator startAnimating];
+        if(error){
+            NSLog(@"Error!");
+        }
+        else {
+            unitsArray = [[NSArray alloc]initWithArray:objects];
+            [self.tableView reloadData];
+        }
+        [self.activityIndicator stopAnimating];
+    }];
 }
+
 - (BOOL)shouldAutorotate {
     return NO;
 }
@@ -135,17 +151,16 @@
     }
     cell.parameterLabel.tag=indexPath.row;
     
-    
     for (int i=0; i<RunProcessArray.count;i++) {
         if (indexPath.row==i) {
             NSString *parameterValue=[[runArrayPre objectAtIndex:0]objectForKey:[RunProcessArray objectAtIndex:i]];
-           
             if (parameterValue == nil ) {
                 cell.parameterLabel.text=@"N/A";
-            }else{
-                cell.parameterLabel.text=parameterValue;
+            } else if ([[RunProcessArray objectAtIndex:i] rangeOfString:@"Time"].location != NSNotFound) {
+                cell.parameterLabel.text = parameterValue;
+            } else {
+                cell.parameterLabel.text = [NSString stringWithFormat:@"%@ %@", parameterValue, [[unitsArray objectAtIndex:i] objectForKey:@"Units"]];
             }
-           // cell.parameterLabel.text=[[runArrayPre objectAtIndex:0]objectForKey:[RunProcessArray objectAtIndex:i]];
         
             NSString* string1 =[NSString stringWithFormat:@"%@ :",[RunProcessArray objectAtIndex:i]];
             NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];

@@ -55,6 +55,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (BOOL)shouldAutorotate {
     return NO;
 }
@@ -64,12 +65,6 @@
 }
 
 - (IBAction)logout:(id)sender {
-    //PFUser *currentUser = [PFUser currentUser];
-    //[PFUser logOut];
-   // [self.navigationController popViewControllerAnimated:YES];
-    // this will now be nil
-   //  [self performSegueWithIdentifier:@"unwindToLoginSegue" sender:self];
-    
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userLoggedIn"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main"
@@ -79,11 +74,7 @@
     [self presentViewController:add
                        animated:YES
                      completion:nil];
-    //[self dismissViewControllerAnimated:YES completion:nil];
-   // [self.navigationController popViewControllerAnimated:YES];
-   // [self.navigationController popToRootViewControllerAnimated:YES];
-    //NSLog(@"Successfully Logout ");
-    }
+}
 
 -(IBAction)UserButtonClick:(id)sender{
     

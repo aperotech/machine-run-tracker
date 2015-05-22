@@ -56,7 +56,7 @@
     // Only characters in the NSCharacterSet you choose will insertable.
      if ([textField isEqual:unitsText]) {
         //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/_"] invertedSet];
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/_: "] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
         
         return [string isEqualToString:filtered];
@@ -116,7 +116,6 @@
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                     [self.activityIndicator stopAnimating];
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {

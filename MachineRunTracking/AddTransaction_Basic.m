@@ -36,8 +36,8 @@
     activityIndicatorView.hidden=YES;
     
     PFQuery *query=[PFQuery queryWithClassName:@"Transaction"];
-   
     [query orderByDescending:@"Run_No"];
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         
@@ -61,34 +61,24 @@
             [activityIndicatorView stopAnimating];
            // [activityView stopAnimating];
         }
-        
-        
     }];
 
-    
-    PFQuery *query1 = [PFQuery queryWithClassName:@"Machine"];
-    
+   PFQuery *query1 = [PFQuery queryWithClassName:@"Machine"];
    [query1 selectKeys:@[@"Machine_Name"]];
+   query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     
-     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        
-        if(!error){
-            
-             Machine_NameArray = [NSMutableArray arrayWithCapacity:objects.count]; // make an array to hold the cities
+   [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if(!error) {
+             Machine_NameArray = [NSMutableArray arrayWithCapacity:objects.count];
             for(PFObject* obj in objects) {
                 [Machine_NameArray addObject:[obj objectForKey:@"Machine_Name"]];
               
             }
-            
         }
         else {
             NSLog(@"Error: %@ %@", error, [error userInfo]);
-          
         }
     }];
-    
-    //Initialize frequency picker
-   // frequency = [NSArray arrayWithObjects:@"Daily",@"Weekly", @"Monthly", @"Quarterly", @"Semi-Annually", @"Annually", nil];
 
     MachinePicker = [[UIPickerView alloc] initWithFrame:CGRectMake(16, Run_DurationText.frame.origin.y, 288, 120)];
     MachinePicker.delegate = self;
@@ -144,8 +134,6 @@
     [self.Run_DateText setInputAccessoryView:datePickerToolbar];
 }
 
-
-
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
 }
@@ -156,11 +144,17 @@
     [self registerForKeyboardNotifications];
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [self deregisterFromKeyboardNotifications];
     
     [super viewDidDisappear:animated];
 }
+
 - (BOOL)shouldAutorotate {
     return NO;
 }
@@ -168,7 +162,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return UIInterfaceOrientationPortrait;
 }
-#pragma mark - Textfield delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -178,31 +171,27 @@
     } else if (textField == self.Run_DurationText) {
         [self.Run_DurationText resignFirstResponder];
     }
-    
     return YES;
 }
 
 //Method to disable any user input for the user type text field
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if (textField == self.Machine_NameText | textField == self.Machine_NameText) {
+    if (textField == self.Machine_NameText | textField == self.Run_DateText) {
         return NO;
     }
     if ([textField isEqual:self.Run_DurationText]) {
-            //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-            NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789.:"] invertedSet];
-            NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
-            
-            return [string isEqualToString:filtered];
-        }
-        return YES;
-   }
+        //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789.:"] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        return [string isEqualToString:filtered];
+    }
+    return YES;
+}
 
 #pragma mark - Picker delegate methods
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    
     return 1;
-   
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
@@ -221,7 +210,6 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     if (self.activeField == self.Machine_NameText) {
         self.Machine_NameText.text = [Machine_NameArray objectAtIndex:row];
-      
     }
 }
 
@@ -229,12 +217,9 @@
 - (void)machinePickerDoneClicked {
     if ([self.Machine_NameText.text isEqualToString:@""]) {
             self.Machine_NameText.text = [Machine_NameArray objectAtIndex:0];
-        
         }
         [self.Run_DateText becomeFirstResponder];
 }
-
-
 
 //Method to call when Done is clicked on Date picker drop down
 - (void)datePickerDoneClicked {
@@ -244,17 +229,12 @@
     [self.Run_DurationText becomeFirstResponder];
 }
 
-
-/*-(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
-    return UIBarPositionTopAttached;
-}*/
-
 - (IBAction)SaveAndForword:(id)sender {
 //[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
     activityIndicatorView.hidden=NO;
     [activityIndicatorView startAnimating];
    
-NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [self.Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *Run_Date = [self.Run_DateText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -280,12 +260,10 @@ NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSChar
     // Upload Machine to Parse
     [transactionObj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         
-        
         if (!error) {
           
             [activityIndicatorView stopAnimating];
-            
-            // [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+
             [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:self];
             } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -298,9 +276,9 @@ NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSChar
 }
 
 - (IBAction)Cancel:(id)sender {
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (void)viewDidUnload {
     [self setRun_NoText:nil];
     [self setRun_DurationText:nil];
@@ -365,19 +343,6 @@ NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSChar
     self.scrollView.contentInset = contentInsets;
     self.scrollView.scrollIndicatorInsets = contentInsets;
 }
-
-
-#pragma mark - Textfield delegate
-
-
-
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 /*#pragma mark - Navigation
 

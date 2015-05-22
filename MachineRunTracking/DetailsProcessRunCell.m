@@ -9,7 +9,7 @@
 #import "DetailsProcessRunCell.h"
 
 @implementation DetailsProcessRunCell
-@synthesize ParametersText,ValueText,IntervalText,Parameters1Text,Parameters2Text,Parameters3Text;
+
 - (void)awakeFromNib {
     // Initialization code
 }

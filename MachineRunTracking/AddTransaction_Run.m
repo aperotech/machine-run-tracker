@@ -16,8 +16,8 @@
 @end
 
 @implementation AddTransaction_Run {
-    int count;
-BOOL NextFlag;
+    int count, textFieldCount;
+    BOOL NextFlag;
 }
 
 @synthesize aTableView,valueTextField, activityIndicatorView, scrollView,valueHeaderLabel;
@@ -25,8 +25,10 @@ BOOL NextFlag;
 - (void)viewDidLoad {
     [super viewDidLoad];
     NextFlag=0;
+    textFieldCount = 0;
+
     //NSLog(@"width is %f, height is %f",self.view.frame.size.width, self.view.frame.size.width);
-    //[self.scrollView setContentSize:CGSizeMake(self.aTableView.frame.size.width, self.aTableView.frame.size.height)];
+    [self.scrollView setContentSize:CGSizeMake(1000, 500)];
     //NSLog(@"setting scroll content size: width %f, height %f", self.aTableView.frame.size.width, self.aTableView.frame.size.height);
     
     activityIndicatorView.center = CGPointMake( [UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2);
@@ -38,6 +40,7 @@ BOOL NextFlag;
     
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"createdAt"];
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         if (!object) {
@@ -53,6 +56,7 @@ BOOL NextFlag;
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
+    query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     // [query1 selectKeys:@[@"Name"]];
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         
@@ -109,12 +113,14 @@ BOOL NextFlag;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
     return self.sectionCount;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 45.0f;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        return 60.0f;
+    else
+        return 50.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -130,23 +136,31 @@ BOOL NextFlag;
         CGRect frameText;
         
         for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
-            
             valueHeaderLabel = [[UILabel alloc] init]; // 10 px padding between each view
             
-             valueHeaderLabel.preferredMaxLayoutWidth = 80;
-             valueHeaderLabel.numberOfLines = 0;
-             valueHeaderLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            valueHeaderLabel.preferredMaxLayoutWidth = 80;
+            valueHeaderLabel.numberOfLines = 0;
+            valueHeaderLabel.lineBreakMode = NSLineBreakByWordWrapping;
             valueHeaderLabel.textColor = [UIColor whiteColor];
-            valueHeaderLabel.font = [UIFont boldSystemFontOfSize:14.0];
-            
-            if (i == 0) {
-                frameText=CGRectMake(10, 5, 80, 38);
-            } else {
-                frameText=CGRectMake(valueHeaderLabel.frame.origin.x+105*i, 5, 80, 38);
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+                valueHeaderLabel.font = [UIFont boldSystemFontOfSize:16.0];
+                if (i == 0) {
+                    frameText=CGRectMake(10, 5, 80, 50);
+                } else {
+                    frameText=CGRectMake(valueHeaderLabel.frame.origin.x+105*i, 5, 80, 50);
+                }
+            }
+            else {
+                valueHeaderLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                if (i == 0) {
+                    frameText=CGRectMake(10, 5, 80, 40);
+                } else {
+                    frameText=CGRectMake(valueHeaderLabel.frame.origin.x+105*i, 5, 80, 40);
+                }
             }
             
             [valueHeaderLabel setFrame:frameText];
-            valueHeaderLabel.tag = i + 1;
+            valueHeaderLabel.tag = i + 100;
             
             NSString* string1 = [self.headerArray objectAtIndex:i];
             NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
@@ -165,15 +179,15 @@ BOOL NextFlag;
      [self.aTableView setContentSize:CGSizeMake(self.aTableView.bounds.size.width, self.aTableView.bounds.size.height)];
      //NSLog(@"table frame size is width %f, height %f", self.scrollView.contentSize.width, self.scrollView.contentSize.height);*/
     
-    CGRect tableFrame = aTableView.frame;
-    tableFrame.size.height = aTableView.contentSize.height;
-    tableFrame.size.width = aTableView.contentSize.width; // if you would allow horiz scrolling
-    aTableView.frame = tableFrame;
+    /*CGRect tableFrame = self.aTableView.frame;
+    tableFrame.size.height = self.aTableView.contentSize.height;
+    tableFrame.size.width = self.aTableView.contentSize.width; // if you would allow horiz scrolling
+    self.aTableView.frame = tableFrame;
     
-    NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", aTableView.frame.size.width,  aTableView.frame.size.height, aTableView.contentSize.width,  aTableView.contentSize.height);
+    NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", self.aTableView.frame.size.width,  self.aTableView.frame.size.height, self.aTableView.contentSize.width,  self.aTableView.contentSize.height);
     
-    scrollView.contentSize = aTableView.contentSize;
-    [scrollView setContentSize:CGSizeMake(aTableView.frame.size.width + 100, aTableView.frame.size.height)];
+    self.scrollView.contentSize = self.aTableView.contentSize;
+    //[self.scrollView setContentSize:CGSizeMake(self.aTableView.frame.size.width + 50, self.aTableView.frame.size.height)];*/
 
     [activityIndicatorView stopAnimating];
     return cell;
@@ -200,15 +214,13 @@ BOOL NextFlag;
     if (self.sectionCount>=1) {
         if (self.parameterAdd_RunPF != nil) {
             [self updateParameters];
-        } else{
-            
-        [self saveParameters];
+        } else {
+            [self saveParameters];
+        }
     }
-   
-}
     self.sectionCount=self.sectionCount+1;
     
-    [aTableView reloadData];
+    [self.aTableView reloadData];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -223,17 +235,23 @@ BOOL NextFlag;
             valueTextField = [[UITextField alloc] init];
            
             valueTextField.textColor = [UIColor blackColor];
-            valueTextField.font = [UIFont systemFontOfSize:14.0];
             valueTextField.textAlignment = NSTextAlignmentCenter;
             
-            if (i == 0) {
-                frameText=CGRectMake(10, 14, 80, 30);
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                valueTextField.font = [UIFont systemFontOfSize:16.0];
             } else {
-                frameText=CGRectMake(valueTextField.frame.origin.x+100*i, 14, 80, 30);
+                valueTextField.font = [UIFont systemFontOfSize:14.0];
+            }
+            
+            if (i == 0) {
+                frameText=CGRectMake(10, 7, 80, 30);
+            } else {
+                frameText=CGRectMake(valueTextField.frame.origin.x+105*i, 7, 80, 30);
             }
             
             [valueTextField setFrame:frameText];
             valueTextField.tag = (indexPath.row * self.RunProcessArray.count)+i+1;
+            textFieldCount++;
             
             valueTextField.borderStyle = UITextBorderStyleRoundedRect;
             [valueTextField setReturnKeyType:UIReturnKeyDefault];
@@ -274,23 +292,80 @@ BOOL NextFlag;
     //[self.navigationController popViewControllerAnimated:YES];
     // [self dismissViewControllerAnimated:YES completion:nil];
 //[self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+    /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
                                                     message:@"Do want to cancel transaction?"
                                                    delegate:self
                                           cancelButtonTitle:@"No"
                                           otherButtonTitles:@"Yes", nil];
-    [alert show];
+    [alert show];*/
     
-   
+    if ([UIAlertController class]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Transaction Alert" message:@"Are you sure you want to cancel this transaction?" preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        //Create the alert actions i.e. options
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
+        
+        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self DeleteTransaction];
+            [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
+        }];
+        
+        UIAlertAction *backAction = [UIAlertAction actionWithTitle:@"No, go back" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }];
+        
+        //Add alert actions to the alert controller
+        [alert addAction:cancelAction];
+        [alert addAction:yesAction];
+        [alert addAction:backAction];
+        
+        //Present the alert controller
+        [self presentViewController:alert animated:YES completion:nil];
+    } else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Transaction Alert" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Yes", @"No, go back", nil];
+        
+        [actionSheet showInView:self.view];
+    }
+
 }
+
+//Delegate methods to handle action sheet press
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+            [self DeleteTransaction];
+            [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
+            break;
+            
+        case 1:
+            [self dismissViewControllerAnimated:YES completion:nil];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+/*- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch(buttonIndex) {
+        case 0:
+            break;
+        case 1:
+            [self DeleteTransaction];
+            
+            [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
+            
+            break;
+    }
+}*/
 
 -(void)DeleteTransaction{
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            // The find succeeded.
-            NSLog(@"Successfully retrieved %ld scores.", objects.count);
             // Do something with the found objects
             for (PFObject *object in objects) {
                 [object deleteInBackground];
@@ -307,6 +382,7 @@ BOOL NextFlag;
     
     PFQuery *query1= [PFQuery queryWithClassName:@"Pre_Extraction"];
     [query1 whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
@@ -326,6 +402,7 @@ BOOL NextFlag;
     
     PFQuery *query3= [PFQuery queryWithClassName:@"Run_Process"];
     [query3 whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    query3.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query3 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
@@ -343,22 +420,25 @@ BOOL NextFlag;
     }];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch(buttonIndex) {
-        case 0:
-            break;
-        case 1:
-            [self DeleteTransaction];
-            
-             [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
-            
-            break;
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    if (textField.tag%textFieldCount == 0) {
+        textField.returnKeyType = UIReturnKeyDone;
+    } else {
+        textField.returnKeyType = UIReturnKeyNext;
     }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [self.GetValuesFromRunTextFieldArray addObject:textField.text];
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if (textField.tag%textFieldCount == 0) {
+        [textField resignFirstResponder];
+    } else {
+        [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
+    }
+    return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -374,9 +454,6 @@ BOOL NextFlag;
     }
     return YES;
 }
-
-
-
 
 -(IBAction)SaveAndForward:(id)sender {
 //[self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
@@ -418,13 +495,11 @@ if (self.parameterAdd_RunPF != nil) {
         
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
-//[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                 [activityIndicatorView stopAnimating];
                 
                 if (NextFlag == 1) {
                     NSLog(@"Next Flag Is 1");
-                
-                [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+                    [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
                 }
                 // The object has been saved.
             } else {
@@ -440,9 +515,7 @@ if (self.parameterAdd_RunPF != nil) {
     //}
 }
 
-- (void)updateParameters
-{
-    
+- (void)updateParameters {
     PFQuery *query = [PFQuery queryWithClassName:@"Run_Process"];
     
     // Retrieve the object by id
@@ -466,7 +539,6 @@ if (self.parameterAdd_RunPF != nil) {
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                     [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
                     //  [self.navigationController popViewControllerAnimated:YES];
                 } else {
@@ -477,33 +549,24 @@ if (self.parameterAdd_RunPF != nil) {
                 }
             }];
         }
-        
     }];
-    
 }
-#pragma mark - UITextFieldDelegate method implementation
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
-    return YES;
-}
-
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self registerForKeyboardNotifications];
+    //[self registerForKeyboardNotifications];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [self deregisterFromKeyboardNotifications];
+    //[self deregisterFromKeyboardNotifications];
     
     [super viewDidDisappear:animated];
 }
 
 //methods to check when a field text is edited, accordingly, adjust keyboard
 // Implementing picker for age text field
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+/*(- (void)textFieldDidBeginEditing:(UITextField *)textField {
     
     if (aTableView.contentOffset.y != 0)
     {
@@ -513,8 +576,7 @@ if (self.parameterAdd_RunPF != nil) {
             [aTableView scrollToRowAtIndexPath:[aTableView indexPathForCell:cell] atScrollPosition:UITableViewScrollPositionTop animated:YES];
         }];
     }
-    
-}
+}*/
 
 
 //Methods to take care of UIScrollView when keyboard appears
@@ -536,6 +598,7 @@ if (self.parameterAdd_RunPF != nil) {
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
 }
+
 - (void)keyboardWillShow:(NSNotification *)note {
     NSDictionary *userInfo = note.userInfo;
     NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -548,6 +611,7 @@ if (self.parameterAdd_RunPF != nil) {
         self.view.frame = CGRectMake(0, 0, keyboardFrameEnd.size.width, keyboardFrameEnd.origin.y);
     } completion:nil];
 }
+
 - (void)keyboardWillHide:(NSNotification *)note {
     NSDictionary *userInfo = note.userInfo;
     NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -561,16 +625,14 @@ if (self.parameterAdd_RunPF != nil) {
     } completion:nil];
 }
 
-
-
-
+/*
  #pragma mark - Navigation
  
  // In a storyboard-based application, you will often want to do a little preparation before navigation
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
  // Get the new view controller using [segue destinationViewController].
  // Pass the selected object to the new view controller.
- }
+ }*/
 
 
 @end

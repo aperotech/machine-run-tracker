@@ -19,7 +19,7 @@
     NSMutableArray *GetValuesFromTextFieldArray, *RunProcessArray;
     NSArray *preExtractionArray;
     int textFieldCount;
-    NSString *Parameter0, *Parameter1, *Parameter2, *Parameter3, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId;
+    NSString *Parameter0, *Parameter1, *Parameter2, *Parameter3, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId,*lastinsertedPreExtractionID;
     NSInteger objectCount;
 }
 
@@ -28,6 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
    // [self setupViewControllers];
+    
     GetValuesFromTextFieldArray = [[NSMutableArray alloc] init];
     RunProcessArray = [[NSMutableArray alloc]init];
     preExtractionArray = [[NSArray alloc]init];
@@ -257,6 +258,8 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     if (textField.tag == textFieldCount-1) {
+       
+       
         textField.returnKeyType = UIReturnKeyDone;
     } else {
         textField.returnKeyType = UIReturnKeyNext;
@@ -267,8 +270,10 @@
     
     if (textField.tag < GetValuesFromTextFieldArray.count | textField.tag > GetValuesFromTextFieldArray.count) {
         [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+       
     } else  {
         [GetValuesFromTextFieldArray addObject:textField.text];
+         
     }
 }
 
@@ -297,13 +302,29 @@
 
 -(IBAction)SaveAndForward:(id)sender {
 //[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+    PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
+    [query orderByDescending:@"createdAt"];
+    
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         
-if (parameterAdd_PrePF != nil) {
-      [self updateParameters];
+        if (!error) {
+            // The find succeeded.
+            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            // Do something with the found objects
+            NSString *lastinsertedtransactionPreNo=[object objectForKey:@"Run_No"];
+            lastinsertedPreExtractionID =[object objectId];
+            if ([lastinsertedtransactionPreNo isEqualToString:LastInsertedTransactionNo]) {
+                [self updateParameters];
+            }
+            else{
+                [self saveParameters];
+            }
+        } else {
+            [error userInfo];
+            
         }
-        else {
-      [self saveParameters];
-        }
+    }];
 }
 
 - (void)saveParameters
@@ -348,7 +369,7 @@ if (parameterAdd_PrePF != nil) {
     PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
     
     // Retrieve the object by id
-    [query getObjectInBackgroundWithId:[parameterAdd_PrePF objectId] block:^(PFObject *UpdateParameter, NSError *error) {
+    [query getObjectInBackgroundWithId:lastinsertedPreExtractionID block:^(PFObject *UpdateParameter, NSError *error) {
         
         if (error) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -358,15 +379,15 @@ if (parameterAdd_PrePF != nil) {
         }
         else {
             
-            [UpdateParameter setObject:Parameter0 forKey:@"Parameter_1"];
-            [UpdateParameter setObject:Parameter1 forKey:@"Parameter_2"];
-            [UpdateParameter setObject:Parameter2 forKey:@"Parameter_3"];
-            [UpdateParameter setObject:Parameter0 forKey:@"Parameter_4"];
-            [UpdateParameter setObject:LastInsertedTransactionNo forKey:@"Run_No"];
+            for (int i=0;i<[RunProcessArray count];i++) {
+                NSString *newPara=[RunProcessArray objectAtIndex:i];
+                UpdateParameter[newPara] = [GetValuesFromTextFieldArray objectAtIndex:i];
+            }
+
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                    [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+                     [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
                   //  [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"

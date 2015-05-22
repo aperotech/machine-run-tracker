@@ -17,6 +17,7 @@
 
 @implementation AddTransaction_Post {
     int textFieldCount;
+    NSString *lastinsertedPostExtractionID;
 }
 
 @synthesize parameterAdd_PostPF;
@@ -304,12 +305,39 @@
 
 
 -(IBAction)SaveAndExit:(id)sender {
-    if (parameterAdd_PostPF != nil) {
+   
+    PFQuery *query = [PFQuery queryWithClassName:@"Post_Extraction"];
+    [query orderByDescending:@"createdAt"];
+    
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        
+        if (!error) {
+            // The find succeeded.
+            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            // Do something with the found objects
+            NSString *lastinsertedtransactionPreNo=[object objectForKey:@"Run_No"];
+            lastinsertedPostExtractionID =[object objectId];
+            if ([lastinsertedtransactionPreNo isEqualToString:self.LastInsertedTransactionNo]) {
+                [self updateParameters];
+            }
+            else{
+                [self saveParameters];
+            }
+        } else {
+            [error userInfo];
+            
+        }
+    }];
+
+    
+    
+    /*if (parameterAdd_PostPF != nil) {
         [self updateParameters];
     }
     else {
         [self saveParameters];
-    }
+    }*/
 }
 
 - (void)saveParameters
@@ -352,7 +380,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
     
     // Retrieve the object by id
-    [query getObjectInBackgroundWithId:[parameterAdd_PostPF objectId] block:^(PFObject *UpdateParameter, NSError *error) {
+    [query getObjectInBackgroundWithId:lastinsertedPostExtractionID block:^(PFObject *UpdateParameter, NSError *error) {
         
         if (error) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -362,18 +390,17 @@
         }
         else {
             
-            [UpdateParameter setObject:self.Parameter0 forKey:@"Parameter_1"];
-            [UpdateParameter setObject:self.Parameter1 forKey:@"Parameter_2"];
-            [UpdateParameter setObject:self.Parameter2 forKey:@"Parameter_3"];
-            [UpdateParameter setObject:self.Parameter0 forKey:@"Parameter_4"];
-            [UpdateParameter setObject:self.LastInsertedTransactionNo forKey:@"Run_No"];
+            for (int i=0;i<[self.RunProcessArray count];i++) {
+                NSString *newPara=[self.RunProcessArray objectAtIndex:i];
+                UpdateParameter[newPara]=[self.GetValuesFromPostTextFieldArray objectAtIndex:i];
+            }
+
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                    [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue"  sender:self];
+                   [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
                     
-                   // [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
-                    //  [self.navigationController popViewControllerAnimated:YES];
+                   
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                         message:[error.userInfo objectForKey:@"error"]

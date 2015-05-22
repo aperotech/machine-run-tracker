@@ -214,8 +214,9 @@
     if (self.sectionCount==0) {
         self.sectionCount=self.sectionCount+1;
 
-    }else if (self.sectionCount>=1) {
-        if (self.GetValuesFromRunTextFieldArray == nil || self.GetValuesFromRunTextFieldArray.count==0) {
+    }else if (self.sectionCount>=1 ) {
+        NSInteger val=self.sectionCount * self.headerArray.count;
+        if ( !(self.GetValuesFromRunTextFieldArray.count== val)) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
                                                             message:@"Enter Parameters "
                                                            delegate:self
@@ -224,7 +225,7 @@
             [alert show];
         }
         else {
-          //  [self saveParameters];
+           [self saveParameters];
             self.sectionCount=self.sectionCount+1;
             }
       }
@@ -474,9 +475,24 @@
 
 -(IBAction)SaveAndForward:(id)sender {
 //[self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+    NSInteger val=self.sectionCount * self.headerArray.count;
+    if (self.sectionCount == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                        message:@"Enter Process Run Records"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+    }else if (!(self.GetValuesFromRunTextFieldArray.count== val)) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                        message:@"Enter Parameters "
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+    }
+   else{
     NextFlag=1;
-    
-    
     
     PFQuery *query = [PFQuery queryWithClassName:@"Run_Process"];
     [query orderByDescending:@"createdAt"];
@@ -485,30 +501,22 @@
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         
         if (!error) {
-            // The find succeeded.
-            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
-            // Do something with the found objects
-            NSString *lastinsertedtransactionPreNo=[object objectForKey:@"Run_No"];
+            // NSString *lastinsertedtransactionPreNo=[object objectForKey:@"Run_No"];
             lastinsertedRunProcessID =[object objectId];
-            if ([lastinsertedtransactionPreNo isEqualToString:self.LastInsertedTransactionNo]) {
+            
+            if ([lastinsertedRunProcessID isEqualToString:self.LastInsertedTransactionNoObjectID]) {
                 [self updateParameters];
             }
             else{
                 [self saveParameters];
             }
+            
         } else {
             [error userInfo];
             
         }
     }];
-    
-    
-/*if (self.parameterAdd_RunPF != nil) {
-     [self updateParameters];
-     }
-     else {
-     [self saveParameters];
-     }*/
+}
 }
 
 - (void)saveParameters
@@ -535,6 +543,7 @@
             x++;
             tagCount--;
         }
+   
    // NSLog(@"save getParameter List %@",self.GetValuesFromRunTextFieldArray);
         ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
         
@@ -586,7 +595,7 @@
                                 x++;
                 tagCount--;
             }
-          //  NSLog(@"getvalues from text field array is %@",self.GetValuesFromRunTextFieldArray);
+          //  NSLog(@"getvalues update from text field array is %@",self.GetValuesFromRunTextFieldArray);
             
           
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {

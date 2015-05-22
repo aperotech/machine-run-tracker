@@ -45,6 +45,7 @@
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
      
         objectCount=objects.count;
+//NSLog(@"object count for object %ld",objects.count);
         if(error){
             NSLog(@"Error!");
         }
@@ -69,6 +70,7 @@
     [query2 whereKey:@"Type" equalTo:@"Pre-Extraction"];
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
        // objectCount=objectsPF.count;
+//NSLog(@"object count for object PF %ld",objectsPF.count);
         if (!objectsPF) {
             // Did not find any UserStats for the current user
         } else {
@@ -117,12 +119,11 @@
     return UIInterfaceOrientationPortrait;
 }
 
-- (void)refreshTable {
+/* (void)refreshTable {
     //TODO: refresh your data
-    [self.refreshControl endRefreshing];
+//[self.refreshControl endRefreshing];
     [self.tableView reloadData];
-}
-
+}*/
 - (IBAction)Cancel:(id)sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
                                                     message:@"Do want to cancel transaction?"
@@ -196,9 +197,9 @@
     for (int i=-1;i<indexPath.row;i++) {
         NSString* string1 =[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
         NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-
+        NSString *unitsString=[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"];
       //  NSString *PlaceholderString=
- cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@"(%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
+ cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@"(%@)",unitsString];
     }
     
     return cell;

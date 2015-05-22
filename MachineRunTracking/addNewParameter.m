@@ -116,7 +116,7 @@
         return [string isEqualToString:filtered];
     }else if ([textField isEqual:unitsText]) {
         //NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "] invertedSet];
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz: "] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
         
         return [string isEqualToString:filtered];
@@ -166,9 +166,7 @@ NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@" " withStrin
             // Show success message
            // UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Complete" message:@"Successfully saved the Parameters" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
           //  [alert show];
-            
-            // Notify table view to reload the Machine from Parse cloud
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+
             [self.activityIndicator stopAnimating];
             // Dismiss the controller
             [self dismissViewControllerAnimated:YES completion:nil];

@@ -269,7 +269,6 @@
     
     [NewMachine saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
             [activityIndicator stopAnimating];
             [self.navigationController popViewControllerAnimated:YES];
         } else {
@@ -308,7 +307,6 @@
             
             [UpdateMachine saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                     [activityIndicator stopAnimating];
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {

@@ -17,7 +17,7 @@
 
 @implementation MachineLIst {
     NSString *userType;
-    int flag;
+    int flag, alertFlag;
     UIView *cellView;
     UILabel *codeLabel, *nameLabel, *locationLabel, *capacityLabel;
 }
@@ -26,31 +26,23 @@
 {
     self = [super initWithCoder:aCoder];
     if (self) {
-        // Custom the table
-        
         // The className to query on
         self.parseClassName = @"Machine";
-        
-        // The key of the PFObject to display in the label of the default cell style
-        //self.textKey = @"Code";
         
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
         
         // Whether the built-in pagination is enabled
         self.paginationEnabled = NO;
-        
-        // The number of objects to show per page
-        //self.objectsPerPage = 10;
     }
     return self;
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     flag = 0;
+    alertFlag = 0;
     
     userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
@@ -64,26 +56,16 @@
     [super viewDidAppear:animated];
     
     [self refreshTable:nil];
-    
-    if (self.objects.count == 0){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Machine List Empty" message:@"You can create a new machine by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        
-        alert.alertViewStyle = UIAlertViewStyleDefault;
-        
-        [alert show];
-    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 - (void)refreshTable:(NSNotification *) notification {
     // Reload the recipes
     [self loadObjects];
-}
-
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
 }
 
 - (BOOL)shouldAutorotate {
@@ -100,18 +82,26 @@
 
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-     [query orderByAscending:@"Code"];
-    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    //[self.activityIndicatorView stopAnimating];
-    // If no objects are loaded in memory, we look to the cache first to fill the table
-    // and then subsequently do a query against the network.
-    /*    if ([self.objects count] == 0) {
-     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-     }*/
-    
-    //[query orderByAscending:@"name"];
+    [query orderByAscending:@"Code"];
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     return query;
+}
+
+- (void) objectsDidLoad:(NSError *)error {
+    [super objectsDidLoad:error];
+    [error localizedDescription];
+    
+    if (alertFlag == 0) {
+        alertFlag = 1;
+        if (self.objects.count == 0){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Machine List Empty" message:@"You can create a new machine by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            alert.alertViewStyle = UIAlertViewStyleDefault;
+            
+            [alert show];
+        }
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -195,7 +185,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     if (flag == 1) {
         return NO;
-    }   else
+    } else
         return YES;
 }
 
@@ -230,18 +220,6 @@
     }
 }
 
-  /*if (self.PermissionFlag == FALSE) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission Denied !!"
-                                                            message:@"You don't have permission to delete Machine. "
-                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    } else if(self.PermissionFlag == TRUE){
-    PFObject *object = [self.objects objectAtIndex:indexPath.row];
-    [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        [self refreshTable:nil];
-    }];
-    }*/
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
@@ -255,20 +233,6 @@
         MachineDetails *selectedMachine = segue.destinationViewController;
         selectedMachine.machineObject = object;
     }
-}
-
-- (void) objectsDidLoad:(NSError *)error
-{
-    [super objectsDidLoad:error];
-     [error localizedDescription];
-    
-}
-
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 /*

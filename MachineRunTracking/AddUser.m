@@ -130,7 +130,6 @@
         [newUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!error) {
                 // Notify table view to reload the user list from Parse cloud
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                 [self.activityIndicator stopAnimating];
                 
                 // Dismiss the controller
@@ -144,30 +143,6 @@
             [self dismissViewControllerAnimated:YES completion:nil];
             
         }];
-        
-        /*PFUser *newUser = [PFUser user];
-        newUser.username = username;
-        newUser.password = password;
-        newUser.email = email;
-        newUser[@"usertype"]=type;
-      //  newUser.usertype = type;
-        
-        [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (error) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-                                                                    message:[error.userInfo objectForKey:@"error"]
-                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alertView show];
-            }
-            else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-                [self.activityIndicator stopAnimating];
-                // Dismiss the controller
-                //[self dismissViewControllerAnimated:YES completion:nil];
-               [self dismissViewControllerAnimated:YES completion:nil];
-               //[self.navigationController popViewControllerAnimated:YES];
-            }
-        }];*/
     }
 }
 

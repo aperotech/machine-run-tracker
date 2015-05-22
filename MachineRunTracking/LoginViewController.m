@@ -20,11 +20,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //PFObject *testObject = [PFObject objectWithClassName:@"User"];
-   // testObject[@"foo"] = @"Akshay Tested";
-   // [testObject saveInBackground];
-  //  NSLog(@"SuccessFull");
-    // Do any additional setup after loading the view, typically from a nib.
     
     NSString *existingUser = [[NSUserDefaults standardUserDefaults] stringForKey:@"userEmail"];
     if (![existingUser isEqualToString:@""]) {
@@ -69,7 +64,6 @@
         
         return [string isEqualToString:filtered];
     }
-    
     return YES;
 }
 
@@ -142,8 +136,7 @@
     NSString *email = [self.emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    if ([email length] == 0 || [password length] == 0)
-    {
+    if ([email length] == 0 || [password length] == 0){
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                             message:@"You have to enter a Email and password"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

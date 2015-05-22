@@ -14,7 +14,9 @@
 
 @end
 
-@implementation DetailsTransaction_Post
+@implementation DetailsTransaction_Post {
+    NSArray *unitsArray;
+}
 
 @synthesize DetialsTransaction_PostPF, activityIndicator;
 
@@ -64,7 +66,6 @@
                 [self.tableView reloadData];
             }
             [self.activityIndicator stopAnimating];
-            //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
         }
     }];
     
@@ -90,6 +91,23 @@
             }
             
         }
+    }];
+    
+    PFQuery *unitsQuery = [PFQuery queryWithClassName:@"Parameters"];
+    [unitsQuery selectKeys:@[@"Units"]];
+    [unitsQuery whereKey:@"Type" equalTo:@"Post-Extraction"];
+    unitsQuery.cachePolicy = kPFCachePolicyNetworkElseCache;
+    
+    [unitsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        [self.activityIndicator startAnimating];
+        if(error){
+            NSLog(@"Error!");
+        }
+        else {
+            unitsArray = [[NSArray alloc]initWithArray:objects];
+            [self.tableView reloadData];
+        }
+        [self.activityIndicator stopAnimating];
     }];
 }
 
@@ -135,8 +153,10 @@
             NSString *parameterValue=[[self.runArrayPost objectAtIndex:0]objectForKey:[self.RunProcessArray objectAtIndex:i]];
             if (parameterValue == nil) {
                 cell.parameterLabel.text=@"N/A";
-            }else{
-                cell.parameterLabel.text=parameterValue;
+            } else if ([[self.RunProcessArray objectAtIndex:i] rangeOfString:@"Time"].location != NSNotFound) {
+                cell.parameterLabel.text = parameterValue;
+            } else {
+                cell.parameterLabel.text = [NSString stringWithFormat:@"%@ %@", parameterValue, [[unitsArray objectAtIndex:i] objectForKey:@"Units"]];
             }
             
             NSString* string1 =[NSString stringWithFormat:@"%@ :", [self.RunProcessArray objectAtIndex:i]];

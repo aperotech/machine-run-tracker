@@ -24,7 +24,7 @@
 
 @implementation TransactionList {
     NSString *userType;
-    int flag;
+    int flag, alertFlag, machineCount, parameterCount;
     UIView *cellView;
     UILabel *runNoLabel, *machineNameLabel, *runDateLabel;
 }
@@ -39,17 +39,11 @@
         // The className to query on
         self.parseClassName = @"Transaction";
         
-        // The key of the PFObject to display in the label of the default cell style
-        //self.textKey = @"Run_No";
-        
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
         
         // Whether the built-in pagination is enabled
         self.paginationEnabled = NO;
-        
-        // The number of objects to show per page
-         // self.objectsPerPage = 5;
     }
     return self;
 }
@@ -57,61 +51,79 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-     flag = 0;
-     userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
+    flag = 0;
+    alertFlag = 0;
+    userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
-     if ([userType isEqualToString:@"Standard"]) {
+    if ([userType isEqualToString:@"Standard"]) {
     //self.navigationItem.rightBarButtonItem.enabled = FALSE;
     flag = 1;
      }
+    
+    //Run queries to check if machines & parameters exist. This is to decide whether a new transaction can be created or not.
+    PFQuery *machineQuery = [PFQuery queryWithClassName:@"Machine"];
+    [machineQuery selectKeys:@[@"Machine_Name"]];
+    [machineQuery countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
+        if (!error)
+            machineCount = count;
+        else {
+            NSLog(@"Error is %@", error.description);
+        }
+    }];
+    
+    PFQuery *parameterQuery = [PFQuery queryWithClassName:@"Parameters"];
+    [parameterQuery selectKeys:@[@"Machine_Name"]];
+    [parameterQuery countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
+        if (!error)
+            parameterCount = count;
+        else {
+            NSLog(@"Error is %@", error.description);
+        }
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
   
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
-[[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+    [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
 
     [self refreshTable:nil];
-    
-    if (self.objects.count == 0){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Transaction List Empty" message:@"You can create a new transaction by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        
-        alert.alertViewStyle = UIAlertViewStyleDefault;
-        
-        [alert show];
-    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 - (void)refreshTable:(NSNotification *) notification {
-    //[activityIndicatorView stopAnimating];
-    // Reload the recipes
     [self loadObjects];
 }
 
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
-}
-
-- (PFQuery *)queryForTable
-{
+- (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     [query orderByAscending:@"Run_No"];
-    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-  //  query.limit=5;
-    // If no objects are loaded in memory, we look to the cache first to fill the table
-    // and then subsequently do a query against the network.
-    /*    if ([self.objects count] == 0) {
-     query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-     }*/
-    
-    //    [query orderByAscending:@"name"];
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     return query;
 }
+
+- (void) objectsDidLoad:(NSError *)error {
+    [super objectsDidLoad:error];
+    [error localizedDescription];
+    
+    if (alertFlag == 0) {
+        alertFlag = 1;
+        if (self.objects.count == 0){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Transaction List Empty" message:@"You can create a new transaction by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            alert.alertViewStyle = UIAlertViewStyleDefault;
+            
+            [alert show];
+        }
+    }
+}
+
 /*- (BOOL)shouldAutorotate {
 BOOL allowRotation = YES;
     
@@ -132,8 +144,9 @@ BOOL allowRotation = YES;
         return UIInterfaceOrientationPortrait;
     }
     return UIInterfaceOrientationMaskPortrait;
-}*/- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+}*/
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
@@ -214,10 +227,9 @@ BOOL allowRotation = YES;
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-if (flag == 1) {
-   return NO;
-}
-else
+    if (flag == 1)
+        return NO;
+    else
         return YES;
 }
 
@@ -263,16 +275,6 @@ else
     }
 }
 
-- (void) objectsDidLoad:(NSError *)error {
-    [super objectsDidLoad:error];
-    [error localizedDescription];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (IBAction)unwindToTransactionListViewController:(UIStoryboardSegue *)unwindSegue {
     if ([unwindSegue.identifier isEqualToString:@"PostUnwindToTransactionListSegue"]) {
         //AddTransaction_Post *AddPostVC = (AddTransaction_Post *)unwindSegue.sourceViewController;
@@ -310,5 +312,21 @@ else
     // Pass the selected object to the new view controller.
 }
 */
+
+- (IBAction)addTransaction:(id)sender {
+    if (machineCount == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
+                                                            message:@"No machines have been added"
+                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    } else if (parameterCount == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
+                                                            message:@"No parameters have been added"
+                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    } else {
+        [self performSegueWithIdentifier:@"TransactionListToBasicTransactionDetailsSegue" sender:self];
+    }
+}
 
 @end

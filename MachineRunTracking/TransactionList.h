@@ -12,5 +12,6 @@
 @interface TransactionList : PFQueryTableViewController
 
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
+- (IBAction)addTransaction:(id)sender;
 
 @end

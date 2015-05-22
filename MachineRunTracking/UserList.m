@@ -16,6 +16,7 @@
     NSMutableArray *NewUserArray;
     UIView *cellView;
     UILabel *nameLabel, *emailLabel, *typeLabel;
+    int alertFlag;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -29,42 +30,25 @@
         
         // Whether the built-in pagination is enabled
         self.paginationEnabled = NO;
-        
-        // The number of objects to show per page
-     //   self.objectsPerPage = 15;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    alertFlag = 0;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [self refreshTable:nil];
-    
-    if (self.objects.count == 0){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"User List Empty" message:@"You can create a new user by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        
-        alert.alertViewStyle = UIAlertViewStyleDefault;
-        
-        [alert show];
-    }
 }
 
 - (void)refreshTable:(NSNotification *) notification {
     // Reload the recipes
     //[self.activityIndicatorView startAnimating];
     [self loadObjects];
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    //[self.activityIndicatorView stopAnimating];
-    // Release any retained subviews of the main view.
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
 }
 
 - (BOOL)shouldAutorotate {
@@ -83,8 +67,24 @@
 // all objects ordered by createdAt descending.
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     return query;
+}
+
+- (void) objectsDidLoad:(NSError *)error {
+    [super objectsDidLoad:error];
+    [error localizedDescription];
+    
+    if (alertFlag == 0) {
+        alertFlag = 1;
+        if (self.objects.count == 0){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"User List Empty" message:@"You can create a new user by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            alert.alertViewStyle = UIAlertViewStyleDefault;
+            
+            [alert show];
+        }
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -192,12 +192,6 @@
         }
     }
 }
-
-- (void) objectsDidLoad:(NSError *)error {
-    [super objectsDidLoad:error];
-    [error localizedDescription];
-}
-
 
 #pragma mark - UITableViewDelegate
 

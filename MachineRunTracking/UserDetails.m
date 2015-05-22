@@ -143,7 +143,6 @@
             
             [updateUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                     [self.activityIndicator stopAnimating];
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {

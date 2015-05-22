@@ -41,6 +41,7 @@
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Pre-Extraction"];
+    query1.cachePolicy = kPFCachePolicyNetworkElseCache;
 
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
      
@@ -67,6 +68,7 @@
     PFQuery *query2 = [PFQuery queryWithClassName:@"Parameters"];
     [query2 selectKeys:@[@"Name"]];
     [query2 whereKey:@"Type" equalTo:@"Pre-Extraction"];
+    query2.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
         
         if (!objectsPF) {
@@ -88,6 +90,7 @@
     
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"createdAt"];
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         
@@ -124,17 +127,64 @@
 }
 
 - (IBAction)Cancel:(id)sender {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+    /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
                                                     message:@"Do want to cancel transaction?"
                                                    delegate:self
                                           cancelButtonTitle:@"No"
                                           otherButtonTitles:@"Yes", nil];
-    [alert show];
- }
+    [alert show];*/
+    
+    if ([UIAlertController class]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Transaction Alert" message:@"Are you sure you want to cancel this transaction?" preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        //Create the alert actions i.e. options
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
+        
+        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self DeleteTransaction];
+            [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
+        }];
+        
+        UIAlertAction *backAction = [UIAlertAction actionWithTitle:@"No, go back" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }];
+        
+        //Add alert actions to the alert controller
+        [alert addAction:cancelAction];
+        [alert addAction:yesAction];
+        [alert addAction:backAction];
+        
+        //Present the alert controller
+        [self presentViewController:alert animated:YES completion:nil];
+    } else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Transaction Alert" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Yes", @"No, go back", nil];
+        
+        [actionSheet showInView:self.view];
+    }
+    
+}
+
+//Delegate methods to handle action sheet press
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+            [self DeleteTransaction];
+            [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
+            break;
+            
+        case 1:
+            [self dismissViewControllerAnimated:YES completion:nil];
+            break;
+            
+        default:
+            break;
+    }
+}
 
 -(void)DeleteTransaction{
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
@@ -154,7 +204,7 @@
     }];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+/*- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch(buttonIndex) {
         case 0:
             break;
@@ -165,7 +215,7 @@
             
             break;
     }
-}
+}*/
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -199,7 +249,7 @@
         NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
 
       //  NSString *PlaceholderString=
- cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@"(%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
+ cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@" (%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
     }
     
     return cell;
@@ -214,9 +264,6 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    UITableViewCell *cell = (UITableViewCell *)[[textField superview] superview];
-   UITableView *table = (UITableView *)[[cell superview] superview];
-    NSIndexPath *textFieldIndexPath = [table indexPathForCell:cell];
     
     if (textField.tag < GetValuesFromTextFieldArray.count | textField.tag > GetValuesFromTextFieldArray.count) {
         [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
@@ -261,23 +308,21 @@ if (parameterAdd_PrePF != nil) {
 
 - (void)saveParameters
 {
-    [activityIndicatorView startAnimating];
+    //[activityIndicatorView startAnimating];
       //PFObject *NewParameter=[PFObject objectWithClassName:@"Pre_Extraction"];
      
      //if([NewParameter save]) {
          PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
          for (int i=0;i<[RunProcessArray count];i++) {
              NSString *newPara=[RunProcessArray objectAtIndex:i];
-             ParameterValue[newPara]=[GetValuesFromTextFieldArray objectAtIndex:i];
+             ParameterValue[newPara] = [GetValuesFromTextFieldArray objectAtIndex:i];
          }
 
      ParameterValue[@"Run_No"]=LastInsertedTransactionNo;
      
      [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
      if (succeeded) {
-     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-    
-         [activityIndicatorView stopAnimating];
+         //[activityIndicatorView stopAnimating];
          [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
     
      } else {
@@ -295,7 +340,7 @@ if (parameterAdd_PrePF != nil) {
      //  class created;
      
      //}
-  }
+}
 
 - (void)updateParameters
 {
@@ -321,7 +366,6 @@ if (parameterAdd_PrePF != nil) {
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                     [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
                   //  [self.navigationController popViewControllerAnimated:YES];
                 } else {

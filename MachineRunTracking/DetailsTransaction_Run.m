@@ -18,15 +18,16 @@
 @implementation DetailsTransaction_Run {
     UITextField *valueTextField;
     UILabel *headerLabel, *valueLabel;
-    NSMutableArray *RunProcessArray;
+    NSMutableArray *RunProcessArray, *unitsArray;
     NSArray *runArrayRun;
 }
 
-@synthesize DetialsTransaction_RunPF, activityIndicator;
+@synthesize DetialsTransaction_RunPF, activityIndicator, scrollView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //[self.scrollView setContentSize:CGSizeMake(self.tableView.contentSize.width, self.tableView.contentSize.height)];
     self.navigationController.navigationItem.title=@"Process Run";
     if (DetialsTransaction_RunPF !=NULL) {
         self.RunNoLabel.text=[DetialsTransaction_RunPF objectForKey:@"Run_No"];
@@ -37,6 +38,7 @@
     
     RunProcessArray = [[NSMutableArray alloc]init];
     runArrayRun = [[NSArray alloc]init];
+    unitsArray = [[NSMutableArray alloc]init];
     
     [self.activityIndicator startAnimating];
     
@@ -51,6 +53,7 @@
             //NSLog(@"objects count is %ld", objects.count);
             for (int i=0; i < objects.count ;i++) {
                 [RunProcessArray addObject:[[objects objectAtIndex:i]valueForKey:@"Name"]];
+                [unitsArray addObject:[[objects objectAtIndex:i]valueForKey:@"Units"]];
             }
        
             [self.tableView reloadData];
@@ -71,7 +74,6 @@
        
         [self.tableView reloadData];
     }];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -103,11 +105,14 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 45.0f;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        return 60.0f;
+    else
+        return 50.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    NSString *CellIdentifier1 = @"DetailsPostExtractionHeaderCellIdentifier";
+    NSString *CellIdentifier1 = @"DetailsProcessRunHeaderCellIdentifier";
     DetailsProcessRunCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     self.tableView.separatorColor = [UIColor lightGrayColor];
     //cell.backgroundColor=[UIColor lightGrayColor];
@@ -125,12 +130,21 @@
             headerLabel.numberOfLines = 0;
             headerLabel.lineBreakMode = NSLineBreakByWordWrapping;
             headerLabel.textColor = [UIColor whiteColor];
-            headerLabel.font = [UIFont boldSystemFontOfSize:14.0];
-            
-            if (i == 0) {
-                frameText=CGRectMake(10, 5, 80, 40);
-            } else {
-                frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 5, 80, 40);
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+                headerLabel.font = [UIFont boldSystemFontOfSize:16.0];
+                if (i == 0) {
+                    frameText=CGRectMake(10, 5, 80, 50);
+                } else {
+                    frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 5, 80, 50);
+                }
+            }
+            else {
+                headerLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                if (i == 0) {
+                    frameText=CGRectMake(10, 5, 80, 40);
+                } else {
+                    frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 5, 80, 40);
+                }
             }
             
             [headerLabel setFrame:frameText];
@@ -155,7 +169,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *simpleTableIdentifier = @"DetailsPostExtractionCellIdentifier";
+    static NSString *simpleTableIdentifier = @"DetailsProcessRunCellIdentifier";
     
     DetailsProcessRunCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     if (cell != nil) {
@@ -167,15 +181,19 @@
             valueLabel.numberOfLines = 0;
             valueLabel.lineBreakMode = NSLineBreakByWordWrapping;
             valueLabel.textColor = [UIColor blackColor];
-            valueLabel.font = [UIFont systemFontOfSize:14.0];
-            valueLabel.textAlignment = NSTextAlignmentCenter;
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                valueLabel.font = [UIFont systemFontOfSize:16.0];
+            } else {
+                valueLabel.font = [UIFont systemFontOfSize:14.0];
+            }
+            valueLabel.textAlignment = NSTextAlignmentLeft;
             
             if (i == 0) {
                 //NSLog(@"setting value first time");
-                frameText=CGRectMake(10, 11, 40, 35);
+                frameText=CGRectMake(10, 7, 80, 30);
             } else {
                 //NSLog(@"setting value");
-                frameText=CGRectMake(valueLabel.frame.origin.x+105*i, 11, 80, 35);
+                frameText=CGRectMake(valueLabel.frame.origin.x+105*i, 7, 80, 30);
             }
             
             [valueLabel setFrame:frameText];
@@ -184,19 +202,18 @@
             NSString *parameterValue=[[runArrayRun objectAtIndex:indexPath.row]objectForKey:[RunProcessArray objectAtIndex:i]];
             if (parameterValue == nil) {
             valueLabel.text =@"N/A";
-            }else{
-                valueLabel.text =parameterValue;
+            } else if ([[RunProcessArray objectAtIndex:i] rangeOfString:@"Time"].location != NSNotFound) {
+                valueLabel.text = parameterValue;
+            } else {
+                valueLabel.text = [NSString stringWithFormat:@"%@ %@", parameterValue, [unitsArray objectAtIndex:i]];
             }
-            
-//NSLog(@"value label tag is %ld & the Value Text Is %@ & indexpath.row is %ld",valueLabel.tag,valueLabel.text,indexPath.row);
                 [cell.contentView addSubview:valueLabel];
-        
         }
     }
     return cell;
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+/*-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat sectionHeaderHeight = 40;
     //Change as per your table header hight
     if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0)
@@ -207,7 +224,7 @@
     {
         scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
     }
-}
+}*/
 
 
 - (void)didReceiveMemoryWarning {

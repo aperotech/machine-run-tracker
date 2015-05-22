@@ -17,7 +17,7 @@
 
 @implementation ParameterList {
     NSString *userType;
-    int flag;
+    int flag, alertFlag;
     UIView *cellView;
     UILabel *nameLabel, *typeLabel, *unitsLabel;
 }
@@ -26,30 +26,23 @@
 {
     self = [super initWithCoder:aCoder];
     if (self) {
-        // Custom the table
         
         // The className to query on
         self.parseClassName = @"Parameters";
-        
-        // The key of the PFObject to display in the label of the default cell style
-        //self.textKey = @"Name";
         
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
         
         // Whether the built-in pagination is enabled
         self.paginationEnabled = NO;
-        
-        // The number of objects to show per page
-        //self.objectsPerPage = 10;
     }
     return self;
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     flag = 0;
+    alertFlag = 0;
     
     userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
@@ -62,27 +55,16 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self refreshTable:nil];
-    
-    if (self.objects.count == 0){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Parameter List Empty" message:@"You can create a new parameter by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        
-        alert.alertViewStyle = UIAlertViewStyleDefault;
-        
-        [alert show];
-    }
 }
 
-- (void)refreshTable:(NSNotification *) notification
-{
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)refreshTable:(NSNotification *) notification {
     // Reload the recipes
     [self loadObjects];
-}
-
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshTable" object:nil];
 }
 
 - (BOOL)shouldAutorotate {
@@ -100,9 +82,25 @@
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     [query orderByAscending:@"Type"];
-    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     return query;
+}
+
+- (void) objectsDidLoad:(NSError *)error {
+    [super objectsDidLoad:error];
+    [error localizedDescription];
+    
+    if (alertFlag == 0) {
+        alertFlag = 1;
+        if (self.objects.count == 0){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Parameter List Empty" message:@"You can create a new parameter by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            alert.alertViewStyle = UIAlertViewStyleDefault;
+            
+            [alert show];
+        }
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -237,19 +235,6 @@
         parameterDetails *selectedParameter = segue.destinationViewController;
         selectedParameter.parameterObject = object;
     }
-}
-
-- (void) objectsDidLoad:(NSError *)error
-{
-    [super objectsDidLoad:error];
-     [error localizedDescription];
-   
-}
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 /*

@@ -23,14 +23,15 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (BOOL)shouldAutorotate
-{
+
+- (BOOL)shouldAutorotate {
     return self.topViewController.shouldAutorotate;
 }
-- (NSUInteger)supportedInterfaceOrientations
-{
+
+- (NSUInteger)supportedInterfaceOrientations {
     return self.topViewController.supportedInterfaceOrientations;
 }
+
 /*
 #pragma mark - Navigation
 

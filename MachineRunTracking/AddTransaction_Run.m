@@ -184,7 +184,7 @@
     tableFrame.size.width = self.aTableView.contentSize.width; // if you would allow horiz scrolling
     self.aTableView.frame = tableFrame;
     
-    NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", self.aTableView.frame.size.width,  self.aTableView.frame.size.height, self.aTableView.contentSize.width,  self.aTableView.contentSize.height);
+    NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", aTableView.frame.size.width,  aTableView.frame.size.height, aTableView.contentSize.width,  aTableView.contentSize.height);
     
     self.scrollView.contentSize = self.aTableView.contentSize;
     //[self.scrollView setContentSize:CGSizeMake(self.aTableView.frame.size.width + 50, self.aTableView.frame.size.height)];*/
@@ -276,13 +276,14 @@
 
 /*-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat sectionHeaderHeight = 40;
-   // CGFloat sectionFooterHeight= 40;
+    CGFloat tableWidth=1000 ;
     //Change as per your table header hight
-    if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
-        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-    } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
-        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+    if (scrollView.contentOffset.y<=sectionHeaderHeight&&self.scrollView.contentOffset.y>=0) {
+        self.scrollView.contentInset = UIEdgeInsetsMake(-self.scrollView.contentOffset.y, 0, 0, 0);
+    } else if (self.scrollView.contentOffset.y>=sectionHeaderHeight) {
+        self.scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
     }
+   
    
 }*/
 
@@ -371,8 +372,9 @@
             }
            
         } else {
+            [error userInfo];
             // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
+            //NSLog(@"Error: %@ %@", error, [error userInfo]);
             // [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
         }
     }];
@@ -389,8 +391,9 @@
             }
            
         } else {
+            [error userInfo];
             // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        //    NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
     
@@ -406,8 +409,8 @@
             }
             
         } else {
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
+            [error userInfo];            // Log details of the failure
+           
         }
     }];
 }
@@ -491,7 +494,8 @@ if (self.parameterAdd_RunPF != nil) {
                 
                 if (NextFlag == 1) {
                     NSLog(@"Next Flag Is 1");
-                    [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+                
+                [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
                 }
                 // The object has been saved.
             } else {
@@ -625,6 +629,6 @@ if (self.parameterAdd_RunPF != nil) {
  // Get the new view controller using [segue destinationViewController].
  // Pass the selected object to the new view controller.
  }
- */
+
 
 @end

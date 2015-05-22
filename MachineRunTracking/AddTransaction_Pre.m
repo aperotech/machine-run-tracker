@@ -70,7 +70,7 @@
     [query2 whereKey:@"Type" equalTo:@"Pre-Extraction"];
     query2.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
-        
+       // objectCount=objectsPF.count;
         if (!objectsPF) {
             // Did not find any UserStats for the current user
         } else {
@@ -210,7 +210,6 @@
             break;
         case 1:
             [self DeleteTransaction];
-            
             [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
             
             break;

@@ -81,7 +81,7 @@
 
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    [query orderByAscending:@"Type"];
+    [query orderByAscending:@"createdAt"];
     query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     return query;

@@ -22,5 +22,7 @@
 @property(strong,nonatomic)PFObject *parameterAdd_PrePF;
 @property(strong,nonatomic) UIRefreshControl *refreshControl;
 @property(nonatomic,strong)IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong,nonatomic)UITextField *activeField;
 
 @end

@@ -45,6 +45,7 @@
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
      
         objectCount=objects.count;
+//NSLog(@"object count for object %ld",objects.count);
         if(error){
             NSLog(@"Error!");
         }
@@ -70,6 +71,7 @@
     query2.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
        // objectCount=objectsPF.count;
+//NSLog(@"object count for object PF %ld",objectsPF.count);
         if (!objectsPF) {
             // Did not find any UserStats for the current user
         } else {
@@ -130,12 +132,11 @@
     return UIInterfaceOrientationPortrait;
 }
 
-- (void)refreshTable {
+/* (void)refreshTable {
     //TODO: refresh your data
-    [self.refreshControl endRefreshing];
+//[self.refreshControl endRefreshing];
     [self.tableView reloadData];
-}
-
+}*/
 - (IBAction)Cancel:(id)sender {
     /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
                                                     message:@"Do want to cancel transaction?"
@@ -252,7 +253,7 @@
     // Configure the cell...
         NSString* string1 =[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
         NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-
+        NSString *unitsString=[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"];
       //  NSString *PlaceholderString=
         if (bounceFlag == 0) {
             cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@" (%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
@@ -277,6 +278,7 @@
     
     /*if (textField.tag < GetValuesFromTextFieldArray.count | textField.tag > GetValuesFromTextFieldArray.count) {
         [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+       
     } else  {
         [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
         NSLog(@"added %@ at %ld",textField.text, (long)textField.tag);
@@ -379,7 +381,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
     
     // Retrieve the object by id
-    [query getObjectInBackgroundWithId:[parameterAdd_PrePF objectId] block:^(PFObject *UpdateParameter, NSError *error) {
+    [query getObjectInBackgroundWithId:lastinsertedPreExtractionID block:^(PFObject *UpdateParameter, NSError *error) {
         
         if (error) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -389,15 +391,15 @@
         }
         else {
             
-            [UpdateParameter setObject:Parameter0 forKey:@"Parameter_1"];
-            [UpdateParameter setObject:Parameter1 forKey:@"Parameter_2"];
-            [UpdateParameter setObject:Parameter2 forKey:@"Parameter_3"];
-            [UpdateParameter setObject:Parameter0 forKey:@"Parameter_4"];
-            [UpdateParameter setObject:LastInsertedTransactionNo forKey:@"Run_No"];
+            for (int i=0;i<[RunProcessArray count];i++) {
+                NSString *newPara=[RunProcessArray objectAtIndex:i];
+                UpdateParameter[newPara] = [GetValuesFromTextFieldArray objectAtIndex:i];
+            }
+
             
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                    [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+                     [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
                   //  [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"

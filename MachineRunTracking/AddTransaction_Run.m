@@ -18,6 +18,7 @@
 @implementation AddTransaction_Run {
     int count, textFieldCount;
     BOOL NextFlag;
+    NSString *lastinsertedRunProcessID;
 }
 
 @synthesize aTableView,valueTextField, activityIndicatorView, scrollView,valueHeaderLabel;
@@ -212,15 +213,33 @@
 }
 
 - (void)addRow:(id)sender {
-    
-    if (self.sectionCount>=1) {
+    if (self.sectionCount==0) {
+        self.sectionCount=self.sectionCount+1;
+
+    }else if (self.sectionCount>=1 ) {
+        NSInteger val=self.sectionCount * self.headerArray.count;
+        if ( !(self.GetValuesFromRunTextFieldArray.count== val)) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                            message:@"Enter Parameters "
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        else {
+           [self saveParameters];
+            self.sectionCount=self.sectionCount+1;
+            }
+      }
+  
+   /* if (self.sectionCount>=1) {
         if (self.parameterAdd_RunPF != nil) {
             [self updateParameters];
         } else {
             [self saveParameters];
         }
-    }
-    self.sectionCount=self.sectionCount+1;
+    }*/
+   
     
     [self.aTableView reloadData];
 }
@@ -352,19 +371,6 @@
     }
 }
 
-/*- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch(buttonIndex) {
-        case 0:
-            break;
-        case 1:
-            [self DeleteTransaction];
-            
-            [self performSegueWithIdentifier:@"RunUnwindToTransactionListSegue" sender:self];
-            
-            break;
-    }
-}*/
 
 -(void)DeleteTransaction{
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
@@ -429,20 +435,32 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     if (textField.tag%textFieldCount == 0) {
         textField.returnKeyType = UIReturnKeyDone;
-    } else {
+    
+     } else {
         textField.returnKeyType = UIReturnKeyNext;
-    }
+   }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [self.GetValuesFromRunTextFieldArray addObject:textField.text];
+    
+   /* if (textField.tag < self.GetValuesFromRunTextFieldArray.count | textField.tag > self.GetValuesFromRunTextFieldArray.count) {
+        [self.GetValuesFromRunTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+        NSLog(@"get value with** replace %@",self.GetValuesFromRunTextFieldArray);
+          } else  {
+        [self.GetValuesFromRunTextFieldArray addObject:textField.text];
+        NSLog(@"get value without__ replace %@",self.GetValuesFromRunTextFieldArray);
+        
+        }*/
+
+    
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     if (textField.tag%textFieldCount == 0) {
         [textField resignFirstResponder];
-    } else {
-        [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
+} else {
+    [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
     }
     return YES;
 }
@@ -463,13 +481,48 @@
 
 -(IBAction)SaveAndForward:(id)sender {
 //[self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+    NSInteger val=self.sectionCount * self.headerArray.count;
+    if (self.sectionCount == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                        message:@"Enter Process Run Records"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+    }else if (!(self.GetValuesFromRunTextFieldArray.count== val)) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                        message:@"Enter Parameters "
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+    }
+   else{
     NextFlag=1;
-if (self.parameterAdd_RunPF != nil) {
-     [self updateParameters];
-     }
-     else {
-     [self saveParameters];
-     }
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Run_Process"];
+    [query orderByDescending:@"createdAt"];
+    
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        
+        if (!error) {
+            // NSString *lastinsertedtransactionPreNo=[object objectForKey:@"Run_No"];
+            lastinsertedRunProcessID =[object objectId];
+            
+            if ([lastinsertedRunProcessID isEqualToString:self.LastInsertedTransactionNoObjectID]) {
+                [self updateParameters];
+            }
+            else{
+                [self saveParameters];
+            }
+            
+        } else {
+            [error userInfo];
+            
+        }
+    }];
+}
 }
 
 - (void)saveParameters
@@ -496,7 +549,8 @@ if (self.parameterAdd_RunPF != nil) {
             x++;
             tagCount--;
         }
-        
+   
+   // NSLog(@"save getParameter List %@",self.GetValuesFromRunTextFieldArray);
         ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
         
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -525,7 +579,7 @@ if (self.parameterAdd_RunPF != nil) {
     PFQuery *query = [PFQuery queryWithClassName:@"Run_Process"];
     
     // Retrieve the object by id
-    [query getObjectInBackgroundWithId:[self.parameterAdd_RunPF objectId] block:^(PFObject *UpdateParameter, NSError *error) {
+    [query getObjectInBackgroundWithId:lastinsertedRunProcessID block:^(PFObject *UpdateParameter, NSError *error) {
         
         if (error) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
@@ -534,19 +588,30 @@ if (self.parameterAdd_RunPF != nil) {
             [alertView show];
         }
         else {
+            NSString *parameterColumn;
+            NSUInteger tag, tagCount;
+            int x=0;
             
-            [UpdateParameter setObject:self.Interval forKey:@"Interval"];
-            [UpdateParameter setObject:self.Parameter1 forKey:@"Parameter_1"];
-            [UpdateParameter setObject:self.Parameter2 forKey:@"Parameter_2"];
-            [UpdateParameter setObject:self.Parameter3 forKey:@"Parameter_3"];
-            [UpdateParameter setObject:@"Akshay" forKey:@"Parameter_4"];
-            [UpdateParameter setObject:self.Value forKey:@"Value"];
-            [UpdateParameter setObject:self.LastInsertedTransactionNo forKey:@"Run_No"];
+            tagCount = self.headerArray.count;
             
+            while (tagCount > 0) {
+                tag = ((self.sectionCount - 1) * self.headerArray.count + x +1);
+                parameterColumn = [self.headerArray objectAtIndex:x];
+                UpdateParameter[parameterColumn] = [self.GetValuesFromRunTextFieldArray objectAtIndex:(tag-1)];
+                                x++;
+                tagCount--;
+            }
+          //  NSLog(@"getvalues update from text field array is %@",self.GetValuesFromRunTextFieldArray);
+            
+          
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                    [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
-                    //  [self.navigationController popViewControllerAnimated:YES];
+                    
+                    if (NextFlag == 1) {
+
+                   [self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+                    }
+                        //  [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                         message:[error.userInfo objectForKey:@"error"]

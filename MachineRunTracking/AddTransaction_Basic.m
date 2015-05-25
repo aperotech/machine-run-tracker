@@ -23,6 +23,7 @@
     UIToolbar *MachinePickerToolbar, *datePickerToolbar;
     NSString *date;
     int value;
+    NSString *lastinsertedTrasactionID;
     NSDateFormatter *formatter;
 }
 
@@ -32,12 +33,13 @@
 - (void)viewDidLoad {
    
     [super viewDidLoad];
-     self.navigationController.navigationBar.topItem.title=@"";
+   
+    self.navigationController.navigationBar.topItem.title=@"";
     activityIndicatorView.hidden=YES;
     
     PFQuery *query=[PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"Run_No"];
-    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+//query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         
@@ -65,7 +67,7 @@
 
    PFQuery *query1 = [PFQuery queryWithClassName:@"Machine"];
    [query1 selectKeys:@[@"Machine_Name"]];
-   query1.cachePolicy = kPFCachePolicyNetworkElseCache;
+//query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     
    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if(!error) {
@@ -229,11 +231,49 @@
     [self.Run_DurationText becomeFirstResponder];
 }
 
+
+
+
+
 - (IBAction)SaveAndForword:(id)sender {
-//[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+   //[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
+
+    [self SaveORupdateParameter];
+}
+
+-(void)SaveORupdateParameter{
+    
+     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+    [query orderByDescending:@"createdAt"];
+   
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+ 
+     if (!error) {
+     // The find succeeded.
+     //NSLog(@"Successfully retrieved %ld scores.", objects.count);
+     // Do something with the found objects
+         NSString *lastinsertedtransactionNo=[object objectForKey:@"Run_No"];
+         lastinsertedTrasactionID=[object objectId];
+         if ([lastinsertedtransactionNo isEqualToString:self.Run_NoText.text ]) {
+             [self updateParameters];
+         }
+         else{
+             [self saveParameters];
+         }
+        } else {
+         [error userInfo];
+    
+     }
+     }];
+}
+
+-(void)saveParameters{
+
+    
     activityIndicatorView.hidden=NO;
     [activityIndicatorView startAnimating];
-   
+    
     NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     NSString *Machine_Name = [self.Machine_NameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -249,31 +289,79 @@
         [alertView show];
     }
     else{
-    PFObject *transactionObj = [PFObject objectWithClassName:@"Transaction"];
-    [transactionObj setObject:self.Run_NoText.text forKey:@"Run_No"];
-    [transactionObj setObject:self.Machine_NameText.text forKey:@"Machine_Name"];
-    [transactionObj setObject:self.Run_DateText.text forKey:@"Run_Date"];
-    [transactionObj setObject:self.Run_DurationText.text forKey:@"Run_Duration"];
-    //  parameterObj[@"New Parameter"]=@"The New String";
-    
-    
-    // Upload Machine to Parse
-    [transactionObj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        PFObject *transactionObj = [PFObject objectWithClassName:@"Transaction"];
+        [transactionObj setObject:self.Run_NoText.text forKey:@"Run_No"];
+        [transactionObj setObject:self.Machine_NameText.text forKey:@"Machine_Name"];
+        [transactionObj setObject:self.Run_DateText.text forKey:@"Run_Date"];
+        [transactionObj setObject:self.Run_DurationText.text forKey:@"Run_Duration"];
+        //  parameterObj[@"New Parameter"]=@"The New String";
         
-        if (!error) {
-          
-            [activityIndicatorView stopAnimating];
-
-            [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:self];
-            } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+        
+        // Upload transaction to Parse
+        [transactionObj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             
+            if (!error) {
+                
+                [activityIndicatorView stopAnimating];
+                
+                [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:self];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+            }
+            
+        }];
+    }
+
+
+
+}
+
+
+- (void)updateParameters
+{
+    [activityIndicatorView startAnimating];
+    PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
+    NSLog(@"lastinserted object id %@",lastinsertedTrasactionID);
+    // Retrieve the object by id
+    [query getObjectInBackgroundWithId:lastinsertedTrasactionID block:^(PFObject *UpdateParameter, NSError *error) {
+        
+        if (error) {
+            [activityIndicatorView stopAnimating];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                                message:[error.userInfo objectForKey:@"error"]
+                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+        }
+        else {
+            [UpdateParameter setObject:self.Run_NoText.text forKey:@"Run_No"];
+            [UpdateParameter setObject:self.Machine_NameText.text forKey:@"Machine_Name"];
+            [UpdateParameter setObject:self.Run_DateText.text forKey:@"Run_Date"];
+            [UpdateParameter setObject:self.Run_DurationText.text forKey:@"Run_Duration"];
+            //[UpdateParameter setObject:LastInsertedTransactionNo forKey:@"Run_No"];
+            
+            [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded) {
+                    [activityIndicatorView stopAnimating];
+            [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:self];
+                    //  [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                                        message:[error.userInfo objectForKey:@"error"]
+                                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                }
+            }];
         }
         
     }];
-    }
+    
 }
+
+
+
+
 
 - (IBAction)Cancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];

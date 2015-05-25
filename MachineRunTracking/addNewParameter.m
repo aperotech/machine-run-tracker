@@ -147,6 +147,30 @@
 
 - (IBAction)save:(id)sender {
     [self.activityIndicator startAnimating];
+    
+    NSString *description = [descriptionText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    NSString *parameterName = [nameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *type = [typeText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *units = [unitsText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    
+    if ([parameterName length] == 0 ||[description length] == 0 ||[type length] == 0 ||[units length] == 0) {
+        [self.activityIndicator stopAnimating];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                            message:@"You must enter details"
+                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    }
+
+    
+    
+    
+    
+    
+    else{
+    
+    
     // Create PFObject with recipe information
     PFObject *parameterObj = [PFObject objectWithClassName:@"Parameters"];
     NSString* string1 = nameText.text;
@@ -178,6 +202,7 @@ NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@" " withStrin
         }
         
     }];
+    }
 }
 
 - (IBAction)cancel:(id)sender {

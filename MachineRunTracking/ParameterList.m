@@ -203,6 +203,7 @@
         NSString* string1 = [object objectForKey:@"Name"];
         NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
         [query whereKeyExists:string2];
+        
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (objects.count > 0) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"

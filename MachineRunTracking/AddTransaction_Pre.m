@@ -18,7 +18,7 @@
 @implementation AddTransaction_Pre {
     NSMutableArray *GetValuesFromTextFieldArray, *RunProcessArray;
     NSArray *preExtractionArray;
-    NSString *Parameter0, *Parameter1, *Parameter2, *Parameter3, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId, *finalText;
+    NSString *Parameter0, *Parameter1, *Parameter2, *Parameter3, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId, *finalText, *lastinsertedPreExtractionID;
     NSInteger objectCount;
     int bounceFlag, doneFlag;
 }
@@ -253,7 +253,7 @@
     // Configure the cell...
         NSString* string1 =[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
         NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-        NSString *unitsString=[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"];
+        //NSString *unitsString=[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"];
       //  NSString *PlaceholderString=
         if (bounceFlag == 0) {
             cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@" (%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
@@ -325,8 +325,11 @@
     if (doneFlag == 1) {
         [GetValuesFromTextFieldArray replaceObjectAtIndex:(RunProcessArray.count-1) withObject:finalText];
     }
+//[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+    PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
+    [query orderByDescending:@"createdAt"];
     
-   if (parameterAdd_PrePF != nil) {
+   /*if (parameterAdd_PrePF != nil) {
         [self updateParameters];
    } else {
        if([GetValuesFromTextFieldArray containsObject:[NSNull null]]) {
@@ -336,7 +339,32 @@
            [alertView show];
        } else
            [self saveParameters];
-   }
+   }*/
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        
+        if (!error) {
+            // The find succeeded.
+            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
+            // Do something with the found objects
+            NSString *lastinsertedtransactionPreNo=[object objectForKey:@"Run_No"];
+            lastinsertedPreExtractionID =[object objectId];
+            if ([lastinsertedtransactionPreNo isEqualToString:LastInsertedTransactionNo]) {
+                [self updateParameters];
+            } else {
+                if([GetValuesFromTextFieldArray containsObject:[NSNull null]]) {
+                    //NSLog(@"contains null");
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
+                                                                        message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                } else
+                    [self saveParameters];
+            }
+        } else {
+            [error userInfo];
+            
+        }
+    }];
 }
 
 - (void)saveParameters

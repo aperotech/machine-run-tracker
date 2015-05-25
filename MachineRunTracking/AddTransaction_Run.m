@@ -435,10 +435,9 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     if (textField.tag%textFieldCount == 0) {
         textField.returnKeyType = UIReturnKeyDone;
-    
-     } else {
+    } else {
         textField.returnKeyType = UIReturnKeyNext;
-   }
+    }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -459,8 +458,8 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     if (textField.tag%textFieldCount == 0) {
         [textField resignFirstResponder];
-} else {
-    [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
+    } else {
+        [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
     }
     return YES;
 }

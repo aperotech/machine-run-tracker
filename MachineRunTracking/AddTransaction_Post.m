@@ -20,7 +20,7 @@
     NSString *lastinsertedPostExtractionID;
 }
 
-@synthesize parameterAdd_PostPF;
+@synthesize parameterAdd_PostPF, scrollView, activeField;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -115,6 +115,18 @@
 
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self registerForKeyboardNotifications];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [self deregisterFromKeyboardNotifications];
+    
+    [super viewDidDisappear:animated];
 }
 
 - (IBAction)Cancel:(id)sender {
@@ -263,6 +275,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.activeField = textField;
     if (textField.tag == textFieldCount-1) {
         textField.returnKeyType = UIReturnKeyDone;
     } else {
@@ -271,7 +284,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    
+    self.activeField = textField;
     if (textField.tag < self.GetValuesFromPostTextFieldArray.count | textField.tag > self.GetValuesFromPostTextFieldArray.count) {
         [self.GetValuesFromPostTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
     } else  {
@@ -415,6 +428,51 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+//Methods to take care of UIScrollView when keyboard appears
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)deregisterFromKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidHideNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+    
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    // Your application might not need or want this behavior.
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {
+        CGPoint scrollPoint = CGPointMake(0.0, (self.activeField.frame.origin.y-kbSize.height));
+        [self.scrollView setContentOffset:scrollPoint animated:YES];
+    }
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
 }
 
 #pragma mark - Navigation

@@ -18,28 +18,26 @@
 @implementation AddTransaction_Pre {
     NSMutableArray *GetValuesFromTextFieldArray, *RunProcessArray;
     NSArray *preExtractionArray;
-    int textFieldCount;
-    NSString *Parameter0, *Parameter1, *Parameter2, *Parameter3, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId,*lastinsertedPreExtractionID;
+    NSString *Parameter0, *Parameter1, *Parameter2, *Parameter3, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId, *finalText, *lastinsertedPreExtractionID;
     NSInteger objectCount;
+    int bounceFlag, doneFlag;
 }
 
-@synthesize tableView,parameterAdd_PrePF, activityIndicatorView;
+@synthesize tableView,parameterAdd_PrePF, activityIndicatorView, scrollView, activeField;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
    // [self setupViewControllers];
-    
-    GetValuesFromTextFieldArray = [[NSMutableArray alloc] init];
     RunProcessArray = [[NSMutableArray alloc]init];
     preExtractionArray = [[NSArray alloc]init];
-    
-    textFieldCount = 0;
   
     [activityIndicatorView startAnimating ];
     // Do any additional setup after loading the view.
    // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
     
-    
+    bounceFlag = 0;
+    doneFlag = 0;
+
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Pre-Extraction"];
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
@@ -79,17 +77,16 @@
         } else {
             
             preExtractionArray = objectsPF;
+            GetValuesFromTextFieldArray = [[NSMutableArray alloc] initWithCapacity:objectsPF.count];
             
             for (int i=0;i<[preExtractionArray count];i++) {
                 NSString *newString=[[objectsPF objectAtIndex:i]valueForKey:@"Name"];
                 [RunProcessArray addObject:newString];
+                [GetValuesFromTextFieldArray addObject:[NSNull null]];
                 [activityIndicatorView stopAnimating];
             }
-          
         }
     }];
-    
-    
     
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"createdAt"];
@@ -113,6 +110,18 @@
 
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self registerForKeyboardNotifications];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [self deregisterFromKeyboardNotifications];
+    
+    [super viewDidDisappear:animated];
 }
 
 - (BOOL)shouldAutorotate {
@@ -230,8 +239,7 @@
     return 0.1f;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      static NSString *simpleTableIdentifier = @"Pre_ExtractionCellIdentifier";
     
     AddTransaction_PreCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -239,27 +247,26 @@
     if (cell == nil) {
         cell = [[AddTransaction_PreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
         cell.backgroundColor=[UIColor grayColor];
-        
     }
     
-       cell.p_1Text.tag=indexPath.row;
-    textFieldCount++;
+     cell.p_1Text.tag=indexPath.row;
     // Configure the cell...
-    for (int i=-1;i<indexPath.row;i++) {
         NSString* string1 =[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
         NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-        NSString *unitsString=[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"];
+        //NSString *unitsString=[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"];
       //  NSString *PlaceholderString=
- cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@"(%@)",unitsString];
+        if (bounceFlag == 0) {
+            cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@" (%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
+        }
+    if (indexPath.row == (RunProcessArray.count-1)) {
+        bounceFlag = 1;
     }
-    
     return cell;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    if (textField.tag == textFieldCount-1) {
-       
-       
+    self.activeField = textField;
+    if (textField.tag == RunProcessArray.count-1) {
         textField.returnKeyType = UIReturnKeyDone;
     } else {
         textField.returnKeyType = UIReturnKeyNext;
@@ -267,18 +274,23 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.activeField = textField;
     
-    if (textField.tag < GetValuesFromTextFieldArray.count | textField.tag > GetValuesFromTextFieldArray.count) {
+    /*if (textField.tag < GetValuesFromTextFieldArray.count | textField.tag > GetValuesFromTextFieldArray.count) {
         [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
        
     } else  {
-        [GetValuesFromTextFieldArray addObject:textField.text];
-         
+        [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+        NSLog(@"added %@ at %ld",textField.text, (long)textField.tag);
+    }*/
+    if (![textField.text isEqualToString:@""]) {
+        [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+        //NSLog(@"added %@ at %ld",textField.text, (long)textField.tag);
     }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    if (textField.tag == textFieldCount-1) {
+    if (textField.tag == RunProcessArray.count-1) {
         [textField resignFirstResponder];
     } else {
         [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
@@ -287,6 +299,12 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    if (textField.tag == (RunProcessArray.count-1)) {
+        finalText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        doneFlag = 1;
+    }
+    
     if (textField.text.length >= 40 && range.length == 0)
         return NO;
     
@@ -297,14 +315,31 @@
         
         return [string isEqualToString:filtered];
     }
+    
     return YES;
 }
 
 -(IBAction)SaveAndForward:(id)sender {
+    //[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+
+    if (doneFlag == 1) {
+        [GetValuesFromTextFieldArray replaceObjectAtIndex:(RunProcessArray.count-1) withObject:finalText];
+    }
 //[self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
     PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
     [query orderByDescending:@"createdAt"];
     
+   /*if (parameterAdd_PrePF != nil) {
+        [self updateParameters];
+   } else {
+       if([GetValuesFromTextFieldArray containsObject:[NSNull null]]) {
+           //NSLog(@"contains null");
+           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
+                                                               message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+           [alertView show];
+       } else
+           [self saveParameters];
+   }*/
     query.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         
@@ -316,9 +351,14 @@
             lastinsertedPreExtractionID =[object objectId];
             if ([lastinsertedtransactionPreNo isEqualToString:LastInsertedTransactionNo]) {
                 [self updateParameters];
-            }
-            else{
-                [self saveParameters];
+            } else {
+                if([GetValuesFromTextFieldArray containsObject:[NSNull null]]) {
+                    //NSLog(@"contains null");
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
+                                                                        message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                } else
+                    [self saveParameters];
             }
         } else {
             [error userInfo];
@@ -407,7 +447,50 @@
     // Dispose of any resources that can be recreated.
 }
 
+//Methods to take care of UIScrollView when keyboard appears
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
 
+- (void)deregisterFromKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidHideNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+    
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    // Your application might not need or want this behavior.
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {
+        CGPoint scrollPoint = CGPointMake(0.0, (self.activeField.frame.origin.y-kbSize.height));
+        [self.scrollView setContentOffset:scrollPoint animated:YES];
+    }
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+}
 
 #pragma mark - Navigation
 

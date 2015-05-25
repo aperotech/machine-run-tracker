@@ -92,7 +92,10 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 36.0f;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        return 45.0f;
+    else
+        return 40.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -103,6 +106,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         cellView = [[UIView alloc] init];//WithFrame:cell.contentView.bounds];
         cellView.backgroundColor = [UIColor lightGrayColor];
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [cellView addSubview:cell.contentView];
     } else {
         cellView = [[UIView alloc] init];//WithFrame:cell.contentView.bounds];
@@ -132,6 +136,7 @@
         typeLabel.font = [UIFont boldSystemFontOfSize:14.0];
         [cellView addSubview:typeLabel];
         
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [cellView addSubview:cell.contentView];
     }
     return cellView;
@@ -149,7 +154,7 @@
    
     UserListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    self.tableView.separatorColor = [UIColor lightGrayColor];
+    //self.tableView.separatorColor = [UIColor lightGrayColor];
     
     if (cell == nil) {
         cell = [[ UserListCell  alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -157,6 +162,7 @@
     cell.userNameLabel.text=[object objectForKey:@"name"];
     cell.userEmailLabel.text=[object objectForKey:@"email"];
     cell.userTypeLabel.text=[object objectForKey:@"userType"];
+    
     return cell;
 }
 
@@ -197,6 +203,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

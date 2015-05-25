@@ -109,7 +109,10 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 36.0f;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        return 45.0f;
+    else
+        return 40.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -117,9 +120,9 @@
     MachineListCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        
         cellView = [[UIView alloc] init];
         cellView.backgroundColor = [UIColor lightGrayColor];
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [cellView addSubview:cell.contentView];
     } else {
         cellView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
@@ -157,6 +160,7 @@
         capacityLabel.font = [UIFont boldSystemFontOfSize:14.0];
         [cellView addSubview:capacityLabel];
         
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [cellView addSubview:cell.contentView];
     }
     return cellView;

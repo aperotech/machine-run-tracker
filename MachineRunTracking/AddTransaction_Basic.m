@@ -39,7 +39,7 @@
     
     PFQuery *query=[PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"Run_No"];
-//query.cachePolicy = kPFCachePolicyNetworkElseCache;
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         
@@ -67,7 +67,7 @@
 
    PFQuery *query1 = [PFQuery queryWithClassName:@"Machine"];
    [query1 selectKeys:@[@"Machine_Name"]];
-//query1.cachePolicy = kPFCachePolicyNetworkElseCache;
+   query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     
    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if(!error) {

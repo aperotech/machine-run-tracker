@@ -126,24 +126,25 @@
         for (int i = 0 ; i < [RunProcessArray count]; i++) {
             
             headerLabel = [[UILabel alloc] init]; // 10 px padding between each view
-            headerLabel.preferredMaxLayoutWidth = 80;
             headerLabel.numberOfLines = 0;
             headerLabel.lineBreakMode = NSLineBreakByWordWrapping;
             headerLabel.textColor = [UIColor whiteColor];
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+                headerLabel.preferredMaxLayoutWidth = 100;
                 headerLabel.font = [UIFont boldSystemFontOfSize:16.0];
                 if (i == 0) {
-                    frameText=CGRectMake(10, 5, 80, 50);
+                    frameText=CGRectMake(10, 5, 100, 50);
                 } else {
-                    frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 5, 80, 50);
+                    frameText=CGRectMake(headerLabel.frame.origin.x+130*i, 5, 100, 50);
                 }
             }
             else {
+                headerLabel.preferredMaxLayoutWidth = 90;
                 headerLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 if (i == 0) {
-                    frameText=CGRectMake(10, 5, 80, 40);
+                    frameText=CGRectMake(10, 5, 90, 40);
                 } else {
-                    frameText=CGRectMake(headerLabel.frame.origin.x+105*i, 5, 80, 40);
+                    frameText=CGRectMake(headerLabel.frame.origin.x+110*i, 5, 90, 40);
                 }
             }
             
@@ -177,24 +178,29 @@
         CGRect frameText;
         for (int i = 0 ; i < [RunProcessArray count]; i++) {
             valueLabel = [[UILabel alloc] init];
-            valueLabel.preferredMaxLayoutWidth = 80;
             valueLabel.numberOfLines = 0;
             valueLabel.lineBreakMode = NSLineBreakByWordWrapping;
             valueLabel.textColor = [UIColor blackColor];
+            
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                valueLabel.preferredMaxLayoutWidth = 100;
                 valueLabel.font = [UIFont systemFontOfSize:16.0];
+                if (i == 0) {
+                    frameText=CGRectMake(10, 7, 100, 30);
+                } else {
+                    frameText=CGRectMake(valueLabel.frame.origin.x+130*i, 7, 100, 30);
+                }
             } else {
                 valueLabel.font = [UIFont systemFontOfSize:14.0];
+                valueLabel.preferredMaxLayoutWidth = 90;
+                if (i == 0) {
+                    frameText=CGRectMake(10, 7, 90, 30);
+                } else {
+                    frameText=CGRectMake(valueLabel.frame.origin.x+110*i, 7, 90, 30);
+                }
             }
-            valueLabel.textAlignment = NSTextAlignmentLeft;
             
-            if (i == 0) {
-                //NSLog(@"setting value first time");
-                frameText=CGRectMake(10, 7, 80, 30);
-            } else {
-                //NSLog(@"setting value");
-                frameText=CGRectMake(valueLabel.frame.origin.x+105*i, 7, 80, 30);
-            }
+            valueLabel.textAlignment = NSTextAlignmentLeft;
             
             [valueLabel setFrame:frameText];
             valueLabel.tag = (indexPath.row * RunProcessArray.count)+i+1;

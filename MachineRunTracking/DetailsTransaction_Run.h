@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 
-@interface DetailsTransaction_Run : UIViewController<UIScrollViewDelegate,UITextFieldDelegate>
+@interface DetailsTransaction_Run : UIViewController<UIScrollViewDelegate,UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UILabel *MachineNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *RunDurationLabel;
@@ -21,5 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableWidth;
 
 @end

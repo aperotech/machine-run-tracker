@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 @property (nonatomic, strong) PFObject *stdUserObject;
+@property (weak, nonatomic) IBOutlet UILabel *userLabel;
 
 -(IBAction)UserButtonClick:(id)sender;
 - (IBAction)logout:(id)sender;

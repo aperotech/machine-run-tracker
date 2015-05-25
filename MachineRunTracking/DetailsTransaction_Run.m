@@ -22,12 +22,15 @@
     NSArray *runArrayRun;
 }
 
-@synthesize DetialsTransaction_RunPF, activityIndicator, scrollView;
+@synthesize DetialsTransaction_RunPF, activityIndicator, scrollView, tableHeight, tableWidth;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //[self.scrollView setContentSize:CGSizeMake(self.tableView.contentSize.width, self.tableView.contentSize.height)];
+    self.tableHeight.constant = self.view.frame.size.width;
+    self.tableWidth.constant = self.view.frame.size.height;
+    [self.tableView layoutIfNeeded];
+    
     self.navigationController.navigationItem.title=@"Process Run";
     if (DetialsTransaction_RunPF !=NULL) {
         self.RunNoLabel.text=[DetialsTransaction_RunPF objectForKey:@"Run_No"];
@@ -55,7 +58,6 @@
                 [RunProcessArray addObject:[[objects objectAtIndex:i]valueForKey:@"Name"]];
                 [unitsArray addObject:[[objects objectAtIndex:i]valueForKey:@"Units"]];
             }
-       
             [self.tableView reloadData];
             [self.activityIndicator stopAnimating];
         }
@@ -70,9 +72,8 @@
 
         } else {
             runArrayRun = runArray;
+            [self.tableView reloadData];
         }
-       
-        [self.tableView reloadData];
     }];
 }
 
@@ -115,13 +116,10 @@
     NSString *CellIdentifier1 = @"DetailsProcessRunHeaderCellIdentifier";
     DetailsProcessRunCell  *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
     self.tableView.separatorColor = [UIColor lightGrayColor];
-    //cell.backgroundColor=[UIColor lightGrayColor];
     
     if (cell != nil) {
-        //NSLog(@"cell is not nil");
         cell = [[DetailsProcessRunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
         CGRect frameText;
-        //NSLog(@"in view for header %ld", RunProcessArray.count);
         
         for (int i = 0 ; i < [RunProcessArray count]; i++) {
             
@@ -133,7 +131,7 @@
                 headerLabel.preferredMaxLayoutWidth = 100;
                 headerLabel.font = [UIFont boldSystemFontOfSize:16.0];
                 if (i == 0) {
-                    frameText=CGRectMake(10, 5, 100, 50);
+                    frameText = CGRectMake(10, 5, 100, 50);
                 } else {
                     frameText=CGRectMake(headerLabel.frame.origin.x+130*i, 5, 100, 50);
                 }
@@ -155,24 +153,27 @@
             NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
             
             headerLabel.text = string2;
-            
-            //headerLabel.backgroundColor = [UIColor clearColor];
             cell.backgroundColor = [UIColor darkGrayColor];
-           // NSLog(@"self.runprocessarrau count %ld %d",RunProcessArray.count,i);
             [cell.contentView addSubview:headerLabel];
         }
     }
+    self.tableHeight.constant = self.tableView.frame.size.height;
+    self.tableWidth.constant =(headerLabel.frame.origin.x + headerLabel.frame.size.width + 10);
+    [self.tableView layoutIfNeeded];
+     
+    [self.scrollView setContentSize:CGSizeMake(self.tableWidth.constant, self.tableHeight.constant)];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 45.0f;
+    return 49.0f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *simpleTableIdentifier = @"DetailsProcessRunCellIdentifier";
     
     DetailsProcessRunCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    
     if (cell != nil) {
         cell = [[DetailsProcessRunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
         CGRect frameText;
@@ -199,9 +200,7 @@
                     frameText=CGRectMake(valueLabel.frame.origin.x+110*i, 7, 90, 30);
                 }
             }
-            
             valueLabel.textAlignment = NSTextAlignmentLeft;
-            
             [valueLabel setFrame:frameText];
             valueLabel.tag = (indexPath.row * RunProcessArray.count)+i+1;
           
@@ -218,20 +217,6 @@
     }
     return cell;
 }
-
-/*-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat sectionHeaderHeight = 40;
-    //Change as per your table header hight
-    if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0)
-    {
-        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-        
-    } else if (scrollView.contentOffset.y>=sectionHeaderHeight)
-    {
-        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
-    }
-}*/
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

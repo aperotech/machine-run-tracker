@@ -11,6 +11,7 @@
 
 @interface AddTransaction_Post : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate, UIActionSheetDelegate>
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property(strong,nonatomic)PFObject *parameterAdd_PostPF;
 @property(nonatomic)NSInteger ObjectCount;
 @property(nonatomic,strong)NSString *Parameter0;
@@ -25,4 +26,5 @@
 @property(nonatomic,strong)NSArray *postExtractionArray;
 @property(nonatomic,strong)NSMutableArray *GetValuesFromPostTextFieldArray;
 @property(nonatomic,strong)NSMutableArray *RunProcessArray;
+@property (strong,nonatomic)UITextField *activeField;
 @end

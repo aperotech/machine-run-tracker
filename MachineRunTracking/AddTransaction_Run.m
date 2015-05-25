@@ -18,7 +18,10 @@
 @implementation AddTransaction_Run {
     int count, textFieldCount;
     BOOL NextFlag;
-    NSString *lastinsertedRunProcessID;
+    NSString *lastinsertedRunProcessID,*finalText;
+      int bounceFlag, doneFlag;
+
+
 }
 
 @synthesize aTableView,valueTextField, activityIndicatorView, scrollView,valueHeaderLabel;
@@ -27,11 +30,14 @@
     [super viewDidLoad];
     NextFlag=0;
     textFieldCount = 0;
+    bounceFlag = 0;
+    doneFlag = 0;
+
 
     //NSLog(@"width is %f, height is %f",self.view.frame.size.width, self.view.frame.size.width);
     [self.scrollView setContentSize:CGSizeMake(1000, 500)];
     //NSLog(@"setting scroll content size: width %f, height %f", self.aTableView.frame.size.width, self.aTableView.frame.size.height);
-    
+    self.GetValuesFromRunTextFieldArray=[[NSMutableArray alloc]init];
     activityIndicatorView.center = CGPointMake( [UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2);
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate.window addSubview:activityIndicatorView];
@@ -52,8 +58,8 @@
         }
     }];
     
-    self.GetValuesFromRunTextFieldArray=[[NSMutableArray alloc]init];
-    self.NewValuesArray=[[NSMutableArray alloc]init];
+    
+   
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
@@ -74,13 +80,14 @@
             }
             else {
                 
-//self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
+               // self.GetValuesFromRunTextFieldArray=[[NSMutableArray alloc]initWithCapacity:objects.count];
                 self.headerArray=[[NSMutableArray alloc]init];
                 self.RunProcessArray=[[NSMutableArray alloc]init];
                 self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
                 for (int i=0;i<[self.dataArray count];i++) {
                     NSString *newString=[[objects objectAtIndex:i]valueForKey:@"Name"];
                     [self.headerArray addObject:newString];
+                   // [self.GetValuesFromRunTextFieldArray addObject:[NSNull null]];
                     NSString *units=[[objects objectAtIndex:i]valueForKey:@"Units"];
                  //   NSString *PlaceholderString=[newString stringByAppendingFormat:@"(%@)",units];
                     [self.RunProcessArray addObject:units];
@@ -88,6 +95,8 @@
                 }
                 
                 [aTableView reloadData];
+                NSLog(@"the count getValuesFromTextFieldArray %ld \n the count runProcessArray %ld \n the count data array is %ld\n",self.GetValuesFromRunTextFieldArray.count,self.RunProcessArray.count,self.dataArray.count);
+            
             }
         }
     }];
@@ -227,20 +236,17 @@
             [alert show];
         }
         else {
-           [self saveParameters];
-            self.sectionCount=self.sectionCount+1;
+            if([self.GetValuesFromRunTextFieldArray containsObject:[NSNull null]]) {
+                //NSLog(@"contains null");
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
+                                                                    message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
+            } else
+                [self saveParameters];
+               self.sectionCount=self.sectionCount+1;
             }
       }
   
-   /* if (self.sectionCount>=1) {
-        if (self.parameterAdd_RunPF != nil) {
-            [self updateParameters];
-        } else {
-            [self saveParameters];
-        }
-    }*/
-   
-    
     [self.aTableView reloadData];
 }
 
@@ -252,6 +258,7 @@
     if (cell != nil) {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         CGRect frameText;
+        
         for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
             valueTextField = [[UITextField alloc] init];
            
@@ -285,17 +292,32 @@
             [valueTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
             [valueTextField setDelegate:self];
             valueTextField.placeholder=[self.RunProcessArray objectAtIndex:i];
+           
+                [self.GetValuesFromRunTextFieldArray  addObject:[NSNull null] ];
             
-            if (count > 0 && ((self.sectionCount - indexPath.row) >1)) {
-                for (int j=0;j<self.GetValuesFromRunTextFieldArray.count;j++) {
-                    if (valueTextField.tag==j+1) {
-                        valueTextField.text=[self.GetValuesFromRunTextFieldArray objectAtIndex:j];
+           
+            if (bounceFlag == 0) {
+                if (count > 0 && ((self.sectionCount - indexPath.row) >1)) {
+                   
+                    for (int j=0;j<self.GetValuesFromRunTextFieldArray.count;j++) {
+                        if (valueTextField.tag==j+1) {
+                           
+                            valueTextField.text=[self.GetValuesFromRunTextFieldArray objectAtIndex:j];
+                        }
                     }
                 }
+                
             }
+            
             [cell.contentView addSubview:valueTextField];
+            if (indexPath.row == (self.sectionCount )) {
+                bounceFlag = 1;
+            }
+
         }
+        
     }
+    NSLog(@"get values array count %ld",self.GetValuesFromRunTextFieldArray.count);
     count++;
     return cell;
 }
@@ -433,7 +455,9 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    if (textField.tag%textFieldCount == 0) {
+    self.activeField = textField;
+   
+    if (textField.tag == self.RunProcessArray.count) {
         textField.returnKeyType = UIReturnKeyDone;
     } else {
         textField.returnKeyType = UIReturnKeyNext;
@@ -441,30 +465,32 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [self.GetValuesFromRunTextFieldArray addObject:textField.text];
+   
     
-   /* if (textField.tag < self.GetValuesFromRunTextFieldArray.count | textField.tag > self.GetValuesFromRunTextFieldArray.count) {
-        [self.GetValuesFromRunTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
-        NSLog(@"get value with** replace %@",self.GetValuesFromRunTextFieldArray);
-          } else  {
-        [self.GetValuesFromRunTextFieldArray addObject:textField.text];
-        NSLog(@"get value without__ replace %@",self.GetValuesFromRunTextFieldArray);
-        
-        }*/
-
-    
+    if (![textField.text isEqualToString:@""]) {
+        [self.GetValuesFromRunTextFieldArray replaceObjectAtIndex:textField.tag-1 withObject:textField.text];
+    }
+       // NSLog(@"self.getvaluesFromTextFieldArray %@ object At Tag %ld with Object %@",self.GetValuesFromRunTextFieldArray,textField.tag,textField.text);
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    if (textField.tag%textFieldCount == 0) {
+   if (textField.tag == self.RunProcessArray.count) {
         [textField resignFirstResponder];
     } else {
-        [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
-    }
+       [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
+}
     return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    if (textField.tag == (self.RunProcessArray.count )) {
+        finalText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        doneFlag = 1;
+    }
+
+    
+    
     if (textField.text.length >= 40 && range.length == 0)
         return NO;
     
@@ -480,6 +506,12 @@
 
 -(IBAction)SaveAndForward:(id)sender {
 //[self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
+
+    if (doneFlag == 1) {
+        [self.GetValuesFromRunTextFieldArray replaceObjectAtIndex:(self.RunProcessArray.count-1) withObject:finalText];
+        NSLog(@"SAveAndForword");
+    }
+    
     NSInteger val=self.sectionCount * self.headerArray.count;
     if (self.sectionCount == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
@@ -513,10 +545,18 @@
                 [self updateParameters];
             }
             else{
-                [self saveParameters];
+                //[self saveParameters];
+                if([self.GetValuesFromRunTextFieldArray containsObject:[NSNull null]]) {
+                    //NSLog(@"contains null");
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
+                                                                        message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                } else
+                    [self saveParameters];
+            }
             }
             
-        } else {
+         else {
             [error userInfo];
             
         }

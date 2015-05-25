@@ -97,12 +97,9 @@
         if (!object) {
             // Did not find any UserStats for the current user
         } else {
-            // Found UserStats
-//self.placeholderArray=[object allKeys];
-        
             LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
             LastInsertedTransactionNoObjectId=[object objectId];
-            //NSLog(@"name %@ and object id %@",self.LastInsertedTransactionNo,self.LastInsertedTransactionNoObjectId);
+
         }
     }];
   

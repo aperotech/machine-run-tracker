@@ -292,8 +292,18 @@
             [valueTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
             [valueTextField setDelegate:self];
             valueTextField.placeholder=[self.RunProcessArray objectAtIndex:i];
-           
+            
+            if (indexPath.row==0) {
                 [self.GetValuesFromRunTextFieldArray  addObject:[NSNull null] ];
+            }else{
+               
+            id object=self.GetValuesFromRunTextFieldArray[valueTextField.tag-1];
+                if(![object isEqual:[NSNull null]])
+                {
+                   [self.GetValuesFromRunTextFieldArray  addObject:[NSNull null] ];
+                }
+            }
+            
             
            
             if (bounceFlag == 0) {
@@ -457,11 +467,11 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     self.activeField = textField;
    
-    if (textField.tag == self.RunProcessArray.count) {
+  //  if (textField.tag == self.RunProcessArray.count) {
         textField.returnKeyType = UIReturnKeyDone;
-    } else {
-        textField.returnKeyType = UIReturnKeyNext;
-    }
+   // } else {
+     //   textField.returnKeyType = UIReturnKeyNext;
+   // }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -470,24 +480,24 @@
     if (![textField.text isEqualToString:@""]) {
         [self.GetValuesFromRunTextFieldArray replaceObjectAtIndex:textField.tag-1 withObject:textField.text];
     }
-       // NSLog(@"self.getvaluesFromTextFieldArray %@ object At Tag %ld with Object %@",self.GetValuesFromRunTextFieldArray,textField.tag,textField.text);
+        NSLog(@"self.getvaluesFromTextFieldArray %@ object At Tag %ld with Object %@",self.GetValuesFromRunTextFieldArray,textField.tag,textField.text);
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-   if (textField.tag == self.RunProcessArray.count) {
+  // if (textField.tag == self.RunProcessArray.count) {
         [textField resignFirstResponder];
-    } else {
-       [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
-}
+    //} else {
+   //    [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
+//}
     return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
-    if (textField.tag == (self.RunProcessArray.count )) {
+  /*  if (textField.tag == (self.RunProcessArray.count )) {
         finalText = [textField.text stringByReplacingCharactersInRange:range withString:string];
         doneFlag = 1;
-    }
+    }*/
 
     
     

@@ -94,6 +94,8 @@
                 }
                 
                 [aTableView reloadData];
+                NSLog(@"the count getValuesFromTextFieldArray %ld \n the count runProcessArray %ld \n the count data array is %ld\n",self.GetValuesFromRunTextFieldArray.count,self.RunProcessArray.count,self.dataArray.count);
+            
             }
         }
     }];
@@ -295,10 +297,18 @@
                         valueTextField.text=[GetValuesFromRunTextFieldArray objectAtIndex:j];
                     }
                 }
+                
             }
+            
             [cell.contentView addSubview:valueTextField];
+            if (indexPath.row == (self.sectionCount )) {
+                bounceFlag = 1;
+            }
+
         }
+        
     }
+    NSLog(@"get values array count %ld",self.GetValuesFromRunTextFieldArray.count);
     count++;
     return cell;
 }
@@ -426,9 +436,9 @@
     self.activeField = textField;
     if (textField.tag%textFieldCount == 0) {
         textField.returnKeyType = UIReturnKeyDone;
-    } else {
-        textField.returnKeyType = UIReturnKeyNext;
-    }
+   // } else {
+     //   textField.returnKeyType = UIReturnKeyNext;
+   // }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -446,15 +456,23 @@
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    if (textField.tag%textFieldCount == 0) {
+  // if (textField.tag == self.RunProcessArray.count) {
         [textField resignFirstResponder];
-    } else {
-        [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
-    }
+    //} else {
+   //    [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
+//}
     return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+  /*  if (textField.tag == (self.RunProcessArray.count )) {
+        finalText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        doneFlag = 1;
+    }*/
+
+    
+    
     if (textField.text.length >= 40 && range.length == 0)
         return NO;
     
@@ -503,10 +521,18 @@
                 [self updateParameters];
             }
             else{
-                [self saveParameters];
+                //[self saveParameters];
+                if([self.GetValuesFromRunTextFieldArray containsObject:[NSNull null]]) {
+                    //NSLog(@"contains null");
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
+                                                                        message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                } else
+                    [self saveParameters];
+            }
             }
             
-        } else {
+         else {
             [error userInfo];
             
         }

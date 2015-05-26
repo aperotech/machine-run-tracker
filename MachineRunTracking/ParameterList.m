@@ -18,6 +18,7 @@
 @implementation ParameterList {
     NSString *userType;
     int flag, alertFlag;
+    int undefinedObjectCount;
     UIView *cellView;
     UILabel *nameLabel, *typeLabel, *unitsLabel;
 }
@@ -43,7 +44,7 @@
     [super viewDidLoad];
     flag = 0;
     alertFlag = 0;
-    
+    undefinedObjectCount = 0;
     userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
     if ([userType isEqualToString:@"Standard"]) {
@@ -197,7 +198,7 @@
     } else if ([parameterType isEqualToString:@"Post-Extraction"]) {
         className = @"Post_Extraction";
     }
-    
+   
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         PFQuery *query = [PFQuery queryWithClassName:className];
         NSString* string1 = [object objectForKey:@"Name"];
@@ -206,12 +207,34 @@
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (objects.count > 0) {
+                for (int i=0;i<objects.count;i++) {
+                    NSString *newString=[[objects objectAtIndex:i]valueForKey:string1];
+                    if ([newString isEqualToString:@""]) {
+                      undefinedObjectCount++;
+                    }
+                }
+              if (objects.count == undefinedObjectCount) {
+                    [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                        if (succeeded == TRUE) {
+                            [self refreshTable:nil];
+                        } else {
+                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                message:@"Parameter could not be deleted"
+                                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                            [tableView setEditing:FALSE animated:YES];
+                            [alertView show];
+                        }
+                    }];
+                }else{
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Action Denied"
                                                                     message:@"Parameter is being used in a Transaction"
                                                                    delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [tableView setEditing:FALSE animated:YES];
                 [alertView show];
-            } else {
+                }
+            } else
+                {
+                NSLog(@"in delete not of any object type");
             [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded == TRUE) {
                     [self refreshTable:nil];

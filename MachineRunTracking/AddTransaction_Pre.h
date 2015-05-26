@@ -16,7 +16,7 @@
 @end
 */
 
-@interface AddTransaction_Pre : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate, UIActionSheetDelegate>
+@interface AddTransaction_Pre : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property(strong,nonatomic)PFObject *parameterAdd_PrePF;

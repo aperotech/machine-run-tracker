@@ -11,63 +11,59 @@
 #import "TransactionList.h"
 #import <Parse/Parse.h>
 #import "AddPostExtractionCell.h"
+
 @interface AddTransaction_Post ()
 
 @end
 
 @implementation AddTransaction_Post {
-    int textFieldCount;
-    NSString *lastinsertedPostExtractionID;
+    int bounceFlag, doneFlag;
+    NSString *lastinsertedPostExtractionID, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId, *finalText;
+    NSInteger objectCount;
+    NSArray *postExtractionArray;
+    NSMutableArray *GetValuesFromPostTextFieldArray, *RunProcessArray;
 }
 
 @synthesize parameterAdd_PostPF, scrollView, activeField;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // [self setupViewControllers];
-    textFieldCount = 0;
-    self.postExtractionArray=[[NSArray alloc]init];
-    self.RunProcessArray=[[NSMutableArray alloc]init];
+    
+    bounceFlag = 0;
+    doneFlag = 0;
+    
+    postExtractionArray=[[NSArray alloc]init];
+    RunProcessArray=[[NSMutableArray alloc]init];
     
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"createdAt"];
     query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        
         if (!object) {
             // Did not find any UserStats for the current user
         } else {
-            // Found UserStats
-          
-            self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
-            self.LastInsertedTransactionNoObjectId=[object objectId];
+            LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
+            LastInsertedTransactionNoObjectId = [object objectId];
         }
-        
-        
     }];
-
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Parameters"];
     [query2 selectKeys:@[@"Name"]];
     [query2 whereKey:@"Type" equalTo:@"Post-Extraction"];
     query2.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
-        // iterate through the objects array, which contains PFObjects for each Student
         if (!objectsPF) {
             // Did not find any UserStats for the current user
         } else {
-            // Found UserStats
-            //self.preExtractionArray=[objectsPF allKeys];
-            self.postExtractionArray=objectsPF;
+            postExtractionArray=objectsPF;
+            GetValuesFromPostTextFieldArray = [[NSMutableArray alloc] initWithCapacity:objectsPF.count];
             
-            
-            for (int i=0;i<[self.postExtractionArray count];i++) {
+            for (int i=0;i<[postExtractionArray count];i++) {
                 NSString *newString=[[objectsPF objectAtIndex:i]valueForKey:@"Name"];
-                [self.RunProcessArray addObject:newString];
-                
+                [RunProcessArray addObject:newString];
+                [GetValuesFromPostTextFieldArray addObject:[NSNull null]];
             }
-
         }
     }];
     
@@ -80,31 +76,30 @@
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
        
-        self.ObjectCount=objects.count;
+        objectCount=objects.count;
         if(error){
             NSLog(@"Error!");
         }
         else {
             if (objects.count == 0) {
                 NSLog(@"None found");
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No Parameters Found"
-                                                                    message:[error.userInfo objectForKey:@"error"]
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No Parameters Found" message:[error.userInfo objectForKey:@"error"]
                                                                    delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
             }
             else {
-                self.postExtractionArray =objects;
+                postExtractionArray =objects;
                  [self.tableView reloadData];
             }
         }
     }];
-    self.GetValuesFromPostTextFieldArray=[[NSMutableArray alloc]init];
 }
 
 - (void)refreshTable {
     //TODO: refresh your data
         [self.tableView reloadData];
 }
+
 - (BOOL)shouldAutorotate {
     return NO;
 }
@@ -186,7 +181,7 @@
 
 -(void)DeleteTransaction{
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
-    [query whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
     query.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
@@ -204,7 +199,7 @@
     }];
     
     PFQuery *query1= [PFQuery queryWithClassName:@"Run_Process"];
-    [query1 whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query1 whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
@@ -236,16 +231,12 @@
 }*/
 
 
-
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    
-    return self.ObjectCount;
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return objectCount;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -258,25 +249,26 @@
     AddPostExtractionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     if (cell == nil) {
         cell = [[AddPostExtractionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
-       
     }
+    
     cell.p_1Text.tag=indexPath.row;
-    textFieldCount++;
-    for (int i=-1;i<indexPath.row;i++) {
-
-        NSString* string1 =[[self.postExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
-        NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-
-        cell.p_1Text.placeholder=[string2 stringByAppendingFormat:@" (%@)",[[self.postExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
-        
+    
+    NSString* string1 =[[postExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
+    NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+    
+    if (bounceFlag == 0) {
+        cell.p_1Text.placeholder = [string2 stringByAppendingFormat:@" (%@)",[[postExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
     }
- 
-      return cell;
+    
+    if (indexPath.row == (RunProcessArray.count-1)) {
+        bounceFlag = 1;
+    }
+    return cell;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     self.activeField = textField;
-    if (textField.tag == textFieldCount-1) {
+    if (textField.tag == RunProcessArray.count-1) {
         textField.returnKeyType = UIReturnKeyDone;
     } else {
         textField.returnKeyType = UIReturnKeyNext;
@@ -285,15 +277,20 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     self.activeField = textField;
-    if (textField.tag < self.GetValuesFromPostTextFieldArray.count | textField.tag > self.GetValuesFromPostTextFieldArray.count) {
-        [self.GetValuesFromPostTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
-    } else  {
-        [self.GetValuesFromPostTextFieldArray addObject:textField.text];
+    
+    if (![textField.text isEqualToString:@""]) {
+        [GetValuesFromPostTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
     }
+    
+    /*if (textField.tag < GetValuesFromPostTextFieldArray.count | textField.tag > GetValuesFromPostTextFieldArray.count) {
+        [GetValuesFromPostTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+    } else  {
+        [GetValuesFromPostTextFieldArray addObject:textField.text];
+    }*/
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    if (textField.tag == textFieldCount-1) {
+    if (textField.tag == RunProcessArray.count-1) {
         [textField resignFirstResponder];
     } else {
         [[self.view viewWithTag:textField.tag+1] becomeFirstResponder];
@@ -302,6 +299,11 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField.tag == (RunProcessArray.count-1)) {
+        finalText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        doneFlag = 1;
+    }
+
     if (textField.text.length >= 40 && range.length == 0)
         return NO;
     
@@ -316,12 +318,13 @@
 }
 
 
-
 -(IBAction)SaveAndExit:(id)sender {
+    if (doneFlag == 1) {
+        [GetValuesFromPostTextFieldArray replaceObjectAtIndex:(RunProcessArray.count-1) withObject:finalText];
+    }
    
     PFQuery *query = [PFQuery queryWithClassName:@"Post_Extraction"];
     [query orderByDescending:@"createdAt"];
-    
     query.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         
@@ -331,26 +334,20 @@
             // Do something with the found objects
             NSString *lastinsertedtransactionPreNo=[object objectForKey:@"Run_No"];
             lastinsertedPostExtractionID =[object objectId];
-            if ([lastinsertedtransactionPreNo isEqualToString:self.LastInsertedTransactionNo]) {
+            if ([lastinsertedtransactionPreNo isEqualToString:LastInsertedTransactionNo]) {
                 [self updateParameters];
-            }
-            else{
-                [self saveParameters];
+            } else {
+                if([GetValuesFromPostTextFieldArray containsObject:[NSNull null]]) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
+                                                                        message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                } else
+                    [self saveParameters];
             }
         } else {
             [error userInfo];
-            
         }
     }];
-
-    
-    
-    /*if (parameterAdd_PostPF != nil) {
-        [self updateParameters];
-    }
-    else {
-        [self saveParameters];
-    }*/
 }
 
 - (void)saveParameters
@@ -361,12 +358,12 @@
     //if([NewParameter save]) {
         
         PFObject *ParameterValue = [PFObject objectWithClassName:@"Post_Extraction"];
-        for (int i=0;i<[self.RunProcessArray count];i++) {
-            NSString *newPara=[self.RunProcessArray objectAtIndex:i];
-            ParameterValue[newPara]=[self.GetValuesFromPostTextFieldArray objectAtIndex:i];
+        for (int i=0;i<[RunProcessArray count];i++) {
+            NSString *newPara=[RunProcessArray objectAtIndex:i];
+            ParameterValue[newPara]=[GetValuesFromPostTextFieldArray objectAtIndex:i];
         }
     
-        ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
+        ParameterValue[@"Run_No"]=LastInsertedTransactionNo;
     
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
@@ -403,9 +400,9 @@
         }
         else {
             
-            for (int i=0;i<[self.RunProcessArray count];i++) {
-                NSString *newPara=[self.RunProcessArray objectAtIndex:i];
-                UpdateParameter[newPara]=[self.GetValuesFromPostTextFieldArray objectAtIndex:i];
+            for (int i=0;i<[RunProcessArray count];i++) {
+                NSString *newPara=[RunProcessArray objectAtIndex:i];
+                UpdateParameter[newPara]=[GetValuesFromPostTextFieldArray objectAtIndex:i];
             }
 
             

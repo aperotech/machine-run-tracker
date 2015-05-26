@@ -490,12 +490,12 @@
                                 <exclude reference="cT6-vm-Lip"/>
                                 <exclude reference="sdz-AX-OUx"/>
                                 <exclude reference="wk0-AA-6s7"/>
+                                <exclude reference="nKw-pp-DHA"/>
                                 <exclude reference="0FR-hJ-b9g"/>
                                 <exclude reference="HPV-W0-d5o"/>
                                 <exclude reference="SMY-mL-RfN"/>
                                 <exclude reference="fSD-EQ-TYR"/>
                                 <exclude reference="vjz-z0-Uat"/>
-                                <exclude reference="nKw-pp-DHA"/>
                                 <exclude reference="gC7-hO-9Tu"/>
                                 <exclude reference="gJ0-Ex-qk5"/>
                                 <exclude reference="oNu-Px-PZ6"/>
@@ -510,6 +510,9 @@
                                 <exclude reference="cT6-vm-Lip"/>
                                 <include reference="sdz-AX-OUx"/>
                                 <exclude reference="wk0-AA-6s7"/>
+                                <exclude reference="ATu-dD-qMe"/>
+                                <exclude reference="kEb-Eg-fJk"/>
+                                <include reference="nKw-pp-DHA"/>
                                 <exclude reference="0FR-hJ-b9g"/>
                                 <include reference="HPV-W0-d5o"/>
                                 <exclude reference="SMY-mL-RfN"/>
@@ -518,9 +521,6 @@
                                 <exclude reference="fSD-EQ-TYR"/>
                                 <include reference="vjz-z0-Uat"/>
                                 <exclude reference="yla-Zf-pys"/>
-                                <exclude reference="ATu-dD-qMe"/>
-                                <exclude reference="kEb-Eg-fJk"/>
-                                <include reference="nKw-pp-DHA"/>
                                 <exclude reference="Cws-1z-0X9"/>
                                 <include reference="gJ0-Ex-qk5"/>
                                 <include reference="oNu-Px-PZ6"/>
@@ -2141,6 +2141,10 @@
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" allowsSelectionDuringEditing="YES" rowHeight="50" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="UaO-ZV-Dve">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="600" id="8pj-cU-sXv"/>
+                                            <constraint firstAttribute="height" constant="536" id="Mo2-tR-ldz"/>
+                                        </constraints>
                                         <activityIndicatorView key="tableFooterView" hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="VEg-tB-L0u">
                                             <rect key="frame" x="0.0" y="150" width="600" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -2169,29 +2173,11 @@
                                     </tableView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="UaO-ZV-Dve" firstAttribute="leading" secondItem="xsO-P3-dqf" secondAttribute="leading" id="A8f-Vd-J20"/>
-                                    <constraint firstItem="UaO-ZV-Dve" firstAttribute="leading" secondItem="xsO-P3-dqf" secondAttribute="leading" id="FBk-r2-gKq"/>
-                                    <constraint firstAttribute="trailing" secondItem="UaO-ZV-Dve" secondAttribute="trailing" id="HVZ-gx-W05"/>
                                     <constraint firstItem="UaO-ZV-Dve" firstAttribute="top" secondItem="xsO-P3-dqf" secondAttribute="top" id="IeR-EA-hzw"/>
-                                    <constraint firstAttribute="height" secondItem="UaO-ZV-Dve" secondAttribute="height" id="XZ1-Pt-SNI"/>
-                                    <constraint firstItem="UaO-ZV-Dve" firstAttribute="top" secondItem="xsO-P3-dqf" secondAttribute="top" id="bsm-LF-DVL"/>
-                                    <constraint firstAttribute="width" secondItem="UaO-ZV-Dve" secondAttribute="width" id="fks-7Q-Q1Y"/>
                                     <constraint firstItem="UaO-ZV-Dve" firstAttribute="leading" secondItem="xsO-P3-dqf" secondAttribute="leading" id="gkS-JY-ZU4"/>
                                     <constraint firstAttribute="trailing" secondItem="UaO-ZV-Dve" secondAttribute="trailing" id="pZy-pS-JiL"/>
-                                    <constraint firstAttribute="bottom" secondItem="UaO-ZV-Dve" secondAttribute="bottom" id="rH8-wa-Otz"/>
-                                    <constraint firstAttribute="trailing" secondItem="UaO-ZV-Dve" secondAttribute="trailing" id="ts2-13-KRv"/>
                                     <constraint firstAttribute="bottom" secondItem="UaO-ZV-Dve" secondAttribute="bottom" id="ufm-cJ-jh4"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="A8f-Vd-J20"/>
-                                        <exclude reference="FBk-r2-gKq"/>
-                                        <exclude reference="HVZ-gx-W05"/>
-                                        <exclude reference="bsm-LF-DVL"/>
-                                        <exclude reference="rH8-wa-Otz"/>
-                                        <exclude reference="ts2-13-KRv"/>
-                                    </mask>
-                                </variation>
                                 <connections>
                                     <outlet property="delegate" destination="n7M-xh-KKU" id="p0B-EF-4V5"/>
                                 </connections>
@@ -2217,6 +2203,8 @@
                         <outlet property="aTableView" destination="UaO-ZV-Dve" id="1F1-AT-JPi"/>
                         <outlet property="activityIndicatorView" destination="VEg-tB-L0u" id="Oct-Z8-2ag"/>
                         <outlet property="scrollView" destination="xsO-P3-dqf" id="vbe-LW-RZ3"/>
+                        <outlet property="tableHeight" destination="Mo2-tR-ldz" id="HUD-Rt-7fH"/>
+                        <outlet property="tableWidth" destination="8pj-cU-sXv" id="0ZF-wT-v7y"/>
                         <segue destination="0DX-Le-gpT" kind="presentation" identifier="Run_ProcessToPost_ExtractionSegue" id="rpl-PL-ucm"/>
                         <segue destination="o7Z-zR-oVB" kind="unwind" identifier="RunUnwindToTransactionListSegue" unwindAction="unwindToTransactionListViewController:" id="tBt-Ur-e6y"/>
                     </connections>

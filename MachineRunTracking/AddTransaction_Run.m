@@ -16,28 +16,35 @@
 @end
 
 @implementation AddTransaction_Run {
-    int count, textFieldCount;
+    int count, textFieldCount, sectionCount, doneFlag, bounceFlag;
     BOOL NextFlag;
-    NSString *lastinsertedRunProcessID;
+    NSString *lastinsertedRunProcessID, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectID;
+    NSInteger rowIndexCount;
+    NSArray *runPalceholderArray;
+    NSMutableArray *GetValuesFromRunTextFieldArray, *FinalValuesArray, *headerArray, *RunProcessArray, *dataArray;
+    UITextField *valueTextField;
+    UILabel *valueHeaderLabel;
 }
 
-@synthesize aTableView,valueTextField, activityIndicatorView, scrollView,valueHeaderLabel;
+@synthesize aTableView, activityIndicatorView, scrollView, tableWidth, tableHeight;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     NextFlag=0;
     textFieldCount = 0;
-
-    //NSLog(@"width is %f, height is %f",self.view.frame.size.width, self.view.frame.size.width);
-    [self.scrollView setContentSize:CGSizeMake(1000, 500)];
-    //NSLog(@"setting scroll content size: width %f, height %f", self.aTableView.frame.size.width, self.aTableView.frame.size.height);
+    doneFlag = 0;
+    bounceFlag = 0;
+    count = 0;
+    
+    self.tableHeight.constant = self.view.frame.size.width;
+    self.tableWidth.constant = self.view.frame.size.height;
+    [self.aTableView layoutIfNeeded];
     
     activityIndicatorView.center = CGPointMake( [UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2);
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate.window addSubview:activityIndicatorView];
     
     [activityIndicatorView startAnimating];
-    count = 0;
     
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"createdAt"];
@@ -47,13 +54,12 @@
         if (!object) {
             // Did not find any UserStats for the current user
         } else {
-            self.LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
-            self.LastInsertedTransactionNoObjectID=[object objectId];
+            LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
+            LastInsertedTransactionNoObjectID = [object objectId];
         }
     }];
     
-    self.GetValuesFromRunTextFieldArray=[[NSMutableArray alloc]init];
-    self.NewValuesArray=[[NSMutableArray alloc]init];
+    GetValuesFromRunTextFieldArray = [[NSMutableArray alloc]init];
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
@@ -74,16 +80,16 @@
             }
             else {
                 
-//self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
-                self.headerArray=[[NSMutableArray alloc]init];
-                self.RunProcessArray=[[NSMutableArray alloc]init];
-                self.dataArray=[[NSMutableArray alloc]initWithArray:objects];
-                for (int i=0;i<[self.dataArray count];i++) {
+//dataArray=[[NSMutableArray alloc]initWithArray:objects];
+                headerArray=[[NSMutableArray alloc]init];
+                RunProcessArray=[[NSMutableArray alloc]init];
+                dataArray=[[NSMutableArray alloc]initWithArray:objects];
+                for (int i=0;i<[dataArray count];i++) {
                     NSString *newString=[[objects objectAtIndex:i]valueForKey:@"Name"];
-                    [self.headerArray addObject:newString];
+                    [headerArray addObject:newString];
                     NSString *units=[[objects objectAtIndex:i]valueForKey:@"Units"];
                  //   NSString *PlaceholderString=[newString stringByAppendingFormat:@"(%@)",units];
-                    [self.RunProcessArray addObject:units];
+                    [RunProcessArray addObject:units];
                     [activityIndicatorView stopAnimating];
                 }
                 
@@ -91,6 +97,18 @@
             }
         }
     }];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self registerForKeyboardNotifications];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [self deregisterFromKeyboardNotifications];
+    
+    [super viewDidDisappear:animated];
 }
 
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
@@ -114,7 +132,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.sectionCount;
+    return sectionCount;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -136,7 +154,7 @@
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
         CGRect frameText;
         
-        for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
+        for (int i = 0 ; i < [RunProcessArray count]; i++) {
             valueHeaderLabel = [[UILabel alloc] init]; // 10 px padding between each view
 
             valueHeaderLabel.numberOfLines = 0;
@@ -165,7 +183,7 @@
             [valueHeaderLabel setFrame:frameText];
             valueHeaderLabel.tag = i + 100;
             
-            NSString* string1 = [self.headerArray objectAtIndex:i];
+            NSString* string1 = [headerArray objectAtIndex:i];
             NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
             valueHeaderLabel.text =string2;
         
@@ -174,24 +192,11 @@
             [cell.contentView addSubview:valueHeaderLabel];
         }
     }
+    self.tableHeight.constant = self.aTableView.frame.size.height;
+    self.tableWidth.constant = (valueHeaderLabel.frame.origin.x + valueHeaderLabel.frame.size.width + 10);
+    [self.aTableView layoutIfNeeded];
     
-    /*NSLog(@"new scroll content size is width %f, height %f", self.scrollView.contentSize.width, self.scrollView.contentSize.height);
-     
-     //[self.aTableView setFrame:<#(CGRect)#>:CGSizeMake(self.scrollView.contentSize.width, self.aTableView.frame.size.height)];
-     [self.aTableView setFrame:CGRectMake(self.aTableView.frame.origin.x, self.aTableView.frame.origin.y, self.scrollView.bounds.size.width, self.scrollView.bounds.size.height)];
-     [self.aTableView setContentSize:CGSizeMake(self.aTableView.bounds.size.width, self.aTableView.bounds.size.height)];
-     //NSLog(@"table frame size is width %f, height %f", self.scrollView.contentSize.width, self.scrollView.contentSize.height);*/
-    
-    /*CGRect tableFrame = self.aTableView.frame;
-    tableFrame.size.height = self.aTableView.contentSize.height;
-    tableFrame.size.width = self.aTableView.contentSize.width; // if you would allow horiz scrolling
-    self.aTableView.frame = tableFrame;
-    
-    NSLog(@"table frame size: width %f, height %f \n content size: width %f, height %f", self.aTableView.frame.size.width,  self.aTableView.frame.size.height, self.aTableView.contentSize.width,  self.aTableView.contentSize.height);
-    
-    self.scrollView.contentSize = self.aTableView.contentSize;
-    //[self.scrollView setContentSize:CGSizeMake(self.aTableView.frame.size.width + 50, self.aTableView.frame.size.height)];*/
-
+    [self.scrollView setContentSize:CGSizeMake(self.tableWidth.constant, self.tableHeight.constant)];
     [activityIndicatorView stopAnimating];
     return cell;
 }
@@ -213,12 +218,12 @@
 }
 
 - (void)addRow:(id)sender {
-    if (self.sectionCount==0) {
-        self.sectionCount=self.sectionCount+1;
+    if (sectionCount==0) {
+        sectionCount = sectionCount+1;
 
-    }else if (self.sectionCount>=1 ) {
-        NSInteger val=self.sectionCount * self.headerArray.count;
-        if ( !(self.GetValuesFromRunTextFieldArray.count== val)) {
+    }else if (sectionCount>=1 ) {
+        NSInteger val=sectionCount * headerArray.count;
+        if ( !(GetValuesFromRunTextFieldArray.count== val)) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
                                                             message:@"Enter Parameters "
                                                            delegate:self
@@ -228,19 +233,17 @@
         }
         else {
            [self saveParameters];
-            self.sectionCount=self.sectionCount+1;
+            sectionCount=sectionCount+1;
             }
       }
   
-   /* if (self.sectionCount>=1) {
+   /* if (sectionCount>=1) {
         if (self.parameterAdd_RunPF != nil) {
             [self updateParameters];
         } else {
             [self saveParameters];
         }
-    }*/
-   
-    
+    }*/    
     [self.aTableView reloadData];
 }
 
@@ -252,7 +255,7 @@
     if (cell != nil) {
         cell = [[Process_RunCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         CGRect frameText;
-        for (int i = 0 ; i < [self.RunProcessArray count]; i++) {
+        for (int i = 0 ; i < [RunProcessArray count]; i++) {
             valueTextField = [[UITextField alloc] init];
            
             valueTextField.textColor = [UIColor blackColor];
@@ -275,7 +278,7 @@
             }
             
             [valueTextField setFrame:frameText];
-            valueTextField.tag = (indexPath.row * self.RunProcessArray.count)+i+1;
+            valueTextField.tag = (indexPath.row * RunProcessArray.count)+i+1;
             textFieldCount++;
             
             valueTextField.borderStyle = UITextBorderStyleRoundedRect;
@@ -284,12 +287,12 @@
             [valueTextField setEnablesReturnKeyAutomatically:YES];
             [valueTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
             [valueTextField setDelegate:self];
-            valueTextField.placeholder=[self.RunProcessArray objectAtIndex:i];
+            valueTextField.placeholder=[RunProcessArray objectAtIndex:i];
             
-            if (count > 0 && ((self.sectionCount - indexPath.row) >1)) {
-                for (int j=0;j<self.GetValuesFromRunTextFieldArray.count;j++) {
+            if (count > 0 && ((sectionCount - indexPath.row) >1)) {
+                for (int j=0;j<GetValuesFromRunTextFieldArray.count;j++) {
                     if (valueTextField.tag==j+1) {
-                        valueTextField.text=[self.GetValuesFromRunTextFieldArray objectAtIndex:j];
+                        valueTextField.text=[GetValuesFromRunTextFieldArray objectAtIndex:j];
                     }
                 }
             }
@@ -299,19 +302,6 @@
     count++;
     return cell;
 }
-
-/*-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat sectionHeaderHeight = 40;
-    CGFloat tableWidth=1000 ;
-    //Change as per your table header hight
-    if (scrollView.contentOffset.y<=sectionHeaderHeight&&self.scrollView.contentOffset.y>=0) {
-        self.scrollView.contentInset = UIEdgeInsetsMake(-self.scrollView.contentOffset.y, 0, 0, 0);
-    } else if (self.scrollView.contentOffset.y>=sectionHeaderHeight) {
-        self.scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
-    }
-   
-   
-}*/
 
 - (IBAction)Cancel:(id)sender {
     //[self.navigationController popViewControllerAnimated:YES];
@@ -374,7 +364,7 @@
 
 -(void)DeleteTransaction{
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
-    [query whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
     query.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
@@ -393,7 +383,7 @@
     }];
     
     PFQuery *query1= [PFQuery queryWithClassName:@"Pre_Extraction"];
-    [query1 whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query1 whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
@@ -413,7 +403,7 @@
     }];
     
     PFQuery *query3= [PFQuery queryWithClassName:@"Run_Process"];
-    [query3 whereKey:@"Run_No" equalTo:self.LastInsertedTransactionNo];
+    [query3 whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
     query3.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query3 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
@@ -433,6 +423,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.activeField = textField;
     if (textField.tag%textFieldCount == 0) {
         textField.returnKeyType = UIReturnKeyDone;
     } else {
@@ -441,18 +432,17 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [self.GetValuesFromRunTextFieldArray addObject:textField.text];
+    self.activeField = textField;
+    [GetValuesFromRunTextFieldArray addObject:textField.text];
     
-   /* if (textField.tag < self.GetValuesFromRunTextFieldArray.count | textField.tag > self.GetValuesFromRunTextFieldArray.count) {
-        [self.GetValuesFromRunTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
-        NSLog(@"get value with** replace %@",self.GetValuesFromRunTextFieldArray);
+   /* if (textField.tag < GetValuesFromRunTextFieldArray.count | textField.tag > GetValuesFromRunTextFieldArray.count) {
+        [GetValuesFromRunTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
+        NSLog(@"get value with** replace %@",GetValuesFromRunTextFieldArray);
           } else  {
-        [self.GetValuesFromRunTextFieldArray addObject:textField.text];
-        NSLog(@"get value without__ replace %@",self.GetValuesFromRunTextFieldArray);
+        [GetValuesFromRunTextFieldArray addObject:textField.text];
+        NSLog(@"get value without__ replace %@",GetValuesFromRunTextFieldArray);
         
         }*/
-
-    
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -480,15 +470,15 @@
 
 -(IBAction)SaveAndForward:(id)sender {
 //[self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
-    NSInteger val=self.sectionCount * self.headerArray.count;
-    if (self.sectionCount == 0) {
+    NSInteger val=sectionCount * headerArray.count;
+    if (sectionCount == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
                                                         message:@"Enter Process Run Records"
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
         [alert show];
-    }else if (!(self.GetValuesFromRunTextFieldArray.count== val)) {
+    }else if (!(GetValuesFromRunTextFieldArray.count== val)) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
                                                         message:@"Enter Parameters "
                                                        delegate:self
@@ -509,7 +499,7 @@
             // NSString *lastinsertedtransactionPreNo=[object objectForKey:@"Run_No"];
             lastinsertedRunProcessID =[object objectId];
             
-            if ([lastinsertedRunProcessID isEqualToString:self.LastInsertedTransactionNoObjectID]) {
+            if ([lastinsertedRunProcessID isEqualToString:LastInsertedTransactionNoObjectID]) {
                 [self updateParameters];
             }
             else{
@@ -538,19 +528,19 @@
         NSUInteger tag, tagCount;
         int x=0;
         
-        tagCount = self.headerArray.count;
+        tagCount = headerArray.count;
         
         while (tagCount > 0) {
-            tag = ((self.sectionCount - 1) * self.headerArray.count + x +1);
-            parameterColumn = [self.headerArray objectAtIndex:x];
-            ParameterValue[parameterColumn] = [self.GetValuesFromRunTextFieldArray objectAtIndex:(tag-1)];
+            tag = ((sectionCount - 1) * headerArray.count + x +1);
+            parameterColumn = [headerArray objectAtIndex:x];
+            ParameterValue[parameterColumn] = [GetValuesFromRunTextFieldArray objectAtIndex:(tag-1)];
            
             x++;
             tagCount--;
         }
    
-   // NSLog(@"save getParameter List %@",self.GetValuesFromRunTextFieldArray);
-        ParameterValue[@"Run_No"]=self.LastInsertedTransactionNo;
+   // NSLog(@"save getParameter List %@",GetValuesFromRunTextFieldArray);
+        ParameterValue[@"Run_No"]=LastInsertedTransactionNo;
         
         [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
@@ -591,16 +581,16 @@
             NSUInteger tag, tagCount;
             int x=0;
             
-            tagCount = self.headerArray.count;
+            tagCount = headerArray.count;
             
             while (tagCount > 0) {
-                tag = ((self.sectionCount - 1) * self.headerArray.count + x +1);
-                parameterColumn = [self.headerArray objectAtIndex:x];
-                UpdateParameter[parameterColumn] = [self.GetValuesFromRunTextFieldArray objectAtIndex:(tag-1)];
+                tag = ((sectionCount - 1) * headerArray.count + x +1);
+                parameterColumn = [headerArray objectAtIndex:x];
+                UpdateParameter[parameterColumn] = [GetValuesFromRunTextFieldArray objectAtIndex:(tag-1)];
                                 x++;
                 tagCount--;
             }
-          //  NSLog(@"getvalues update from text field array is %@",self.GetValuesFromRunTextFieldArray);
+          //  NSLog(@"getvalues update from text field array is %@",GetValuesFromRunTextFieldArray);
             
           
             [UpdateParameter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -621,33 +611,6 @@
         }
     }];
 }
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    //[self registerForKeyboardNotifications];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    //[self deregisterFromKeyboardNotifications];
-    
-    [super viewDidDisappear:animated];
-}
-
-//methods to check when a field text is edited, accordingly, adjust keyboard
-// Implementing picker for age text field
-/*(- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    
-    if (aTableView.contentOffset.y != 0)
-    {
-        [UIView animateWithDuration:0.0 delay:0.5 options:UIViewAnimationOptionAllowUserInteraction animations:^{
-        } completion:^(BOOL finished) {
-            UITableViewCell *cell = (UITableViewCell*) [[[textField superview] superview] superview];
-            [aTableView scrollToRowAtIndexPath:[aTableView indexPathForCell:cell] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }];
-    }
-}*/
-
 
 //Methods to take care of UIScrollView when keyboard appears
 - (void)registerForKeyboardNotifications {

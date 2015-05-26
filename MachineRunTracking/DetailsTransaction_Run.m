@@ -16,7 +16,6 @@
 @end
 
 @implementation DetailsTransaction_Run {
-    UITextField *valueTextField;
     UILabel *headerLabel, *valueLabel;
     NSMutableArray *RunProcessArray, *unitsArray;
     NSArray *runArrayRun;

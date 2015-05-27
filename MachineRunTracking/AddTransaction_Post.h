@@ -17,4 +17,6 @@
 -(IBAction)SaveAndExit:(id)sender;
 
 @property (strong,nonatomic)UITextField *activeField;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end

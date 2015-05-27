@@ -19,12 +19,14 @@
     UILabel *headerLabel, *valueLabel;
     NSMutableArray *RunProcessArray, *unitsArray;
     NSArray *runArrayRun;
+    int cacheFlag;
 }
 
 @synthesize DetialsTransaction_RunPF, activityIndicator, scrollView, tableHeight, tableWidth;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    cacheFlag = 0;
     
     self.tableHeight.constant = self.view.frame.size.width;
     self.tableWidth.constant = self.view.frame.size.height;
@@ -46,24 +48,28 @@
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
-    query1.cachePolicy = kPFCachePolicyNetworkElseCache;
+    query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    //BOOL isInCache = [query1 hasCachedResult];
     
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (error) {
             NSLog(@"Error!");
         } else {
-            //NSLog(@"objects count is %ld", objects.count);
-            for (int i=0; i < objects.count ;i++) {
-                [RunProcessArray addObject:[[objects objectAtIndex:i]valueForKey:@"Name"]];
-                [unitsArray addObject:[[objects objectAtIndex:i]valueForKey:@"Units"]];
+            if (cacheFlag == 0) {
+                for (int i=0; i < objects.count ;i++) {
+                    [RunProcessArray addObject:[[objects objectAtIndex:i]valueForKey:@"Name"]];
+                    [unitsArray addObject:[[objects objectAtIndex:i]valueForKey:@"Units"]];
+                }
+                cacheFlag = 1;
+                [self.tableView reloadData];
+                [self.activityIndicator stopAnimating];
             }
-            [self.tableView reloadData];
-            [self.activityIndicator stopAnimating];
         }
     }];
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Run_Process"];
     [query2 whereKey:@"Run_No" equalTo:self.RunNoLabel.text];
+    [query2 orderByAscending:@"createdAt"];
     query2.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
@@ -156,8 +162,14 @@
             [cell.contentView addSubview:headerLabel];
         }
     }
-    self.tableHeight.constant = self.tableView.frame.size.height;
-    self.tableWidth.constant =(headerLabel.frame.origin.x + headerLabel.frame.size.width + 10);
+    if ((headerLabel.frame.origin.x + headerLabel.frame.size.width) >= self.view.frame.size.height) {
+        self.tableWidth.constant = (headerLabel.frame.origin.x + headerLabel.frame.size.width + 10);
+    }
+    
+    if (self.tableView.frame.size.height >= self.scrollView.frame.size.height) {
+        self.tableHeight.constant = self.tableView.frame.size.height;
+    }
+    
     [self.tableView layoutIfNeeded];
      
     [self.scrollView setContentSize:CGSizeMake(self.tableWidth.constant, self.tableHeight.constant)];
@@ -204,8 +216,8 @@
             valueLabel.tag = (indexPath.row * RunProcessArray.count)+i+1;
           
             NSString *parameterValue=[[runArrayRun objectAtIndex:indexPath.row]objectForKey:[RunProcessArray objectAtIndex:i]];
-            if (parameterValue == nil) {
-            valueLabel.text =@"N/A";
+            if ([parameterValue isEqualToString:@""] | (parameterValue == NULL)) {
+            valueLabel.text = @"N/A";
             } else if ([[RunProcessArray objectAtIndex:i] rangeOfString:@"Time"].location != NSNotFound) {
                 valueLabel.text = parameterValue;
             } else {

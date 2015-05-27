@@ -39,7 +39,7 @@
     
     PFQuery *query=[PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"Run_No"];
-    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         
@@ -67,7 +67,7 @@
 
    PFQuery *query1 = [PFQuery queryWithClassName:@"Machine"];
    [query1 selectKeys:@[@"Machine_Name"]];
-   query1.cachePolicy = kPFCachePolicyNetworkElseCache;
+   query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if(!error) {
@@ -231,10 +231,6 @@
     [self.Run_DurationText becomeFirstResponder];
 }
 
-
-
-
-
 - (IBAction)SaveAndForword:(id)sender {
    //[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
 
@@ -313,17 +309,12 @@
             
         }];
     }
-
-
-
 }
-
 
 - (void)updateParameters
 {
     [activityIndicatorView startAnimating];
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
-    NSLog(@"lastinserted object id %@",lastinsertedTrasactionID);
     // Retrieve the object by id
     [query getObjectInBackgroundWithId:lastinsertedTrasactionID block:^(PFObject *UpdateParameter, NSError *error) {
         
@@ -364,7 +355,46 @@
 
 
 - (IBAction)Cancel:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Transaction Alert"
+                                                    message:@"Are you sure you want to cancel? Any unsaved data will be lost"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Yes", @"No", nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch(buttonIndex) {
+        case 0:
+            break;
+        case 1:
+            [self DeleteTransaction];
+            [self dismissViewControllerAnimated:YES completion:nil];
+            break;
+        case 2:
+            break;
+        default: break;
+    }
+}
+
+- (void)DeleteTransaction{
+    NSArray *DeletionArray=[NSArray arrayWithObjects:@"Transaction",@"Pre_Extraction",@"Run_Process",@"Post_Extraction", nil];
+    for (int i=0;i<DeletionArray.count;i++) {
+        NSString *ClassName=[DeletionArray objectAtIndex:i];
+        PFQuery *query = [PFQuery queryWithClassName:ClassName];
+        [query whereKey:@"Run_No" equalTo:self.Run_NoText.text];
+        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                // if (!(objects.count == nil)) {
+                for (PFObject *object in objects) {
+                    [object deleteInBackground];
+                }
+            } else {
+                [error userInfo];
+            }
+        }];
+    }
 }
 
 - (void)viewDidUnload {

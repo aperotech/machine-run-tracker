@@ -74,7 +74,7 @@
 
     PFQuery *query2 = [PFQuery queryWithClassName:@"Pre_Extraction"];
     [query2 whereKey:@"Run_No" equalTo:Run_noLabel.text];
-    query2.cachePolicy = kPFCachePolicyNetworkElseCache;
+    query2.cachePolicy = kPFCachePolicyCacheThenNetwork;
   
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *runArray, NSError *error) {
         [self.activityIndicator startAnimating];
@@ -154,7 +154,7 @@
     for (int i=0; i<RunProcessArray.count;i++) {
         if (indexPath.row==i) {
             NSString *parameterValue=[[runArrayPre objectAtIndex:0]objectForKey:[RunProcessArray objectAtIndex:i]];
-            if (parameterValue == nil ) {
+            if ([parameterValue isEqualToString:@""] | (parameterValue == NULL)) {
                 cell.parameterLabel.text=@"N/A";
             } else if ([[RunProcessArray objectAtIndex:i] rangeOfString:@"Time"].location != NSNotFound) {
                 cell.parameterLabel.text = parameterValue;

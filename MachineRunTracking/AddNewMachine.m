@@ -121,38 +121,6 @@
     [datePickerToolbar setItems:dateBarItems animated:YES];
     [self.lastMaintanceDate setInputAccessoryView:datePickerToolbar];
 }
-/*- (void)keyboardWillShow:(NSNotification *)notification
-{
-    if(self.datePickerToolbar == nil) {
-        self.datePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 400, 320, 44)] ;
-        [self.datePickerToolbar setBarStyle:UIBarStyleBlackTranslucent];
-        [self.datePickerToolbar sizeToFit];
-        
-        [UIScrollView beginAnimations:nil context:NULL];
-        [UIScrollView setAnimationDuration:0.4];
-        
-        UIBarButtonItem *flexButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-        
-        UIBarButtonItem *doneButton1 =[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(resignKeyboard)];               NSArray *itemsArray = [NSArray arrayWithObjects:flexButton,doneButton1, nil];
-        
-        [self.datePickerToolbar setItems:itemsArray];
-        
-        
-        [lastMaintanceDate setInputAccessoryView:self.datePickerToolbar];
-        [self.scrollView addSubview:self.datePickerToolbar];
-        [UIScrollView commitAnimations];
-    }
-}
-*/
-
-
-/*-(void)resignKeyboard {
-    
-    [self.datePickerToolbar removeFromSuperview];
-    [lastMaintanceDate resignFirstResponder];
-    ///do nescessary date calculation here
-    
-}*/
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

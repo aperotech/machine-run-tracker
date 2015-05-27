@@ -18,9 +18,13 @@
 @implementation AddTransaction_Pre {
     NSMutableArray *GetValuesFromTextFieldArray, *RunProcessArray;
     NSArray *preExtractionArray;
-    NSString *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId, *finalText, *lastinsertedPreExtractionID;
+    NSString *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId, *finalText, *lastinsertedPreExtractionID, *time;
     NSInteger objectCount;
     int bounceFlag, doneFlag;
+    UIDatePicker *timePicker;
+    UIToolbar *timePickerToolbar;
+    UITextField *timeField;
+    NSDateFormatter *formatter;
 }
 
 @synthesize tableView,parameterAdd_PrePF, activityIndicatorView, scrollView, activeField;
@@ -37,6 +41,31 @@
     
     bounceFlag = 0;
     doneFlag = 0;
+    timeField = [[UITextField alloc] init];
+    
+    //Creating time picker for time fields
+    formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"hh:mm a"];
+    timePicker = [[UIDatePicker alloc] init];
+    
+    [timePicker setDatePickerMode:UIDatePickerModeTime];
+    [timePicker setBackgroundColor:[UIColor lightTextColor]];
+    
+    //Creating a toolbar above Date picker where Done button can be added
+    timePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 288, 40)];
+    [timePickerToolbar setBarStyle:UIBarStyleDefault];
+    [timePickerToolbar sizeToFit];
+    
+    //Create Done button to add to picker toolbar
+    NSMutableArray *dateBarItems = [[NSMutableArray alloc] init];
+    
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    [dateBarItems addObject:flexSpace];
+    
+    UIBarButtonItem *dateDoneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(timePickerDoneClicked:)];
+    [dateBarItems addObject:dateDoneBtn];
+    
+    [timePickerToolbar setItems:dateBarItems animated:YES];
 
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Pre-Extraction"];
@@ -67,6 +96,7 @@
     
     PFQuery *query2 = [PFQuery queryWithClassName:@"Parameters"];
     [query2 selectKeys:@[@"Name"]];
+    [query2 selectKeys:@[@"Units"]];
     [query2 whereKey:@"Type" equalTo:@"Pre-Extraction"];
     query2.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
@@ -139,7 +169,7 @@
     [alert show];*/
     
     if ([UIAlertController class]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Transaction Alert" message:@"Are you sure you want to cancel this transaction?" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Transaction Alert" message:@"Are you sure you want to cancel? Any unsaved data will be lost" preferredStyle:UIAlertControllerStyleActionSheet];
         
         //Create the alert actions i.e. options
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
@@ -161,7 +191,7 @@
         //Present the alert controller
         [self presentViewController:alert animated:YES completion:nil];
     } else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Transaction Alert" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Yes", @"No, go back", nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure you want to cancel this transaction? Any unsaved data will be lost" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Yes", @"No, go back", nil];
         
         [actionSheet showInView:self.view];
     }
@@ -249,6 +279,13 @@
         cell.p_1Text.placeholder = [string2 stringByAppendingFormat:@" (%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
     }
     
+    if ([cell.p_1Text.placeholder rangeOfString:@"Time"].location != NSNotFound) {
+        [timePicker setFrame:CGRectMake(16, (cell.p_1Text.frame.origin.y + 30.0), self.view.frame.size.width, 140)];
+        [cell.p_1Text setInputView:timePicker];
+        [cell.p_1Text setInputAccessoryView:timePickerToolbar];
+        timeField = cell.p_1Text;
+    }
+    
     if (indexPath.row == (RunProcessArray.count-1)) {
         bounceFlag = 1;
     }
@@ -266,17 +303,12 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     self.activeField = textField;
-    
-    /*if (textField.tag < GetValuesFromTextFieldArray.count | textField.tag > GetValuesFromTextFieldArray.count) {
-        [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
-       
-    } else  {
-        [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
-        NSLog(@"added %@ at %ld",textField.text, (long)textField.tag);
-    }*/
+
     if (![textField.text isEqualToString:@""]) {
         [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
-        //NSLog(@"added %@ at %ld",textField.text, (long)textField.tag);
+    }
+    if (textField.tag == RunProcessArray.count-1) {
+        doneFlag = 0;
     }
 }
 
@@ -301,12 +333,19 @@
     
     // Only characters in the NSCharacterSet you choose will insertable.
     if ([textField isEqual:textField]) {
-        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_0123456789:. "] invertedSet];
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_0123456789:."] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
         
         return [string isEqualToString:filtered];
     }
     return YES;
+}
+
+//Method to call when Done is clicked on Time picker
+- (void)timePickerDoneClicked:(id)sender {
+    NSString *currentTime = [formatter stringFromDate:timePicker.date];
+    timeField.text = currentTime;
+    [timeField resignFirstResponder];
 }
 
 -(IBAction)SaveAndForward:(id)sender {
@@ -324,33 +363,33 @@
      } else
      [self saveParameters];
      }*/
-
-    PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
-    [query orderByDescending:@"createdAt"];
-    query.cachePolicy = kPFCachePolicyNetworkElseCache;
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        
-        if (!error) {
-            // The find succeeded.
-            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
-            // Do something with the found objects
-            NSString *lastinsertedtransactionPreNo=[object objectForKey:@"Run_No"];
-            lastinsertedPreExtractionID =[object objectId];
-            if ([lastinsertedtransactionPreNo isEqualToString:LastInsertedTransactionNo]) {
-                [self updateParameters];
-            } else {
-                if([GetValuesFromTextFieldArray containsObject:[NSNull null]]) {
-                    //NSLog(@"contains null");
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
-                                                                        message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                } else
+    
+    if([GetValuesFromTextFieldArray containsObject:[NSNull null]]) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
+                                                            message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    } else {
+        PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
+        [query orderByDescending:@"createdAt"];
+        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+        [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            
+            if (!error) {
+                // The find succeeded.
+                //NSLog(@"Successfully retrieved %ld scores.", objects.count);
+                // Do something with the found objects
+                NSString *lastinsertedtransactionPreNo=[object objectForKey:@"Run_No"];
+                lastinsertedPreExtractionID =[object objectId];
+                if ([lastinsertedtransactionPreNo isEqualToString:LastInsertedTransactionNo]) {
+                    [self updateParameters];
+                } else {
                     [self saveParameters];
+                }
+            } else {
+                [error userInfo];
             }
-        } else {
-            [error userInfo];
-        }
-    }];
+        }];
+    }
 }
 
 - (void)saveParameters
@@ -465,6 +504,10 @@
     // Your application might not need or want this behavior.
     CGRect aRect = self.view.frame;
     aRect.size.height -= kbSize.height;
+    
+    CGRect newFrame = self.activeField.frame;
+    newFrame.origin.y += (objectCount * 50)+50;
+    
     if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {
         CGPoint scrollPoint = CGPointMake(0.0, (self.activeField.frame.origin.y-kbSize.height));
         [self.scrollView setContentOffset:scrollPoint animated:YES];

@@ -63,6 +63,7 @@
     //Run queries to check if machines & parameters exist. This is to decide whether a new transaction can be created or not.
     PFQuery *machineQuery = [PFQuery queryWithClassName:@"Machine"];
     [machineQuery selectKeys:@[@"Machine_Name"]];
+    machineQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [machineQuery countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
         if (!error)
             machineCount = count;
@@ -72,7 +73,8 @@
     }];
     
     PFQuery *parameterQuery = [PFQuery queryWithClassName:@"Parameters"];
-    [parameterQuery selectKeys:@[@"Machine_Name"]];
+    [parameterQuery selectKeys:@[@"Name"]];
+    parameterQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [parameterQuery countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
         if (!error)
             parameterCount = count;
@@ -103,7 +105,7 @@
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     [query orderByAscending:@"Run_No"];
-    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
     return query;
 }

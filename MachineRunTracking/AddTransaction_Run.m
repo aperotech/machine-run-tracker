@@ -95,6 +95,7 @@
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
+    [query1 orderByAscending:@"createdAt"];
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     // [query1 selectKeys:@[@"Name"]];
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -320,7 +321,7 @@
             
             valueTextField.placeholder = [RunProcessArray objectAtIndex:i];
             
-            if ([valueTextField.placeholder rangeOfString:@"Comment"].location != NSNotFound) {
+            if ([valueTextField.placeholder rangeOfString:@"Comment"].location != NSNotFound | [valueTextField.placeholder rangeOfString:@"Text"].location != NSNotFound) {
                 [valueTextField setSpellCheckingType:UITextSpellCheckingTypeDefault];
                 [valueTextField setAutocorrectionType:UITextAutocorrectionTypeDefault];
             } else {
@@ -394,7 +395,7 @@
         return NO;
     
     // Only characters in the NSCharacterSet you choose will insertable.
-    if ([textField.placeholder rangeOfString:@"Comments"].location != NSNotFound) {
+    if ([textField.placeholder rangeOfString:@"Comments"].location != NSNotFound | [textField.placeholder rangeOfString:@"Text"].location != NSNotFound) {
         NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_0123456789:. ()-;\""] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
         

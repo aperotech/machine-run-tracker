@@ -20,7 +20,7 @@
     NSArray *preExtractionArray;
     NSString *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId, *finalText, *lastinsertedPreExtractionID, *time;
     NSInteger objectCount;
-    int bounceFlag, doneFlag;
+    int bounceFlag, doneFlag, firstSave;
     UIDatePicker *timePicker;
     UIToolbar *timePickerToolbar;
     UITextField *timeField;
@@ -41,6 +41,7 @@
     
     bounceFlag = 0;
     doneFlag = 0;
+    firstSave = 0;
     timeField = [[UITextField alloc] init];
     
     //Creating time picker for time fields
@@ -69,6 +70,7 @@
 
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Pre-Extraction"];
+    [query1 orderByAscending:@"createdAt"];
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
 
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -98,6 +100,7 @@
     [query2 selectKeys:@[@"Name"]];
     [query2 selectKeys:@[@"Units"]];
     [query2 whereKey:@"Type" equalTo:@"Pre-Extraction"];
+    [query2 orderByAscending:@"createdAt"];
     query2.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
         if (!objectsPF) {
@@ -352,22 +355,14 @@
     if (doneFlag == 1) {
         [GetValuesFromTextFieldArray replaceObjectAtIndex:(RunProcessArray.count-1) withObject:finalText];
     }
-    /*if (parameterAdd_PrePF != nil) {
-     [self updateParameters];
-     } else {
-     if([GetValuesFromTextFieldArray containsObject:[NSNull null]]) {
-     //NSLog(@"contains null");
-     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
-     message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-     [alertView show];
-     } else
-     [self saveParameters];
-     }*/
     
     if([GetValuesFromTextFieldArray containsObject:[NSNull null]]) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
                                                             message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
+    } else if (firstSave == 0) {
+        firstSave = 1;
+        [self saveParameters];
     } else {
         PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
         [query orderByDescending:@"createdAt"];
@@ -392,40 +387,27 @@
     }
 }
 
-- (void)saveParameters
-{
-    //[activityIndicatorView startAnimating];
-      //PFObject *NewParameter=[PFObject objectWithClassName:@"Pre_Extraction"];
-     
-     //if([NewParameter save]) {
-         PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
-         for (int i=0;i<[RunProcessArray count];i++) {
-             NSString *newPara=[RunProcessArray objectAtIndex:i];
-             ParameterValue[newPara] = [GetValuesFromTextFieldArray objectAtIndex:i];
-         }
-
-     ParameterValue[@"Run_No"]=LastInsertedTransactionNo;
-     
-     [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-     if (succeeded) {
-         //[activityIndicatorView stopAnimating];
-         [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+- (void)saveParameters {
     
-     } else {
-         //NSLog(@"error here");
-     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-     message:[error.userInfo objectForKey:@"error"]
-     delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-     [alertView show];
+    PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
+    for (int i=0;i<[RunProcessArray count];i++) {
+         NSString *newPara=[RunProcessArray objectAtIndex:i];
+         ParameterValue[newPara] = [GetValuesFromTextFieldArray objectAtIndex:i];
+    }
 
-    // There was a problem, check error.description
+    ParameterValue[@"Run_No"]=LastInsertedTransactionNo;
+    [ParameterValue saveInBackground];
+    [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+    /*[ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+    if (succeeded) {
+        [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+        message:[error.userInfo objectForKey:@"error"]
+        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
      }
-         
-     }];
-     
-     //  class created;
-     
-     //}
+    }];*/
 }
 
 - (void)updateParameters

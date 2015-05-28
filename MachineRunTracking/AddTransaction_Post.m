@@ -39,6 +39,7 @@
     firstSave = 0;
     timeField = [[UITextField alloc] init];
     
+    
     //Creating time picker for time fields
     formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"hh:mm a"];
@@ -115,7 +116,7 @@
        
         objectCount=objects.count;
         if(error){
-            NSLog(@"Error!");
+            NSLog(@"Error! Post");
         }
         else {
             if (objects.count == 0) {
@@ -231,8 +232,8 @@
                 [object deleteInBackground];
             }
         } else {
+            [error userInfo];
             // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
             // [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
         }
     }];
@@ -247,8 +248,8 @@
                 [object deleteInBackground];
             }
         } else {
+            [error userInfo];
             // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
 }

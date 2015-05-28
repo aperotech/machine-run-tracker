@@ -83,7 +83,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    self.activeField = textField;
+    self.activeField = nil;
 }
 
 //Methods to take care of UIScrollView when keyboard appears

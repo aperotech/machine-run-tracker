@@ -224,7 +224,7 @@ NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@" " withStrin
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    self.activeField = textField;
+    self.activeField = nil;
 }
 
 //Methods to take care of UIScrollView when keyboard appears

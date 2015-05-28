@@ -17,7 +17,7 @@
 @end
 
 @implementation AddTransaction_Post {
-    int bounceFlag, doneFlag;
+    int bounceFlag, doneFlag, firstSave;
     NSString *lastinsertedPostExtractionID, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectId, *finalText;
     NSInteger objectCount;
     NSArray *postExtractionArray;
@@ -35,6 +35,7 @@
     
     bounceFlag = 0;
     doneFlag = 0;
+    firstSave = 0;
     timeField = [[UITextField alloc] init];
     
     
@@ -84,6 +85,7 @@
     [query2 selectKeys:@[@"Name"]];
     [query2 selectKeys:@[@"Units"]];
     [query2 whereKey:@"Type" equalTo:@"Post-Extraction"];
+    [query2 orderByAscending:@"createdAt"];
     query2.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
         if (!objectsPF) {
@@ -107,6 +109,7 @@
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Post-Extraction"];
+    [query1 orderByAscending:@"createdAt"];
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
        
@@ -153,11 +156,11 @@
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
     
-    [self registerForKeyboardNotifications];
+    //[self registerForKeyboardNotifications];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [self deregisterFromKeyboardNotifications];
+    //[self deregisterFromKeyboardNotifications];
     
     [super viewDidDisappear:animated];
 }
@@ -226,9 +229,7 @@
             // Do something with the found objects
             for (PFObject *object in objects) {
                 [object deleteInBackground];
-                
             }
-            
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
@@ -244,9 +245,7 @@
             // Do something with the found objects
             for (PFObject *object in objects) {
                 [object deleteInBackground];
-                
             }
-            
         } else {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
@@ -321,7 +320,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    self.activeField = textField;
+    self.activeField = nil;
     
     if (![textField.text isEqualToString:@""]) {
         [GetValuesFromPostTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
@@ -364,6 +363,7 @@
     NSString *currentTime = [formatter stringFromDate:timePicker.date];
     timeField.text = currentTime;
     [timeField resignFirstResponder];
+    [[self.view viewWithTag:timeField.tag+1] becomeFirstResponder];
 }
 
 
@@ -376,6 +376,9 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Missing Value"
                                                             message:@"Please enter all parameter values" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
+    } else if (firstSave == 0) {
+        firstSave = 1;
+        [self saveParameters];
     } else {
         [self.activityIndicator startAnimating];
         PFQuery *query = [PFQuery queryWithClassName:@"Post_Extraction"];
@@ -403,41 +406,30 @@
 }
 
 - (void)saveParameters {
-    
-    //PFObject *NewParameter=[PFObject  objectWithClassName:@"Post_Extraction" ];
-    
-    //if([NewParameter save]) {
-        
-        PFObject *ParameterValue = [PFObject objectWithClassName:@"Post_Extraction"];
-        for (int i=0;i<[RunProcessArray count];i++) {
-            NSString *newPara=[RunProcessArray objectAtIndex:i];
-            ParameterValue[newPara]=[GetValuesFromPostTextFieldArray objectAtIndex:i];
-        }
-    
-        ParameterValue[@"Run_No"]=LastInsertedTransactionNo;
-    
-        [ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (succeeded) {
-                [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
+    PFObject *ParameterValue = [PFObject objectWithClassName:@"Post_Extraction"];
+    for (int i=0;i<[RunProcessArray count];i++) {
+        NSString *newPara=[RunProcessArray objectAtIndex:i];
+        ParameterValue[newPara]=[GetValuesFromPostTextFieldArray objectAtIndex:i];
+    }
 
-            } else {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
-                                                                    message:[error.userInfo objectForKey:@"error"]
-                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alertView show];
-                
-              
-            }
-        }];
-        
-        //  class created;
-        
-    //}
+    ParameterValue[@"Run_No"] = LastInsertedTransactionNo;
+    [ParameterValue saveInBackground];
+    [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
+
+    /*[ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            [self performSegueWithIdentifier:@"PostUnwindToTransactionListSegue" sender:self];
+
+        } else {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
+                                                                message:[error.userInfo objectForKey:@"error"]
+                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+        }
+    }];*/
 }
 
-- (void)updateParameters
-{
-    
+- (void)updateParameters {
     PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
     
     // Retrieve the object by id

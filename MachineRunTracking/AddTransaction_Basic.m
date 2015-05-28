@@ -22,7 +22,7 @@
     UIDatePicker *datePicker;
     UIToolbar *MachinePickerToolbar, *datePickerToolbar;
     NSString *date;
-    int value;
+    int value, firstSave;
     NSString *lastinsertedTrasactionID;
     NSDateFormatter *formatter;
 }
@@ -33,6 +33,8 @@
 - (void)viewDidLoad {
    
     [super viewDidLoad];
+    
+    firstSave = 0;
    
     self.navigationController.navigationBar.topItem.title=@"";
     activityIndicatorView.hidden=YES;
@@ -233,8 +235,12 @@
 
 - (IBAction)SaveAndForword:(id)sender {
    //[self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:sender];
-
-    [self SaveORupdateParameter];
+    if (firstSave == 0) {
+        [self saveParameters];
+        firstSave = 1;
+    } else {
+        [self SaveORupdateParameter];
+    }
 }
 
 -(void)SaveORupdateParameter{
@@ -246,9 +252,6 @@
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
  
      if (!error) {
-     // The find succeeded.
-     //NSLog(@"Successfully retrieved %ld scores.", objects.count);
-     // Do something with the found objects
          NSString *lastinsertedtransactionNo=[object objectForKey:@"Run_No"];
          lastinsertedTrasactionID=[object objectId];
          if ([lastinsertedtransactionNo isEqualToString:self.Run_NoText.text ]) {
@@ -265,8 +268,6 @@
 }
 
 -(void)saveParameters{
-
-    
     activityIndicatorView.hidden=NO;
     [activityIndicatorView startAnimating];
     
@@ -292,9 +293,10 @@
         [transactionObj setObject:self.Run_DurationText.text forKey:@"Run_Duration"];
         //  parameterObj[@"New Parameter"]=@"The New String";
         
-        
+        [transactionObj saveInBackground];
+        [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:self];
         // Upload transaction to Parse
-        [transactionObj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        /*[transactionObj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             
             if (!error) {
                 
@@ -307,7 +309,7 @@
                 
             }
             
-        }];
+        }];*/
     }
 }
 
@@ -349,10 +351,6 @@
     }];
     
 }
-
-
-
-
 
 - (IBAction)Cancel:(id)sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Transaction Alert"
@@ -414,7 +412,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    self.activeField = textField;
+    self.activeField = nil;
 }
 
 //Methods to take care of UIScrollView when keyboard appears

@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   // [self setupViewControllers];
+    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)];
     RunProcessArray = [[NSMutableArray alloc]init];
     preExtractionArray = [[NSArray alloc]init];
   

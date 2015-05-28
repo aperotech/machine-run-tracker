@@ -72,10 +72,6 @@
     
     [timePickerToolbar setItems:dateBarItems animated:YES];
     
-    /*activityIndicatorView.center = CGPointMake( [UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2);
-    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate.window addSubview:activityIndicatorView];*/
-    
     [activityIndicatorView startAnimating];
     
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
@@ -128,11 +124,11 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     NextFlag = 0;
-    //[self registerForKeyboardNotifications];
+    [self registerForKeyboardNotifications];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    //[self deregisterFromKeyboardNotifications];
+    [self deregisterFromKeyboardNotifications];
     
     updateFlag = 1;
     
@@ -230,7 +226,7 @@
     
     [self.aTableView layoutIfNeeded];
     
-    [self.scrollView setContentSize:CGSizeMake(self.tableWidth.constant, self.tableHeight.constant)];
+    [self.scrollView setContentSize:CGSizeMake(self.tableWidth.constant, self.tableHeight.constant + 100 )];
     [activityIndicatorView stopAnimating];
     return cell;
 }
@@ -316,7 +312,6 @@
             
             valueTextField.borderStyle = UITextBorderStyleRoundedRect;
             //[valueTextField setEnablesReturnKeyAutomatically:YES];
-            [valueTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
             [valueTextField setDelegate:self];
             
             valueTextField.placeholder = [RunProcessArray objectAtIndex:i];
@@ -324,9 +319,11 @@
             if ([valueTextField.placeholder rangeOfString:@"Comment"].location != NSNotFound | [valueTextField.placeholder rangeOfString:@"Text"].location != NSNotFound) {
                 [valueTextField setSpellCheckingType:UITextSpellCheckingTypeDefault];
                 [valueTextField setAutocorrectionType:UITextAutocorrectionTypeDefault];
+                [valueTextField setKeyboardType:UIKeyboardTypeAlphabet];
             } else {
                 [valueTextField setSpellCheckingType:UITextSpellCheckingTypeNo];
                 [valueTextField setAutocorrectionType:UITextAutocorrectionTypeNo];
+                [valueTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
             }
             
             if ([valueTextField.placeholder rangeOfString:@"Time"].location != NSNotFound) {
@@ -352,9 +349,13 @@
             [cell.contentView addSubview:valueTextField];
         } // for loop
     } //if cell nil
-        //NSLog(@"get values array count %ld",GetValuesFromRunTextFieldArray.count);
-        count++;
-        return cell;
+    count++;
+    
+    /*if (self.aTableView.frame.size.height >= self.scrollView.frame.size.height) {
+        self.tableHeight.constant = self.aTableView.frame.size.height;
+    }
+    [self.scrollView setContentSize:CGSizeMake(self.tableWidth.constant, self.tableHeight.constant)];*/
+    return cell;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -479,9 +480,6 @@
             }
         } else {
             [error userInfo];
-            // Log details of the failure
-            //NSLog(@"Error: %@ %@", error, [error userInfo]);
-            // [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
         }
     }];
     
@@ -490,18 +488,12 @@
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            // The find succeeded.
-            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
-            // Do something with the found objects
             for (PFObject *object in objects) {
                 [object deleteInBackground];
-                
             }
             
         } else {
             [error userInfo];
-            // Log details of the failure
-            //    NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
         
@@ -510,9 +502,6 @@
     query3.cachePolicy = kPFCachePolicyNetworkElseCache;
     [query3 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            // The find succeeded.
-            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
-            // Do something with the found objects
             for (PFObject *object in objects) {
                 [object deleteInBackground];
             }
@@ -524,8 +513,6 @@
 }
     
 -(IBAction)SaveAndForward:(id)sender {
-    //[self performSegueWithIdentifier:@"Run_ProcessToPost_ExtractionSegue" sender:self];
-    
     if (doneFlag == 1) {
         [GetValuesFromRunTextFieldArray replaceObjectAtIndex:(GetValuesFromRunTextFieldArray.count-1) withObject:finalText];
     }
@@ -584,7 +571,6 @@
 - (void)saveParameters {
     [activityIndicatorView startAnimating];
 
-    //NSString *parameterColumn;
     NSUInteger tag, tagCount;
     
     tagCount = 0;
@@ -662,7 +648,8 @@
 
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification {
-    NSDictionary* info = [aNotification userInfo];
+    //Original code + change
+    /*NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
     self.aTableView.contentInset = contentInsets;
@@ -672,7 +659,7 @@
     
     [self.aTableView scrollToRowAtIndexPath:currentRowIndex atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     
-    /*// If active text field is hidden by keyboard, scroll it so it's visible
+    // If active text field is hidden by keyboard, scroll it so it's visible
     // Your application might not need or want this behavior.
     CGRect aRect = self.view.frame;
     aRect.size.height = aRect.size.width - kbSize.width;
@@ -684,13 +671,63 @@
         CGPoint scrollPoint = CGPointMake(0.0, (newFrame.origin.y-kbSize.width));
         [self.scrollView setContentOffset:scrollPoint animated:YES];
     }*/
+    
+    //New code, works if k/b not dismissed in between
+    /*NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGRect bkgndRect = self.activeField.superview.frame;
+    NSLog(@"Original x %f y %f w %f h %f", self.activeField.superview.frame.origin.x, self.activeField.superview.frame.origin.y, self.activeField.superview.frame.size.width, self.activeField.superview.frame.size.height);
+    NSIndexPath *currentRowIndex = [NSIndexPath indexPathForRow:self.activeField.tag inSection:1];
+    
+    bkgndRect.size.height += kbSize.width;
+    [self.activeField.superview setFrame:bkgndRect];
+    [self.aTableView setContentOffset:CGPointMake(0.0, self.activeField.frame.origin.y-kbSize.width+196) animated:YES];*/
+    
+    //Trial of landscape specific code
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbValue = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGRect aRect = self.aTableView.frame;
+    
+    CGSize kbSize = CGSizeMake(kbValue.height, kbValue.width);
+    
+    aRect.size.height -= kbSize.height+50;
+    // This will the exact rect in which your textfield is present
+    CGRect rect =  [self.aTableView convertRect:self.activeField.bounds fromView:self.activeField];
+    // Scroll up only if required
+    if (!CGRectContainsPoint(aRect, rect.origin) ) {
+        [self.aTableView setContentOffset:CGPointMake(0.0, rect.origin.y-11) animated:YES];
+    }
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    //Original code
+    /*UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.aTableView.contentInset = contentInsets;
+    self.aTableView.scrollIndicatorInsets = contentInsets;*/
+    
+    //New code, works if k/b not dismissed in between
+    /*UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.aTableView.contentInset = contentInsets;
+    self.aTableView.scrollIndicatorInsets = contentInsets;
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGRect bkgndRect = self.activeField.superview.frame;
+    //bkgndRect.size.height += kbSize.height;
+    //[self.activeField.superview setFrame:bkgndRect];
+    [self.aTableView setContentOffset:CGPointMake(0.0, self.activeField.frame.origin.y-kbSize.width+342) animated:YES];*/
+    
+    //Trial of landscape specific code
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     self.aTableView.contentInset = contentInsets;
     self.aTableView.scrollIndicatorInsets = contentInsets;
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbValue = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize kbSize = CGSizeMake(kbValue.height, kbValue.width);
+    CGRect bkgndRect = self.activeField.superview.frame;
+    bkgndRect.size.height += kbSize.height;
+    [self.activeField.superview setFrame:bkgndRect];
+    [self.aTableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 }
 
 /*

@@ -128,11 +128,11 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     NextFlag = 0;
-    [self registerForKeyboardNotifications];
+    //[self registerForKeyboardNotifications];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [self deregisterFromKeyboardNotifications];
+    //[self deregisterFromKeyboardNotifications];
     
     updateFlag = 1;
     
@@ -298,16 +298,16 @@
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                 valueTextField.font = [UIFont systemFontOfSize:16.0];
                 if (i == 0) {
-                    frameText=CGRectMake(10, 7, 100, 30);
+                    frameText=CGRectMake(10, 10, 100, 30);
                 } else {
-                    frameText=CGRectMake(130*i, 7, 100, 30);
+                    frameText=CGRectMake(130*i, 10, 100, 30);
                 }
             } else {
                 valueTextField.font = [UIFont systemFontOfSize:14.0];
                 if (i == 0) {
-                    frameText=CGRectMake(10, 7, 90, 30);
+                    frameText=CGRectMake(10, 10, 90, 30);
                 } else {
-                    frameText=CGRectMake(110*i, 7, 90, 30);
+                    frameText=CGRectMake(110*i, 10, 90, 30);
                 }
             }
             
@@ -368,6 +368,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.activeField = nil;
     if (![textField.text isEqualToString:@""]) {
         [GetValuesFromRunTextFieldArray replaceObjectAtIndex:textField.tag-1 withObject:textField.text];
     }
@@ -415,6 +416,7 @@
     NSString *currentTime = [formatter stringFromDate:timePicker.date];
     timeField.text = currentTime;
     [timeField resignFirstResponder];
+    [[self.view viewWithTag:timeField.tag+1] becomeFirstResponder];
 }
 
 - (IBAction)Cancel:(id)sender {
@@ -662,11 +664,15 @@
 - (void)keyboardWasShown:(NSNotification*)aNotification {
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.width, 0.0);
-    self.scrollView.contentInset = contentInsets;
-    self.scrollView.scrollIndicatorInsets = contentInsets;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.aTableView.contentInset = contentInsets;
+    self.aTableView.scrollIndicatorInsets = contentInsets;
     
-    // If active text field is hidden by keyboard, scroll it so it's visible
+    NSIndexPath *currentRowIndex = [NSIndexPath indexPathForRow:self.activeField.tag inSection:1];
+    
+    [self.aTableView scrollToRowAtIndexPath:currentRowIndex atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+    /*// If active text field is hidden by keyboard, scroll it so it's visible
     // Your application might not need or want this behavior.
     CGRect aRect = self.view.frame;
     aRect.size.height = aRect.size.width - kbSize.width;
@@ -677,14 +683,14 @@
     if (!CGRectContainsPoint(aRect, newFrame.origin) ) {
         CGPoint scrollPoint = CGPointMake(0.0, (newFrame.origin.y-kbSize.width));
         [self.scrollView setContentOffset:scrollPoint animated:YES];
-    }
+    }*/
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    self.scrollView.contentInset = contentInsets;
-    self.scrollView.scrollIndicatorInsets = contentInsets;
+    self.aTableView.contentInset = contentInsets;
+    self.aTableView.scrollIndicatorInsets = contentInsets;
 }
 
 /*

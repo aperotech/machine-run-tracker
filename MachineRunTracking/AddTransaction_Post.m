@@ -155,11 +155,11 @@
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
     
-    [self registerForKeyboardNotifications];
+    //[self registerForKeyboardNotifications];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [self deregisterFromKeyboardNotifications];
+    //[self deregisterFromKeyboardNotifications];
     
     [super viewDidDisappear:animated];
 }
@@ -319,7 +319,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    self.activeField = textField;
+    self.activeField = nil;
     
     if (![textField.text isEqualToString:@""]) {
         [GetValuesFromPostTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
@@ -362,6 +362,7 @@
     NSString *currentTime = [formatter stringFromDate:timePicker.date];
     timeField.text = currentTime;
     [timeField resignFirstResponder];
+    [[self.view viewWithTag:timeField.tag+1] becomeFirstResponder];
 }
 
 

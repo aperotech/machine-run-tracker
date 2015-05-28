@@ -54,7 +54,7 @@
 
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    if (textField.text.length >= 20 && range.length == 0)
+    if (textField.text.length >= 40 && range.length == 0)
         return NO;
     // Only characters in the NSCharacterSet you choose will insertable.
         if (textField ==emailTextField) {
@@ -83,7 +83,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    self.activeField = textField;
+    self.activeField = nil;
 }
 
 //Methods to take care of UIScrollView when keyboard appears

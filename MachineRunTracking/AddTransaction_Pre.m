@@ -305,7 +305,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    self.activeField = textField;
+    self.activeField = nil;
 
     if (![textField.text isEqualToString:@""]) {
         [GetValuesFromTextFieldArray replaceObjectAtIndex:textField.tag withObject:textField.text];
@@ -349,6 +349,7 @@
     NSString *currentTime = [formatter stringFromDate:timePicker.date];
     timeField.text = currentTime;
     [timeField resignFirstResponder];
+    [[self.view viewWithTag:timeField.tag+1] becomeFirstResponder];
 }
 
 -(IBAction)SaveAndForward:(id)sender {
@@ -390,12 +391,11 @@
 - (void)saveParameters {
     
     PFObject *ParameterValue = [PFObject objectWithClassName:@"Pre_Extraction"];
+    ParameterValue[@"Run_No"] = LastInsertedTransactionNo;
     for (int i=0;i<[RunProcessArray count];i++) {
          NSString *newPara=[RunProcessArray objectAtIndex:i];
          ParameterValue[newPara] = [GetValuesFromTextFieldArray objectAtIndex:i];
     }
-
-    ParameterValue[@"Run_No"]=LastInsertedTransactionNo;
     [ParameterValue saveInBackground];
     [self performSegueWithIdentifier:@"Pre_ExtractionToRunExtractionSegue" sender:self];
     /*[ParameterValue saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -410,9 +410,7 @@
     }];*/
 }
 
-- (void)updateParameters
-{
-    
+- (void)updateParameters {
     PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
     
     // Retrieve the object by id

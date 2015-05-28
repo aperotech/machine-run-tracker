@@ -25,11 +25,14 @@
 }
 
 - (BOOL)shouldAutorotate {
- return NO;
+    return self.topViewController.shouldAutorotate;
+
+//    return NO;
  }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- return UIInterfaceOrientationPortrait;
+     return self.topViewController.supportedInterfaceOrientations;
+ //return UIInterfaceOrientationPortrait;
  }
 
 /*

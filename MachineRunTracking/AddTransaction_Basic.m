@@ -80,7 +80,8 @@
             }
         }
         else {
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
+            [error userInfo];
+
         }
     }];
 

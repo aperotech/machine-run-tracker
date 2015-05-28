@@ -37,6 +37,7 @@
     doneFlag = 0;
     timeField = [[UITextField alloc] init];
     
+    
     //Creating time picker for time fields
     formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"hh:mm a"];

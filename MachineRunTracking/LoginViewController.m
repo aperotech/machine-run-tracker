@@ -54,7 +54,7 @@
 
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    if (textField.text.length >= 20 && range.length == 0)
+    if (textField.text.length >= 50 && range.length == 0)
         return NO;
     // Only characters in the NSCharacterSet you choose will insertable.
         if (textField ==emailTextField) {

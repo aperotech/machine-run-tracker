@@ -470,40 +470,20 @@
 }
     
 - (void)DeleteTransaction {
-    PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
-    [query whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
-    query.cachePolicy = kPFCachePolicyNetworkElseCache;
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            for (PFObject *object in objects) {
-                [object deleteInBackground];
-            }
-        } else {
-            [error userInfo];
-        }
-    }];
-    
-    PFQuery *query1= [PFQuery queryWithClassName:@"Pre_Extraction"];
-    [query1 whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
-    query1.cachePolicy = kPFCachePolicyNetworkElseCache;
-    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            for (PFObject *object in objects) {
-                [object deleteInBackground];
-            }
-            
-        } else {
-            [error userInfo];
-        }
-    }];
-        
-    PFQuery *query3= [PFQuery queryWithClassName:@"Run_Process"];
-    [query3 whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
-    query3.cachePolicy = kPFCachePolicyNetworkElseCache;
-    [query3 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            for (PFObject *object in objects) {
-                [object deleteInBackground];
+    NSArray *DeletionArray=[NSArray arrayWithObjects:@"Transaction",@"Pre_Extraction",@"Run_Process",@"Post_Extraction", nil];
+    for (int i=0;i<DeletionArray.count;i++) {
+        NSString *ClassName=[DeletionArray objectAtIndex:i];
+        PFQuery *query = [PFQuery queryWithClassName:ClassName];
+        [query whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
+        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                // if (!(objects.count == nil)) {
+                for (PFObject *object in objects) {
+                    [object deleteInBackground];
+                }
+            } else {
+                [error userInfo];
             }
         }];
     }

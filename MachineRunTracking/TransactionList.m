@@ -259,11 +259,11 @@ BOOL allowRotation = YES;
                     for (PFObject *object in objects) {
                         [object deleteInBackground];
                     }
-                     [self refreshTable:nil];
                 } else {
                     [error userInfo];
                 }
             }];
+        [self refreshTable:nil];
         }
 
         

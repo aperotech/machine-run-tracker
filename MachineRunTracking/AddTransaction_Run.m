@@ -123,6 +123,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self.aTableView reloadData];
     NextFlag = 0;
     [self registerForKeyboardNotifications];
 }

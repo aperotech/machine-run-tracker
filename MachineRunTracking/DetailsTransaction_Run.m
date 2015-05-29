@@ -48,6 +48,7 @@
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
+    [query1 orderByAscending:@"createdAt"];
     query1.cachePolicy = kPFCachePolicyCacheThenNetwork;
     //BOOL isInCache = [query1 hasCachedResult];
     

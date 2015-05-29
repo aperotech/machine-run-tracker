@@ -242,9 +242,32 @@ BOOL allowRotation = YES;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     PFObject *object = [self.objects objectAtIndex:indexPath.row];
-    
+    NSLog(@"PFOBject %@",object);
+    NSString *RunNumber=[object valueForKey:@"Run_No"];
+    NSLog(@"RunNo %@",RunNumber);
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+       
+        NSArray *DeletionArray=[NSArray arrayWithObjects:@"Transaction",@"Pre_Extraction",@"Run_Process",@"Post_Extraction", nil];
+        for (int i=0;i<DeletionArray.count;i++) {
+            NSString *ClassName=[DeletionArray objectAtIndex:i];
+            PFQuery *query = [PFQuery queryWithClassName:ClassName];
+            [query whereKey:@"Run_No" equalTo:RunNumber];
+            query.cachePolicy = kPFCachePolicyNetworkElseCache;
+            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                if (!error) {
+                    // if (!(objects.count == nil)) {
+                    for (PFObject *object in objects) {
+                        [object deleteInBackground];
+                    }
+                     [self refreshTable:nil];
+                } else {
+                    [error userInfo];
+                }
+            }];
+        }
+
+        
+        /*[object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded == TRUE) {
                 [self refreshTable:nil];
             } else {
@@ -254,7 +277,7 @@ BOOL allowRotation = YES;
                 [tableView setEditing:FALSE animated:YES];
                 [alertView show];
             }
-        }];
+        }];*/
     }
 }
 

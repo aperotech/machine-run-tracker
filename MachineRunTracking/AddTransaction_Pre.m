@@ -218,26 +218,23 @@
 }
 
 -(void)DeleteTransaction{
-    PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
-    [query whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
-    query.cachePolicy = kPFCachePolicyNetworkElseCache;
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            // The find succeeded.
-            //NSLog(@"Successfully retrieved %ld scores.", objects.count);
-            // Do something with the found objects
-            for (PFObject *object in objects) {
-                [object deleteInBackground];
-                
+    NSArray *DeletionArray=[NSArray arrayWithObjects:@"Transaction",@"Pre_Extraction",@"Run_Process",@"Post_Extraction", nil];
+    for (int i=0;i<DeletionArray.count;i++) {
+        NSString *ClassName=[DeletionArray objectAtIndex:i];
+        PFQuery *query = [PFQuery queryWithClassName:ClassName];
+        [query whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
+        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                // if (!(objects.count == nil)) {
+                for (PFObject *object in objects) {
+                    [object deleteInBackground];
+                }
+            } else {
+                [error userInfo];
             }
-           
-        } else {
-            [error userInfo];
-            // Log details of the failure
-//NSLog(@"Error: %@ %@", error, [error userInfo]);
-            // [self performSegueWithIdentifier:@"PreUnwindToTransactionListSegue" sender:self];
-        }
-    }];
+        }];
+    }
 }
 
 /*- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

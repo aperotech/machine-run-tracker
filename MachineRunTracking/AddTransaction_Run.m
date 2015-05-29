@@ -505,11 +505,8 @@
             for (PFObject *object in objects) {
                 [object deleteInBackground];
             }
-        } else {
-            [error userInfo];            // Log details of the failure
-            
-        }
-    }];
+        }];
+    }
 }
     
 -(IBAction)SaveAndForward:(id)sender {

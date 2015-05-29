@@ -37,7 +37,7 @@
     firstSave = 0;
    
     self.navigationController.navigationBar.topItem.title=@"";
-    activityIndicatorView.hidden=YES;
+    [self.activityIndicatorView startAnimating];
     
     PFQuery *query=[PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"Run_No"];
@@ -51,10 +51,7 @@
             self.Run_NoText.text = runNo;
             self.Run_NoText.enabled=FALSE;
             // Did not find any UserStats for the current user
-        } else {
-            // Found UserStats
-           // self.placeholderArray=[object allKeys];
-            
+        } else { 
            NSString *LastInsertedRunNo = [object objectForKey:@"Run_No"];
             NSString *numbers = [LastInsertedRunNo stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]];
              value = [numbers intValue];
@@ -62,7 +59,7 @@
             NSString *runNo=[NSString stringWithFormat:@"R%04i",value+1];
             self.Run_NoText.text=runNo;
             self.Run_NoText.enabled=FALSE;
-            [activityIndicatorView stopAnimating];
+            [self.activityIndicatorView stopAnimating];
            // [activityView stopAnimating];
         }
     }];
@@ -168,8 +165,7 @@
     return UIInterfaceOrientationPortrait;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.Run_NoText) {
         //[activityView startAnimating];
         [self.Machine_NameText becomeFirstResponder];
@@ -269,8 +265,6 @@
 }
 
 -(void)saveParameters{
-    activityIndicatorView.hidden=NO;
-    [activityIndicatorView startAnimating];
     
     NSString *Run_no = [self.Run_NoText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
@@ -285,8 +279,8 @@
                                                             message:@"You must enter details"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
-    }
-    else{
+    } else {
+        [self.activityIndicatorView startAnimating];
         PFObject *transactionObj = [PFObject objectWithClassName:@"Transaction"];
         [transactionObj setObject:self.Run_NoText.text forKey:@"Run_No"];
         [transactionObj setObject:self.Machine_NameText.text forKey:@"Machine_Name"];
@@ -295,6 +289,7 @@
         //  parameterObj[@"New Parameter"]=@"The New String";
         
         [transactionObj saveInBackground];
+        [self.activityIndicatorView stopAnimating];
         [self performSegueWithIdentifier:@"BasicTransactionToPreExtrationSegue" sender:self];
         // Upload transaction to Parse
         /*[transactionObj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -314,11 +309,10 @@
     }
 }
 
-- (void)updateParameters
-{
-    [activityIndicatorView startAnimating];
+- (void)updateParameters {
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     // Retrieve the object by id
+    [self.activityIndicatorView startAnimating];
     [query getObjectInBackgroundWithId:lastinsertedTrasactionID block:^(PFObject *UpdateParameter, NSError *error) {
         
         if (error) {
@@ -326,6 +320,7 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                 message:[error.userInfo objectForKey:@"error"]
                                                                delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [self.activityIndicatorView stopAnimating];
             [alertView show];
         }
         else {
@@ -344,6 +339,7 @@
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!"
                                                                         message:[error.userInfo objectForKey:@"error"]
                                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [self.activityIndicatorView stopAnimating];
                     [alertView show];
                 }
             }];

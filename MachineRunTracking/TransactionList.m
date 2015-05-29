@@ -24,9 +24,10 @@
 
 @implementation TransactionList {
     NSString *userType;
-    int flag, alertFlag, machineCount, parameterCount;
+    int flag, machineCount, parameterCount;
     UIView *cellView;
     UILabel *runNoLabel, *machineNameLabel, *runDateLabel;
+    NSMutableArray *transactions;
 }
 
 @synthesize activityIndicatorView;
@@ -52,12 +53,10 @@
     [super viewDidLoad];
     
     flag = 0;
-    alertFlag = 0;
     userType = [[NSUserDefaults standardUserDefaults] objectForKey:@"userType"];
     
     if ([userType isEqualToString:@"Standard"]) {
-    //self.navigationItem.rightBarButtonItem.enabled = FALSE;
-    flag = 1;
+        flag = 1;
      }
     
     //Run queries to check if machines & parameters exist. This is to decide whether a new transaction can be created or not.
@@ -113,16 +112,15 @@
 - (void) objectsDidLoad:(NSError *)error {
     [super objectsDidLoad:error];
     [error localizedDescription];
-    
-    if (alertFlag == 0) {
-        alertFlag = 1;
-        if (self.objects.count == 0){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Transaction List Empty" message:@"You can create a new transaction by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+
+    if (self.objects.count == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Transaction List Empty" message:@"You can create a new transaction by clicking the add button" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             
-            alert.alertViewStyle = UIAlertViewStyleDefault;
-            
-            [alert show];
-        }
+        alert.alertViewStyle = UIAlertViewStyleDefault;
+        [alert show];
+    } else {
+        transactions = [[NSMutableArray alloc] initWithArray:self.objects];
+        [self.tableView reloadData];
     }
 }
 
@@ -158,10 +156,6 @@ BOOL allowRotation = YES;
 
 -(NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -214,22 +208,29 @@ BOOL allowRotation = YES;
     return cellView;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return transactions.count;
+}
+
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
-        static NSString *simpleTableIdentifier = @"TransactionListCellIdentifier";
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *simpleTableIdentifier = @"TransactionListCellIdentifier";
         
-        TransactionListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-        if (cell == nil)
-        {
-            cell = [[TransactionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
-        }
-        
-        // Configure the cell
-        cell.Run_No.text=[object objectForKey:@"Run_No"];
-        cell.Machine_Name.text=[object objectForKey:@"Machine_Name"];
-        cell.Run_Date.text=[object objectForKey:@"Run_Date"];
-        return cell;
+    TransactionListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    if (cell == nil) {
+        cell = [[TransactionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    }
+    
+    // Configure the cell
+    cell.Run_No.text = [[transactions objectAtIndex:indexPath.row] objectForKey:@"Run_No"];
+    cell.Machine_Name.text = [[transactions objectAtIndex:indexPath.row] objectForKey:@"Machine_Name"];
+    cell.Run_Date.text = [[transactions objectAtIndex:indexPath.row] objectForKey:@"Run_Date"];
+    return cell;
 }
 
 // Override to support conditional editing of the table view.
@@ -241,12 +242,13 @@ BOOL allowRotation = YES;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    PFObject *object = [self.objects objectAtIndex:indexPath.row];
-    NSLog(@"PFOBject %@",object);
-    NSString *RunNumber=[object valueForKey:@"Run_No"];
-    NSLog(@"RunNo %@",RunNumber);
+    PFObject *object = [transactions objectAtIndex:indexPath.row];
+    NSString *RunNumber = [object valueForKey:@"Run_No"];
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-       
+        [transactions removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
         NSArray *DeletionArray=[NSArray arrayWithObjects:@"Transaction",@"Pre_Extraction",@"Run_Process",@"Post_Extraction", nil];
         for (int i=0;i<DeletionArray.count;i++) {
             NSString *ClassName=[DeletionArray objectAtIndex:i];
@@ -263,21 +265,7 @@ BOOL allowRotation = YES;
                     [error userInfo];
                 }
             }];
-        [self refreshTable:nil];
         }
-
-        
-        /*[object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (succeeded == TRUE) {
-                [self refreshTable:nil];
-            } else {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Transaction could not be deleted"
-                                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [tableView setEditing:FALSE animated:YES];
-                [alertView show];
-            }
-        }];*/
     }
 }
 
@@ -332,16 +320,6 @@ BOOL allowRotation = YES;
         [self.tableView reloadData];
     }
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)addTransaction:(id)sender {
     if (machineCount == 0) {

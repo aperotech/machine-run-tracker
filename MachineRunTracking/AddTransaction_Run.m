@@ -423,7 +423,7 @@
 - (IBAction)Cancel:(id)sender {
         
     if ([UIAlertController class]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Transaction Alert" message:@"Are you sure you want to cancel? Any unsaved data will be lost" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Transaction Alert" message:@"Are you sure you want to cancel? Any unsaved data will be lost" preferredStyle:UIAlertControllerStyleAlert];
         
         //Create the alert actions i.e. options
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
@@ -667,12 +667,12 @@
     
     CGSize kbSize = CGSizeMake(kbValue.height, kbValue.width);
     
-    aRect.size.height -= kbSize.height+50;
+    aRect.size.height -= kbSize.height;
     // This will the exact rect in which your textfield is present
     CGRect rect =  [self.aTableView convertRect:self.activeField.bounds fromView:self.activeField];
     // Scroll up only if required
     if (!CGRectContainsPoint(aRect, rect.origin) ) {
-        [self.aTableView setContentOffset:CGPointMake(0.0, rect.origin.y-11) animated:YES];
+        [self.aTableView setContentOffset:CGPointMake(0.0, rect.origin.y-70) animated:YES];
     }
 }
 

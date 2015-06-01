@@ -25,6 +25,7 @@
     int value, firstSave;
     NSString *lastinsertedTrasactionID;
     NSDateFormatter *formatter;
+    BOOL basicUpdateFlag;
 }
 
 
@@ -33,7 +34,7 @@
 - (void)viewDidLoad {
    
     [super viewDidLoad];
-    
+ basicUpdateFlag=0;
     firstSave = 0;
    
     self.navigationController.navigationBar.topItem.title=@"";
@@ -457,22 +458,29 @@
     self.scrollView.scrollIndicatorInsets = contentInsets;
 }
 
-/*#pragma mark - Navigation
+
+-(void) AddTransaction_PreVCDismissed:(BOOL)previousState;
+{
+    basicUpdateFlag = previousState;
+    NSLog(@"String received at BasicUpdate: %d",basicUpdateFlag);
+}
+
+
+
+#pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  //  if ([segue.identifier isEqualToString:@"BasicTRansactionDetailsToSegmentedLocationSegue"]) {
-       // NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-       // PFObject *object = [self.objects objectAtIndex:indexPath.row];
-        
-      //  SegmentedLocationVC *SegmentedLocationVCObj = (SegmentedLocationVC *)segue.destinationViewController;
-        //AddTransaction_PreObj.BasicTransactionPF = object;
-  //  }
-
+    if ([segue.identifier isEqualToString:@"BasicTransactionToPreExtrationSegue"]) {
+       
+             AddTransaction_Pre *Add_PreVCObj = (AddTransaction_Pre *)segue.destinationViewController;
+        Add_PreVCObj.basicUpdateReturn=basicUpdateFlag;
+        Add_PreVCObj.AddPre_Delegate=self;
+    
+    }
     
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-}*/
-
+}
 
 @end

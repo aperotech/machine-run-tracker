@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
+#import "AddTransaction_Pre.h"
 
-@interface AddTransaction_Basic : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIScrollViewDelegate>
+@interface AddTransaction_Basic : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIScrollViewDelegate,AddTransaction_PreDelegate>
 
 @property(strong,nonatomic)PFObject *BasicTransactionPF;
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;

@@ -1,4 +1,5 @@
-//
+
+    //
 //  AddTransaction_Pre.m
 //  MachineRunTracking
 //
@@ -25,10 +26,11 @@
     UIToolbar *timePickerToolbar;
     UITextField *timeField;
     NSDateFormatter *formatter;
+    BOOL PreUpdateFlag;
 }
 
 @synthesize tableView,parameterAdd_PrePF, activityIndicatorView, scrollView, activeField;
-
+@synthesize AddPre_Delegate,basicUpdateReturn;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)];
@@ -38,10 +40,12 @@
     [activityIndicatorView startAnimating ];
     // Do any additional setup after loading the view.
    // PFObject *transactionObj=[PFObject objectWithClassName:@"Transaction"];
-    
+//NSLog(@"Basic Update Flag is %d",basicUpdateReturn);
+//BasicUpdateFlag=0;
     bounceFlag = 0;
     doneFlag = 0;
     firstSave = 0;
+    PreUpdateFlag=0;
     timeField = [[UITextField alloc] init];
     
     //Creating time picker for time fields
@@ -68,7 +72,7 @@
     
     [timePickerToolbar setItems:dateBarItems animated:YES];
 
-    PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
+ /*   PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Pre-Extraction"];
     [query1 orderByAscending:@"createdAt"];
     query1.cachePolicy = kPFCachePolicyNetworkElseCache;
@@ -94,31 +98,7 @@
                 [self.tableView reloadData];
             }
         }
-    }];
-    
-    PFQuery *query2 = [PFQuery queryWithClassName:@"Parameters"];
-    [query2 selectKeys:@[@"Name"]];
-    [query2 selectKeys:@[@"Units"]];
-    [query2 whereKey:@"Type" equalTo:@"Pre-Extraction"];
-    [query2 orderByAscending:@"createdAt"];
-    query2.cachePolicy = kPFCachePolicyNetworkElseCache;
-    [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
-        if (!objectsPF) {
-            // Did not find any UserStats for the current user
-        } else {
-            
-            preExtractionArray = objectsPF;
-            GetValuesFromTextFieldArray = [[NSMutableArray alloc] initWithCapacity:objectsPF.count];
-            
-            for (int i=0;i<[preExtractionArray count];i++) {
-                NSString *newString=[[objectsPF objectAtIndex:i]valueForKey:@"Name"];
-                [RunProcessArray addObject:newString];
-                [GetValuesFromTextFieldArray addObject:[NSNull null]];
-                [activityIndicatorView stopAnimating];
-            }
-        }
-    }];
-    
+    }];*/
     PFQuery *query = [PFQuery queryWithClassName:@"Transaction"];
     [query orderByDescending:@"createdAt"];
     query.cachePolicy = kPFCachePolicyNetworkElseCache;
@@ -131,7 +111,75 @@
             LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
             LastInsertedTransactionNoObjectId = [object objectId];
         }
+         [self backFromBasicUpdate];
+//NSLog(@"Lastinserted transaction No transaction query %@",LastInsertedTransactionNo);
     }];
+    
+
+    
+    
+}
+-(void)backFromBasicUpdate{
+    
+    
+        PFQuery *query2 = [PFQuery queryWithClassName:@"Parameters"];
+        [query2 selectKeys:@[@"Name"]];
+        [query2 selectKeys:@[@"Units"]];
+        [query2 whereKey:@"Type" equalTo:@"Pre-Extraction"];
+        [query2 orderByAscending:@"createdAt"];
+        query2.cachePolicy = kPFCachePolicyNetworkElseCache;
+        [query2 findObjectsInBackgroundWithBlock:^(NSArray *objectsPF, NSError *error) {
+            objectCount=objectsPF.count;
+            if (!objectsPF) {
+                // Did not find any UserStats for the current user
+            } else {
+                
+                preExtractionArray = objectsPF;
+               //
+
+                if (basicUpdateReturn ==1) {
+                    firstSave=1;
+                    PFQuery *query = [PFQuery queryWithClassName:@"Pre_Extraction"];
+                    [query whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
+                    [query orderByDescending:@"createdAt"];
+                    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+                    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                        [object removeObjectForKey:@"Run_No"];
+                        if (!error) {
+                    GetValuesFromTextFieldArray = [[NSMutableArray alloc] initWithCapacity:preExtractionArray.count];
+                    for (int i=0;i<[preExtractionArray count];i++) {
+                        NSString *NewString=[[preExtractionArray objectAtIndex:i ]valueForKey:@"Name"];
+
+                        NSString *value=[object valueForKey:NewString];
+                        [RunProcessArray addObject:NewString];
+                        [GetValuesFromTextFieldArray addObject:value];
+
+                        [activityIndicatorView stopAnimating];
+                        }
+//NSLog(@"RunProcess Array %@ and GetValue %@",RunProcessArray,GetValuesFromTextFieldArray);
+                        } else {
+                            NSLog(@"Error Here : %@ %@",error,[error userInfo]);
+                            //[error userInfo];
+                        }
+                        [self.tableView reloadData];
+                    }];
+                }
+                
+                else{
+                GetValuesFromTextFieldArray = [[NSMutableArray alloc] initWithCapacity:objectsPF.count];
+                
+                for (int i=0;i<[preExtractionArray count];i++) {
+                    NSString *newString=[[objectsPF objectAtIndex:i]valueForKey:@"Name"];
+                    [RunProcessArray addObject:newString];
+                    [GetValuesFromTextFieldArray addObject:[NSNull null]];
+                    [activityIndicatorView stopAnimating];
+                }
+//NSLog(@"Run Process Array %@",RunProcessArray);
+                }
+        }
+            [self.tableView reloadData];
+            
+        }];
 }
 
 -(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
@@ -185,6 +233,14 @@
         }];
         
         UIAlertAction *backAction = [UIAlertAction actionWithTitle:@"No, go back" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+
+            if([AddPre_Delegate respondsToSelector:@selector(AddTransaction_PreVCDismissed:)])
+            {
+                basicUpdateReturn=1;
+                [AddPre_Delegate AddTransaction_PreVCDismissed:basicUpdateReturn];
+           //     NSLog(@"string passed");
+            }
+            
             [self dismissViewControllerAnimated:YES completion:nil];
         }];
         
@@ -256,7 +312,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (basicUpdateReturn ==1) {
+       return  RunProcessArray.count;
+    }else{
     return objectCount ;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -274,11 +334,18 @@
     }
     
     cell.p_1Text.tag=indexPath.row;
-    NSString* string1 =[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
-    NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+   
     
     if (bounceFlag == 0) {
+        if (basicUpdateReturn==0) {
+            NSString* string1 =[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Name"] ;
+            NSString* string2 = [string1 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
         cell.p_1Text.placeholder = [string2 stringByAppendingFormat:@" (%@)",[[preExtractionArray objectAtIndex:indexPath.row ]objectForKey:@"Units"]];
+        }else{
+
+        cell.p_1Text.text = [GetValuesFromTextFieldArray objectAtIndex:indexPath.row ];
+        }
+        
     }
     
     if ([cell.p_1Text.placeholder rangeOfString:@"Time"].location != NSNotFound) {
@@ -286,8 +353,14 @@
         [cell.p_1Text setInputView:timePicker];
         [cell.p_1Text setInputAccessoryView:timePickerToolbar];
         timeField = cell.p_1Text;
+    }else if ([cell.p_1Text.text rangeOfString:@"Time_Started"].location != NSNotFound)
+    {
+        [timePicker setFrame:CGRectMake(16, (cell.p_1Text.frame.origin.y + 30.0), self.view.frame.size.width, 140)];
+        [cell.p_1Text setInputView:timePicker];
+        [cell.p_1Text setInputAccessoryView:timePickerToolbar];
+        timeField = cell.p_1Text;
     }
-    
+
     if (indexPath.row == (RunProcessArray.count-1)) {
         bounceFlag = 1;
     }
@@ -500,11 +573,31 @@
     self.scrollView.scrollIndicatorInsets = contentInsets;
 }
 
+-(void) AddTransaction_RunVCDismissed:(BOOL)previousState
+{
+    PreUpdateFlag = previousState;
+//NSLog(@"String received at BasicUpdate: %d",PreUpdateFlag);
+}
+
+
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  /*  if ([[segue identifier] isEqualToString:@"Pre_ExtractionToRunExtractionSegue"])
+
+    if ([segue.identifier isEqualToString:@"Pre_ExtractionToRunExtractionSegue"]) {
+        
+        AddTransaction_Run *Add_RunVCObj = (AddTransaction_Run *)segue.destinationViewController;
+        //Add_PreVCObj.basicUpdateReturn=basicUpdateFlag;
+        Add_RunVCObj.PreUpdateReturn=PreUpdateFlag;
+        Add_RunVCObj.AddRun_Delegate=self;
+    
+    }
+
+    
+    
+    /*  if ([[segue identifier] isEqualToString:@"Pre_ExtractionToRunExtractionSegue"])
     {
         AddTransaction_Run *addVC = (AddTransaction_Run *)segue.destinationViewController;
     }*/

@@ -9,20 +9,28 @@
 #import <UIKit/UIKit.h>
 //#import "SegmentedLocationVC.h"
 #import <Parse/Parse.h>
-/*@class AddTransaction_Pre;
-@protocol AddTransaction_PreDelegates <NSObject>
+#import "AddTransaction_Run.h"
 
-- (void)addPrameterViewController:(AddTransaction_Pre *)controller didFinishEnteringItem:(NSString *)Pre_String;
+
+
+@protocol AddTransaction_PreDelegate <NSObject>
+-(void) AddTransaction_PreVCDismissed:(BOOL)previousState;
 @end
-*/
 
-@interface AddTransaction_Pre : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
 
+
+@interface AddTransaction_Pre : UIViewController<UITextFieldDelegate, UIBarPositioningDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate,AddTransaction_RunDelegate>
+{
+    __weak id  AddPre_Delegate;
+
+}
+@property (nonatomic, weak) id<AddTransaction_PreDelegate> AddPre_Delegate;
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property(strong,nonatomic)PFObject *parameterAdd_PrePF;
 @property(strong,nonatomic) UIRefreshControl *refreshControl;
 @property(nonatomic,strong)IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong,nonatomic)UITextField *activeField;
+@property (nonatomic)BOOL basicUpdateReturn;
 
 @end

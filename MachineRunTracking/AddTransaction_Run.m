@@ -207,7 +207,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.aTableView reloadData];
+//[self.aTableView reloadData];
     NextFlag = 0;
     [self registerForKeyboardNotifications];
 }
@@ -360,7 +360,7 @@
             if (!updateFlag == 1) {
                 [self saveParameters];
             }
-            NSLog(@"%d IS COUN",sectionCount);
+          //  NSLog(@"%d IS COUN",sectionCount);
             sectionCount=sectionCount+1;
             doneFlag = 0;
             updateFlag = 0;

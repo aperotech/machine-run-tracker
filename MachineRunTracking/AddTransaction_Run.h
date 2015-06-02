@@ -9,7 +9,18 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 
+@protocol AddTransaction_RunDelegate <NSObject>
+-(void) AddTransaction_RunVCDismissed:(BOOL)previousState;
+@end
+
+
 @interface AddTransaction_Run : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate ,UITextFieldDelegate, UIBarPositioningDelegate, UIActionSheetDelegate>
+{
+    __weak id  AddRun_Delegate;
+    
+}
+@property (nonatomic, weak) id<AddTransaction_RunDelegate> AddRun_Delegate;
+@property (nonatomic)BOOL PreUpdateReturn;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property(strong,nonatomic)IBOutlet UIActivityIndicatorView *activityIndicatorView;

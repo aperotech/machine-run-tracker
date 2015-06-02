@@ -16,7 +16,7 @@
 @end
 
 @implementation AddTransaction_Run {
-    int count, sectionCount, doneFlag, bounceFlag, updateFlag, doubleAction, firstSave;
+    int count, sectionCount, doneFlag, bounceFlag, updateFlag, doubleAction, firstSave ,PreUpdateBackRowCount;
     BOOL NextFlag;
     NSString *lastinsertedRunProcessID, *LastInsertedTransactionNo, *LastInsertedTransactionNoObjectID, *finalText;
     NSArray *runPalceholderArray;
@@ -27,9 +27,11 @@
     UIToolbar *timePickerToolbar;
     NSDateFormatter *formatter;
     NSInteger indexObject;
+    
 }
 
 @synthesize aTableView, activityIndicatorView, scrollView, tableWidth, tableHeight;
+@synthesize PreUpdateReturn,AddRun_Delegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,7 +42,7 @@
     updateFlag = 0;
     doubleAction = 0;
     firstSave = 0;
-    
+    NSLog(@"Pre Update Flag is %d",PreUpdateReturn);
     self.tableHeight.constant = self.view.frame.size.width;
     self.tableWidth.constant = self.view.frame.size.height;
     [self.aTableView layoutIfNeeded];
@@ -85,9 +87,11 @@
             LastInsertedTransactionNo = [object objectForKey:@"Run_No"];
             LastInsertedTransactionNoObjectID = [object objectId];
         }
+        NSLog(@"Last Inserte Transaction No Run %@",LastInsertedTransactionNo);
+        [self BackFromPreUpdate];
     }];
     
-    GetValuesFromRunTextFieldArray = [[NSMutableArray alloc]init];
+/*GetValuesFromRunTextFieldArray = [[NSMutableArray alloc]init];
     
     PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
     [query1 whereKey:@"Type" equalTo:@"Process Run"];
@@ -118,8 +122,88 @@
                 [aTableView reloadData];
             }
         }
+    }];*/
+}
+
+-(void)BackFromPreUpdate
+{
+    GetValuesFromRunTextFieldArray = [[NSMutableArray alloc]init];
+    
+    PFQuery *query1 = [PFQuery queryWithClassName:@"Parameters"];
+    [query1 whereKey:@"Type" equalTo:@"Process Run"];
+    [query1 orderByAscending:@"createdAt"];
+    query1.cachePolicy = kPFCachePolicyNetworkElseCache;
+    // [query1 selectKeys:@[@"Name"]];
+    [query1 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//NSLog(@"Object Array For Run No %@ Count %ld",objects,objects.count);
+        if(error){
+            NSLog(@"Error!");
+        }
+        else {
+            if (objects.count == 0) {
+                NSLog(@"None found");
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No Parameters Found"
+                                                                    message:[error.userInfo objectForKey:@"error"]
+                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
+            }
+            else if (PreUpdateReturn ==1)
+            {
+                firstSave=1;
+                PFQuery *queryBack=[PFQuery queryWithClassName:@"Run_Process"];
+                [queryBack whereKey:@"Run_No" equalTo:LastInsertedTransactionNo];
+                [queryBack orderByAscending:@"createdAt"];
+                
+                queryBack.cachePolicy=kPFCachePolicyNetworkElseCache;
+                [queryBack findObjectsInBackgroundWithBlock:^(NSArray *objectArray, NSError *error) {
+                    for (PFObject *object in objectArray) {
+                        [object removeObjectForKey:@"Run_No"];
+                    }
+                    sectionCount=(int)objectArray.count;
+                    if (!error) {
+                        
+                        
+                         headerArray=[[NSMutableArray alloc]init];
+                        RunProcessArray=[[NSMutableArray alloc]init];
+                        for (PFObject *object in objectArray) {
+
+                        for (int i=0;i<[objects count]; i++) {
+                            
+                            NSString *headerString=[[objects objectAtIndex:i ] valueForKey:@"Name"];
+                            if ( headerArray.count != objects.count) {
+                                [headerArray addObject:headerString];
+                                [RunProcessArray addObject:[[objects objectAtIndex:i]valueForKey:@"Units"]];
+                            }
+                            NSString *value=[object valueForKey:headerString];
+                            [GetValuesFromRunTextFieldArray addObject:value];
+                        }
+                           
+                        }
+                         [activityIndicatorView stopAnimating];
+                         [aTableView reloadData];
+
+                        }else{
+                        NSLog(@"Error Message: %@ %@",error,[error userInfo]);
+                    }
+                }];
+            }
+            else {
+                headerArray=[[NSMutableArray alloc]init];
+                RunProcessArray=[[NSMutableArray alloc]init];
+                dataArray=[[NSMutableArray alloc]initWithArray:objects];
+               
+                for (int i=0;i<[dataArray count];i++) {
+                    [headerArray addObject:[[objects objectAtIndex:i]valueForKey:@"Name"]];
+                    [RunProcessArray addObject:[[objects objectAtIndex:i]valueForKey:@"Units"]];
+                    [activityIndicatorView stopAnimating];
+                }
+                [aTableView reloadData];
+            }
+        }
     }];
 }
+
+
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -157,7 +241,13 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return sectionCount;
+    //return sectionCount;
+//if (PreUpdateReturn == 1) {
+  //      sectionCount = PreUpdateBackRowCount;
+  //      return sectionCount;
+  //  }else{
+        return sectionCount;
+//}
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -270,6 +360,7 @@
             if (!updateFlag == 1) {
                 [self saveParameters];
             }
+            NSLog(@"%d IS COUN",sectionCount);
             sectionCount=sectionCount+1;
             doneFlag = 0;
             updateFlag = 0;
@@ -286,6 +377,7 @@
     Process_RunCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell != nil) {
+        
         for (int i = 0 ; i < [RunProcessArray count]; i++) {
             CGRect frameText;
             valueTextField = [[UITextField alloc] init];
@@ -315,8 +407,34 @@
             //[valueTextField setEnablesReturnKeyAutomatically:YES];
             [valueTextField setDelegate:self];
             
+            if (PreUpdateReturn ==0) {
             valueTextField.placeholder = [RunProcessArray objectAtIndex:i];
+                if (count > 0 && ((sectionCount - indexPath.row) >1)) {
+                    for (int j=0;j<GetValuesFromRunTextFieldArray.count;j++) {
+                        if (valueTextField.tag==j+1) {
+                            valueTextField.text = [GetValuesFromRunTextFieldArray objectAtIndex:j];
+                        }
+                    }
+                }
+               
             
+            }else{
+                
+                if (count >= 0 && ((sectionCount - indexPath.row) >=1)) {
+                    for (int j=0;j<GetValuesFromRunTextFieldArray.count;j++) {
+                        if (valueTextField.tag==j+1) {
+                            if ([GetValuesFromRunTextFieldArray objectAtIndex:j] == [NSNull null]) {
+                                valueTextField.placeholder=[RunProcessArray objectAtIndex:i];
+                                
+                            }else{
+                            valueTextField.text = [GetValuesFromRunTextFieldArray objectAtIndex:j];
+                                }
+                            }
+                        }
+                }
+            
+                
+            }
             if ([valueTextField.placeholder rangeOfString:@"Comment"].location != NSNotFound | [valueTextField.placeholder rangeOfString:@"Text"].location != NSNotFound) {
                 [valueTextField setSpellCheckingType:UITextSpellCheckingTypeDefault];
                 [valueTextField setAutocorrectionType:UITextAutocorrectionTypeDefault];
@@ -334,20 +452,7 @@
                 timeField = valueTextField;
             }
             
-            //if (bounceFlag == 0) {
-                if (count > 0 && ((sectionCount - indexPath.row) >1)) {
-                    for (int j=0;j<GetValuesFromRunTextFieldArray.count;j++) {
-                        if (valueTextField.tag==j+1) {
-                            valueTextField.text = [GetValuesFromRunTextFieldArray objectAtIndex:j];
-                        }
-                    }
-                }
-            //}
-            
-            /*if (indexPath.row == sectionCount) {
-                bounceFlag = 1;
-            }*/
-            [cell.contentView addSubview:valueTextField];
+           [cell.contentView addSubview:valueTextField];
         } // for loop
     } //if cell nil
     count++;
@@ -435,6 +540,15 @@
         }];
         
         UIAlertAction *backAction = [UIAlertAction actionWithTitle:@"No, go back" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            
+            if([AddRun_Delegate respondsToSelector:@selector(AddTransaction_RunVCDismissed:)])
+            {
+                PreUpdateReturn=1;
+                [AddRun_Delegate AddTransaction_RunVCDismissed:PreUpdateReturn];
+                NSLog(@"string passed");
+            }
+
+            
             [self dismissViewControllerAnimated:YES completion:nil];
         }];
         

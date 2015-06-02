@@ -175,7 +175,7 @@
 		044DC19D1ADBCD92002578C2 /* AddTransaction_Basic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_Basic.h; sourceTree = "<group>"; };
 		044DC19E1ADBCD92002578C2 /* AddTransaction_Basic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_Basic.m; sourceTree = "<group>"; };
 		044DC1A31ADBCE10002578C2 /* AddTransaction_Pre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_Pre.h; sourceTree = "<group>"; };
-		044DC1A41ADBCE10002578C2 /* AddTransaction_Pre.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_Pre.m; sourceTree = "<group>"; };
+		044DC1A41ADBCE10002578C2 /* AddTransaction_Pre.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_Pre.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		044DC1A61ADBCE31002578C2 /* AddTransaction_Run.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_Run.h; sourceTree = "<group>"; };
 		044DC1A71ADBCE31002578C2 /* AddTransaction_Run.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTransaction_Run.m; sourceTree = "<group>"; };
 		044DC1A91ADBCE49002578C2 /* AddTransaction_Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTransaction_Post.h; sourceTree = "<group>"; };

@@ -134,11 +134,10 @@
     }];
 }
 
-- (void)refreshTable {
+/*- (void)refreshTable {
     //TODO: refresh your data
         [self.tableView reloadData];
-}
-
+}*/
 - (BOOL)shouldAutorotate {
     return NO;
 }
@@ -154,7 +153,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self.tableView reloadData];
+//[self.tableView reloadData];
     
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
